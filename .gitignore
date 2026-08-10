@@ -5,3 +5,5 @@ pbip-shots/
 .tmp/
 Archive/
 EDW-ODS Snapshot/
+node_modules/
+dist/

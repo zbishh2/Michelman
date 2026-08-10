@@ -1,0 +1,74 @@
+/* ------------------------------------------------------------------
+   Report : 07 - Ivan SK 2023
+   Query  : Inventory
+   Source : ODSPROD / ODS / PRODDTA (JDE), SQL Server
+   Note   : Native T-SQL as executed by Power BI (query folding enabled).
+   ------------------------------------------------------------------ */
+
+SELECT
+    CASE LTRIM(RTRIM(ib.IBMCU))
+         WHEN 'SING' THEN 'Singapore'
+         WHEN 'SNG4' THEN 'Singapore'
+         WHEN 'MUM3' THEN 'India'
+         WHEN 'SHAN' THEN 'China'
+         WHEN 'AUBA' THEN 'Aubange'
+         WHEN 'AUB2' THEN 'Aubange'
+         WHEN 'CINC' THEN 'Americas'
+         WHEN 'CIN2' THEN 'Americas'
+         WHEN 'CIN4' THEN 'Americas'
+         ELSE 'ERROR'
+    END                                     AS [REGION],
+    LTRIM(RTRIM(ib.IBMCU))                  AS [Branch Plant],
+    LTRIM(RTRIM(tag.IMGBLK))                AS [Global Bulk Item],
+    LTRIM(RTRIM(tag.IMBULK))                AS [Bulk Item],
+    LTRIM(RTRIM(ib.IBLITM))                 AS [2nd Item Number],
+    LTRIM(RTRIM(ib.IBSTKT))                 AS [Stock Type],
+    LTRIM(RTRIM(loc.LILOTN))                AS [Lot Number],
+    LTRIM(RTRIM(loc.LILOCN))                AS [Location],
+    loc.LILOTS                              AS [Status],
+    SUM(loc.LIPQOH/10000.0)                 AS [Quantity On Hand],
+    SUM(loc.LIHCOM/10000.0)                 AS [Hard Commit],
+    im.IMUOM1                               AS [Primary UOM],
+    LTRIM(RTRIM(ib.IBPRP4))                 AS [Master Planning Family],
+    CAST(GETDATE() AS date)                 AS [NOW],
+    CASE WHEN MIN(im.IMUOM1) = 'KG' THEN SUM(loc.LIPQOH/10000.0)
+         WHEN MIN(im.IMUOM1) = 'LB' THEN SUM(loc.LIPQOH/10000.0) * 0.453593
+         WHEN MIN(im.IMUOM1) = 'EA' THEN SUM(loc.LIPQOH/10000.0) * 20
+         ELSE 100000
+    END                                     AS [OH KG],
+    CASE WHEN MIN(im.IMUOM1) = 'LB' THEN SUM(loc.LIPQOH/10000.0)
+         WHEN MIN(im.IMUOM1) = 'KG' THEN SUM(loc.LIPQOH/10000.0) / 0.453593
+         WHEN MIN(im.IMUOM1) = 'EA' THEN SUM(loc.LIPQOH/10000.0) * 44
+         ELSE 100000
+    END                                     AS [OH LB]
+FROM PRODDTA.F4102 ib
+JOIN PRODDTA.F4101   im  ON ib.IBITM = im.IMITM
+JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+JOIN PRODDTA.F41021  loc ON ib.IBITM = loc.LIITM
+                        AND ib.IBMCU = loc.LIMCU
+WHERE LTRIM(RTRIM(ib.IBMCU)) IN ('AUBA', 'AUB2', 'SING', 'SNG4', 'MUM3', 'SHAN', 'CINC', 'CIN2', 'CIN4')
+  AND loc.LIPQOH/10000.0 > 0
+  AND LTRIM(RTRIM(tag.IMBULK)) IN ('PR3460', 'PR3460.E', 'PR5980I', 'PR5980I.E', 'PR5980I.S', 'PR5985', 'PR5985.E', 'PR5985.S', 'DPI8600.E', 'PH00007E.E', '201250PX.E', 'DPI8200.E', 'MF4915.E', 'MFHS1130.E', 'MFP1857.E', 'MP3000.E', 'MP48525R.E', 'MP4932.E', 'MP498340R.E', 'PH00017E.E', 'MFP1853R.E', 'MP498345P.E', 'MP4983RHSA.E', '201081CX', '241083PX.S', '241088PX.S', '241089PX.S', '241199PX.S', '241252PX.S', '251095NX.S', '251142PX.S', '251144PX.S', '251194NX.S', '251268PX.S', 'MF1204.S', 'MF1306D.S', 'MF1406.S', 'MFHS1881.S', 'MFP1853R.S', 'MFP1883.S', 'MP4982SC.S', 'MP498340R.S', 'MP498345N.S', 'MP4983R.S', 'MP4983RHS.S', 'PH00017E.S', 'PI8545.S', '241253PX.S', '241168PX', '241201FX', 'DP040', 'DPI8600', 'HSCF280', 'ILP040', 'KHI205', 'KHI340', 'MED310', 'MED800', 'MFHS168', 'MFHS268', 'MFP1853R', 'MP04422R', 'MP3000', 'MP48525R', 'MP498340D', 'MP498340R', 'MP498345N', 'MP4983RHS', 'MT242AF', 'PA845H', 'PH00015E', 'PH00017E', 'UBD211', 'UBD268', 'UTS610', '251379PX.E', 'MFP1883.E', 'MP4983RAM.E', 'PH00001A.E', '251095NX.E', '251194NX.E', 'MD7900.E', 'MP4983R.E', '251246NX.E', '251095NX', '251194NX', '261044NX', '261074NX', '605000007', 'MFP1883', 'MP4983R', 'MP4983RN', 'RM108', 'UPR420', '221247PX.E', 'MP2960.E', '221247PX', '231093FX', 'MP2960')
+GROUP BY
+    LTRIM(RTRIM(ib.IBMCU)),
+    LTRIM(RTRIM(tag.IMGBLK)),
+    LTRIM(RTRIM(tag.IMBULK)),
+    LTRIM(RTRIM(ib.IBLITM)),
+    LTRIM(RTRIM(loc.LILOCN)),
+    LTRIM(RTRIM(loc.LILOTN)),
+    loc.LILOTS,
+    im.IMUOM1,
+    LTRIM(RTRIM(ib.IBPRP4)),
+    LTRIM(RTRIM(ib.IBSTKT)),
+    CASE LTRIM(RTRIM(ib.IBMCU))
+         WHEN 'SING' THEN 'Singapore'
+         WHEN 'SNG4' THEN 'Singapore'
+         WHEN 'MUM3' THEN 'India'
+         WHEN 'SHAN' THEN 'China'
+         WHEN 'AUBA' THEN 'Aubange'
+         WHEN 'AUB2' THEN 'Aubange'
+         WHEN 'CINC' THEN 'Americas'
+         WHEN 'CIN2' THEN 'Americas'
+         WHEN 'CIN4' THEN 'Americas'
+         ELSE 'ERROR'
+    END

@@ -1,0 +1,294 @@
+<report xmlns="http://developer.cognos.com/schemas/report/12.0/" useStyleVersion="10" expressionLocale="en-us">
+	<modelPath>/content/package[@name='Data Warehouse']/model[@name='model']</modelPath>
+	<drillBehavior/>
+	<queries>
+		<query name="Forecast">
+			<source>
+				<model/>
+			</source>
+			<selection><dataItem name="Company Code" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Company].[Company Code]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Branch Plant" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Inventory Demand].[Branch Plant]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="2nd Item Number" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Item].[2nd Item Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Bulk Item" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Item].[Bulk Item]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Global Bulk Item" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Item].[Global Bulk Item]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Forecast Type" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Inventory Demand].[Forecast Type]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Revenue Business Unit" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Inventory Demand].[Revenue Business Unit]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Table Type" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Inventory Demand].[Table Type]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Current Forecast"><expression>[Inventory Demand Star Schema].[Inventory Demand].[Current Forecast]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="fact" output="no"/></XMLAttributes></dataItem><dataItem name="Primary UOM" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Inventory Demand].[Primary UOM]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Current Forecast LB" aggregate="total"><expression>[Inventory Demand Star Schema].[Inventory Demand].[Current Forecast LB]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="fact" output="no"/></XMLAttributes></dataItem><dataItem name="Current Forecast KG" aggregate="total"><expression>[Inventory Demand Star Schema].[Inventory Demand].[Current Forecast KG]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="fact" output="no"/></XMLAttributes></dataItem><dataItem name="Year" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Time Requested Date].[Year]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="1" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Month" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Time Requested Date].[Month]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="1" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Week" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Time Requested Date].[Week]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="1" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Requested Date" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Inventory Demand].[Requested Date]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="4" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Customer Name" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Customer].[Customer Name]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Global Parent" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Customer].[Global Parent]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Global Parent Name" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Customer].[Global Parent Name]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="TM Name" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Inventory Demand].[TM Name]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Customer Code" aggregate="none" rollupAggregate="none"><expression>[Inventory Demand Star Schema].[Customer].[Customer Code]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem></selection>
+			<detailFilters><detailFilter><filterExpression>[Forecast Type]='SA'</filterExpression></detailFilter><detailFilter><filterExpression>[Requested Date] between _first_of_month ({sysdate}+0) and 2026-06-30</filterExpression></detailFilter><detailFilter><filterExpression>[Table Type] contains ('3460')</filterExpression></detailFilter><detailFilter><filterExpression>[Current Forecast]&gt;0</filterExpression></detailFilter><detailFilter><filterExpression>[Inventory Demand Star Schema].[Active Forecast Only]</filterExpression></detailFilter><detailFilter><filterExpression>[Bulk Item] in ('PR3460',
+'PR3460.E',
+'PR5980I',
+'PR5980I.E',
+'PR5980I.S',
+'PR5985',
+'PR5985.E',
+'PR5985.S',
+'DPI8600.E',
+'PH00007E.E',
+'201250PX.E',
+'DPI8200.E',
+'MF4915.E',
+'MFHS1130.E',
+'MFP1857.E',
+'MP3000.E',
+'MP48525R.E',
+'MP4932.E',
+'MP498340R.E',
+'PH00017E.E',
+'MFP1853R.E',
+'MP498345P.E',
+'MP4983RHSA.E',
+'201081CX',
+'241083PX.S',
+'241088PX.S',
+'241089PX.S',
+'241199PX.S',
+'241252PX.S',
+'251095NX.S',
+'251142PX.S',
+'251144PX.S',
+'251194NX.S',
+'251268PX.S',
+'MF1204.S',
+'MF1306D.S',
+'MF1406.S',
+'MFHS1881.S',
+'MFP1853R.S',
+'MFP1883.S',
+'MP4982SC.S',
+'MP498340R.S',
+'MP498345N.S',
+'MP4983R.S',
+'MP4983RHS.S',
+'PH00017E.S',
+'PI8545.S',
+'241253PX.S',
+'241168PX',
+'241201FX',
+'DP040',
+'DPI8600',
+'HSCF280',
+'ILP040',
+'KHI205',
+'KHI340',
+'MED310',
+'MED800',
+'MFHS168',
+'MFHS268',
+'MFP1853R',
+'MP04422R',
+'MP3000',
+'MP48525R',
+'MP498340D',
+'MP498340R',
+'MP498345N',
+'MP4983RHS',
+'MT242AF',
+'PA845H',
+'PH00015E',
+'PH00017E',
+'UBD211',
+'UBD268',
+'UTS610',
+'251379PX.E',
+'MFP1883.E',
+'MP4983RAM.E',
+'PH00001A.E',
+'251095NX.E',
+'251194NX.E',
+'MD7900.E',
+'MP4983R.E',
+'251246NX.E',
+'251095NX',
+'251194NX',
+'261044NX',
+'261074NX',
+'605000007',
+'MFP1883',
+'MP4983R',
+'MP4983RN',
+'RM108',
+'UPR420',
+'221247PX.E',
+'MP2960.E',
+'221247PX',
+'231093FX',
+'MP2960'
+)</filterExpression></detailFilter><detailFilter><filterExpression>[Branch Plant] in ('AUBA', 'AUB2', 'SING', 'SNG4', 'MUM3', 'SHAN', 'CINC' , 'CIN2', 'CIN4')</filterExpression></detailFilter></detailFilters></query><query name="Sales History">
+			<source>
+				<model/>
+			</source>
+			<selection><dataItem name="Order Company" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Order Company]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Branch Plant" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Branch Plant]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Order Number" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Order Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Global Bulk Item" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Item].[Global Bulk Item]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Bulk Item" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Item].[Bulk Item]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Next Status" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Next Status]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="2nd Item Number" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[2nd Item Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Ordered Quantity" aggregate="total"><expression>[Order Activity Star Schema].[Order Activity].[Ordered Quantity]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="fact" output="no"/></XMLAttributes></dataItem><dataItem name="Ordering Unit of Measure" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Ordering Unit of Measure]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Ordered Quantity LBs" aggregate="total"><expression>[Order Activity Star Schema].[Order Activity].[Ordered Quantity LBs]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="fact" output="no"/></XMLAttributes></dataItem><dataItem name="Ordered Quantity KGs" aggregate="total"><expression>[Order Activity Star Schema].[Order Activity].[Ordered Quantity KGs]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="fact" output="no"/></XMLAttributes></dataItem><dataItem name="TM Name" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[TM Name]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Customer Code" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Ship To].[Customer Code]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Customer Name" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Ship To].[Customer Name]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Global Parent" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Ship To].[Global Parent]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Global Parent Name" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Ship To].[Global Parent Name]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Country Name" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Ship To].[Country Name]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Revenue Business Unit" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Revenue Business Unit]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Promised Ship Date" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Promised Ship Date]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="4" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Year1" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Time Promised Ship Date].[Year]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="1" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Month1" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Time Promised Ship Date].[Month]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="1" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Week1" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Time Promised Ship Date].[Week]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="1" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Open Indicator" aggregate="none" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Open Indicator]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="DATE"><expression>current_timestamp</expression></dataItem></selection>
+			<detailFilters><detailFilter><filterExpression>[Order Activity Star Schema].[Exclude Freight Line Types]</filterExpression></detailFilter><detailFilter><filterExpression>[Order Activity Star Schema].[Exclude Cancelled Orders]</filterExpression></detailFilter><detailFilter><filterExpression>[Order Activity Star Schema].[Exclude Budget Data]</filterExpression></detailFilter><detailFilter><filterExpression>[Promised Ship Date] between 2026-03-01 and _last_of_month (to_date({sysdate}+180))</filterExpression></detailFilter><detailFilter><filterExpression>[Ordered Quantity KGs]&gt;0</filterExpression></detailFilter><detailFilter><filterExpression>[Bulk Item] in ('PR3460',
+'PR3460.E',
+'PR5980I',
+'PR5980I.E',
+'PR5980I.S',
+'PR5985',
+'PR5985.E',
+'PR5985.S',
+'DPI8600.E',
+'PH00007E.E',
+'201250PX.E',
+'DPI8200.E',
+'MF4915.E',
+'MFHS1130.E',
+'MFP1857.E',
+'MP3000.E',
+'MP48525R.E',
+'MP4932.E',
+'MP498340R.E',
+'PH00017E.E',
+'MFP1853R.E',
+'MP498345P.E',
+'MP4983RHSA.E',
+'201081CX',
+'241083PX.S',
+'241088PX.S',
+'241089PX.S',
+'241199PX.S',
+'241252PX.S',
+'251095NX.S',
+'251142PX.S',
+'251144PX.S',
+'251194NX.S',
+'251268PX.S',
+'MF1204.S',
+'MF1306D.S',
+'MF1406.S',
+'MFHS1881.S',
+'MFP1853R.S',
+'MFP1883.S',
+'MP4982SC.S',
+'MP498340R.S',
+'MP498345N.S',
+'MP4983R.S',
+'MP4983RHS.S',
+'PH00017E.S',
+'PI8545.S',
+'241253PX.S',
+'241168PX',
+'241201FX',
+'DP040',
+'DPI8600',
+'HSCF280',
+'ILP040',
+'KHI205',
+'KHI340',
+'MED310',
+'MED800',
+'MFHS168',
+'MFHS268',
+'MFP1853R',
+'MP04422R',
+'MP3000',
+'MP48525R',
+'MP498340D',
+'MP498340R',
+'MP498345N',
+'MP4983RHS',
+'MT242AF',
+'PA845H',
+'PH00015E',
+'PH00017E',
+'UBD211',
+'UBD268',
+'UTS610',
+'251379PX.E',
+'MFP1883.E',
+'MP4983RAM.E',
+'PH00001A.E',
+'251095NX.E',
+'251194NX.E',
+'MD7900.E',
+'MP4983R.E',
+'251246NX.E',
+'251095NX',
+'251194NX',
+'261044NX',
+'261074NX',
+'605000007',
+'MFP1883',
+'MP4983R',
+'MP4983RN',
+'RM108',
+'UPR420',
+'221247PX.E',
+'MP2960.E',
+'221247PX',
+'231093FX',
+'MP2960'
+)</filterExpression></detailFilter></detailFilters></query></queries>
+	<layouts>
+		<layout>
+			<reportPages>
+				<page name="Forecast">
+					<pageBody>
+						<contents><list horizontalPagination="true" name="List6" refQuery="Forecast">
+								<noDataHandler>
+									<contents>
+										<block>
+											<contents>
+												<textItem>
+													<dataSource>
+														<staticValue>No Data Available</staticValue>
+													</dataSource>
+													<style>
+														<CSS value="padding:10px 18px;"/>
+													</style>
+												</textItem>
+											</contents>
+										</block>
+									</contents>
+								</noDataHandler>
+								<style>
+									<CSS value="border-collapse:collapse"/>
+									<defaultStyles>
+										<defaultStyle refStyle="ls"/>
+									</defaultStyles>
+								</style>
+								<listColumns><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Company Code"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Company Code"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Branch Plant"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Branch Plant"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Global Bulk Item"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Global Bulk Item"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Bulk Item"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Bulk Item"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="2nd Item Number"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="2nd Item Number"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Year"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Year"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Month"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Month"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Week"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Week"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Requested Date"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/><dataFormat><dateFormat dateStyle="medium" displayOrder="DMY"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Requested Date"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Current Forecast KG"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:right;border:1pt solid black"/><dataFormat><numberFormat decimalSize="0"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Current Forecast KG"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Revenue Business Unit"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Revenue Business Unit"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Customer Code"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Customer Code"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Customer Name"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Customer Name"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Global Parent"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Global Parent"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Global Parent Name"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Global Parent Name"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="TM Name"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="TM Name"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Current Forecast"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:right;border:1pt solid black"/><dataFormat><numberFormat decimalSize="0"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Current Forecast"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Primary UOM"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Primary UOM"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Current Forecast LB"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:right;border:1pt solid black"/><dataFormat><numberFormat decimalSize="0"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Current Forecast LB"/></dataSource></textItem></contents></listColumnBody></listColumn></listColumns><sortList><sortItem refDataItem="Requested Date"/></sortList></list></contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="pb"/>
+							</defaultStyles>
+						</style>
+					</pageBody>
+					<style>
+						<defaultStyles>
+							<defaultStyle refStyle="pg"/>
+						</defaultStyles>
+					</style>
+				</page><page name="Sales History">
+					<pageBody>
+						<contents><list horizontalPagination="true" name="List2" refQuery="Sales History">
+								<noDataHandler>
+									<contents>
+										<block>
+											<contents>
+												<textItem>
+													<dataSource>
+														<staticValue>No Data Available</staticValue>
+													</dataSource>
+													<style>
+														<CSS value="padding:10px 18px;"/>
+													</style>
+												</textItem>
+											</contents>
+										</block>
+									</contents>
+								</noDataHandler>
+								<style>
+									<CSS value="border-collapse:collapse"/>
+									<defaultStyles>
+										<defaultStyle refStyle="ls"/>
+									</defaultStyles>
+								</style>
+								<listColumns><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Order Company"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Order Company"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Branch Plant"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Branch Plant"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Global Bulk Item"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Global Bulk Item"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Bulk Item"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Bulk Item"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="2nd Item Number"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="2nd Item Number"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Order Number"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Order Number"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Next Status"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Next Status"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Year1"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Year1"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Month1"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Month1"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Week1"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Week1"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Promised Ship Date"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/><dataFormat><dateFormat dateStyle="medium" displayOrder="DMY"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Promised Ship Date"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Ordered Quantity KGs"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:right;border:1pt solid black"/><dataFormat><dateFormat dateStyle="medium" displayOrder="DMY"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Ordered Quantity KGs"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Revenue Business Unit"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Revenue Business Unit"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Customer Code"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Customer Code"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Customer Name"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Customer Name"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Global Parent"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Global Parent"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Global Parent Name"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Global Parent Name"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="TM Name"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="TM Name"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Country Name"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Country Name"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Order Number"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Order Number"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Ordered Quantity"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:right;border:1pt solid black"/><dataFormat><dateFormat dateStyle="medium" displayOrder="DMY"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Ordered Quantity"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Ordering Unit of Measure"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Ordering Unit of Measure"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Ordered Quantity LBs"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:right;border:1pt solid black"/><dataFormat><dateFormat dateStyle="medium" displayOrder="DMY"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Ordered Quantity LBs"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Open Indicator"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Open Indicator"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="DATE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:right;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="DATE"/></dataSource></textItem></contents></listColumnBody></listColumn></listColumns><sortList><sortItem refDataItem="Promised Ship Date"/></sortList></list></contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="pb"/>
+							</defaultStyles>
+						</style>
+					</pageBody>
+					<style>
+						<defaultStyles>
+							<defaultStyle refStyle="pg"/>
+						</defaultStyles>
+					</style>
+				</page></reportPages>
+		</layout>
+	</layouts>
+	<XMLAttributes><XMLAttribute name="RS_CreateExtendedDataItems" value="true" output="no"/><XMLAttribute name="listSeparator" value="," output="no"/><XMLAttribute name="RS_modelModificationTime" value="2018-07-31T15:02:04.658Z" output="no"/></XMLAttributes><reportName>1 - Ivan SK 2023 Forecast</reportName></report>

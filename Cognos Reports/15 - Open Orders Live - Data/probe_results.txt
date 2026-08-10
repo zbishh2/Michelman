@@ -1,0 +1,102 @@
+R15 PROBE RESULTS — captured 2026-07-16 ~09:13 via MCP DAX against open Desktop instance "R15 Probe"
+(Refresh time of the probe model itself not independently verified — data shows 409 open lines vs 394 in the 2026-07-15 xlsx, consistent with a fresh refresh.)
+
+=== Block 1 — Column Existence: PASS ===
+Table    Found/Expected
+F0101    2/2
+F41002   5/5
+F4201    8/8
+F4211    21/21
+F42140   3/3
+All expected columns exist on all five source tables.
+
+=== Block 3 — CSR Fan-Out (customers with >1 CMRTYPE='CSR' row): 4 found, ZERO impact today ===
+Customer AN8   CSR Rows
+300385         2
+329077         2
+345466         2
+349421         2
+Impact check: Open Lines Pre CSR (410) - dropped (1) = 409 = Count Parity total (409).
+No inflation => none of these 4 customers currently has an open line. Fan-out risk exists but
+is inert today. (BUILD.md §5.3 / open question #3.)
+
+=== Block 4 — Live CSR List: 41 active CSRs — !! CONTRADICTS the "stale names" theory !!
+All four hard-coded page names ARE live CMRTYPE='CSR' assignments:
+  Runyan, Tammy    1639 customers
+  Benjamin, Kim    1136 customers
+  McCrary, Nae     1130 customers
+  Garner, Shannon    97 customers
+Yet zero of the 409 open lines map to any of them (Count Parity: everything on Other).
+BUILD.md §5.1 called the names "stale / matching no live assignment" — that explanation is
+WRONG or incomplete. Something subtler makes the equality fail or keeps their customers out
+of the open-order set (candidate theories: assignment on sold-to vs the report's ship-to
+SDSHAN join; name-string mismatch between F42140-linked F0101 row and the literal; their
+customers genuinely having no company-00010 open orders — implausible at ~4,000 combined
+assignments). PARITY IS UNAFFECTED (Cognos renders the same all-on-Other result) but the
+business story in §8 open question 1 needs this correction.
+=> RESOLVED same day via DAX on the refreshed main PBIP (no extra probe needed): the 398
+   open-order rows map to exactly SIX CSRs — Chatman (99), Dowd (104), Corcoran (103),
+   Sifuentes (60), Bachler (28), Buchheim (4) — none of them the four page names. Clean
+   trimmed names (LEN checked, no padding artifact). So the four names are valid CSRs whose
+   books simply contain no currently-open-order ship-tos; the active books belong to six
+   other reps. Pages are pointed at former owners => permanently empty. Strengthens the
+   CSR-slicer recommendation (the CSR set demonstrably shifts over time).
+
+=== MAIN PBIP CHECKS (2026-07-16 ~09:16, refreshed "Open Orders - Live Data" instance) ===
+Total rows 398 | Distinct orders 349 | all on CSR Page 'Other' | Kim Window=1: 289 rows.
+vs xlsx (2026-07-15): 394 rows / 346 orders — same grain shape, one day of live drift.
+Exact-count validation still needs a TIGHT CAPTURE: run the Cognos report and export while
+this refresh is fresh, then compare.
+
+=== Block 5 (join drops) — CSR-Less Dropped Lines: PASS (faithful) ===
+Lines Missing Header: 0      (F4201 header join drops nothing)
+Lines Dropped No CSR: 1      (INNER CSR join drops 1 of 410 open lines — faithful to Cognos)
+Open Lines Pre CSR:  410
+
+=== Block 5 (count parity) — Count Parity by CSR Page: SHAPE MATCHES Cognos ===
+Other    409
+(All other pages zero rows — identical shape to the xlsx: 4 empty pages, everything on Other.
+xlsx 394 vs live 409 = one day of drift; exact-count validation needs tight capture on the
+main PBIP.)
+
+=== Block 6 — Scaling Spot Check: PASS ===
+20 rows eyeballed. Qty/Weight magnitudes sane (e.g. Qty 80 DR -> Weight 36,000; Qty 19 TO ->
+41,800). Weight=0 rows present where no F41002 conversion exists (ISNULL path, faithful).
+Order numbers raw (no scaling). BP shows preserved JDE right-justified padding
+("        CIN2") per the no-trim parity decision. Dates month-first.
+
+VERDICT: probes green; build cleared for first refresh + tight-capture validation of the main
+PBIP. One open investigation: why the four live CSR names catch zero open orders (block 4)
+— RESOLVED, see block-4 note above.
+
+=== TIGHT-CAPTURE VALIDATION — PASS (2026-07-16) ===
+Cognos export "Open Orders - Live Data.xlsx" captured 09:27:33, PBI refresh ~09:15 (12 min
+apart). Archived: Intake\Open Orders - Live Data (tight capture 2026-07-16).xlsx.
+
+Shape: 5/5 sheets match — Tammy/Nae/Kim/Shannon render "No Data Available", Other = 398 data
+rows on BOTH sides (exact row-count parity).
+
+Values: full multiset compare over all 15 columns (dates as m/d/yy, Qty/Weight rounded
+half-up, ANSI encoding on the Cognos CSV export, JDE padding preserved):
+  392/398 rows byte-identical (report-out workbook's case-sensitive EXACT() is the truth;
+  the initial PowerShell compare was case-insensitive and showed 393).
+  6 residual rows / 8 FALSE cells:
+    5 rows = live drift within the 12-minute window (Cognos shows the LATER state):
+      2743583 Torch Surface   540->550, promised 7/17->7/16, carrier 3PL->Customer Pick-up
+      2742776 Van Technologies 540->550
+      2732235 Cartonesa        540->550
+      2744295 Pratt DIGITAL x2 MOT blank->SCH
+    1 row = letter-case-only source diff (ODS stale-on-UPDATE bucket, same as workbook 13):
+      2744089 ME67335-T3 DI2  "EXWORKS Cincinnati" (Cognos) vs "EXWORKS CINCINNATI" (PBI)
+  No systematic differences. Kim Window untestable against Cognos (Kim page empty under
+  parity on both sides) — logic verified by inspection + 289-row flag count sanity.
+
+Harness gotchas for next time: MCP DAX result CSV caps at 100 rows even with maxRows>100 —
+chunk EVALUATE by MOD([Order],8); Excel COM SaveAs CSV writes ANSI(1252), read it with that
+encoding or accented customers false-mismatch.
+
+STATUS: R15 VALIDATED. Report-out workbook DELIVERED 2026-07-16 10:03
+(Excel Validation\_report_out\15 - Open Orders Live.xlsx — live formulas, 0 literals across
+5,970 compare cells, 8 FALSE verified on the expected spots; RS documents 5 drift rows + the
+DI2 case row). Txt Queries\Open Orders.txt exported. Remaining: publish + business decisions
+(BUILD.md sec.8: CSR slicer fast-follow, trim, fan-out policy, CSR-less bucket).

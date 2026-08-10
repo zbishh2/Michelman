@@ -1,0 +1,1196 @@
+// =====================================================================
+// EXECUTIVE DASHBOARD — model logic (measures, calculated columns, calc
+// tables, relationships). The commented master; the shipped bodies live in the
+// PBIP TMDL. Apply via the powerbi-modeling MCP.
+//
+// The .m queries in this folder define the tables; this file defines everything
+// computed on top of them.
+//
+// ⚠ CODE-OF-RECORD GAP: the [Scorecard *] measures, the Scorecard calc table, the
+// Safety/TRIR measures and the OTIF line-grain chain are NOT reproduced here — they
+// exist only in the PBIP TMDL (definition/tables/.Measures.tmdl, Scorecard.tmdl).
+// Read those for the live logic.
+//
+// OTIF IS REVISION-BASED. A shipped line is a MISS if it has >=1 promised-date
+// revision whose reason code is flagged OTIF in the 'Reason Codes' dimension. There
+// is no promised-date-basis choice and no 'Promised Basis' slicer.
+//
+// DISPLAY FOLDERS: five flat folders, one per report tab — Executive Scorecard,
+// Complaints, RTFT, OTIF, Safety. ⚠ No subfolders. A measure bound on one tab goes in
+// that tab's folder; one bound on several goes where it is most at home. Scorecard
+// reach is ignored when placing a measure — only the [Scorecard *] measures live
+// there. The three evidence pages (Population Compare, WO Ledger, WO Parts List) fold
+// into RTFT, since they exist to validate the batch definition that drives it.
+// =====================================================================
+
+
+// ============================ MEASURES ============================
+// (table '.Measures')
+
+MEASURE '.Measures'[Complaints] = DISTINCTCOUNT ( Complaints[CaseNumber] )
+
+MEASURE '.Measures'[Orders] = DISTINCTCOUNT ( Orders[Order Num] )      // format "0"
+
+MEASURE '.Measures'[Clean Order %] =                                  // format 0.0%;-0.0%;0.0%
+    DIVIDE ( [Orders] - [Complaints], [Orders] )
+
+MEASURE '.Measures'[Clean Orders] = [Orders] - [Complaints]           // format "0"
+
+MEASURE '.Measures'[Target Line] = .99
+
+
+// ================================ RTFT — Right First Time ================================
+// The client's own SSAS measure for this is named "Right Time First Batch" (RTFB).
+// That name is traceability only — the model calls it RTFT, one metric, one name.
+//
+// Their formula card, and what it traces to in EDW (source: ssasprod.bim +
+// edw_schema dumps):
+//     Right Time First Batch = 1 - Divide( [Case Count], [WO Count] )
+//   [Case Count] = DISTINCTCOUNT( SF_Case[CaseNumber] ), no RecordType filter
+//        SF_Case <- "Select * From [EDW].BIQL.TbSF_Case" -> EDW.dbo.SF_DimCase
+//   [WO Count]   = DISTINCTCOUNT( 'Work Order Detail'[WorkOrderSKey] )
+//        "Distinct Count [F4801.WADOCO] | Based on Order Date"
+//        -> EDW.dbo.DimWorkOrder -> JDE F4801.WADOCO
+//
+// Our RTFT departs from that port in two places, deliberately: the denominator is
+// [Batches] (the S&OP batch definition) rather than [WO Count], and the numerator
+// isolates the Batch Mfg Issue record type.
+//
+// ⚠ RESIDUAL CAVEAT: there is no case-to-work-order join. Numerator and denominator
+// are two independent counts aligned only by DateTable and Region. Complaints carries
+// LotSKey / Lot_Number__c and WorkOrders carries LotSKey — that Lot hop is the ONLY
+// true batch-level link and is unwired on both sides (SSAS does not wire it either).
+// Wiring it would turn this from a rate-of-two-counts into a real per-batch defect rate.
+//
+// ⚠ REGION: WorkOrders reaches 'Dim Region' through BranchSKey -> BIQL.TbBranch
+// (F0006) -> CompanySKey -> BIQL.TbCompany (F0010) -> [Order Company], then the SAME
+// 10/20/30/34/35 SWITCH that FactSalesDetail[Region] uses. Extend both together.
+
+// Distinct work orders, unscoped — the client's SSAS [WO Count] ported verbatim, a
+// bare DISTINCTCOUNT with no bulk, status or work-centre predicate.
+// ⚠ IT IS NOT A DENOMINATOR. It is bound in three places on the RTFT page as
+// population context only. Do not reconnect it to [RTFT %] — batch scoping belongs in
+// [Batches], where it can be seen and sliced.
+// ⚠ It follows the ACTIVE DateTable relationship, which is
+// WorkOrders[Completion Date (SOP Basis)] — so under a date filter it counts work
+// orders COMPLETED in the period, not opened. That is deliberate: it sits beside
+// [Batches], so completed-vs-completed is like-for-like.
+MEASURE '.Measures'[WO Count] =                                       // format "#,0"
+    VAR _count = DISTINCTCOUNT ( WorkOrders[WorkOrderSKey] )
+    VAR _thisDate = MAX ( DateTable[Date] )
+    VAR _firstSelected = CALCULATE ( MIN ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+    VAR _lastSelected = CALCULATE ( MAX ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+    RETURN
+        IF (
+            NOT ISBLANK ( _thisDate )
+                && _thisDate >= _firstSelected
+                && _thisDate <= _lastSelected,
+            _count + 0
+        )
+
+// The RTFT numerator: distinct Salesforce cases of the Batch Mfg Issue record type.
+// ⚠ THE RECORD-TYPE PREDICATE IS THE MEASURE. Counting every record type gives
+// 26,043 cases across 13 types against this type's 4,343, which would put 2026 RTFT
+// at 38.0% instead of 95.1%. Any note claiming otherwise is wrong.
+// The date-window guard keeps the measure non-blank inside the ALLSELECTED window so
+// a trend chart plots every month in range.
+MEASURE '.Measures'[Batch Mfg Issues] =                               // format "#,0"
+    VAR _count =
+        CALCULATE (
+            DISTINCTCOUNT ( Complaints[CaseNumber] ),
+            Complaints[RecordTypeId] = "012f4000000DyF9AAK"   -- Salesforce RecordType 'Batch Mfg Issue'
+        )
+    VAR _thisDate = MAX ( DateTable[Date] )
+    VAR _firstSelected = CALCULATE ( MIN ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+    VAR _lastSelected = CALCULATE ( MAX ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+    RETURN
+        IF (
+            NOT ISBLANK ( _thisDate )
+                && _thisDate >= _firstSelected
+                && _thisDate <= _lastSelected,
+            _count + 0
+        )
+
+// ---- RTFT, the one measure ----
+// The share of completed batches that drew no quality case. Denominator [Batches],
+// numerator [Batch Mfg Issues].
+//
+// ⚠ THE NUMERATOR IS NOT SCOPED TO BATCHES and cannot be — see the no-join caveat
+// above. This is cases-in-the-period over batches-in-the-period, not cases-per-batch
+// traced through a key.
+//
+// ⚠ WRITE IT AS (batches - cases) / batches, NEVER AS 1 - cases/batches. The two are
+// algebraically identical wherever batches > 0, but they fail differently on an empty
+// period:
+//     1 - DIVIDE ( cases, batches )       batches = 0 -> 1 - BLANK() = 1 -> FALSE 100%
+//     DIVIDE ( batches - cases, batches ) batches = 0 -> numerator blank too -> BLANK
+// The second cannot manufacture a reading out of no data. Do not "simplify" it back.
+//
+// ⚠ THE 50-BATCH FLOOR IS LOAD-BEARING; re-measure before changing it. The
+// denominator lands in three clean groups with nothing between them: 24 (Dec 2023,
+// the truncated boundary month where the batch side is windowed from 2024-01-01 and
+// the case side is not — it plots a junk 25% without the floor), 95 (a month seven
+// days in, reading inside the normal band) and 458-592 (every complete month). A
+// floor of 50 sits in the gap, so it blanks the boundary artefact and the first days
+// of a month and shows the current month from roughly its third day. A change to the
+// batch definition moves that gap.
+// ⚠ IF ( cases > batches, BLANK() ) IS NOT A SUBSTITUTE. It fires only where the
+// answer would already be negative, and on this data it never fires once.
+// ⚠ DO NOT ADD A ZERO CLAMP. Of the three possible renderings — blank, a negative
+// percentage, a plotted 0% — the plotted 0% is the dangerous one, because it is the
+// only one that looks like a plausible business reading. Suppress on the INPUT (the
+// denominator), which is knowably bad, never on the ANSWER.
+// The Executive Scorecard is unaffected by the floor either way: all three
+// [Scorecard Value *] measures window themselves to EOMONTH(TODAY(),-1) and run
+// denominators in the thousands.
+//
+// ⚠ OPEN: does WorkOrderRouting[MaxStatusCodeWorkOrder] lag the F4801 header status?
+// If it does, every recent month is under-counted, not just the current one.
+MEASURE '.Measures'[RTFT %] =                                         // format 0.0%;-0.0%;0.0%
+    VAR _batches = [Batches]
+    VAR _cases = [Batch Mfg Issues]
+    RETURN
+        IF ( _batches >= 50, DIVIDE ( _batches - _cases, _batches ) )
+
+// The DIVIDE term on its own; the client's formula card annotates it "% Wrong First
+// Time". No floor, deliberately — it is a diagnostic, so read it beside [Batches].
+MEASURE '.Measures'[Cases per Batch %] =                              // format 0.0%;-0.0%;0.0%
+    DIVIDE ( [Batch Mfg Issues], [Batches] )
+
+
+// ---- RTFT, order-grain remnants (hidden, kept for sign-off comparison) ----
+// The order-grain original: [Orders] minus [Batch Mfg Issues]. Bound on the RTFT page.
+MEASURE '.Measures'[Orders W/o Batch Issues] =                        // format "0"   HIDDEN
+    [Orders] - [Batch Mfg Issues]
+
+// [Batch Mfg Issues] excluding cases logged as Level_1 = 'Near Miss' (caught before
+// impact, arguably still a right-first-time batch).
+// ⚠ THE NEAR MISS QUESTION IS NOT SETTLED. Near Misses are ~25-30% of Batch Mfg Issue
+// cases, so reinstating the exclusion on top of the current numerator would move RTFT
+// materially. Reopen it with Jessica/Dave rather than treating it as closed.
+MEASURE '.Measures'[Batch Mfg Issues (excl Near Miss)] =              // format "0"   HIDDEN
+    VAR _count =
+        CALCULATE (
+            DISTINCTCOUNT ( Complaints[CaseNumber] ),
+            Complaints[RecordTypeId] = "012f4000000DyF9AAK",
+            Complaints[Level_1] <> "Near Miss"
+        )
+    VAR _thisDate = MAX ( DateTable[Date] )
+    VAR _firstSelected = CALCULATE ( MIN ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+    VAR _lastSelected = CALCULATE ( MAX ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+    RETURN
+        IF (
+            NOT ISBLANK ( _thisDate )
+                && _thisDate >= _firstSelected
+                && _thisDate <= _lastSelected,
+            _count + 0
+        )
+
+
+// ---------------------- Customer OTIF, line grain ----------------------
+// ⚠ THESE ARE NOT IN EITHER SHIPPED PBIP. They are kept here as the definition of
+// record for the customer-facing OTIF cut; the OTIF PBIP ships its own line-grain
+// chain ([Lines In Scope], [Late Lines (reason-filtered)], [Shipped as Promised %
+// (Lines, dynamic)]). Confirm before binding any of them to a visual.
+//
+// ⚠ SCOPE GUARD IS >= DATE(2000,1,1), NOT NOT ISBLANK. JDE stores an empty date as a
+// 1900-01-01 sentinel, so NOT ISBLANK false-counts unshipped lines as in scope.
+// The measures are MECHANICAL — no Order Type / Line Type / company scope is baked
+// in; apply that report-side.
+
+MEASURE '.Measures'[Customer Lines In Scope] =                        // format #,0
+    CALCULATE ( COUNTROWS ( Orders ), Orders[Actual Ship Date] >= DATE ( 2000, 1, 1 ) )
+
+MEASURE '.Measures'[Customer Late Count] =                            // format #,0
+    CALCULATE (
+        COUNTROWS ( Orders ),
+        Orders[Actual Ship Date] >= DATE ( 2000, 1, 1 ),
+        Orders[Relevant Revision Count] > 0
+    )
+
+MEASURE '.Measures'[Customer On Time Count] =                         // format #,0
+    [Customer Lines In Scope] - [Customer Late Count]
+
+MEASURE '.Measures'[Customer In Full Count] =                         // format #,0
+    CALCULATE (
+        COUNTROWS ( Orders ),
+        FILTER (
+            Orders,
+            Orders[Actual Ship Date] >= DATE ( 2000, 1, 1 )
+                && ( Orders[Qty Shipped] + Orders[Qty Cancelled] ) >= Orders[Qty Ordered]
+        )
+    )
+
+MEASURE '.Measures'[Customer OTIF Count] =                            // format #,0
+    CALCULATE (
+        COUNTROWS ( Orders ),
+        FILTER (
+            Orders,
+            Orders[Actual Ship Date] >= DATE ( 2000, 1, 1 )
+                && Orders[Relevant Revision Count] = 0
+                && ( Orders[Qty Shipped] + Orders[Qty Cancelled] ) >= Orders[Qty Ordered]
+        )
+    )
+
+MEASURE '.Measures'[Customer On Time Not In Full Count] =             // format #,0
+    [Customer On Time Count] - [Customer OTIF Count]
+
+MEASURE '.Measures'[Customer OTIF %] =                                // format 0%;-0%;0%
+    DIVIDE ( [Customer OTIF Count], [Customer Lines In Scope] )
+
+MEASURE '.Measures'[Customer OT %] =                                  // format 0%;-0%;0%
+    DIVIDE ( [Customer On Time Count], [Customer Lines In Scope] )
+
+MEASURE '.Measures'[Customer IF %] =                                  // format 0%;-0%;0%
+    DIVIDE ( [Customer In Full Count], [Customer Lines In Scope] )
+
+MEASURE '.Measures'[Customer Late %] =                                // format 0%;-0%;0%
+    DIVIDE ( [Customer Late Count], [Customer Lines In Scope] )
+
+MEASURE '.Measures'[Customer OTNIF %] =                               // format 0%;-0%;0%
+    DIVIDE ( [Customer On Time Not In Full Count], [Customer Lines In Scope] )
+
+/// Avg net days the promised date moved (OTIF-relevant revisions) across all shipped lines.
+MEASURE '.Measures'[Customer Avg Days Off Target] =                   // format #,0.0
+    AVERAGEX (
+        FILTER ( Orders, Orders[Actual Ship Date] >= DATE ( 2000, 1, 1 ) ),
+        Orders[Relevant Net Days Moved]
+    )
+
+/// Avg net days moved across miss lines only.
+MEASURE '.Measures'[Customer Avg Days Late (Late Only)] =             // format #,0.0
+    AVERAGEX (
+        FILTER (
+            Orders,
+            Orders[Actual Ship Date] >= DATE ( 2000, 1, 1 )
+                && Orders[Relevant Revision Count] > 0
+        ),
+        Orders[Relevant Net Days Moved]
+    )
+
+MEASURE '.Measures'[Customer % On or Early] =                         // format 0%;-0%;0%
+    DIVIDE ( [Customer On Time Count], [Customer Lines In Scope] )
+
+MEASURE '.Measures'[Customer % Late 1-3 days] =                       // format 0%;-0%;0%
+    DIVIDE (
+        CALCULATE (
+            COUNTROWS ( Orders ),
+            Orders[Actual Ship Date] >= DATE ( 2000, 1, 1 ),
+            Orders[Relevant Revision Count] > 0,
+            Orders[Relevant Net Days Moved] >= 1,
+            Orders[Relevant Net Days Moved] <= 3
+        ),
+        [Customer Lines In Scope]
+    )
+
+MEASURE '.Measures'[Customer % Late 4-7 days] =                       // format 0%;-0%;0%
+    DIVIDE (
+        CALCULATE (
+            COUNTROWS ( Orders ),
+            Orders[Actual Ship Date] >= DATE ( 2000, 1, 1 ),
+            Orders[Relevant Revision Count] > 0,
+            Orders[Relevant Net Days Moved] >= 4,
+            Orders[Relevant Net Days Moved] <= 7
+        ),
+        [Customer Lines In Scope]
+    )
+
+MEASURE '.Measures'[Customer % Late > 7 days] =                       // format 0%;-0%;0%
+    DIVIDE (
+        CALCULATE (
+            COUNTROWS ( Orders ),
+            Orders[Actual Ship Date] >= DATE ( 2000, 1, 1 ),
+            Orders[Relevant Revision Count] > 0,
+            Orders[Relevant Net Days Moved] > 7
+        ),
+        [Customer Lines In Scope]
+    )
+
+MEASURE '.Measures'[Customer Avg Order to Ship Days] =                // format #,0.0
+    AVERAGEX (
+        FILTER (
+            Orders,
+            Orders[Actual Ship Date] >= DATE ( 2000, 1, 1 )
+                && NOT ISBLANK ( Orders[Order Date] )
+        ),
+        DATEDIFF ( Orders[Order Date], Orders[Actual Ship Date], DAY )
+    )
+
+
+// ===================== CALCULATED COLUMNS =====================
+
+// --- Orders ---
+
+// Orders[Region] — Order Company is zero-padded ("00010"); VALUE strips padding.
+// ⚠ The same SWITCH lives on WorkOrders[Region]. Extend both together.
+COLUMN Orders[Region] =
+    SWITCH (
+        VALUE ( Orders[Order Company] ),
+        10, "Americas",     // confirm
+        20, "Europe",       // confirm
+        30, "Asia",
+        34, "Asia",
+        35, "Asia",
+        "Unmapped"
+    )
+
+COLUMN Orders[Remaining Qty] = Orders[Qty Ordered] - Orders[Qty Shipped]
+
+// Composite key for joining the revision ledger / header rollups.
+COLUMN Orders[OrderKey] =
+    Orders[Order Company] & "|"
+        & FORMAT ( Orders[Order Num], "0" ) & "|"
+        & Orders[Order Type] & "|"
+        & Orders[Order Suffix] & "|"
+        & FORMAT ( Orders[Line Num], "0" )
+
+// --- Orders: revision rollups from FactScheduleChange (via Orders[Order Line ID]) ---
+
+/// Count of ALL promised-date revisions for this line, any reason code.
+COLUMN Orders[Revision Count] =
+    VAR c = COUNTROWS ( RELATEDTABLE ( FactScheduleChange ) )
+    RETURN IF ( ISBLANK ( c ), 0, c )
+
+/// Net signed days the promised date moved across ALL revisions (negative = pulled earlier).
+COLUMN Orders[Net Days Moved] =
+    VAR s = SUMX ( RELATEDTABLE ( FactScheduleChange ), FactScheduleChange[DaysMoved] )
+    RETURN IF ( ISBLANK ( s ), 0, s )
+
+/// Count of OTIF-RELEVANT revisions for this line. >0 => OTIF miss (late). Drives the OTIF measures.
+COLUMN Orders[Relevant Revision Count] =
+    VAR c =
+        COUNTROWS (
+            FILTER ( RELATEDTABLE ( FactScheduleChange ), FactScheduleChange[Is OTIF Relevant] = TRUE () )
+        )
+    RETURN IF ( ISBLANK ( c ), 0, c )
+
+/// Net signed days moved across OTIF-relevant revisions only. Used for days-late buckets.
+COLUMN Orders[Relevant Net Days Moved] =
+    VAR s =
+        SUMX (
+            FILTER ( RELATEDTABLE ( FactScheduleChange ), FactScheduleChange[Is OTIF Relevant] = TRUE () ),
+            FactScheduleChange[DaysMoved]
+        )
+    RETURN IF ( ISBLANK ( s ), 0, s )
+
+// --- FactScheduleChange ---
+
+// Line key back to Orders[Order Line ID] (company,number,type,line/1000).
+COLUMN FactScheduleChange[OrderLineID] =
+    FactScheduleChange[OrderCompany] & ","
+        & FORMAT ( FactScheduleChange[OrderNumber], "0" ) & ","
+        & FactScheduleChange[OrderType] & ","
+        & FORMAT ( FactScheduleChange[LineNumber] / 1000, "0.000" )
+
+/// SINGLE SOURCE OF TRUTH for "is this revision an OTIF miss". Reads the 'Reason
+/// Codes' dimension's [OTIF] column through the RevisionReason -> Code relationship,
+/// and honours user excludes from the Revision Log Editor. [RevisionReason] is the
+/// EFFECTIVE code (override ?? as-reported, folded in FactScheduleChange.m), so
+/// flipping a code's OTIF flag in the Reason Code Editor visual reflows the metric on
+/// the next refresh with no DAX change.
+COLUMN FactScheduleChange[Is OTIF Relevant] =
+    UPPER ( TRIM ( RELATED ( 'Reason Codes'[OTIF] ) ) ) = "X"
+        && NOT FactScheduleChange[Excluded]
+
+// --- Writeback (see writeback/ARCHITECTURE.md) ---
+// M-sourced FactScheduleChange columns (defined in FactScheduleChange.m, not DAX):
+// RevisionKey (the opaque visual join key), RevisionReasonOriginal,
+// RevisionReasonOverride, OverrideNote, Excluded.
+// Table LineComments (LineComments.m): Order Line ID, Comment Count, Latest Comment,
+// Latest Comment By, Latest Comment At.
+
+/// OTIF relevance of the AS-REPORTED reason code, ignoring user overwrites and
+/// excludes. LOOKUPVALUE because the physical relationship rides the effective code.
+COLUMN FactScheduleChange[Is OTIF Relevant (As Reported)] =
+    UPPER (
+        TRIM (
+            LOOKUPVALUE (
+                'Reason Codes'[OTIF],
+                'Reason Codes'[Code], FactScheduleChange[RevisionReasonOriginal]
+            )
+        )
+    ) = "X"
+
+/// As-reported twin of Orders[Relevant Revision Count].
+COLUMN Orders[Relevant Revision Count (As Reported)] =
+    VAR c =
+        COUNTROWS (
+            FILTER ( RELATEDTABLE ( FactScheduleChange ), FactScheduleChange[Is OTIF Relevant (As Reported)] = TRUE () )
+        )
+    RETURN IF ( ISBLANK ( c ), 0, c )
+
+/// As-reported twin of Orders[On Time].
+COLUMN Orders[On Time (As Reported)] =
+    IF (
+        CALCULATE ( COUNTROWS ( FactScheduleChange ), FactScheduleChange[Is OTIF Relevant (As Reported)] = TRUE () ) > 0,
+        0, 1
+    )
+
+// The as-reported MEASURE chain over these columns lives in the OTIF PBIP, not here.
+// It quantifies what user overwrites and excludes changed, which is the point of
+// keeping as-reported truth alongside the override (writeback/ARCHITECTURE.md).
+
+/// Responsible department for OTIF-relevant reason codes (mirrors the dimension's
+/// 'Classif ReviewDec 2024' column). '-' for non-OTIF codes. ⚠ Still a hardcoded
+/// SWITCH — candidate to repoint at RELATED(...[Classif ReviewDec 2024]).
+COLUMN FactScheduleChange[Responsible Dept] =
+    SWITCH (
+        FactScheduleChange[RevisionReason],
+        "C5", "Sales", "C6", "SC", "F1", "R&D", "L1", "SC", "L2", "SC", "LFC", "Sales",
+        "L3", "Procurement", "LIC", "Procurement", "LCM", "Procurement", "L4", "SC",
+        "L5", "Procurement", "LQW", "Operations", "P3", "Operations", "P4", "SC",
+        "P5", "Operations", "P6", "SC", "P7", "Operations", "P8", "Operations", "P9", "SC",
+        "PD1", "Operations", "PD2", "Operations", "PD3", "Operations", "Q1", "Operations",
+        "Q2", "Procurement", "SS", "Operations", "T1", "SC", "T3", "SC", "T4", "SC", "-"
+    )
+
+/// Finer responsibility (old classification: Planning/Inbound/Logistics/Quality/etc).
+/// No dimension equivalent. '-' for non-OTIF codes.
+COLUMN FactScheduleChange[Responsible Detail] =
+    SWITCH (
+        FactScheduleChange[RevisionReason],
+        "C5", "CSR", "C6", "Operations", "F1", "R&D", "L1", "Planning", "L2", "Planning",
+        "LFC", "Sales", "L3", "Inbound", "LIC", "Inbound", "LCM", "Inbound", "L4", "Operations",
+        "L5", "Inbound", "LQW", "Operations", "P3", "Operations", "P4", "Operations",
+        "P5", "Operations", "P6", "Operations", "P7", "Operations", "P8", "Operations",
+        "P9", "Operations", "PD1", "Operations", "PD2", "Operations", "PD3", "Operations",
+        "Q1", "Quality", "Q2", "Inbound", "SS", "Operations", "T1", "Logistics",
+        "T3", "Logistics", "T4", "Logistics", "-"
+    )
+
+// --- Complaints ---
+
+// Complaints[Region Mapped] — SF Region first, Location fallback.
+COLUMN Complaints[Region Mapped] =
+    VAR ByRegion =
+        SWITCH (
+            TRUE (),
+            Complaints[Region] = "Americas", "Americas",
+            Complaints[Region] = "EMEA", "Europe",
+            Complaints[Region] IN { "Asia", "China", "India", "Pacific Rim" }, "Asia",
+            BLANK ()   // Global / (Blank) -> not resolvable, fall through to Location
+        )
+    VAR ByLocation =
+        SWITCH (
+            TRUE (),
+            Complaints[Location] IN { "Kemper", "Shell" }, "Americas",
+            Complaints[Location] IN { "Aubange", "Windhof" }, "Europe",
+            Complaints[Location] = "Singapore", "Asia",
+            BLANK ()   // All Sites / (Blank) -> not resolvable
+        )
+    RETURN
+        COALESCE ( ByRegion, ByLocation, "Unmapped" )
+
+COLUMN Complaints[Target Line] = .99    // format 0%;-0%;0%
+
+
+// --- WorkOrders: the S&OP date ---
+
+// THE LIVE S&OP DATE: the transaction date of the earliest inventory-completion row
+// in the item ledger. The header completion date is mutable — JDE rewrites it as the
+// work order status advances — while a ledger row is an event, written once when
+// material physically hit inventory. It is also the only version of this date that
+// can be PUT ON SCREEN, which is what the client walkthrough needs.
+//
+// ⚠ "> 0" IS NOT DECORATION. ReverseOrVoid is never populated in this data; JDE backs
+// out a mis-keyed completion with a NEGATIVE quantity row instead. Taking the earliest
+// row literally would date a batch from a reversal rather than from production.
+//
+// ⚠ NO CALCULATE, DELIBERATELY. A CALCULATE in a calculated column depends on every
+// column of its own table and goes circular. The MINX/FILTER/ALL shape below is the
+// proven-safe pattern on this table; ALL over a three-column subset rather than the
+// whole table keeps it cheap.
+//
+// BLANK IF THE WORK ORDER HAS NO LEDGER ROW, intentionally — a silent fallback to the
+// header date would hide a real data problem. No batch-eligible work order currently
+// lacks a ledger row. Full picture: edw_model/ItemLedger.m.
+COLUMN WorkOrders[Completion Date (SOP Basis)] =
+    VAR _sk = WorkOrders[WorkOrderSKey]
+    RETURN
+        MINX (
+            FILTER (
+                ALL (
+                    'Item Ledger'[WorkOrderSKey],
+                    'Item Ledger'[Transaction Date],
+                    'Item Ledger'[Qty Transaction]
+                ),
+                'Item Ledger'[WorkOrderSKey] = _sk
+                    && 'Item Ledger'[Qty Transaction] > 0
+            ),
+            'Item Ledger'[Transaction Date]
+        )
+
+// The client's own header rule, ported verbatim from the Instructions tab of
+// "Work Orders - Global Completion Report 2025.xlsm":
+//   "If the JDE Work Order Completion Date is before or the same as the JDE Work
+//    Order Requested Date, the date in this report is the JDE Work Order Completion
+//    Date. Else ... the JDE Work Order Requested Date. Reason is that the Completion
+//    Date changes as the WO status changes from 93 through 99."
+// HIDDEN, and not wired to DateTable. Its only job is to let the Population Compare
+// page show both bases side by side. It is also the axis the client's 2025 workbook
+// sits on, so any tie-out against that workbook has to use it.
+//
+// ⚠ THE ZERO-DATE GUARD IS LOAD-BEARING, not precautionary. A JDE julian 0 does NOT
+// arrive as a blank — it arrives as a 1900 date, and because the rule takes the
+// EARLIER of the two dates, a 1900 requested date always wins. Without the guard, 391
+// COMPLETED work orders resolve to the year 1900 and vanish from any completion-basis
+// chart. Anything before 2000 is treated as absent.
+COLUMN WorkOrders[Completion Date (Header Basis)] =
+    VAR _comp =
+        IF ( WorkOrders[Completion Date] >= DATE ( 2000, 1, 1 ), WorkOrders[Completion Date] )
+    VAR _req =
+        IF ( WorkOrders[Requested Date] >= DATE ( 2000, 1, 1 ), WorkOrders[Requested Date] )
+    RETURN
+        IF (
+            ISBLANK ( _comp ),
+            BLANK (),
+            IF ( ISBLANK ( _req ) || _comp <= _req, _comp, _req )
+        )
+
+
+// ==================== S&OP BATCH DEFINITION ====================
+// THIS IS THE CLIENT'S OWN RULE, not our reconstruction of it. Transcribed from the
+// generated SQL of the Cognos report
+//     Michelman Reporting > Production and Shipping > Production Reports >
+//     Work Order Completion Report - S&OP Process        (query "Summary Report.0")
+// which produces the "Work Orders - Global Completion Report" workbook, which is
+// loaded as work_order_Detail inside the Quality Database PBIX — the file the team
+// actually measures Right Time First Batch against. Chain: Cognos -> workbook ->
+// their PBIX -> the number Bryan quotes.
+//
+// THE CONDITIONS, verbatim from that SQL, and where each lives here:
+//   1. WORK_ORDER_ROUTING.WORK_CENTER IN (<95 centres>)   -> [SOP Flag - Work Centre]
+//      ⚠ NOT IMPLEMENTED AS WRITTEN. Production asks the question the other way
+//      round — is this a JDE-flagged RENAME centre — plus the team's rename rule.
+//      See [SOP Flag - Work Centre] and the RENAME RULE block.
+//   2. WO_2ND_ITEM NOT LIKE '%-%'                         -> [SOP Flag - Item]
+//      AND the item is not a boil-out cleaning code
+//   3. WO_STATUS IN ('93','94','95','97','99')            -> [SOP Flag - WO Status]
+//   4. HAVING avg(QUANTITY_COMPLETED * CONVERSION_FACTOR_KG) > 0
+//                                                        -> [SOP Flag - Completed Qty]
+//   date basis: earliest inventory completion            -> [Completion Date (SOP Basis)]
+//
+// The rules are DESCRIPTIVE FLAG COLUMNS, not step measures, so the definition can be
+// driven from a slicer and the conversation can go anywhere.
+//
+// ⚠ THE BOILOUT EXCLUSION IS LOAD-BEARING. Without it the count runs ~246 work orders
+// high, all at Aubange and Singapore, all routing AIN -> APK -> APKG -> APKR — every
+// one a boil-out or epoxy-boilout CLEANING run. The list in 'SOP Excluded Items' is
+// Jessica's, all 15 codes, and is the client's to maintain; the Cognos SQL happens to
+// name only three of them. Only 6 of the 15 appear in EDW today; the rest are carried
+// so the list stays verbatim and survives new codes.
+// ⚠ Match the list EXACTLY, never LIKE '%BOIL%' — the point of a maintained list is
+// that membership is a decision somebody made, not a string accident.
+//
+// ⚠ DO NOT ADD the Master Planning Family exclusions (RRC/H2O/PKG/RAW/REC/RCB/RBW) or
+// Stock Type <> 'O'. Those belong to a DIFFERENT Cognos query feeding a different
+// sheet; applied here they lose work orders that ARE in the workbook.
+//
+// KNOWN RESIDUAL: a handful of work orders in the client's workbook have no routing
+// operation at any listed work centre in BIQL.TbWorkOrderRouting_Routing — they route
+// only through intake / packaging / *RENAME centres. Cognos's own WHERE should drop
+// them too, so this is a difference between DW_LEGACY.WORK_ORDER_ROUTING and our BIQL
+// view, not a rule we are missing. ~0.05%: document it, don't chase it.
+
+// The 95 production work centres from the Cognos IN clause, held as a table so they
+// can be sliced and diffed against a future export.
+// ⚠ RETIRED AND HIDDEN. Nothing references it; [SOP Flag - Work Centre] now reads
+// JDE's own [Bulk Production Work Center] flag instead, so the hand maintenance this
+// table required is gone. Do not add centres to it — it drives nothing. It is kept
+// only so a future Cognos export can be diffed against it.
+TABLE 'SOP Work Centres' =
+    SELECTCOLUMNS (
+        { "SPREC", "SPREC10", "SREC23", "SREC37", "SREC48", "SREC72", "SREC130",
+          "AREC10", "AREC18", "AREC24", "APREC",
+          "MREC1", "MREC2", "MREC3", "MREC34", "MREC35", "MREC36", "MPREC",
+          "MPEC", "MTK7", "APEC", "MECG", "SPEC", "AECG", "SECG", "SE2",
+          "KREPACK", "MCOLD", "MCOLD2", "ACOLD", "SCOLD", "SPCOLD", "SAM",
+          "KBB", "KSB", "KWG", "AT9", "APCU", "SDMD", "SPDMD", "ABT05",
+          "AK19", "ADOW", "ACOW",
+          "SE2K59", "SE2K29", "SEC36", "SEC30", "SCOW", "SE2T60", "SEC46",
+          "SMILLT61", "SHEC2", "SHEC31", "SHEC32", "SHEC35", "SHEC98",
+          "KBB1", "KBB3", "KBB4", "KBB6", "KBB10", "KBB17", "KBB19", "KBB20",
+          "KBB28", "KBB50", "KBB52", "KBB53", "KBB55", "KBB76", "KBB77",
+          "KBB78", "KBB88", "KBB89", "KBB90", "KBB92", "KBB93", "KBB126",
+          "KBB127", "KBB129",
+          "KPORT1", "KPORT2", "KSB49", "KSB57", "KSB99", "KSBRT",
+          "KWG21", "KWG22", "KWG34", "KWG44", "KWG51", "KWG84",
+          "KAUGER", "SDPTOTE" },
+        "Work Center", [Value]
+    )
+
+// The work-centre test, asked as a DENY-list: is this work order at a RENAME centre?
+// It reads JDE's own [Bulk Production Work Center] = "RNM", set on exactly four
+// centres (ARENAME, KRENAME, MRENAME, SRENAME) and maintained in JDE by the people
+// who create the work centre.
+//
+// ⚠ THE POLARITY IS THE POINT. An allow-list of production centres fails silently
+// when a plant commissions a new one — it stops being counted until somebody notices
+// and edits the list. A deny-list fails the other way: a new rename centre gets
+// counted, which is both rarer and self-correcting, because JDE flags the centre at
+// creation.
+//
+// "No routing" FAILS, deliberately. Absence of routing is not evidence of production.
+COLUMN WorkOrders[SOP Flag - Work Centre] =
+    VAR _wo = WorkOrders[WorkOrderSKey]
+    VAR _ops =
+        COUNTROWS (
+            FILTER (
+                ALL (
+                    WorkOrderRouting[WorkOrderSKey],
+                    WorkOrderRouting[Bulk Production Work Center]
+                ),
+                WorkOrderRouting[WorkOrderSKey] = _wo
+            )
+        )
+    VAR _rename =
+        COUNTROWS (
+            FILTER (
+                ALL (
+                    WorkOrderRouting[WorkOrderSKey],
+                    WorkOrderRouting[Bulk Production Work Center]
+                ),
+                WorkOrderRouting[WorkOrderSKey] = _wo
+                    && WorkOrderRouting[Bulk Production Work Center] = "RNM"
+            )
+        )
+    RETURN
+        SWITCH (
+            TRUE (),
+            ISBLANK ( _ops ), "No routing",
+            _rename > 0, "Rename work centre",
+            "Production work centre"
+        )
+
+// The item test: bulk items carry no hyphen, and boil-out cleaning codes never count.
+COLUMN WorkOrders[SOP Flag - Item] =
+    SWITCH (
+        TRUE (),
+        ISBLANK ( WorkOrders[Item Num] ), "Unknown item",
+        WorkOrders[Item Num] IN ALL ( 'SOP Excluded Items'[Item Num] ), "Boilout (excluded)",
+        CONTAINSSTRING ( WorkOrders[Item Num], "-" ), "Packed (hyphen)",
+        "Bulk (no hyphen)"
+    )
+
+// ⚠ 93/94 are IN and 96/98 are OUT. That is the client's set, and it is NOT a range.
+// Do not tidy it into a BETWEEN.
+COLUMN WorkOrders[SOP Flag - WO Status] =
+    SWITCH (
+        TRUE (),
+        ISBLANK ( WorkOrders[WO Status] ), "No status",
+        WorkOrders[WO Status] IN { "93", "94", "95", "97", "99" }, "S&OP reported status",
+        "Other status (" & WorkOrders[WO Status] & ")"
+    )
+
+// The report's HAVING clause: did the work order actually produce anything?
+// ⚠ [QuantityShipped] IS the completed quantity (F4801.WASOQS). [QuantityOrdered] is
+// NOT — it agrees on barely half the population.
+COLUMN WorkOrders[SOP Flag - Completed Qty] =
+    SWITCH (
+        TRUE (),
+        ISBLANK ( WorkOrders[QuantityShipped] ), "No quantity",
+        WorkOrders[QuantityShipped] > 0, "Completed > 0",
+        "Nothing completed"
+    )
+
+// THE DEFINITION OF RECORD — five conditions in one place, so the whole batch
+// definition reads from a single click. [Batches] reads ONLY this column.
+//
+// ⚠ THE TWO RENAME TESTS ARE NOT REDUNDANT AND MUST BOTH STAY. RNM is what the
+// operation was SET UP as; the parts rule is what was actually CONSUMED. They
+// disagree on ~2,200 work orders in both directions, so dropping either changes the
+// count. The parts rule alone misses REPACKS — a repack issues bulk plus drums and
+// labels, so 2+ pairs, so it reads as production; the work-centre test catches those.
+//
+// The two rename tests are referenced as columns rather than inlined, because each
+// needs a row-by-row aggregation over another table and inlining would run the same
+// expensive scan twice. ⚠ The three cheap tests (item, status, quantity) ARE inlined,
+// so change a rule here and change the matching [SOP Flag - ...] column too, or the
+// diagnostics will quietly disagree with the count they are meant to explain.
+//
+// ⚠ THE BLANK-ITEM GUARD IS LOAD-BEARING: CONTAINSSTRING ( BLANK(), "-" ) is FALSE,
+// so without it an unknown item number passes the hyphen test and counts as a batch.
+COLUMN WorkOrders[SOP Flag - Counts As Batch] =
+        IF (
+            -- 1. not a rename: the parts list collapses to 2+ issued (item, lot) pairs
+            WorkOrders[SOP Flag - Rename (Parts)] = "Not a rename"
+                -- 2. and not routed through a JDE rename work centre (catches repacks)
+                && WorkOrders[SOP Flag - Work Centre] = "Production work centre"
+                -- 3. item test: WO_2ND_ITEM NOT LIKE '%-%', and not a boil-out cleaning run
+                && NOT ISBLANK ( WorkOrders[Item Num] )
+                && NOT CONTAINSSTRING ( WorkOrders[Item Num], "-" )
+                && NOT ( WorkOrders[Item Num] IN ALL ( 'SOP Excluded Items'[Item Num] ) )
+                -- 4. WO_STATUS IN ('93','94','95','97','99')  -- 96 and 98 are NOT in the set
+                && WorkOrders[WO Status] IN { "93", "94", "95", "97", "99" }
+                -- 5. the report's HAVING clause: it actually produced something
+                && WorkOrders[QuantityShipped] > 0,
+            "Batch",
+            "Not a batch"
+        )
+
+// ==================== RENAME RULE (the team's own rule) ====================
+// Collapse a work order's F3111 parts list to distinct (component item, lot) pairs
+// that carry an issued quantity, and count them:
+//     1 pair  -> RENAME. One thing in, one thing out under a different item number.
+//     2+      -> a real batch.
+// Issuing the same item twice from the same lot still collapses to one pair, so it is
+// still a rename; issuing it from a second lot makes two pairs, so it counts.
+//
+// The team specified this to stop maintaining the 95-entry allow-list by hand, and
+// they own the definition.
+//
+// ⚠ READ THIS BEFORE "SIMPLIFYING". Scored against the client's own 2025 workbook
+// population (6,097 distinct work orders), ledger basis, match / false pos / miss:
+//     A  parts rename only                  6,041 / 213 / 42
+//     B  95-entry allow-list (RETIRED)      6,077 /  18 /  6
+//     C  inverted work centre: not RNM      6,074 /  71 /  9
+//     D  A AND C                <- SHIPPED  6,040 /  70 / 43
+// C ALONE BEATS THE SHIPPED D ON EVERY AXIS. The parts rule contributes essentially
+// nothing on top of the work-centre inversion and costs 34 real batches. It is in the
+// definition because the TEAM SPECIFIED IT, not because the evidence asked for it.
+// Do not quietly drop it; raise it. B's advantage was that its exclusions were
+// decisions somebody made; D's is that nobody has to keep making them — that is the
+// trade the team accepted.
+//
+// ⚠ NO CALCULATE, and GROUPBY not SUMMARIZE. CALCULATE in a calculated column depends
+// on every column of its own table and goes circular. GROUPBY with CURRENTGROUP
+// aggregates over a plain table expression with no context transition, so it is safe
+// here where SUMMARIZE's extension columns would not be.
+//
+// ⚠ [Unique Key ID] IS IN THE ALL() ON PURPOSE. Without it, rows identical across
+// (SKey, item, lot, qty) collapse before the SUM, and a work order with two matching
+// positive issues plus a reversal could flip its verdict.
+COLUMN WorkOrders[SOP Flag - Rename (Parts)] =
+    VAR _sk = WorkOrders[WorkOrderSKey]
+    VAR _rows =
+        FILTER (
+            ALL (
+                'WO Parts List'[WorkOrderSKey],
+                'WO Parts List'[Unique Key ID],
+                'WO Parts List'[Component Item],
+                'WO Parts List'[Lot Num],
+                'WO Parts List'[Qty Issued]
+            ),
+            'WO Parts List'[WorkOrderSKey] = _sk
+        )
+    VAR _pairs =
+        COUNTROWS (
+            FILTER (
+                GROUPBY (
+                    _rows,
+                    'WO Parts List'[Component Item],
+                    'WO Parts List'[Lot Num],
+                    "@Issued", SUMX ( CURRENTGROUP (), 'WO Parts List'[Qty Issued] )
+                ),
+                [@Issued] > 0
+            )
+        )
+    RETURN
+        SWITCH (
+            TRUE (),
+            ISBLANK ( _pairs ) || _pairs = 0, "No components issued",
+            _pairs = 1, "Rename",
+            "Not a rename"
+        )
+
+// The item codes that never count as a batch. A maintained list, held as a table for
+// the same reason 'SOP Work Centres' is: membership is a decision somebody made and
+// will make again, so it should be sliceable and diffable rather than buried in two
+// expressions.
+TABLE 'SOP Excluded Items' =
+    SELECTCOLUMNS (
+        {
+            "BOILOUT", "BOILOUT.E", "BOILOUT286", "BOILOUTC.E", "BOILOUTC",
+            "BOILOUT286.E", "BOILEPOX", "BOILEPOX.E", "ECBOILOUT", "BOILOUT.S",
+            "SBOILOUT.S", "BOILOUTA", "BOILOUTA.E", "BOILOUTH.E", "ECBOILOUT.S"
+        },
+        "Item Num", [Value]
+    )
+
+// ⚠ BLANK ON PURPOSE. A table visual drops rows where every measure is blank, so in
+// the Collapsed grid on the WO Parts List page this leaves exactly the lines the
+// rename rule counts — the visual IS the rule, rather than a restatement of it.
+MEASURE '.Measures'[Issued Qty] =
+    VAR _q = SUM ( 'WO Parts List'[Qty Issued] )
+    RETURN
+        IF ( _q > 0, _q )
+
+// ⚠ COALESCE TO 0, NOT BLANK — the opposite of [Issued Qty], for the same reason read
+// backwards. This one sits in the work-order HEADER grid, where a blank would prune
+// every work order that issued nothing, including the 155 with no parts list at all,
+// which are precisely the rows someone would want to interrogate.
+MEASURE '.Measures'[Counted Component Lines] =
+    COALESCE (
+        COUNTROWS (
+            FILTER (
+                SUMMARIZE (
+                    'WO Parts List',
+                    'WO Parts List'[Component Item],
+                    'WO Parts List'[Lot Num]
+                ),
+                CALCULATE ( SUM ( 'WO Parts List'[Qty Issued] ) ) > 0
+            )
+        ),
+        0
+    )
+
+// The batch count: distinct work orders passing the whole S&OP definition.
+// ⚠ The client's own tile reads slightly HIGHER than this, because it is a COUNTA
+// over workbook ROWS and the workbook is one row per work order PER WORK CENTRE;
+// their 'Duplicate Work Order Catch' page filter removes most of the duplication but
+// not all. This is an honest DISTINCTCOUNT. Explain the difference — do not close it
+// by counting rows.
+MEASURE '.Measures'[Batches] =                               // format "#,0"
+    VAR _count =
+        CALCULATE (
+            DISTINCTCOUNT ( WorkOrders[WorkOrderSKey] ),
+            WorkOrders[SOP Flag - Counts As Batch] = "Batch"
+        )
+    VAR _thisDate = MAX ( DateTable[Date] )
+    VAR _firstSelected = CALCULATE ( MIN ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+    VAR _lastSelected = CALCULATE ( MAX ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+    RETURN
+        IF (
+            NOT ISBLANK ( _thisDate )
+                && _thisDate >= _firstSelected
+                && _thisDate <= _lastSelected,
+            _count + 0
+        )
+
+
+// ===================== CALCULATED TABLES =====================
+
+// Region dim (relates 1->* to Orders[Region] and Complaints[Region Mapped]).
+TABLE Region =
+    DATATABLE (
+        "Region", STRING,
+        { { "Americas" }, { "Europe" }, { "Asia" }, { "Unmapped" } }
+    )
+
+// Date dimension spanning both facts. Mark as date table; sort Month by Month No.
+TABLE DateTable =
+    VAR MinDate = MIN ( MINX ( Orders, Orders[GL Date] ), MINX ( Complaints, Complaints[Date_of_Occurrence] ) )
+    VAR MaxDate = MAX ( MAXX ( Orders, Orders[GL Date] ), MAXX ( Complaints, Complaints[Date_of_Occurrence] ) )
+    RETURN
+        ADDCOLUMNS (
+            CALENDAR ( DATE ( YEAR ( MinDate ), 1, 1 ), DATE ( YEAR ( MaxDate ), 12, 31 ) ),
+            "Year", YEAR ( [Date] ),
+            "Month No", MONTH ( [Date] ),
+            "Month", FORMAT ( [Date], "mmm" ),
+            "Year-Month", FORMAT ( [Date], "yyyy-MM" ),
+            "Quarter", "Q" & FORMAT ( [Date], "Q" ),
+            "Year-Quarter", FORMAT ( [Date], "yyyy" ) & " Q" & FORMAT ( [Date], "Q" )
+        )
+
+// Relative-period helper (WTD/MTD/QTD/YTD/rolling windows). Relates to DateTable
+// (bidirectional). Filter on [Type] in a slicer; [Valid*] gate by grain.
+TABLE DatePeriods =
+    VAR __Today = TODAY ()
+    VAR __MonStart = __Today - WEEKDAY ( __Today, 2 ) + 1
+    VAR __MTDStart = DATE ( YEAR ( __Today ), MONTH ( __Today ), 1 )
+    VAR __QTDStart = DATE ( YEAR ( __Today ), INT ( ( MONTH ( __Today ) - 1 ) / 3 ) * 3 + 1, 1 )
+    VAR __YTDStart = DATE ( YEAR ( __Today ), 1, 1 )
+    VAR __L6M = EDATE ( __Today, -5 )
+    VAR __L6MStart = DATE ( YEAR ( __L6M ), MONTH ( __L6M ), 1 )
+    VAR __L12M = EDATE ( __Today, -11 )
+    VAR __L12MStart = DATE ( YEAR ( __L12M ), MONTH ( __L12M ), 1 )
+    VAR __LastYearStart = DATE ( YEAR ( __Today ) - 1, 1, 1 )
+    VAR __LastYearEnd = DATE ( YEAR ( __Today ) - 1, 12, 31 )
+    RETURN
+        UNION (
+            ADDCOLUMNS ( CALENDAR ( __MonStart, __Today ),            "Type", "WTD",                   "Sort", 1,  "ValidDaily", 1, "ValidWeekly", 0, "ValidMonthly", 0 ),
+            ADDCOLUMNS ( CALENDAR ( __Today - 9, __Today ),           "Type", "Last 10 Calendar Days", "Sort", 2,  "ValidDaily", 1, "ValidWeekly", 0, "ValidMonthly", 0 ),
+            ADDCOLUMNS ( CALENDAR ( __Today - 29, __Today ),          "Type", "Last 30 Days",          "Sort", 3,  "ValidDaily", 1, "ValidWeekly", 0, "ValidMonthly", 0 ),
+            ADDCOLUMNS ( CALENDAR ( __MTDStart, __Today ),            "Type", "MTD",                   "Sort", 4,  "ValidDaily", 1, "ValidWeekly", 0, "ValidMonthly", 0 ),
+            ADDCOLUMNS ( CALENDAR ( __Today - 90, __Today ),          "Type", "Last 13 Weeks",         "Sort", 5,  "ValidDaily", 0, "ValidWeekly", 1, "ValidMonthly", 0 ),
+            ADDCOLUMNS ( CALENDAR ( __QTDStart, __Today ),            "Type", "QTD",                   "Sort", 6,  "ValidDaily", 0, "ValidWeekly", 1, "ValidMonthly", 0 ),
+            ADDCOLUMNS ( CALENDAR ( __Today - 181, __Today ),         "Type", "Last 26 Weeks",         "Sort", 7,  "ValidDaily", 0, "ValidWeekly", 1, "ValidMonthly", 0 ),
+            ADDCOLUMNS ( CALENDAR ( __YTDStart, __Today ),            "Type", "YTD",                   "Sort", 8,  "ValidDaily", 1, "ValidWeekly", 1, "ValidMonthly", 1 ),
+            ADDCOLUMNS ( CALENDAR ( __L6MStart, __Today ),            "Type", "Last 6 Months",         "Sort", 9,  "ValidDaily", 0, "ValidWeekly", 0, "ValidMonthly", 1 ),
+            ADDCOLUMNS ( CALENDAR ( __L12MStart, __Today ),           "Type", "Last 12 Months",        "Sort", 10, "ValidDaily", 0, "ValidWeekly", 0, "ValidMonthly", 1 ),
+            ADDCOLUMNS ( CALENDAR ( __LastYearStart, __LastYearEnd ), "Type", "Last Year",             "Sort", 11, "ValidDaily", 0, "ValidWeekly", 0, "ValidMonthly", 1 ),
+            ADDCOLUMNS ( CALENDAR ( MIN ( DateTable[Date] ), MAX ( DateTable[Date] ) ), "Type", "All Time", "Sort", 12, "ValidDaily", 0, "ValidWeekly", 0, "ValidMonthly", 1 )
+        )
+
+
+// ===================== BATCH TIE-OUT =====================
+// Proves the batch population against the number the business measures to today, on
+// the page rather than in a deck, and lets anyone click a month and see the specific
+// work orders the old process drops. Ships as a hidden page in the Executive
+// Dashboard.
+//
+// The comparison population is 'Quality Database WOs' — a FROZEN extract of
+// work_order_Detail from the client's own Quality Database PBIX, 2024 onward, held as
+// a file under PowerBI Projects/_Tie Out/ rather than read from the share. Query:
+// edw_model/QualityDatabaseWorkOrders.m; table file generated by
+// edw_model/gen_quality_database_table.py — edit the generator, not the TMDL. The .m
+// resolves its path across user profiles and returns an empty table of the right
+// shape if it finds nothing, so a missing evidence file leaves the page blank instead
+// of failing a production refresh. ⚠ A blank page after a refresh means the path did
+// not resolve — check it there first.
+//
+// WHERE THE TWO SIDES DIFFER, and why neither is chasing the other:
+//   * OURS ONLY. Their denominator is a hand-maintained workbook drop, and nothing
+//     goes back to add a work order that completed after that month's drop was taken.
+//     Most of these completed in the FOLLOWING calendar month, the rest on the last
+//     days of their own. That is why the monthly gap tracks nothing structural.
+//   * THEIRS ONLY. A few are dated to the prior month by their sheet while JDE has
+//     them requested and completed in the next; the rest are attributed to a reactor
+//     that does not appear in the JDE routing at all — those work orders carry only
+//     pack/rename operations. Reads as routings rewritten in JDE after their extract.
+//   * ⚠ THE SHEET DOUBLE-COUNTS. Some rows repeat a work order their own
+//     [Duplicate Work Order Catch] column passed as OK, and some work orders are
+//     counted in TWO DIFFERENT months — the mirror image of the ours-only case:
+//     caught in one drop, then caught again by the next.
+//
+// DATE BASIS, CONFIRMED FROM THEIR SIDE: their sheet month agrees with our
+// [Completion Date (SOP Basis)] on 99.68% of matched work orders, against 94.86% for
+// completion-date-only.
+//
+// ⚠ THIS WHOLE SET IS FRAGILE TO A JUMPBOX SAVE. Desktop saving serialises the entire
+// SemanticModel from its own state over the top, including table files it never
+// touched — the tie-out objects were wiped that way once, and only the generators
+// survived. edw_model/apply_tieout.py reapplies all of the below idempotently. Run it
+// after any jumpbox save that lands before these have been refreshed in.
+// DESKTOP MUST BE CLOSED FIRST.
+
+// --- calculated columns on 'Quality Database WOs' -------------------------------------
+// ⚠⚠ NO CALCULATED COLUMN ANYWHERE IN THIS FEATURE MAY USE CALCULATE. A calculated
+// column that uses CALCULATE takes a dependency on EVERY column of its own table, so
+// two such columns depend on each other whether or not they mention each other, and
+// the model fails to OPEN:
+//     "A circular dependency was detected: Quality Database WOs[Difference Reason],
+//      Quality Database WOs[Tie-Out Status], Quality Database WOs[Difference Reason]"
+// "Self-contained" buys nothing. The rule that holds is: none at all.
+//
+// Replacements, all of which depend on exactly the columns they name:
+//     row counts within this table   FILTER over ALL(<named columns>)
+//     lookups to WorkOrders          LOOKUPVALUE (no relationship, no context transition)
+//     min/max over a column          MINX / MAXX over ALL(<one column>)
+//
+// ⚠ ALL over several columns returns DISTINCT COMBINATIONS, which silently collapses
+// genuine repeats. Fine where only existence is asked; fatal where a count is needed —
+// which is the entire point of the duplicate story. [Sheet Row], a plain ordinal added
+// to the extract, is what keeps the count honest.
+
+COLUMN 'Quality Database WOs'[Sheet Rows For This WO] =
+    VAR _wo = 'Quality Database WOs'[WO Number]
+    RETURN
+        COUNTROWS (
+            FILTER (
+                ALL (
+                    'Quality Database WOs'[WO Number],
+                    'Quality Database WOs'[Duplicate Work Order Catch],
+                    'Quality Database WOs'[Sheet Row]
+                ),
+                'Quality Database WOs'[WO Number] = _wo
+                    && 'Quality Database WOs'[Duplicate Work Order Catch] = "OK"
+            )
+        )
+
+COLUMN 'Quality Database WOs'[EDW Batch Flag] =
+    LOOKUPVALUE (
+        WorkOrders[SOP Flag - Counts As Batch],
+        WorkOrders[WorkOrderNum], 'Quality Database WOs'[WO Number]
+    )
+
+COLUMN 'Quality Database WOs'[EDW S&OP Month] =
+    VAR _d =
+        LOOKUPVALUE (
+            WorkOrders[Completion Date (SOP Basis)],
+            WorkOrders[WorkOrderNum], 'Quality Database WOs'[WO Number]
+        )
+    RETURN
+        IF ( NOT ISBLANK ( _d ), DATE ( YEAR ( _d ), MONTH ( _d ), 1 ) )
+
+// The classification. Order matters: their own duplicate filter first, then repeats
+// their filter missed, then existence, then the batch test, then the month.
+COLUMN 'Quality Database WOs'[Tie-Out Status] =        // see apply_tieout.py for the body
+// The same branches, as prose, with a branch per rename test so a work order excluded
+// by either says so in words rather than falling through to "Excluded by the batch
+// definition". ⚠ THIS ONE LIVES ONLY IN THE TMDL — apply_tieout.py does not write it.
+COLUMN 'Quality Database WOs'[Difference Reason] =
+
+// --- WHY THE WORKORDERS SIDE IS MEASURES, NOT COLUMNS ---------------------------------
+// ⚠⚠ THE DEPENDENCY MUST RUN ONE WAY ONLY: sheet -> WorkOrders, never back.
+// [EDW S&OP Month] is a bare LOOKUPVALUE into WorkOrders. It goes circular the moment
+// WorkOrders ALSO carries a calculated column reading the sheet table, because DAX
+// resolves cross-table calculated-column dependencies AT TABLE GRANULARITY:
+// sheet -> WorkOrders -> sheet. No amount of care inside the individual expressions
+// can fix that; the loop is between the TABLES, not the columns.
+//
+// So the WorkOrders-side classification is MEASURES. Measures are evaluated at query
+// time and take no part in the calculated-column dependency graph, so they may use
+// CALCULATE freely and may read either table. [S&OP Month] survives as a column
+// because it reads only WorkOrders.
+// ⚠ DO NOT add a calculated column to WorkOrders that mentions 'Quality Database WOs'.
+// apply_tieout.py asserts this and will refuse to run.
+//
+// ⚠⚠ AND THE SHEET -> WorkOrders RELATIONSHIP MUST BE SINGLE-DIRECTION.
+// Removing the WorkOrders-side columns is necessary but NOT sufficient: a
+// 'crossFilteringBehavior: bothDirections' edge makes each table's filter context
+// depend on the other, so the table-granularity analyser closes the loop by itself and
+// the model still refuses to open with the identical message — which names only sheet
+// columns, so it reads as a same-table problem and sends you hunting in the wrong file.
+//
+// GENERAL RULE: a bidirectional relationship and a calculated column that reads across
+// it cannot coexist. Pick one. Here the columns win, because the whole point of the
+// page is clicking and slicing by [Tie-Out Status]. Nothing is lost: every reason the
+// sheet side needs is already a column ON the sheet table, and the ours-only drops are
+// answered by [Tie-Out - Drop Reason] on the WorkOrders side. Filter still flows
+// WorkOrders -> sheet (one -> many), which is the direction the drops story needs.
+//
+// ⚠ TMDL FOLDER LINT IS NOT A GATE FOR THIS CLASS OF FAULT. ConnectFolder loads the
+// model happily while it is unopenable. Only actually opening Desktop proves it.
+//
+// The set-based measures below express what those columns did:
+//     _batches   the S&OP batches inside the months the sheet covers
+//     _sheet     the work orders the sheet counts, aligned to WorkOrders[WorkOrderNum]
+//                with TREATAS so INTERSECT / EXCEPT can operate on them
+//     matched    INTERSECT      dropped    EXCEPT
+// ⚠ The sheet's LAST month is excluded from _batches on purpose: it is still being
+// filled in, and including it would report that whole month as dropped.
+//
+// [Tie-Out - Drop Reason] returns BLANK for anything that is not a dropped batch,
+// which is what prunes the detail grid to exactly those rows — SUMMARIZECOLUMNS drops
+// rows where every measure is blank. Same mechanism documented in ARCHITECTURE.md for
+// the comment grids, used deliberately here.
+
+// --- calculated columns on WorkOrders --------------------------------------------------
+// ⚠ [SOP Flag - Work Centre] AND [SOP Flag - Counts As Batch] MUST STAY OFF CALCULATE.
+// A CALCULATE ( COUNTROWS ( WorkOrderRouting ), TREATAS ( ... ) ) shape depends on
+// every column of WorkOrders, which means [Tie-Out Status] — which must read
+// [SOP Flag - Counts As Batch] — cannot exist alongside it. The alternative is
+// restating the batch definition inline in two more columns, i.e. three places to keep
+// in step. ⚠ If either flag is ever touched, re-run the annual batch counts before and
+// after: three lines of DAX, and the only thing standing between a refactor and a
+// silently moved KPI.
+
+COLUMN WorkOrders[S&OP Month] =
+    VAR _d = WorkOrders[Completion Date (SOP Basis)]
+    RETURN
+        IF ( NOT ISBLANK ( _d ), DATE ( YEAR ( _d ), MONTH ( _d ), 1 ) )
+
+COLUMN WorkOrders[Tie-Out Status] =                    // see apply_tieout.py for the body
+COLUMN WorkOrders[Tie-Out Reason] =                    // ditto
+// ⚠ Both guard the sheet's coverage window before declaring anything dropped: months
+// before the sheet begins are "Before their sheet begins", and the sheet's LAST month
+// is "Their sheet is not updated this far" rather than a mass of false drops.
+
+// --- measures, display folder RTFT -----------------------------------------------------
+// ⚠ THESE DELIBERATELY DO NOT REUSE [Batches]. That measure blanks outside the
+// selected range, which is right for the RTFT page and wrong for a reconciliation,
+// where both sides must be counted on their own recorded months with nothing
+// suppressed. They scope themselves with 'Quality Database WOs'[EDW S&OP Month] /
+// WorkOrders[S&OP Month] as COLUMN predicates, which also makes them independent of
+// whichever date relationship is active.
+MEASURE '.Measures'[Tie-Out - Sheet Batches] =
+    CALCULATE ( COUNTROWS ( 'Quality Database WOs' ),
+                'Quality Database WOs'[Duplicate Work Order Catch] = "OK" )
+MEASURE '.Measures'[Tie-Out - Sheet Work Orders] =
+    CALCULATE ( DISTINCTCOUNT ( 'Quality Database WOs'[WO Number] ),
+                'Quality Database WOs'[Duplicate Work Order Catch] = "OK" )
+MEASURE '.Measures'[Tie-Out - Double Counted] =
+    [Tie-Out - Sheet Batches] - [Tie-Out - Sheet Work Orders]
+MEASURE '.Measures'[Tie-Out - Sheet Rows] = COUNTROWS ( 'Quality Database WOs' )
+MEASURE '.Measures'[Tie-Out - EDW Batches] =
+    CALCULATE ( DISTINCTCOUNT ( WorkOrders[WorkOrderSKey] ),
+                WorkOrders[SOP Flag - Counts As Batch] = "Batch",
+                WorkOrders[Tie-Out Status] IN { "Matched", "Dropped by the old process" } )
+MEASURE '.Measures'[Tie-Out - EDW Work Orders] = DISTINCTCOUNT ( WorkOrders[WorkOrderSKey] )
+MEASURE '.Measures'[Tie-Out - Matched] =
+    CALCULATE ( DISTINCTCOUNT ( WorkOrders[WorkOrderSKey] ),
+                WorkOrders[Tie-Out Status] = "Matched" )
+MEASURE '.Measures'[Tie-Out - Dropped By Old Process] =
+    CALCULATE ( DISTINCTCOUNT ( WorkOrders[WorkOrderSKey] ),
+                WorkOrders[Tie-Out Status] = "Dropped by the old process" )
+MEASURE '.Measures'[Tie-Out - Only On Their Sheet] =
+    CALCULATE ( DISTINCTCOUNT ( 'Quality Database WOs'[WO Number] ),
+                'Quality Database WOs'[Tie-Out Status] IN {
+                    "Work order not in EDW", "In EDW but not an S&OP batch",
+                    "Counted in a different month" } )
+MEASURE '.Measures'[Tie-Out - Agreement %] =
+    DIVIDE ( [Tie-Out - Matched], [Tie-Out - Sheet Work Orders] )
+
+
+// =====================================================================================
+// POPULATION COMPARE PAGE
+// =====================================================================================
+// A deliberately plain page for walking the team through the two populations side by
+// side: EDW on top, the Quality Database sheet below, and the rows only one side
+// counts underneath. No reason prose, no explainer columns — just Match / Not Match.
+// The narrative version lives on the Batch Tie-Out page; this one is for the meeting.
+//
+// ⚠ Both grids are scoped to the SAME window: the months the sheet covers, EXCLUDING
+// its newest month, which is still being filled in. Without that exclusion a
+// part-filled month reads as a wall of false differences. The cards reuse the
+// [Tie-Out - *] measures so the counts and the grids cannot disagree.
+
+// --- the sheet side -------------------------------------------------------------------
+COLUMN 'Quality Database WOs'[In Compare Window] =
+    VAR _last =
+        MAXX ( ALL ( 'Quality Database WOs'[Sheet Month Start] ), 'Quality Database WOs'[Sheet Month Start] )
+    RETURN
+        IF ( 'Quality Database WOs'[Sheet Month Start] < _last, "Yes", "No" )
+
+COLUMN 'Quality Database WOs'[Match] =
+    IF ( 'Quality Database WOs'[Tie-Out Status] = "Matched", "Match", "Not Match" )
+
+// --- the EDW side ---------------------------------------------------------------------
+// ⚠ A MEASURE, NOT A COLUMN, AND IT CANNOT BECOME ONE. A WorkOrders calculated column
+// that reads 'Quality Database WOs' makes the two tables depend on each other and the
+// model stops opening — see the circular-dependency rules above.
+// It doubles as the scope filter: it returns BLANK for anything that is not an S&OP
+// batch inside the window, and tableEx drops rows whose every measure is blank, so the
+// top grid lands on exactly the comparable population with no visual-level filter.
+MEASURE [Match Flag (EDW)] = see .Measures.tmdl for the body
+
+// --- the differences ------------------------------------------------------------------
+// A calculated table, so both directions sit in ONE list with a Source column the team
+// can sort and filter. Reads WorkOrders and the sheet; nothing reads it, and it has no
+// relationship, so it adds no edge to the dependency graph.
+// ⚠ Because it is unrelated, page slicers would not reach it — which is why this page
+// deliberately has no slicers. Add a relationship first if slicers are ever wanted.
+TABLE 'Population Differences' = see 'Population Differences.tmdl' for the body
+//   EDW only              a batch in the window with no OK row on their sheet
+//   Quality Database only an OK sheet row in the window that is not an EDW batch
+
+
+// ===================== RELATIONSHIPS =====================
+// (auto-generated LocalDateTable time-intelligence relationships omitted)
+//
+//   DateTable[Date]                       1 -> *  Orders[GL Date]
+//   DateTable[Date]                       1 -> *  Complaints[Date_of_Occurrence]
+//   DateTable[Date]                       1 -> *  WorkOrders[Completion Date (SOP Basis)]   ACTIVE
+//   DateTable[Date]                       1 -> *  WorkOrders[Order Date]                    INACTIVE
+//        ⚠ The completion basis is the active one, and there is NO USERELATIONSHIP
+//        anywhere in the model. [Order Date] is kept inactive so the old basis is one
+//        USERELATIONSHIP away.
+//        ⚠ WHAT THE OLD ARRANGEMENT BOUGHT, so the trade stays re-decidable:
+//        [Order Date] is populated on all work orders while
+//        [Completion Date (SOP Basis)] is blank on 4,933. WO Ledger and WO Parts List
+//        carry no date filter today, so those rows still show — but ADDING A DATE
+//        SLICER TO EITHER PAGE WOULD SILENTLY HIDE THEM, and an uncompleted work order
+//        is exactly the row worth opening on an evidence page.
+//   Region[Region]                        1 -> *  Orders[Region]
+//   Region[Region]                        1 -> *  Complaints[Region Mapped]
+//   WorkOrders[WorkOrderSKey]             1 -> *  WorkOrderRouting[WorkOrderSKey]
+//   WorkOrders[WorkOrderSKey]             1 -> *  'WO Parts List'[WorkOrderSKey]
+//   WorkOrders[WorkOrderSKey]             1 -> *  'Item Ledger'[WorkOrderSKey]
+//        ⚠ All three SINGLE direction. WorkOrders (and through it DateTable and
+//        Dim Region) filters the child, never the reverse — a bidirectional hop would
+//        let a work-centre slicer push back onto the work order header and move
+//        [WO Count] and RTFT as a side effect, and it also supplies the return edge of
+//        a calculated-column circular dependency all by itself.
+//   WorkOrders[WorkOrderNum]              1 -> *  'Quality Database WOs'[WO Number]
+//        ⚠ SINGLE direction, mandatory — see the tie-out circular-dependency rules.
+//   DatePeriods[Date]                     * <-> * DateTable[Date]        (bidirectional cross-filter)
+//   Ship-To[AddressSKey]                  1 -> *  Orders[ShipToAddressSKey]
+//   Sold-To[AddressSKey]                  1 -> *  Orders[SoldToAddressSKey]
+//   Orders[Order Line ID]                 1 -> *  FactScheduleChange[OrderLineID]
+//   Orders[Order Line ID]                 1 -> *  LineComments[Order Line ID]
+//   'Reason Codes'[Code]                  1 -> *  FactScheduleChange[RevisionReason]
+//
+// ⚠ NO COMMENTS OF ANY KIND ABOVE A RELATIONSHIP IN relationships.tmdl. A ///
+// description breaks PBIP open with "Property 'description' is unknown", and a plain
+// // comment is rejected at that position outright. Relationship notes live here.

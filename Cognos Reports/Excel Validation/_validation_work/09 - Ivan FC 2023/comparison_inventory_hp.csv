@@ -1,0 +1,18 @@
+metric,value
+cognos_rows,226
+pbi_rows,243
+exact_match_rows,215
+only_cognos_rows,11
+only_pbi_rows,28
+match_rate_vs_cognos,0.9513
+
+--- column-level mismatches on shared-key rows ---
+key,column,cognos_value,pbi_value
+"('SING', 'NYS2104.S', 'STGP', '4583357', '')",Quantity On Hand,30.0,430.0
+"('SING', 'NYS2104.S', 'STGP', '4583357', '')",LB,66.139,947.986
+"('SING', 'NYS2104.S-OP', 'OUTGOING', '4583190', '')",Quantity On Hand,0.0,19800.0
+"('SING', 'NYS2104.S-OP', 'OUTGOING', '4583190', '')",LB,0.0,43651.467
+"('SNG4', 'ME92040.S-PD', '', '4580525', '')",Quantity On Hand,0.0,6000.0
+"('SNG4', 'ME92040.S-PD', '', '4580525', '')",LB,0.0,13227.717
+"('SNG4', 'ME92040.S-PD', '', '4581183', '')",Quantity On Hand,200.0,10200.0
+"('SNG4', 'ME92040.S-PD', '', '4581183', '')",LB,440.924,22487.12

@@ -1,0 +1,16 @@
+metric,value
+cognos_rows,416
+pbi_rows,413
+exact_match_rows,411
+only_cognos_rows,5
+only_pbi_rows,2
+match_rate_vs_cognos,0.988
+
+--- column-level mismatches on shared-key rows ---
+key,column,cognos_value,pbi_value
+"('4581990', 'HSGF1202.E', 'BRIJS2.E', '2026-06-30')",WO Status,97,93
+"('4581990', 'HSGF1202.E', 'BRIJS2.E', '2026-06-30')",Completed Date,2026-07-06,2026-07-02
+"('4581990', 'HSGF1202.E', 'BRIJS2.E', '2026-06-30')",Quantity Completed,14403.0,15046.0
+"('4581990', 'HSGF1202.E', 'BRIJS2.E', '2026-06-30')",COMPLETE KG,14403.0,15046.0
+"('4583595', 'NYS2203.E', 'BRIJS20.E', '2026-07-09')",STATE,COMPLETE,OPEN
+"('4583595', 'NYS2203.E', 'BRIJS20.E', '2026-07-09')",WO Status,32,20

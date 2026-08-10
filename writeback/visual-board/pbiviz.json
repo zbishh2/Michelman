@@ -1,0 +1,26 @@
+{
+  "visual": {
+    "name": "otifBoardComments",
+    "displayName": "OTIF Actions & Comments",
+    "guid": "otifBoardCommentsD4E8B1F0C7A34926B5E8017FC3A96D42",
+    "visualClassName": "Visual",
+    "version": "1.0.7.0",
+    "description": "Scrollable page-level discussion thread backed by Cloudflare D1; supports bold/italic/strikethrough formatting",
+    "supportUrl": "https://github.com/zbishh2/michelman-writeback",
+    "gitHubUrl": "https://github.com/zbishh2/michelman-writeback"
+  },
+  "apiVersion": "5.3.0",
+  "author": {
+    "name": "Zack Bishop",
+    "email": "zbishh2@gmail.com"
+  },
+  "assets": {
+    "icon": "assets/icon.png"
+  },
+  "externalJS": null,
+  "style": "style/visual.less",
+  "capabilities": "capabilities.json",
+  "dependencies": null,
+  "stringResources": [],
+  "version": "1.0.7.0"
+}

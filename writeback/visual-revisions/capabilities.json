@@ -1,0 +1,165 @@
+{
+  "dataRoles": [
+    {
+      "displayName": "Columns",
+      "name": "columns",
+      "kind": "GroupingOrMeasure",
+      "description": "Drag any model fields here (the visible revision-log columns). Reorder by drag in the visual. Use the Table > Editable columns position setting to slot the editable Revision Reason / Note / Exclude columns at any position."
+    },
+    {
+      "displayName": "Revision Key",
+      "name": "revisionKey",
+      "kind": "Grouping",
+      "description": "Hidden join key that identifies each revision event (OrderLineID | ChangeDate | ChangeTime). Used to look up and write override fields. Treated as an opaque string."
+    },
+    {
+      "displayName": "Hidden Columns (export-only)",
+      "name": "hiddenColumns",
+      "kind": "GroupingOrMeasure",
+      "description": "Fields here are not displayed in the visual but are included in Power BI's standard 'Export data' output. Use for D1 override fields (Revision Reason / Note / Exclude)."
+    },
+    {
+      "displayName": "Current User Email",
+      "name": "currentUser",
+      "kind": "Measure",
+      "description": "Bind a measure like CurrentUserEmail = USERPRINCIPALNAME() here. Used to look up the viewer's role for permission-gated edits."
+    }
+  ],
+  "objects": {
+    "title": {
+      "displayName": "Title",
+      "properties": {
+        "show": {
+          "type": {
+            "bool": true
+          }
+        },
+        "titleText": {
+          "type": {
+            "text": true
+          }
+        },
+        "fontSize": {
+          "type": {
+            "numeric": true
+          }
+        },
+        "fontColor": {
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "table": {
+      "displayName": "Table",
+      "properties": {
+        "fontSize": {
+          "type": {
+            "numeric": true
+          }
+        },
+        "editablePosition": {
+          "type": {
+            "numeric": true
+          }
+        },
+        "freezeColumns": {
+          "type": {
+            "numeric": true
+          }
+        }
+      }
+    },
+    "general": {
+      "displayName": "General",
+      "properties": {
+        "columnWidths": {
+          "type": {
+            "text": true
+          }
+        },
+        "columnOrder": {
+          "type": {
+            "text": true
+          }
+        },
+        "sortState": {
+          "type": {
+            "text": true
+          }
+        },
+        "columnFilters": {
+          "type": {
+            "text": true
+          }
+        },
+        "filter": {
+          "type": {
+            "filter": true
+          }
+        }
+      }
+    }
+  },
+  "dataViewMappings": [
+    {
+      "conditions": [
+        {
+          "revisionKey": {
+            "max": 1
+          },
+          "currentUser": {
+            "max": 1
+          }
+        }
+      ],
+      "table": {
+        "rows": {
+          "select": [
+            {
+              "for": {
+                "in": "columns"
+              }
+            },
+            {
+              "for": {
+                "in": "revisionKey"
+              }
+            },
+            {
+              "for": {
+                "in": "hiddenColumns"
+              }
+            },
+            {
+              "for": {
+                "in": "currentUser"
+              }
+            }
+          ],
+          "dataReductionAlgorithm": {
+            "top": {
+              "count": 30000
+            }
+          }
+        }
+      }
+    }
+  ],
+  "privileges": [
+    {
+      "name": "WebAccess",
+      "essential": true,
+      "parameters": [
+        "https://michelman-writeback.michelman-bi.workers.dev"
+      ]
+    }
+  ],
+  "supportsMultiVisualSelection": false,
+  "supportsLandingPage": false
+}

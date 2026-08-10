@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "allowJs": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es2022",
+        "sourceMap": true,
+        "outDir": "./.tmp/build/",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "declaration": true,
+        "jsx": "react-jsx",
+        "esModuleInterop": true,
+        "lib": [
+            "es2022",
+            "dom"
+        ]
+    },
+    "files": [
+        "./src/visual.tsx"
+    ]
+}

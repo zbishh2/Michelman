@@ -1,0 +1,26 @@
+{
+  "visual": {
+    "name": "revisionLogEditor",
+    "displayName": "Revision Log Editor",
+    "guid": "revisionLogEditorABA20355D0F8F57E03CC5F06191F4E95",
+    "visualClassName": "Visual",
+    "version": "1.0.10.0",
+    "description": "Editable grid over FactScheduleChange revision events, backed by Cloudflare D1. Override the revision reason, add a note, or exclude an event.",
+    "supportUrl": "https://github.com/zbishh2/michelman-writeback",
+    "gitHubUrl": "https://github.com/zbishh2/michelman-writeback"
+  },
+  "apiVersion": "5.3.0",
+  "author": {
+    "name": "Zack Bishop",
+    "email": "zbishh2@gmail.com"
+  },
+  "assets": {
+    "icon": "assets/icon.png"
+  },
+  "externalJS": null,
+  "style": "style/visual.less",
+  "capabilities": "capabilities.json",
+  "dependencies": null,
+  "stringResources": [],
+  "version": "1.0.10.0"
+}

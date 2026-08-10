@@ -1,0 +1,12 @@
+// The visual injects its full stylesheet at runtime (see src/styles.ts). This
+// file only carries the container shell so the packaged .pbiviz has a style
+// asset; everything else is applied from the injected <style> element.
+
+.rle-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 12px;
+    color: #222;
+}

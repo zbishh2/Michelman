@@ -1,0 +1,118 @@
+/* ------------------------------------------------------------------
+   Report : 10 - Ivan SFC2023 Forecast
+   Query  : Sales_History
+   Source : ODSPROD / ODS / PRODDTA (JDE), SQL Server
+   Note   : Native T-SQL as executed by Power BI (query folding enabled).
+   ------------------------------------------------------------------ */
+
+SELECT
+    b.OrderCompany                                   AS [Order Company],
+    b.Branch                                         AS [Branch Plant],
+    b.GlobalBulkItem                                 AS [Global Bulk Item],
+    b.BulkItem                                       AS [Bulk Item],
+    b.SecondItem                                     AS [2nd Item Number],
+    b.OrderNumber                                    AS [Order Number],
+    b.NextStatus                                     AS [Next Status],
+    DATEPART(YEAR,     b.PromisedDate)               AS [Year],
+    DATEPART(MONTH,    b.PromisedDate)               AS [Month],
+    DATEPART(ISO_WEEK, b.PromisedDate)               AS [Week],
+    b.PromisedDate                                   AS [Promised Ship Date],
+    CASE WHEN MIN(b.PrimUOM) = 'LB' THEN SUM(b.q) * 0.453593
+         WHEN MIN(b.PrimUOM) = 'KG' THEN SUM(b.q)
+         WHEN MIN(b.PrimUOM) = 'EA' THEN SUM(b.q) * 20
+         ELSE SUM(b.q)
+    END                                              AS [Ordered Quantity KGs],
+    b.RevBU                                          AS [Revenue Business Unit],
+    b.CustCode                                       AS [Customer Code],
+    b.CustName                                       AS [Customer Name],
+    b.GlobalParent                                   AS [Global Parent],
+    b.GlobalParentName                               AS [Global Parent Name],
+    b.TMName                                         AS [TM Name],
+    b.CountryName                                    AS [Country Name],
+    SUM(b.q)                                         AS [Ordered Quantity],
+    b.OrderingUOM                                    AS [Ordering Unit of Measure],
+    CASE WHEN MIN(b.PrimUOM) = 'LB' THEN SUM(b.q)
+         WHEN MIN(b.PrimUOM) = 'KG' THEN SUM(b.q) * 2.2045992
+         WHEN MIN(b.PrimUOM) = 'EA' THEN SUM(b.q) * 44
+         ELSE SUM(b.q)
+    END                                              AS [Ordered Quantity LBs],
+    b.OpenIndicator                                  AS [Open Indicator],
+    GETDATE()                                        AS [DATE]
+FROM (
+    SELECT
+        LTRIM(RTRIM(sd.SDKCOO))                      AS OrderCompany,
+        LTRIM(RTRIM(sd.SDMCU))                       AS Branch,
+        LTRIM(RTRIM(tag.IMGBLK))                     AS GlobalBulkItem,
+        LTRIM(RTRIM(tag.IMBULK))                     AS BulkItem,
+        LTRIM(RTRIM(sd.SDLITM))                      AS SecondItem,
+        sd.SDDOCO                                    AS OrderNumber,
+        LTRIM(RTRIM(sd.SDNXTR))                      AS NextStatus,
+        CASE WHEN sd.SDPDDJ > 0
+             THEN DATEADD(DAY, (sd.SDPDDJ % 1000) - 1, DATEFROMPARTS(1900 + (sd.SDPDDJ / 1000), 1, 1))
+             ELSE NULL
+        END                                          AS PromisedDate,
+        sd.SDPQOR / 10000.0                          AS q,
+        LTRIM(RTRIM(sd.SDUOM1))                      AS PrimUOM,
+        LTRIM(RTRIM(sd.SDUOM))                       AS OrderingUOM,
+        LTRIM(RTRIM(sd.SDEMCU))                      AS RevBU,
+        LTRIM(RTRIM(CAST(sd.SDSHAN AS varchar(20)))) AS CustCode,
+        LTRIM(RTRIM(shipto.ABALPH))                  AS CustName,
+        shipto.ABAN86                                AS GlobalParent,
+        LTRIM(RTRIM(gp.ABALPH))                      AS GlobalParentName,
+        ISNULL(NULLIF(LTRIM(RTRIM(srn.ABALPH)), ''), 'Not Available') AS TMName,
+        LTRIM(RTRIM(ctry.DRDL01))                    AS CountryName,
+        CASE WHEN LTRIM(RTRIM(sd.SDNXTR)) = '999' THEN 'N' ELSE 'Y' END AS OpenIndicator
+    FROM (
+        -- Open / recent lines still in F4211 ...
+        SELECT SDKCOO, SDMCU, SDLITM, SDDOCO, SDNXTR, SDPDDJ, SDPQOR,
+               SDUOM1, SDUOM, SDEMCU, SDSHAN, SDITM, SDLNTY, SDCNDJ
+        FROM PRODDTA.F4211
+        UNION ALL
+        -- ... plus completed lines already purged into sales history F42119.
+        -- On THIS ODSPROD instance F42119 mirrors F4211 with the SAME SD* column
+        -- names (NOT the JDE-standard SH prefix) -- confirmed by ssasprod.bim
+        -- (Sales fact = F4211|F42119 on F4211/F42119.SDDGL, SDAN8, SDPA8, SDSHAN).
+        SELECT SDKCOO, SDMCU, SDLITM, SDDOCO, SDNXTR, SDPDDJ, SDPQOR,
+               SDUOM1, SDUOM, SDEMCU, SDSHAN, SDITM, SDLNTY, SDCNDJ
+        FROM PRODDTA.F42119
+    ) sd
+    INNER JOIN PRODDTA.F554101 tag ON tag.IMITM = sd.SDITM
+    LEFT  JOIN PRODDTA.F0101 shipto ON shipto.ABAN8 = sd.SDSHAN
+    LEFT  JOIN PRODDTA.F0101 gp     ON gp.ABAN8 = shipto.ABAN86
+    LEFT  JOIN PRODDTA.F0116 addr   ON addr.ALAN8 = sd.SDSHAN
+    LEFT  JOIN PRODCTL.F0005 ctry   ON LTRIM(RTRIM(ctry.DRKY)) = LTRIM(RTRIM(addr.ALCTR))
+                                   AND ctry.DRSY = '00  '
+                                   AND ctry.DRRT = 'CN'
+    LEFT  JOIN PRODDTA.F0006 bu     ON bu.MCMCU = sd.SDEMCU
+    LEFT  JOIN PRODDTA.F42140 sr    ON sr.CMAN8 = sd.SDSHAN
+                                   AND LTRIM(RTRIM(sr.CMRTYPE)) = LTRIM(RTRIM(ISNULL(bu.MCRP01, '-'))) + 'GTM'
+    LEFT  JOIN PRODDTA.F0101 srn    ON srn.ABAN8 = sr.CMSLSM
+    WHERE sd.SDLNTY NOT LIKE '%F%'
+      AND sd.SDCNDJ = 0
+      AND sd.SDPQOR / 10000.0 > 0
+      AND LTRIM(RTRIM(tag.IMBULK)) IN ('JS168.S', 'ME91735.S', 'ME92040.S', 'PP05S.S', 'ME91240G.S', 'MG7140.S', 'TSPP01.S', 'ME92040.S', 'ME91735.S', 'ME87235.S', 'ME91735.S', 'ME90640.S', '211018IX.S', 'ME92040.S', 'PP236A.S', 'NYS2104.S', 'PP236A.S', 'ME91240G.S', 'JS168.E', 'ME92040.S', 'PP236A.S', 'ME91240G.S', 'ME91735.S', 'ME91735.S', 'ME91735.S', 'BRIJS2.S', 'BRIJS20.S', 'BRIJS2.E', 'BRIJS20.E')
+      AND CASE WHEN LTRIM(RTRIM(tag.IMGBLK)) = '-' THEN LTRIM(RTRIM(sd.SDLITM)) ELSE LTRIM(RTRIM(tag.IMGBLK)) END NOT IN ('IGST', 'CGST', 'SGST', 'CVD', 'ADD')
+) b
+WHERE b.PromisedDate >= '2025-11-01'
+  AND b.PromisedDate <= EOMONTH(DATEADD(DAY, 180, CAST(GETDATE() AS date)))
+GROUP BY
+    b.OrderCompany,
+    b.Branch,
+    b.GlobalBulkItem,
+    b.BulkItem,
+    b.SecondItem,
+    b.OrderNumber,
+    b.NextStatus,
+    DATEPART(YEAR,     b.PromisedDate),
+    DATEPART(MONTH,    b.PromisedDate),
+    DATEPART(ISO_WEEK, b.PromisedDate),
+    b.PromisedDate,
+    b.RevBU,
+    b.CustCode,
+    b.CustName,
+    b.GlobalParent,
+    b.GlobalParentName,
+    b.TMName,
+    b.CountryName,
+    b.OrderingUOM,
+    b.OpenIndicator

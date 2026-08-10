@@ -1,0 +1,737 @@
+﻿EDW,BIQL,_temp_UOMConvCheck,BASE TABLE
+EDW,BIQL,CurrencyRatesTo,BASE TABLE
+EDW,BIQL,CurrentDate,BASE TABLE
+EDW,BIQL,CurrentDateByTimeZone,BASE TABLE
+EDW,BIQL,DimBillOfMaterialExpanded_PRE,BASE TABLE
+EDW,BIQL,FCR_History_ItemCheck,BASE TABLE
+EDW,BIQL,GlobalLotStatusExport,BASE TABLE
+EDW,BIQL,HistoricalSnapshot,BASE TABLE
+EDW,BIQL,SafetyStock,BASE TABLE
+EDW,BIQL,SupplierPaymentTermsScore,BASE TABLE
+EDW,BIQL,TbStandardItemCost_TABLE,BASE TABLE
+EDW,BIQL,UOMConversion,BASE TABLE
+EDW,BIQL,UOMConversionMaster,BASE TABLE
+EDW,BIQLCOA,DimAccountHierarchy,BASE TABLE
+EDW,BIQLCOA,ImportAudit,BASE TABLE
+EDW,BIQLCOA,ImportAuditError,BASE TABLE
+EDW,BIQLCOA,Stage_BalanceSheet,BASE TABLE
+EDW,BIQLCOA,Stage_IncomeStatement,BASE TABLE
+EDW,BIQLETL,AuditData,BASE TABLE
+EDW,BIQLETL,ConfigAuditTables,BASE TABLE
+EDW,BIQLETL,ConfigSchemas,BASE TABLE
+EDW,BIQLETL,DimAAI_CT,BASE TABLE
+EDW,BIQLETL,DimAccount_CT,BASE TABLE
+EDW,BIQLETL,DimAddress_CT,BASE TABLE
+EDW,BIQLETL,DimAddressBookPhoneNumber_CT,BASE TABLE
+EDW,BIQLETL,DimAddressMailing_CT,BASE TABLE
+EDW,BIQLETL,DimAddressOrgStructure_CT,BASE TABLE
+EDW,BIQLETL,DimAddressWhosWho_CT,BASE TABLE
+EDW,BIQLETL,DimAsset_CT,BASE TABLE
+EDW,BIQLETL,DimAssetEquipmentExtension_CT,BASE TABLE
+EDW,BIQLETL,DimBillOfMaterial_CT,BASE TABLE
+EDW,BIQLETL,DimBusinessUnit_CT,BASE TABLE
+EDW,BIQLETL,DimCompany_CT,BASE TABLE
+EDW,BIQLETL,DimCurrencyCode_CT,BASE TABLE
+EDW,BIQLETL,DimCurrencyCrossRatesCalc_CT,BASE TABLE
+EDW,BIQLETL,DimCurrencyExchangeRates_CT,BASE TABLE
+EDW,BIQLETL,DimCurrencyRestatementRates_CT,BASE TABLE
+EDW,BIQLETL,DimCustomer_CT,BASE TABLE
+EDW,BIQLETL,DimCustomerCommissionInfo_CT,BASE TABLE
+EDW,BIQLETL,DimDisposalFee_CT,BASE TABLE
+EDW,BIQLETL,DimDistributionAAI_CT,BASE TABLE
+EDW,BIQLETL,DimIndustryClassification_CT,BASE TABLE
+EDW,BIQLETL,DimItem_CT,BASE TABLE
+EDW,BIQLETL,DimItemBasePrice_CT,BASE TABLE
+EDW,BIQLETL,DimItemBasePriceCustomerKey_CT,BASE TABLE
+EDW,BIQLETL,DimItemBasePriceItemKey_CT,BASE TABLE
+EDW,BIQLETL,DimItemBranch_CT,BASE TABLE
+EDW,BIQLETL,DimItemBranch_History_CT,BASE TABLE
+EDW,BIQLETL,DimItemBranchAdditionalInformation_CT,BASE TABLE
+EDW,BIQLETL,DimItemBranchAdditionalInformation_History_CT,BASE TABLE
+EDW,BIQLETL,DimItemCost_CT,BASE TABLE
+EDW,BIQLETL,DimItemCost_History_CT,BASE TABLE
+EDW,BIQLETL,DimItemCostComponents_CT,BASE TABLE
+EDW,BIQLETL,DimItemCostComponents_History_CT,BASE TABLE
+EDW,BIQLETL,DimItemCrossReference_CT,BASE TABLE
+EDW,BIQLETL,DimItemLocationFile_CT,BASE TABLE
+EDW,BIQLETL,DimItemMasterAdditionalInformation_CT,BASE TABLE
+EDW,BIQLETL,DimItemPreferenceGroups_CT,BASE TABLE
+EDW,BIQLETL,DimItemShippingInformation_CT,BASE TABLE
+EDW,BIQLETL,DimItemUOMConversion_CT,BASE TABLE
+EDW,BIQLETL,DimItemUOMConversion_History_CT,BASE TABLE
+EDW,BIQLETL,DimLedgerType_CT,BASE TABLE
+EDW,BIQLETL,DimLocation_CT,BASE TABLE
+EDW,BIQLETL,DimLot_CT,BASE TABLE
+EDW,BIQLETL,DimPaymentTerms_CT,BASE TABLE
+EDW,BIQLETL,DimRouting_CT,BASE TABLE
+EDW,BIQLETL,DimStatusCode_CT,BASE TABLE
+EDW,BIQLETL,DimSubledger_CT,BASE TABLE
+EDW,BIQLETL,DimSupplementalData_CT,BASE TABLE
+EDW,BIQLETL,DimSupplier_CT,BASE TABLE
+EDW,BIQLETL,DimSupplierItem_CT,BASE TABLE
+EDW,BIQLETL,DimTestDefinition_CT,BASE TABLE
+EDW,BIQLETL,DimUDC_CT,BASE TABLE
+EDW,BIQLETL,DimUOMConversion_CT,BASE TABLE
+EDW,BIQLETL,DimUOMConversion_History_CT,BASE TABLE
+EDW,BIQLETL,DimUser_CT,BASE TABLE
+EDW,BIQLETL,DimWorkOrder_CT,BASE TABLE
+EDW,BIQLETL,DimWorkOrderTag_CT,BASE TABLE
+EDW,BIQLETL,F0092_CT,BASE TABLE
+EDW,BIQLETL,F0092L_CT,BASE TABLE
+EDW,BIQLETL,F00950_CT,BASE TABLE
+EDW,BIQLETL,F95921_CT,BASE TABLE
+EDW,BIQLETL,FactAPDetail_CT,BASE TABLE
+EDW,BIQLETL,FactAPPaymentDetail_CT,BASE TABLE
+EDW,BIQLETL,FactARDetail_CT,BASE TABLE
+EDW,BIQLETL,FactARReceiptsDetail_CT,BASE TABLE
+EDW,BIQLETL,FactDocumentAudit_CT,BASE TABLE
+EDW,BIQLETL,FactForecast_CT,BASE TABLE
+EDW,BIQLETL,FactGLDetail_CT,BASE TABLE
+EDW,BIQLETL,FactGLYearBalances_CT,BASE TABLE
+EDW,BIQLETL,FactInventoryAsOfYearBalances_CT,BASE TABLE
+EDW,BIQLETL,FactInventoryDetail_CT,BASE TABLE
+EDW,BIQLETL,FactInventorySnapshot_CT,BASE TABLE
+EDW,BIQLETL,FactInventorySnapshot_History_CT,BASE TABLE
+EDW,BIQLETL,FactPriceAdjustmentDetail_CT,BASE TABLE
+EDW,BIQLETL,FactPriceExceptions_CT,BASE TABLE
+EDW,BIQLETL,FactPurchaseOrderDetail_CT,BASE TABLE
+EDW,BIQLETL,FactPurchaseOrderDetailLedger_CT,BASE TABLE
+EDW,BIQLETL,FactPurchaseOrderHeader_CT,BASE TABLE
+EDW,BIQLETL,FactPurchaseOrderReceiver_CT,BASE TABLE
+EDW,BIQLETL,FactQCDetail_CT,BASE TABLE
+EDW,BIQLETL,FactQCPreferenceProfile_CT,BASE TABLE
+EDW,BIQLETL,FactSalesDetail_CT,BASE TABLE
+EDW,BIQLETL,FactSalesDetailHistory_CT,BASE TABLE
+EDW,BIQLETL,FactSalesHeader_CT,BASE TABLE
+EDW,BIQLETL,FactSalesHeaderHistory_CT,BASE TABLE
+EDW,BIQLETL,FactSalesPriceAdjustments_CT,BASE TABLE
+EDW,BIQLETL,FactSupplierPricing_CT,BASE TABLE
+EDW,BIQLETL,FactWOPartsList_CT,BASE TABLE
+EDW,BIQLETL,FactWOProductionCost_CT,BASE TABLE
+EDW,BIQLETL,FactWORouting_CT,BASE TABLE
+EDW,BIQLETL,FactWOTimeTransactions_CT,BASE TABLE
+EDW,BIQLETL,PS_CDC_States,BASE TABLE
+EDW,BIQLETL,SF_DimAccount_CT,BASE TABLE
+EDW,BIQLETL,SF_DimCase_CT,BASE TABLE
+EDW,BIQLETL,SF_DimOpportunityLineItem_CT,BASE TABLE
+EDW,BIQLSEC,SecurityDimCompany,BASE TABLE
+EDW,BIQLSEC,SecurityModule,BASE TABLE
+EDW,BIQLSEC,SecurityRole,BASE TABLE
+EDW,BIQLSEC,SecurityUser,BASE TABLE
+EDW,BIQLSEC,SecurityUserRole,BASE TABLE
+EDW,dbo,[TM1_EDW_SALES_PERSPECTIVE_STG_1],BASE TABLE
+EDW,dbo,BIQL.GlobalConversions,BASE TABLE
+EDW,dbo,BOM_Expanded_TM1,BASE TABLE
+EDW,dbo,CalendarDescriptions,BASE TABLE
+EDW,dbo,CostMethodsToSkip,BASE TABLE
+EDW,dbo,DimAAI,BASE TABLE
+EDW,dbo,DimAccount,BASE TABLE
+EDW,dbo,DimAddress,BASE TABLE
+EDW,dbo,DimAddressBookPhoneNumber,BASE TABLE
+EDW,dbo,DimAdvancedPricing,BASE TABLE
+EDW,dbo,DimAsset,BASE TABLE
+EDW,dbo,DimBillOfMaterial,BASE TABLE
+EDW,dbo,DimBusinessUnit,BASE TABLE
+EDW,dbo,DimCalendar,BASE TABLE
+EDW,dbo,DimCompany,BASE TABLE
+EDW,dbo,DimCurrencyCode,BASE TABLE
+EDW,dbo,DimCurrencyCrossRatesCalc,BASE TABLE
+EDW,dbo,DimCurrencyExchangeRates,BASE TABLE
+EDW,dbo,DimCurrencyRestatementRates,BASE TABLE
+EDW,dbo,DimCustomer,BASE TABLE
+EDW,dbo,DimCustomerCommissionInfo,BASE TABLE
+EDW,dbo,DimDisposalFee,BASE TABLE
+EDW,dbo,DimDistributionAAI,BASE TABLE
+EDW,dbo,DimDocumentType,BASE TABLE
+EDW,dbo,DimIndustryClassification,BASE TABLE
+EDW,dbo,DimItem,BASE TABLE
+EDW,dbo,DimItemBasePrice,BASE TABLE
+EDW,dbo,DimItemBranch,BASE TABLE
+EDW,dbo,DimItemBranch_History,BASE TABLE
+EDW,dbo,DimItemBranchAdditionalInformation,BASE TABLE
+EDW,dbo,DimItemBranchAdditionalInformation_History,BASE TABLE
+EDW,dbo,DimItemCost,BASE TABLE
+EDW,dbo,DimItemCost_History,BASE TABLE
+EDW,dbo,DimItemCostComponents,BASE TABLE
+EDW,dbo,DimItemCostComponents_History,BASE TABLE
+EDW,dbo,DimItemCostHistory,BASE TABLE
+EDW,dbo,DimItemCostPivot,BASE TABLE
+EDW,dbo,DimItemCrossReference,BASE TABLE
+EDW,dbo,DimItemLocationFile,BASE TABLE
+EDW,dbo,DimItemMasterAdditionalInformation,BASE TABLE
+EDW,dbo,DimItemPreferenceGroups,BASE TABLE
+EDW,dbo,DimItemShippingInformation,BASE TABLE
+EDW,dbo,DimItemUOMConversion,BASE TABLE
+EDW,dbo,DimItemUOMConversion_History,BASE TABLE
+EDW,dbo,DimItemUOMConversionRecursive,BASE TABLE
+EDW,dbo,DimItemUOMConversionRecursive_History,BASE TABLE
+EDW,dbo,DimLedgerType,BASE TABLE
+EDW,dbo,DimLocation,BASE TABLE
+EDW,dbo,DimLot,BASE TABLE
+EDW,dbo,DimPaymentTerms,BASE TABLE
+EDW,dbo,DimProductDataManagement,BASE TABLE
+EDW,dbo,DimRouting,BASE TABLE
+EDW,dbo,DimStatusCode,BASE TABLE
+EDW,dbo,DimSubledger,BASE TABLE
+EDW,dbo,DimSupplementalData,BASE TABLE
+EDW,dbo,DimSupplier,BASE TABLE
+EDW,dbo,DimSupplierItem,BASE TABLE
+EDW,dbo,DimTestDefinition,BASE TABLE
+EDW,dbo,DimUDC,BASE TABLE
+EDW,dbo,DimUOM,BASE TABLE
+EDW,dbo,DimUOMConversion,BASE TABLE
+EDW,dbo,DimUOMConversion_History,BASE TABLE
+EDW,dbo,DimUOMConvert,BASE TABLE
+EDW,dbo,DimUser,BASE TABLE
+EDW,dbo,DimWorkOrder,BASE TABLE
+EDW,dbo,F0092,BASE TABLE
+EDW,dbo,F0092L,BASE TABLE
+EDW,dbo,F00950,BASE TABLE
+EDW,dbo,F3413,BASE TABLE
+EDW,dbo,F3460Z1,BASE TABLE
+EDW,dbo,F3460Z1_New,BASE TABLE
+EDW,dbo,F3460z1_STAGE,BASE TABLE
+EDW,dbo,F95921,BASE TABLE
+EDW,dbo,FactAPDetail,BASE TABLE
+EDW,dbo,FactAPPaymentDetail,BASE TABLE
+EDW,dbo,FactARDetail,BASE TABLE
+EDW,dbo,FactARReceiptsDetail,BASE TABLE
+EDW,dbo,FactDocumentAudit,BASE TABLE
+EDW,dbo,FactForecast,BASE TABLE
+EDW,dbo,FactGLDetail,BASE TABLE
+EDW,dbo,FactGLPeriodBalances,BASE TABLE
+EDW,dbo,FactGLYearBalances,BASE TABLE
+EDW,dbo,FactInventoryAsOfPerBalances,BASE TABLE
+EDW,dbo,FactInventoryAsOfYearBalances,BASE TABLE
+EDW,dbo,FactInventoryDetail,BASE TABLE
+EDW,dbo,FactInventorySnapshot,BASE TABLE
+EDW,dbo,FactInventorySnapshot_History,BASE TABLE
+EDW,dbo,FactPriceAdjustmentDetail,BASE TABLE
+EDW,dbo,FactPriceExceptions,BASE TABLE
+EDW,dbo,FactPurchaseOrderDetail,BASE TABLE
+EDW,dbo,FactPurchaseOrderDetailLedger,BASE TABLE
+EDW,dbo,FactPurchaseOrderHeader,BASE TABLE
+EDW,dbo,FactPurchaseOrderReceiver,BASE TABLE
+EDW,dbo,FactQCDetail,BASE TABLE
+EDW,dbo,FactQCPreferenceProfile,BASE TABLE
+EDW,dbo,FactSalesDetail,BASE TABLE
+EDW,dbo,FactSalesHeader,BASE TABLE
+EDW,dbo,FactSalesHistory_UOM_Fix,BASE TABLE
+EDW,dbo,FactSalesPriceAdjustments,BASE TABLE
+EDW,dbo,FactSupplierPricing,BASE TABLE
+EDW,dbo,FactWOPartsList,BASE TABLE
+EDW,dbo,FactWOProductionCost,BASE TABLE
+EDW,dbo,FactWORouting,BASE TABLE
+EDW,dbo,FactWOTimeTransactions,BASE TABLE
+EDW,dbo,FrozenCostRollupHistory,BASE TABLE
+EDW,dbo,FrozenCostStats,BASE TABLE
+EDW,dbo,MRPMtrl_Msg,BASE TABLE
+EDW,dbo,MRPMtrl_Msg_Append,BASE TABLE
+EDW,dbo,MRPMtrl_Msg_Final,BASE TABLE
+EDW,dbo,MRPMtrl_Peg,BASE TABLE
+EDW,dbo,MRPMtrl_Peg_Final,BASE TABLE
+EDW,dbo,MRPTimeSeries,BASE TABLE
+EDW,dbo,MRPTimeSeries_Final,BASE TABLE
+EDW,dbo,PRODDTA_F3460Z1,BASE TABLE
+EDW,dbo,SF_DimAccount,BASE TABLE
+EDW,dbo,SF_DimCase,BASE TABLE
+EDW,dbo,TbBOMExpanded,BASE TABLE
+EDW,dbo,TM1_EDW_CURRENT_MONTH,BASE TABLE
+EDW,dbo,TM1_EDW_DIMENSION_REF_COMPANY,BASE TABLE
+EDW,dbo,TM1_EDW_DIMENSION_REF_MEASURE,BASE TABLE
+EDW,dbo,TM1_EDW_DIMENSION_REF_VERSION,BASE TABLE
+EDW,dbo,TM1_EDW_PRIOR_YEAR,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE_BKP,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE_HISTORY,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE_INT,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE_STG,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE_STG_AC,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE_STG_BU,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE_STG_BU_CONS,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE_STG_CM_AC,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE_STG_FC,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE_STG_FC_CONS,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE_STG_FC_ST,BASE TABLE
+EDW,dbo,TM1_EDW_SALES_PERSPECTIVE_STG_OO,BASE TABLE
+EDW,dbo,TM1_Test_DB,BASE TABLE
+EDW,dbo,TM1_Test_DB_v2,BASE TABLE
+EDW,BIQL,Balancing_TM1,VIEW
+EDW,BIQL,DimAccount,VIEW
+EDW,BIQL,DimAddress,VIEW
+EDW,BIQL,DimAsset,VIEW
+EDW,BIQL,DimBillOfMaterial,VIEW
+EDW,BIQL,DimBillOfMaterialExpanded,VIEW
+EDW,BIQL,DimBillOfMaterialPrimaryUOM,VIEW
+EDW,BIQL,DimBusinessUnit,VIEW
+EDW,BIQL,DimCalendar,VIEW
+EDW,BIQL,DimCalendarInventorySnapshot,VIEW
+EDW,BIQL,DimCalendarItemSnapshot,VIEW
+EDW,BIQL,DimCompany,VIEW
+EDW,BIQL,DimCurrencyCode,VIEW
+EDW,BIQL,DimCurrencyCrossRatesCalc,VIEW
+EDW,BIQL,DimCurrencyExchangeRates,VIEW
+EDW,BIQL,DimCurrencyExchangeRatesUSDDaily,VIEW
+EDW,BIQL,DimCurrencyExchangeRatesUSDToday,VIEW
+EDW,BIQL,DimCurrencyRatesToCXA,VIEW
+EDW,BIQL,DimCurrencyRatesToCXB,VIEW
+EDW,BIQL,DimCurrencyRatesToCXC,VIEW
+EDW,BIQL,DimCurrencyRestatementRates,VIEW
+EDW,BIQL,DimCurrencyRestatementRatesUSDDaily,VIEW
+EDW,BIQL,DimCustomer,VIEW
+EDW,BIQL,DimCustomerCommissionInfo,VIEW
+EDW,BIQL,DimCustomerCommissionMax,VIEW
+EDW,BIQL,DimCustomerCommissionMaxOrig,VIEW
+EDW,BIQL,DimCustomerCommissionMin,VIEW
+EDW,BIQL,DimCustomerCommissionTM,VIEW
+EDW,BIQL,DimCustomerMax,VIEW
+EDW,BIQL,DimCustomerMin,VIEW
+EDW,BIQL,DimDate,VIEW
+EDW,BIQL,DimDisposalFee,VIEW
+EDW,BIQL,DimDistributionAAI,VIEW
+EDW,BIQL,DimDocumentType,VIEW
+EDW,BIQL,DimFrozenCostRollup,VIEW
+EDW,BIQL,DimFrozenCostRollup_Detail,VIEW
+EDW,BIQL,DimFrozenCostRollup_History,VIEW
+EDW,BIQL,DimIndustryClassification,VIEW
+EDW,BIQL,DimItem,VIEW
+EDW,BIQL,DimItemBasePrice,VIEW
+EDW,BIQL,DimItemBranch,VIEW
+EDW,BIQL,DimItemBranch_History,VIEW
+EDW,BIQL,DimItemBranchAdditionalInformation,VIEW
+EDW,BIQL,DimItemBranchAdditionalInformation_History,VIEW
+EDW,BIQL,DimItemCost,VIEW
+EDW,BIQL,DimItemCost_History,VIEW
+EDW,BIQL,DimItemCost_History_Std,VIEW
+EDW,BIQL,DimItemCost_History_Std2,VIEW
+EDW,BIQL,DimItemCostComponents,VIEW
+EDW,BIQL,DimItemCostComponents_History,VIEW
+EDW,BIQL,DimItemCostLookup,VIEW
+EDW,BIQL,DimItemCostLookupAsOf,VIEW
+EDW,BIQL,DimItemCrossReference,VIEW
+EDW,BIQL,DimItemLocationFile,VIEW
+EDW,BIQL,DimItemMasterAdditionalInformation,VIEW
+EDW,BIQL,DimItemPreferenceGroups,VIEW
+EDW,BIQL,DimItemShippingInformation,VIEW
+EDW,BIQL,DimItemUOMConversion,VIEW
+EDW,BIQL,DimItemUOMConversion_History,VIEW
+EDW,BIQL,DimItemUOMConversion_NoBU,VIEW
+EDW,BIQL,DimItemUOMConversion_NoBU_History,VIEW
+EDW,BIQL,DimItemUOMConversionItem,VIEW
+EDW,BIQL,DimItemUOMConversionItem_History,VIEW
+EDW,BIQL,DimItemUOMConversionLBKG,VIEW
+EDW,BIQL,DimItemUOMConversionLBKG_History,VIEW
+EDW,BIQL,DimItemUOMConversionLBKG_HistorywithBlankBU,VIEW
+EDW,BIQL,DimItemUOMConversionMaster,VIEW
+EDW,BIQL,DimItemUOMConversionMaster_History,VIEW
+EDW,BIQL,DimItemUOMConversionRecursive,VIEW
+EDW,BIQL,DimItemUOMConversionRecursive_History,VIEW
+EDW,BIQL,DimLedgerType,VIEW
+EDW,BIQL,DimLocation,VIEW
+EDW,BIQL,DimLot,VIEW
+EDW,BIQL,DimMRP_MPS_MtrlMsg,VIEW
+EDW,BIQL,DimMRP_MPS_MtrlPeg,VIEW
+EDW,BIQL,DimMRP_MPS_TimeSeries,VIEW
+EDW,BIQL,DimPaymentTerms,VIEW
+EDW,BIQL,DimProductDataManagement,VIEW
+EDW,BIQL,DimRouting,VIEW
+EDW,BIQL,DimStandardItemCost,VIEW
+EDW,BIQL,DimStandardItemCost_History,VIEW
+EDW,BIQL,DimStandardUOMConversion,VIEW
+EDW,BIQL,DimStatusCode,VIEW
+EDW,BIQL,DimSubledger,VIEW
+EDW,BIQL,DimSupplementalData,VIEW
+EDW,BIQL,DimSupplier,VIEW
+EDW,BIQL,DimSupplierItem,VIEW
+EDW,BIQL,DimTestDefinition,VIEW
+EDW,BIQL,DimUDC,VIEW
+EDW,BIQL,DimUOM,VIEW
+EDW,BIQL,DimUOMConversion,VIEW
+EDW,BIQL,DimUOMConversion_History,VIEW
+EDW,BIQL,DimUOMConversionRecursive,VIEW
+EDW,BIQL,DimUOMConversionRecursive_History,VIEW
+EDW,BIQL,DimWorkOrder,VIEW
+EDW,BIQL,FactAPDetail,VIEW
+EDW,BIQL,FactAPPaymentDetail,VIEW
+EDW,BIQL,FactARDetail,VIEW
+EDW,BIQL,FactARReceiptsDetail,VIEW
+EDW,BIQL,FactDocumentAudit,VIEW
+EDW,BIQL,FactForecast,VIEW
+EDW,BIQL,FactGLDetail,VIEW
+EDW,BIQL,FactGLPeriodBalances,VIEW
+EDW,BIQL,FactGLYearBalances,VIEW
+EDW,BIQL,FactInventoryAsOfPerBalances,VIEW
+EDW,BIQL,FactInventoryAsOfYearBalances,VIEW
+EDW,BIQL,FactInventoryDetail,VIEW
+EDW,BIQL,FactInventorySnapshot,VIEW
+EDW,BIQL,FactInventorySnapshot_History_Filtered,VIEW
+EDW,BIQL,FactInventorySnapshotFCR_Detail,VIEW
+EDW,BIQL,FactInventorySnapshotFCR_History,VIEW
+EDW,BIQL,FactInventorySnapshotItemCostLookup,VIEW
+EDW,BIQL,FactInventorySnapshotItemCostLookup_History,VIEW
+EDW,BIQL,FactItemCostFCR_Detail,VIEW
+EDW,BIQL,FactItemCostFCR_History,VIEW
+EDW,BIQL,FactPriceExceptions,VIEW
+EDW,BIQL,FactPurchaseOrderDetail,VIEW
+EDW,BIQL,FactPurchaseOrderDetailLedger,VIEW
+EDW,BIQL,FactPurchaseOrderDetailLedger_shipkpi,VIEW
+EDW,BIQL,FactPurchaseOrderHeader_shipkpi,VIEW
+EDW,BIQL,FactPurchaseOrderReceiver,VIEW
+EDW,BIQL,FactQCDetail,VIEW
+EDW,BIQL,FactQCPreferenceProfile,VIEW
+EDW,BIQL,FactSalesAnalysis_Pvt,VIEW
+EDW,BIQL,FactSalesDetail,VIEW
+EDW,BIQL,FactSalesDetail_UOM_Fix,VIEW
+EDW,BIQL,FactSalesHeader,VIEW
+EDW,BIQL,FactSalesPriceAdjustments,VIEW
+EDW,BIQL,FactSupplierPricing,VIEW
+EDW,BIQL,FactWOPartsList,VIEW
+EDW,BIQL,FactWOProductionCost,VIEW
+EDW,BIQL,FactWORouting,VIEW
+EDW,BIQL,FactWORouting_Active_Balance,VIEW
+EDW,BIQL,FactWOTimeTransactions,VIEW
+EDW,BIQL,SF_DimAccount,VIEW
+EDW,BIQL,SF_DimCase,VIEW
+EDW,BIQL,SF_DimOpportunity,VIEW
+EDW,BIQL,SF_DimOpportunityLineItem,VIEW
+EDW,BIQL,TbAccount,VIEW
+EDW,BIQL,TbAccountsPayable_Detail,VIEW
+EDW,BIQL,TbAccountsPayable_Payment,VIEW
+EDW,BIQL,TbAccountsReceivable_Detail,VIEW
+EDW,BIQL,TbAccountsReceivable_Receipt,VIEW
+EDW,BIQL,TbAddress,VIEW
+EDW,BIQL,TbAgingBandAP,VIEW
+EDW,BIQL,TbAgingBandAR,VIEW
+EDW,BIQL,TbAgingBasedOnDateAP,VIEW
+EDW,BIQL,TbARAgingDate,VIEW
+EDW,BIQL,TbAsset,VIEW
+EDW,BIQL,TbAudit,VIEW
+EDW,BIQL,TbBillOfMaterialExpanded,VIEW
+EDW,BIQL,TbBillOfMaterialExpanded_EDW,VIEW
+EDW,BIQL,TbBillOfMaterialExpanded_Orig,VIEW
+EDW,BIQL,TbBillOfMaterialExpanded2,VIEW
+EDW,BIQL,TbBranch,VIEW
+EDW,BIQL,TbBudgetForecast,VIEW
+EDW,BIQL,TbBusinessUnit,VIEW
+EDW,BIQL,TbCalendar,VIEW
+EDW,BIQL,TbCalendarAging,VIEW
+EDW,BIQL,TbCalendarFilter,VIEW
+EDW,BIQL,TbCalendarItemSnapshot,VIEW
+EDW,BIQL,TbCalendarSnapshot,VIEW
+EDW,BIQL,TbCompany,VIEW
+EDW,BIQL,TbCompanyAP,VIEW
+EDW,BIQL,TbCompanyAR,VIEW
+EDW,BIQL,TbCompanySA,VIEW
+EDW,BIQL,TbCompanySecurity,VIEW
+EDW,BIQL,TbCostComponent,VIEW
+EDW,BIQL,TbCostMethod,VIEW
+EDW,BIQL,TbCostMethod_History,VIEW
+EDW,BIQL,TbCurrency,VIEW
+EDW,BIQL,TbCurrencyRates,VIEW
+EDW,BIQL,TbCurrencyRates_History,VIEW
+EDW,BIQL,TbCurrencyRatesDailyA,VIEW
+EDW,BIQL,TbCurrencyRatesDailyB,VIEW
+EDW,BIQL,TbCustomer,VIEW
+EDW,BIQL,TbCustomerBillTo,VIEW
+EDW,BIQL,TbCustomerParent,VIEW
+EDW,BIQL,TbCustomerSalespersonBridge,VIEW
+EDW,BIQL,TbCustomerShipTo,VIEW
+EDW,BIQL,TbDate,VIEW
+EDW,BIQL,TbDisposalFee,VIEW
+EDW,BIQL,TbDocumentType,VIEW
+EDW,BIQL,TbGLBalancesDetail_Balance,VIEW
+EDW,BIQL,TbGLBalancesDetail_BalanceCurr,VIEW
+EDW,BIQL,TbGLBalancesDetail_Detail,VIEW
+EDW,BIQL,TbIndustryClassification,VIEW
+EDW,BIQL,TbInventoryBalances,VIEW
+EDW,BIQL,TbInventoryDetail,VIEW
+EDW,BIQL,TbInventorySnapshot_Detail,VIEW
+EDW,BIQL,TbInventorySnapshot_History,VIEW
+EDW,BIQL,TbInventorySnapshot_ItemBranch,VIEW
+EDW,BIQL,TbInventorySnapshotFCR_Detail,VIEW
+EDW,BIQL,TbInventorySnapshotFCR_History,VIEW
+EDW,BIQL,TbItem,VIEW
+EDW,BIQL,TbItemBranch,VIEW
+EDW,BIQL,TbItemBranch_History,VIEW
+EDW,BIQL,TbItemBranch_Sales,VIEW
+EDW,BIQL,TbItemBranch_Sales_History,VIEW
+EDW,BIQL,TbItemBranchAdditionalInformation,VIEW
+EDW,BIQL,TbItemBranchAdditionalInformation_History,VIEW
+EDW,BIQL,TbItemCost,VIEW
+EDW,BIQL,TbItemCost_History,VIEW
+EDW,BIQL,TbItemCostFCR_Detail,VIEW
+EDW,BIQL,TbItemCostFCR_History,VIEW
+EDW,BIQL,TbItemLocationFile,VIEW
+EDW,BIQL,TbItemMasterAdditionalInformation,VIEW
+EDW,BIQL,TbItemShippingInformation,VIEW
+EDW,BIQL,TbItemUOMConversionLBKG,VIEW
+EDW,BIQL,TbItemUOMConversionLBKG_History,VIEW
+EDW,BIQL,TbLedgerType,VIEW
+EDW,BIQL,TbLot,VIEW
+EDW,BIQL,TbMRP_MPS_MtrlMsg,VIEW
+EDW,BIQL,TbMRP_MPS_MtrlPeg,VIEW
+EDW,BIQL,TbMRP_MPS_TimeSeries,VIEW
+EDW,BIQL,TbPriceExceptions,VIEW
+EDW,BIQL,TbPurchaseOrder,VIEW
+EDW,BIQL,TbPurchaseOrderDetail,VIEW
+EDW,BIQL,TbPurchaseOrderReceiver,VIEW
+EDW,BIQL,TbQuality_Off_Spec RM,VIEW
+EDW,BIQL,TbQuality_Off_Spec RM_2,VIEW
+EDW,BIQL,TbQuality_Off_Spec WO,VIEW
+EDW,BIQL,TbQuality_Off_Spec WO_RM,VIEW
+EDW,BIQL,TbQualityDetail,VIEW
+EDW,BIQL,TbQualityOffSpec,VIEW
+EDW,BIQL,TbQualityOffSpecLotLoc,VIEW
+EDW,BIQL,TbQualityOffSpecRM,VIEW
+EDW,BIQL,TbQualityOffSpecWOBulk,VIEW
+EDW,BIQL,TbQualityOffSpecWOComponents,VIEW
+EDW,BIQL,TbQualityRawMaterial,VIEW
+EDW,BIQL,TbQualityWoRtLoc,VIEW
+EDW,BIQL,TbRevenueBusinessUnit,VIEW
+EDW,BIQL,TbSales_Analysis,VIEW
+EDW,BIQL,TbSales_Detail,VIEW
+EDW,BIQL,TbSales_History,VIEW
+EDW,BIQL,TbSalesAR_TM_Bridge,VIEW
+EDW,BIQL,TbSalesOrderSecurity,VIEW
+EDW,BIQL,TbSalesperson,VIEW
+EDW,BIQL,TbSalesperson2,VIEW
+EDW,BIQL,TbSalesperson3,VIEW
+EDW,BIQL,TbSalespersonSecurity,VIEW
+EDW,BIQL,TbSecurityAR_Rep,VIEW
+EDW,BIQL,TbSecurityAR_TM,VIEW
+EDW,BIQL,TbSecurityPriceExceptions_TM,VIEW
+EDW,BIQL,TbSecuritySales_TM,VIEW
+EDW,BIQL,TbSelectedCurrencyFilter,VIEW
+EDW,BIQL,TbSelectedKPIGoalFilter,VIEW
+EDW,BIQL,TbSelectedTimeCalcFilter,VIEW
+EDW,BIQL,TbSelectedUOMFilter,VIEW
+EDW,BIQL,TbSF_Account,VIEW
+EDW,BIQL,TbSF_Case,VIEW
+EDW,BIQL,TbSF_Case_Null,VIEW
+EDW,BIQL,TbSF_Opportunity,VIEW
+EDW,BIQL,TbSF_OpportunityLineItem,VIEW
+EDW,BIQL,TbSignDisplay,VIEW
+EDW,BIQL,TbStandardItemCost,VIEW
+EDW,BIQL,TbSubledger,VIEW
+EDW,BIQL,TbSupplier,VIEW
+EDW,BIQL,TbSupplierPricing,VIEW
+EDW,BIQL,TbSupplyAndDemand_Forecast,VIEW
+EDW,BIQL,TbSupplyandDemand_ForecastMinusSalesWeekly,VIEW
+EDW,BIQL,TbSupplyAndDemand_InInspection,VIEW
+EDW,BIQL,TbSupplyAndDemand_InTransit,VIEW
+EDW,BIQL,TbSupplyAndDemand_OnHand,VIEW
+EDW,BIQL,TbSupplyAndDemand_PartsList,VIEW
+EDW,BIQL,TbSupplyAndDemand_PurchaseOrder,VIEW
+EDW,BIQL,TbSupplyAndDemand_SafetyStock,VIEW
+EDW,BIQL,TbSupplyAndDemand_SalesOrder,VIEW
+EDW,BIQL,TbSupplyAndDemand_WIP,VIEW
+EDW,BIQL,TbSupplyAndDemand_WorkOrder,VIEW
+EDW,BIQL,TbSupplyAndDemand_zzBOM,VIEW
+EDW,BIQL,TbSupplyAndDemand_zzForecastSalesRelativeWeek,VIEW
+EDW,BIQL,TbSupplyChain,VIEW
+EDW,BIQL,TbSupplyChain_Calendar,VIEW
+EDW,BIQL,TbSupplyChain_Forecast,VIEW
+EDW,BIQL,TbSupplyChain_InInspection,VIEW
+EDW,BIQL,TbSupplyChain_InTransit,VIEW
+EDW,BIQL,TbSupplyChain_OnHand,VIEW
+EDW,BIQL,TbSupplyChain_PartsList,VIEW
+EDW,BIQL,TbSupplyChain_PO,VIEW
+EDW,BIQL,TbSupplyChain_PurchaseOrder,VIEW
+EDW,BIQL,TbSupplyChain_SafetyStock,VIEW
+EDW,BIQL,TbSupplyChain_SalesOrder,VIEW
+EDW,BIQL,TbSupplyChain_WorkOrder,VIEW
+EDW,BIQL,TbTerritoryManager,VIEW
+EDW,BIQL,TbTerritoryManagerSecurity,VIEW
+EDW,BIQL,TbTM_Max_Assignment,VIEW
+EDW,BIQL,TbWorkOrder,VIEW
+EDW,BIQL,TbWorkOrderDetail,VIEW
+EDW,BIQL,TbWorkOrderPartsList_Parent,VIEW
+EDW,BIQL,TbWorkOrderPartsList_Parts,VIEW
+EDW,BIQL,TbWorkOrderProductionCost,VIEW
+EDW,BIQL,TbWorkOrderRouting_Routing,VIEW
+EDW,BIQL,TbWorkOrderRouting_Time,VIEW
+EDW,BIQL,TimeZones,VIEW
+EDW,BIQL,VAL_Transactions_Overview,VIEW
+EDW,BIQLCOA,DimAccountHierarchy_View,VIEW
+EDW,BIQLCOA,DimStageAccountBS,VIEW
+EDW,BIQLCOA,DimStageAccountIS,VIEW
+EDW,BIQLETL,DimAAI_CDC,VIEW
+EDW,BIQLETL,DimAccount_CDC,VIEW
+EDW,BIQLETL,DimAddress_CDC,VIEW
+EDW,BIQLETL,DimAddressBookPhoneNumber_CDC,VIEW
+EDW,BIQLETL,DimAddressMailing_CDC,VIEW
+EDW,BIQLETL,DimAddressOrgStructure_CDC,VIEW
+EDW,BIQLETL,DimAddressWhosWho_CDC,VIEW
+EDW,BIQLETL,DimAsset_CDC,VIEW
+EDW,BIQLETL,DimAssetEquipmentExtension_CDC,VIEW
+EDW,BIQLETL,DimBillOfMaterial_CDC,VIEW
+EDW,BIQLETL,DimBusinessUnit_CDC,VIEW
+EDW,BIQLETL,DimCompany_CDC,VIEW
+EDW,BIQLETL,DimCurrencyCode_CDC,VIEW
+EDW,BIQLETL,DimCurrencyCrossRatesCalc_CDC,VIEW
+EDW,BIQLETL,DimCurrencyExchangeRates_CDC,VIEW
+EDW,BIQLETL,DimCurrencyRestatementRates_CDC,VIEW
+EDW,BIQLETL,DimCustomer_CDC,VIEW
+EDW,BIQLETL,DimCustomerCommissionInfo_CDC,VIEW
+EDW,BIQLETL,DimCustomerRank_CT,VIEW
+EDW,BIQLETL,DimDisposalFee_CDC,VIEW
+EDW,BIQLETL,DimDistributionAAI_CDC,VIEW
+EDW,BIQLETL,DimDocumentType_CDC,VIEW
+EDW,BIQLETL,DimIndustryClassification_CDC,VIEW
+EDW,BIQLETL,DimItem_CDC,VIEW
+EDW,BIQLETL,DimItemBasePrice_CDC,VIEW
+EDW,BIQLETL,DimItemBasePriceCustomerKey_CDC,VIEW
+EDW,BIQLETL,DimItemBasePriceItemKey_CDC,VIEW
+EDW,BIQLETL,DimItemBranch_CDC,VIEW
+EDW,BIQLETL,DimItemBranch_History_CDC,VIEW
+EDW,BIQLETL,DimItemBranchAdditionalInformation_CDC,VIEW
+EDW,BIQLETL,DimItemBranchAdditionalInformation_History_CDC,VIEW
+EDW,BIQLETL,DimItemCost_CDC,VIEW
+EDW,BIQLETL,DimItemCost_History_CDC,VIEW
+EDW,BIQLETL,DimItemCostComponents_CDC,VIEW
+EDW,BIQLETL,DimItemCostComponents_History_CDC,VIEW
+EDW,BIQLETL,DimItemCrossReference_CDC,VIEW
+EDW,BIQLETL,DimItemLocationFile_CDC,VIEW
+EDW,BIQLETL,DimItemMasterAdditionalInformation_CDC,VIEW
+EDW,BIQLETL,DimItemPreferenceGroups_CDC,VIEW
+EDW,BIQLETL,DimItemShippingInformation_CDC,VIEW
+EDW,BIQLETL,DimItemUOMConversion_CDC,VIEW
+EDW,BIQLETL,DimItemUOMConversion_History_CDC,VIEW
+EDW,BIQLETL,DimLedgerType_CDC,VIEW
+EDW,BIQLETL,DimLocation_CDC,VIEW
+EDW,BIQLETL,DimLot_CDC,VIEW
+EDW,BIQLETL,DimPaymentTerms_CDC,VIEW
+EDW,BIQLETL,DimRouting_CDC,VIEW
+EDW,BIQLETL,DimStatusCode_CDC,VIEW
+EDW,BIQLETL,DimSubledgerF0902_CDC,VIEW
+EDW,BIQLETL,DimSubledgerF0911_CDC,VIEW
+EDW,BIQLETL,DimSupplementalData_CDC,VIEW
+EDW,BIQLETL,DimSupplier_CDC,VIEW
+EDW,BIQLETL,DimSupplierItem_CDC,VIEW
+EDW,BIQLETL,DimTestDefinition_CDC,VIEW
+EDW,BIQLETL,DimTestDefinition_Ranked,VIEW
+EDW,BIQLETL,DimUDC_CDC,VIEW
+EDW,BIQLETL,DimUOM_CDC,VIEW
+EDW,BIQLETL,DimUOMConversion_CDC,VIEW
+EDW,BIQLETL,DimUOMConversion_History_CDC,VIEW
+EDW,BIQLETL,DimUser_CDC,VIEW
+EDW,BIQLETL,DimWorkOrder_CDC,VIEW
+EDW,BIQLETL,DimWorkOrder_TF,VIEW
+EDW,BIQLETL,DimWorkOrderTag_CDC,VIEW
+EDW,BIQLETL,DWAudit_Daily,VIEW
+EDW,BIQLETL,DWAudit_Last,VIEW
+EDW,BIQLETL,F0092_CDC,VIEW
+EDW,BIQLETL,F0092L_CDC,VIEW
+EDW,BIQLETL,F00950_CDC,VIEW
+EDW,BIQLETL,F95921_CDC,VIEW
+EDW,BIQLETL,FactAPDetail_CDC,VIEW
+EDW,BIQLETL,FactAPPaymentDetail_CDC,VIEW
+EDW,BIQLETL,FactARDetail_CDC,VIEW
+EDW,BIQLETL,FactARReceiptsDetail_CDC,VIEW
+EDW,BIQLETL,FactDocumentAudit_CDC,VIEW
+EDW,BIQLETL,FactForecast_CDC,VIEW
+EDW,BIQLETL,FactGLDetail_CDC,VIEW
+EDW,BIQLETL,FactGLPeriodBalances_CDC,VIEW
+EDW,BIQLETL,FactGLPeriodBalances_FULL,VIEW
+EDW,BIQLETL,FactGLYearBalances_CDC,VIEW
+EDW,BIQLETL,FactInventoryAsOfPerBalances_CDC,VIEW
+EDW,BIQLETL,FactInventoryAsOfPerBalances_FULL,VIEW
+EDW,BIQLETL,FactInventoryAsOfYearBalances_CDC,VIEW
+EDW,BIQLETL,FactInventoryDetail_CDC,VIEW
+EDW,BIQLETL,FactInventorySnapshot_CDC,VIEW
+EDW,BIQLETL,FactInventorySnapshot_History_CDC,VIEW
+EDW,BIQLETL,FactInventorySnapshotItemCostLookup,VIEW
+EDW,BIQLETL,FactPriceExceptions_CDC,VIEW
+EDW,BIQLETL,FactPurchaseOrderDetail_CDC,VIEW
+EDW,BIQLETL,FactPurchaseOrderDetailLedger_CDC,VIEW
+EDW,BIQLETL,FactPurchaseOrderHeader_CDC,VIEW
+EDW,BIQLETL,FactPurchaseOrderReceiver_CDC,VIEW
+EDW,BIQLETL,FactQCDetail_CDC,VIEW
+EDW,BIQLETL,FactQCPreferenceProfile_CDC,VIEW
+EDW,BIQLETL,FactSalesDetail_CDC,VIEW
+EDW,BIQLETL,FactSalesDetail_CDC_GL,VIEW
+EDW,BIQLETL,FactSalesDetailHistory_CDC,VIEW
+EDW,BIQLETL,FactSalesHeader_CDC,VIEW
+EDW,BIQLETL,FactSalesHeader_CDC_BU,VIEW
+EDW,BIQLETL,FactSalesHeader_CDC_GL,VIEW
+EDW,BIQLETL,FactSalesHeaderHistory_CDC,VIEW
+EDW,BIQLETL,FactSalesPriceAdjustments_CDC,VIEW
+EDW,BIQLETL,FactSupplierPricing_CDC,VIEW
+EDW,BIQLETL,FactWOPartsList_CDC,VIEW
+EDW,BIQLETL,FactWOProductionCost_CDC,VIEW
+EDW,BIQLETL,FactWORouting_CDC,VIEW
+EDW,BIQLETL,FactWOTimeTransactions_CDC,VIEW
+EDW,BIQLETL,GetAuditTables,VIEW
+EDW,BIQLETL,GetKeyColumns,VIEW
+EDW,BIQLETL,SBL_CODE_A_LOOKUP,VIEW
+EDW,BIQLETL,SBL_CODE_C_LOOKUP,VIEW
+EDW,BIQLETL,SBL_CODE_E_LOOKUP,VIEW
+EDW,BIQLETL,SBL_CODE_I_LOOKUP,VIEW
+EDW,BIQLETL,SBL_CODE_W_LOOKUP,VIEW
+EDW,BIQLETL,SBL_SOURCE_DESC_LOOKUP,VIEW
+EDW,BIQLETL,vwAudit_DimAccount_Target,VIEW
+EDW,BIQLETL,vwAudit_DimAddress_Target,VIEW
+EDW,BIQLETL,vwAudit_DimAddressBookPhoneNumber_Target,VIEW
+EDW,BIQLETL,vwAudit_DimAsset_Target,VIEW
+EDW,BIQLETL,vwAudit_DimBillOfMaterial_Target,VIEW
+EDW,BIQLETL,vwAudit_DimBusinessUnit_Target,VIEW
+EDW,BIQLETL,vwAudit_DimCompany_Target,VIEW
+EDW,BIQLETL,vwAudit_DimCurrencyCode_Target,VIEW
+EDW,BIQLETL,vwAudit_DimCurrencyCrossRatesCalc_Target,VIEW
+EDW,BIQLETL,vwAudit_DimCurrencyExchangeRates_Target,VIEW
+EDW,BIQLETL,vwAudit_DimCurrencyRestatementRates_Target,VIEW
+EDW,BIQLETL,vwAudit_DimCustomer_Target,VIEW
+EDW,BIQLETL,vwAudit_DimCustomerCommissionInfo_Target,VIEW
+EDW,BIQLETL,vwAudit_DimDistributionAAI_Target,VIEW
+EDW,BIQLETL,vwAudit_DimItem_Target,VIEW
+EDW,BIQLETL,vwAudit_DimItemBasePrice_Target,VIEW
+EDW,BIQLETL,vwAudit_DimItemBranch_Target,VIEW
+EDW,BIQLETL,vwAudit_DimItemCost_Target,VIEW
+EDW,BIQLETL,vwAudit_DimItemCostComponents_Target,VIEW
+EDW,BIQLETL,vwAudit_DimItemCrossReference_Target,VIEW
+EDW,BIQLETL,vwAudit_DimItemPreferenceGroups_Target,VIEW
+EDW,BIQLETL,vwAudit_DimItemUOMConversion_Target,VIEW
+EDW,BIQLETL,vwAudit_DimLedgerType_Target,VIEW
+EDW,BIQLETL,vwAudit_DimLocation_Target,VIEW
+EDW,BIQLETL,vwAudit_DimLot_Target,VIEW
+EDW,BIQLETL,vwAudit_DimPaymentTerms_Target,VIEW
+EDW,BIQLETL,vwAudit_DimRouting_Target,VIEW
+EDW,BIQLETL,vwAudit_DimSupplementalData_Target,VIEW
+EDW,BIQLETL,vwAudit_DimSupplier_Target,VIEW
+EDW,BIQLETL,vwAudit_DimSupplierItem_Target,VIEW
+EDW,BIQLETL,vwAudit_DimTestDefinition_Target,VIEW
+EDW,BIQLETL,vwAudit_DimUDC_Target,VIEW
+EDW,BIQLETL,vwAudit_DimUser_Target,VIEW
+EDW,BIQLETL,vwAudit_DimWorkOrder_Target,VIEW
+EDW,BIQLETL,vwAudit_FactAPDetail_Target,VIEW
+EDW,BIQLETL,vwAudit_FactAPPaymentDetail_Target,VIEW
+EDW,BIQLETL,vwAudit_FactARDetail_Target,VIEW
+EDW,BIQLETL,vwAudit_FactARReceiptsDetail_Target,VIEW
+EDW,BIQLETL,vwAudit_FactForecast_Target,VIEW
+EDW,BIQLETL,vwAudit_FactGLDetail_Target,VIEW
+EDW,BIQLETL,vwAudit_FactGLPeriodBalances_Target,VIEW
+EDW,BIQLETL,vwAudit_FactGLYearBalances_Target,VIEW
+EDW,BIQLETL,vwAudit_FactInventoryAsOfPerBalances_Target,VIEW
+EDW,BIQLETL,vwAudit_FactInventoryAsOfYearBalances_Target,VIEW
+EDW,BIQLETL,vwAudit_FactInventoryDetail_Target,VIEW
+EDW,BIQLETL,vwAudit_FactInventorySnapshot_Target,VIEW
+EDW,BIQLETL,vwAudit_FactPriceExceptions_Target,VIEW
+EDW,BIQLETL,vwAudit_FactPurchaseOrderDetail_Target,VIEW
+EDW,BIQLETL,vwAudit_FactPurchaseOrderReceiver_Target,VIEW
+EDW,BIQLETL,vwAudit_FactQCDetail_Target,VIEW
+EDW,BIQLETL,vwAudit_FactQCPreferenceProfile_Target,VIEW
+EDW,BIQLETL,vwAudit_FactSalesDetail_Target,VIEW
+EDW,BIQLETL,vwAudit_FactSalesHeader_Target,VIEW
+EDW,BIQLETL,vwAudit_FactSalesPriceAdjustments_Target,VIEW
+EDW,BIQLETL,vwAudit_FactWOPartsList_Target,VIEW
+EDW,BIQLETL,vwAudit_FactWOProductionCost_Target,VIEW
+EDW,BIQLETL,vwAudit_FactWORouting_Target,VIEW
+EDW,BIQLETL,vwAudit_FactWOTimeTransactions_Target,VIEW
+EDW,BIQLETL,vwAuditData,VIEW
+EDW,BIQLETL,vwAuditData_MasterTargetAudit,VIEW
+EDW,BIQLETL,vwAuditData_MasterTargetAudit_Fail,VIEW
+EDW,BIQLETL,vwAuditFailNotification,VIEW
+EDW,BIQLRPT,vItemCost_History,VIEW
+EDW,BIQLRPT,vItemCostComponents_History,VIEW
+EDW,BIQLSEC,SecurityUserDataItem,VIEW
+EDW,BIQLSEC,SecurityUserList,VIEW

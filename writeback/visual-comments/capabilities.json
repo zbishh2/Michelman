@@ -1,0 +1,179 @@
+{
+  "dataRoles": [
+    {
+      "displayName": "Columns",
+      "name": "columns",
+      "kind": "GroupingOrMeasure",
+      "description": "Drag any model fields here (sales order line grain). Reorder by drag in the visual. Use the Table › Comment columns position setting to slot the Comments / Latest comment columns at any position."
+    },
+    {
+      "displayName": "Order Line ID",
+      "name": "orderLineId",
+      "kind": "Grouping",
+      "description": "Hidden join key: the Orders [Order Line ID] string (e.g. \"00010,74,CM,4.000\"). Used to look up the comment thread for each row."
+    },
+    {
+      "displayName": "Hidden Columns (export-only)",
+      "name": "hiddenColumns",
+      "kind": "GroupingOrMeasure",
+      "description": "Fields here are not displayed in the visual but are included in Power BI's standard 'Export data' output."
+    },
+    {
+      "displayName": "Current User Email",
+      "name": "currentUser",
+      "kind": "Measure",
+      "description": "Bind a measure like CurrentUserEmail = USERPRINCIPALNAME() here. Used to look up the viewer's role so listed users can add/edit/delete comments."
+    },
+    {
+      "displayName": "Company List",
+      "name": "companyList",
+      "kind": "GroupingOrMeasure",
+      "description": "Optional. Supplies the tick-list of Order Companies in the People panel. Prefer a MEASURE returning the comma-separated full list ([Company List (All)]) — any column here is a group-by, so page filters prune it to the companies already on screen and the picker cannot offer the rest. A column still works (use a FACT column, never a dimension); leave empty and the list is derived from the Order Line ID at no cost."
+    }
+  ],
+  "objects": {
+    "title": {
+      "displayName": "Title",
+      "properties": {
+        "show": {
+          "type": {
+            "bool": true
+          }
+        },
+        "titleText": {
+          "type": {
+            "text": true
+          }
+        },
+        "fontSize": {
+          "type": {
+            "numeric": true
+          }
+        },
+        "fontColor": {
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "table": {
+      "displayName": "Table",
+      "properties": {
+        "fontSize": {
+          "type": {
+            "numeric": true
+          }
+        },
+        "commentsPosition": {
+          "type": {
+            "numeric": true
+          }
+        },
+        "freezeColumns": {
+          "type": {
+            "numeric": true
+          }
+        }
+      }
+    },
+    "general": {
+      "displayName": "General",
+      "properties": {
+        "columnWidths": {
+          "type": {
+            "text": true
+          }
+        },
+        "columnOrder": {
+          "type": {
+            "text": true
+          }
+        },
+        "sortState": {
+          "type": {
+            "text": true
+          }
+        },
+        "columnFilters": {
+          "type": {
+            "text": true
+          }
+        },
+        "filter": {
+          "type": {
+            "filter": true
+          }
+        }
+      }
+    }
+  },
+  "dataViewMappings": [
+    {
+      "conditions": [
+        {
+          "orderLineId": {
+            "max": 1
+          },
+          "currentUser": {
+            "max": 1
+          },
+          "companyList": {
+            "max": 1
+          }
+        }
+      ],
+      "table": {
+        "rows": {
+          "select": [
+            {
+              "for": {
+                "in": "columns"
+              }
+            },
+            {
+              "for": {
+                "in": "orderLineId"
+              }
+            },
+            {
+              "for": {
+                "in": "hiddenColumns"
+              }
+            },
+            {
+              "for": {
+                "in": "currentUser"
+              }
+            },
+            {
+              "for": {
+                "in": "companyList"
+              }
+            }
+          ],
+          "dataReductionAlgorithm": {
+            "top": {
+              "count": 30000
+            }
+          }
+        }
+      }
+    }
+  ],
+  "privileges": [
+    {
+      "name": "WebAccess",
+      "essential": true,
+      "parameters": [
+        "https://michelman-writeback.michelman-bi.workers.dev"
+      ]
+    }
+  ],
+  "supportsMultiVisualSelection": false,
+  "supportsLandingPage": false
+}

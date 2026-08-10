@@ -1,0 +1,124 @@
+{
+  "dataRoles": [
+    {
+      "displayName": "Current User Email",
+      "name": "currentUser",
+      "kind": "Measure",
+      "description": "REQUIRED — bind the [Current User] measure (USERPRINCIPALNAME()) here. Editing is admin-only and the admin lookup matches this value against the People roster, so leaving this field well EMPTY makes the whole grid read-only for everyone, including admins. Also used for write attribution and the per-user saved column layout."
+    }
+  ],
+  "objects": {
+    "title": {
+      "displayName": "Title",
+      "properties": {
+        "show": {
+          "type": {
+            "bool": true
+          }
+        },
+        "titleText": {
+          "type": {
+            "text": true
+          }
+        },
+        "fontSize": {
+          "type": {
+            "numeric": true
+          }
+        },
+        "fontColor": {
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "table": {
+      "displayName": "Table",
+      "properties": {
+        "fontSize": {
+          "type": {
+            "numeric": true
+          }
+        },
+        "freezeColumns": {
+          "type": {
+            "numeric": true
+          }
+        }
+      }
+    },
+    "general": {
+      "displayName": "General",
+      "properties": {
+        "columnWidths": {
+          "type": {
+            "text": true
+          }
+        },
+        "columnOrder": {
+          "type": {
+            "text": true
+          }
+        },
+        "sortState": {
+          "type": {
+            "text": true
+          }
+        },
+        "columnFilters": {
+          "type": {
+            "text": true
+          }
+        },
+        "filter": {
+          "type": {
+            "filter": true
+          }
+        }
+      }
+    }
+  },
+  "dataViewMappings": [
+    {
+      "conditions": [
+        {
+          "currentUser": {
+            "max": 1
+          }
+        }
+      ],
+      "table": {
+        "rows": {
+          "select": [
+            {
+              "for": {
+                "in": "currentUser"
+              }
+            }
+          ],
+          "dataReductionAlgorithm": {
+            "top": {
+              "count": 30000
+            }
+          }
+        }
+      }
+    }
+  ],
+  "privileges": [
+    {
+      "name": "WebAccess",
+      "essential": true,
+      "parameters": [
+        "https://michelman-writeback.michelman-bi.workers.dev"
+      ]
+    }
+  ],
+  "supportsMultiVisualSelection": false,
+  "supportsLandingPage": false
+}

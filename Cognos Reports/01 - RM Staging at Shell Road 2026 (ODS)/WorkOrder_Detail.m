@@ -1,0 +1,107 @@
+// ============================================================================
+// Report 01 - RM Staging at Shell Road 2026 (ODS)
+// QUERY: WorkOrder_Detail  ->  bottom table (Cognos query object "Query1")
+//
+// Columns: Work Order Start | Raw Material | WO Number | FG Item
+//
+// SOURCE: ODSPROD / ODS / PRODDTA (JDE), SQL Server. Native T-SQL, folds.
+//
+// LOGIC: Cognos "Query1" INNER-JOINs the planned work-order parts to the short-
+//   material list ("RM Shortage CINC") on component, so the detail shows ONLY the
+//   work orders whose raw material is short. We reproduce that by inner-joining the
+//   same shortage subquery used by RM_Requirements (returning only short component
+//   keys) directly in SQL. Doing it in SQL (not a Power Query merge to the
+//   RM_Requirements query) avoids the Formula Firewall error you'd hit when one
+//   query both calls Sql.Database AND references another query.
+//
+//   The short-list subquery is intentionally a copy of RM_Requirements' shortage
+//   logic (same filters, same double-count/AVG parity quirks) so the two tables
+//   agree on exactly which materials are short. If that logic changes, update both.
+//
+// DISTINCT mirrors the Cognos Planned_WO grouping (collapses duplicate part rows).
+// ============================================================================
+let
+    Source = Sql.Database("ODSPROD", "ODS"),
+    Data = Value.NativeQuery(
+        Source,
+        "
+        SELECT DISTINCT
+            (CASE WHEN wo.WASTRT > 0
+                  THEN DATEADD(DAY, (wo.WASTRT % 1000) - 1, DATEFROMPARTS(1900 + (wo.WASTRT / 1000), 1, 1))
+             END)                          AS [Work Order Start],
+            wo.WADOCO                       AS [WO Number],
+            LTRIM(RTRIM(wp.WMCPIL))         AS [Raw Material],
+            LTRIM(RTRIM(wo.WALITM))         AS [FG Item]
+        FROM PRODDTA.F4801 wo
+        JOIN PRODDTA.F3111 wp ON wo.WADOCO = wp.WMDOCO
+        JOIN PRODDTA.F4102 ib ON wp.WMMCU = ib.IBMCU AND wp.WMCPIT = ib.IBITM
+        CROSS JOIN (SELECT CAST(GETDATE() AS date) AS Today) t
+        CROSS APPLY (SELECT (((DATEDIFF(DAY, '2003-01-06', t.Today) % 7) + 7) % 7) + 1 AS DowMon1) dw
+        CROSS APPLY (SELECT CASE WHEN dw.DowMon1 IN (4,5) THEN 4 WHEN dw.DowMon1 = 6 THEN 3 ELSE 2 END AS DaysFwd) fw
+        -- INNER JOIN to the short-material list (mirrors Cognos Query1 -> RM Shortage CINC):
+        -- same shortage logic as RM_Requirements, returning only the short component keys.
+        JOIN (
+            SELECT p.Component2nd
+            FROM (
+                SELECT LTRIM(RTRIM(wp2.WMCPIL)) AS Component2nd,
+                       SUM((wp2.WMUORG - wp2.WMTRQT) / 10000.0) AS OpenRM
+                FROM PRODDTA.F4801 wo2
+                JOIN PRODDTA.F3111 wp2 ON wo2.WADOCO = wp2.WMDOCO
+                JOIN PRODDTA.F4102 ib2 ON wp2.WMMCU = ib2.IBMCU AND wp2.WMCPIT = ib2.IBITM
+                CROSS JOIN (SELECT CAST(GETDATE() AS date) AS Today) t2
+                CROSS APPLY (SELECT (((DATEDIFF(DAY, '2003-01-06', t2.Today) % 7) + 7) % 7) + 1 AS DowMon1) dw2
+                CROSS APPLY (SELECT CASE WHEN dw2.DowMon1 IN (4,5) THEN 4 WHEN dw2.DowMon1 = 6 THEN 3 ELSE 2 END AS DaysFwd) fw2
+                WHERE LTRIM(RTRIM(wo2.WAMMCU)) = 'CINC'
+                  AND wo2.WASRST NOT IN ('93','94','95','97','99','MM','CD')
+                  AND ((wp2.WMUORG - wp2.WMTRQT) / 10000.0) > 0
+                  AND LTRIM(RTRIM(wo2.WALITM)) NOT LIKE '%-%'
+                  AND LTRIM(RTRIM(wp2.WMCPIL)) NOT LIKE '%H2O%'
+                  AND ib2.IBPRP4 IN ('RRC','REC','RCB','TOL','PKG','RBW')
+                  AND (CASE WHEN wp2.WMDRQJ > 0
+                            THEN DATEADD(DAY, (wp2.WMDRQJ % 1000) - 1, DATEFROMPARTS(1900 + (wp2.WMDRQJ / 1000), 1, 1))
+                       END)
+                      BETWEEN DATEADD(DAY, -7, t2.Today) AND DATEADD(DAY, fw2.DaysFwd, t2.Today)
+                GROUP BY LTRIM(RTRIM(wp2.WMCPIL))
+            ) p
+            LEFT JOIN (
+                SELECT LTRIM(RTRIM(ib3.IBLITM)) AS Component2nd, SUM(il3.LIPQOH / 10000.0) AS QtyOnHand
+                FROM PRODDTA.F4102 ib3
+                JOIN PRODDTA.F41021 il3 ON ib3.IBITM = il3.LIITM AND ib3.IBMCU = il3.LIMCU
+                WHERE (il3.LIPQOH / 10000.0) > 0
+                  AND LTRIM(RTRIM(ib3.IBMCU)) = 'CINC'
+                  AND LTRIM(RTRIM(ib3.IBLITM)) NOT LIKE '%H2O%'
+                  AND il3.LILOTS IN (' ','-')
+                GROUP BY LTRIM(RTRIM(ib3.IBLITM)), il3.LILOTS
+            ) ioh ON p.Component2nd = ioh.Component2nd
+            WHERE p.Component2nd <> ' '
+            GROUP BY p.Component2nd
+            HAVING CASE WHEN AVG(ioh.QtyOnHand) IS NULL         THEN 'SHORT'
+                        WHEN AVG(ioh.QtyOnHand) = 0             THEN 'SHORT'
+                        WHEN AVG(ioh.QtyOnHand) < SUM(p.OpenRM) THEN 'SHORT'
+                        ELSE 'OK' END = 'SHORT'
+        ) short ON LTRIM(RTRIM(wp.WMCPIL)) = short.Component2nd
+        WHERE LTRIM(RTRIM(wo.WAMMCU)) = 'CINC'
+          AND wo.WASRST NOT IN ('93','94','95','97','99','MM','CD')
+          AND ((wp.WMUORG - wp.WMTRQT) / 10000.0) > 0
+          AND LTRIM(RTRIM(wo.WALITM)) NOT LIKE '%-%'
+          AND LTRIM(RTRIM(wp.WMCPIL)) NOT LIKE '%H2O%'
+          AND ib.IBPRP4 IN ('RRC','REC','RCB','TOL','PKG','RBW')
+          AND (CASE WHEN wp.WMDRQJ > 0
+                    THEN DATEADD(DAY, (wp.WMDRQJ % 1000) - 1, DATEFROMPARTS(1900 + (wp.WMDRQJ / 1000), 1, 1))
+               END)
+              BETWEEN DATEADD(DAY, -7, t.Today) AND DATEADD(DAY, fw.DaysFwd, t.Today)
+        ",
+        null,
+        [EnableFolding = true]
+    ),
+    Typed = Table.TransformColumnTypes(
+        Data,
+        {
+            {"Work Order Start", type date},
+            {"WO Number", Int64.Type},
+            {"Raw Material", type text},
+            {"FG Item", type text}
+        }
+    )
+in
+    Typed

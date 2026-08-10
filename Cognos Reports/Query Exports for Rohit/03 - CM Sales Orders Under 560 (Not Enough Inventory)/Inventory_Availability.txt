@@ -1,0 +1,26 @@
+/* ------------------------------------------------------------------
+   Report : 03 - CM Sales Orders Under 560 (Not Enough Inventory)
+   Query  : Inventory_Availability
+   Source : ODSPROD / ODS / PRODDTA (JDE), SQL Server
+   Note   : Native T-SQL as executed by Power BI (query folding enabled).
+   ------------------------------------------------------------------ */
+
+SELECT
+    LTRIM(RTRIM(ib.IBMCU))                                   AS [Plant],
+    LTRIM(RTRIM(ib.IBLITM))                                  AS [Item],
+    il.LIPQOH / 10000.0                                      AS [On Hand],
+    il.LIHCOM / 10000.0                                      AS [Commit],
+    (CASE WHEN (il.LILOTS IS NULL OR LTRIM(RTRIM(il.LILOTS)) = '')
+          THEN (il.LIPQOH - il.LIHCOM) / 10000.0
+          ELSE 0 END)                                        AS [AVAIL],
+    il.LILOCN                                                AS [Location],
+    LTRIM(RTRIM(il.LILOTN))                                  AS [Lot#],
+    il.LILOTS                                                AS [Status],
+    LTRIM(RTRIM(tag.IMBULK))                                 AS [Bulk]
+FROM PRODDTA.F4102 ib
+INNER JOIN PRODDTA.F41021 il  ON ib.IBMCU = il.LIMCU AND ib.IBITM = il.LIITM
+INNER JOIN PRODDTA.F4101 im   ON ib.IBITM = im.IMITM
+INNER JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+WHERE LTRIM(RTRIM(ib.IBMCU)) IN ('CINC','CIN2','CIN4')
+  AND il.LIPQOH / 10000.0 > 0
+  AND ( LTRIM(RTRIM(il.LILOTS)) <> '' OR (il.LIPQOH - il.LIHCOM) / 10000.0 > 0 )

@@ -1,0 +1,6 @@
+Section,Item,Key,Field,Cognos,PBI_live,Severity,Normalized_Match,Note
+Inventory,U701-OP,F11/4582014,Plant,CIN2,CIN2 (trimmed),RESOLVED 2026-07-07,YES,LTRIM(RTRIM) fix deployed to live partition + refreshed; Plant now renders CIN2 (len 4) and ties Cognos. Was display-only (JDE MCU was right-justified CHAR(12)).
+Inventory,U701-OP,F42/H01260500084D,Plant,CIN2,CIN2 (trimmed),RESOLVED 2026-07-07,YES,Same as above.
+Inventory,U701-OP,*,Location,F11/F42 (trailing sp in Cognos),F11/F42,COSMETIC,YES(trim),LILOCN untrimmed by design.
+Inventory,U701-OP,*,Status,' ' space,'' empty,COSMETIC,YES(trim),LILOTS blank both.
+SO,both,*,Customer,trailing-space padded,padded,COSMETIC,YES(trim),"ABALPH CHAR padding, untrimmed by design both sides."

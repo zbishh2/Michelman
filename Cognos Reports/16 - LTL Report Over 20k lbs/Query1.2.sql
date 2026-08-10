@@ -1,0 +1,35 @@
+-- Report 16 - LTL report over 20k lbs
+-- Query object: "Query1"  ->  the query BOUND TO THE RENDERED PAGE (List1).
+--
+-- Query1 has NO standalone generated SQL. It is a Cognos framework JOIN assembled
+-- at render time from the two SQL queries above (Report + CAM ID). Documented here
+-- from the report XML (<query name="Query1">).
+--
+-- JOIN (from XML <joinOperation>):
+--     [Report]  LEFT JOIN  [CAM ID]   (cardinality 0:1 on the CAM ID side)
+--     ON  [Report].[CSR AB Number] = [CAM ID].[AB Number]
+--
+-- SELECTION (from XML): all 12 display-relevant items carried from [Report]:
+--     Order Company, Order Number, Order Type, Carrier AB Number, Carrier Name,
+--     CSR Name, Primary Quantity Ordered, Primary UOM, Next Status, Customer Name,
+--     Order Line, Scheduled Pick Date, Total(Primary Quantity Ordered)
+--   PLUS two burst-only items from [CAM ID]:  CAMID, AB Number
+--
+--   NOTE: Query1 re-wraps the two quantity items with Average():
+--       Primary Quantity Ordered        = Average([Report].[Primary Quantity Ordered])
+--       Total(Primary Quantity Ordered) = Average([Report].[Total(Primary Quantity Ordered)])
+--   Because the join is 0:1 (each Report row matches <=1 CAM ID row), the group is a
+--   single value, so Average() is an identity no-op that preserves the value and grain.
+--   => Does NOT change any displayed number. Do not replicate the Average in PBI.
+--
+-- BURST (from XML <burst refQuery="Query1">):
+--     burstGroups   = [AB Number]              (partition output per CSR)
+--     burstLabel    = [AB Number]
+--     burstRecipient= [CAMID]  type="directory"  (deliver each slice to that CAMID)
+--   => Power BI has no burst. Replace with a CSR slicer / RLS / subscriptions.
+--      See BUILD.md "Burst analysis + PBI replacement options".
+--
+-- RENDERED COLUMNS ACTUALLY SHOWN on List1 (11) - none are CAMID / AB Number:
+--   Scheduled Pick Date, Carrier AB Number, Customer Name, Order Number,
+--   Next Status, Order Type, Order Line, Carrier Name, CSR Name,
+--   Primary Quantity Ordered, Primary UOM

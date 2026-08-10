@@ -1,0 +1,35 @@
+/* ------------------------------------------------------------------
+   Report : 09 - Ivan FC 2023
+   Query  : Safety_Stock_HP
+   Source : ODSPROD / ODS / PRODDTA (JDE), SQL Server
+   Note   : Native T-SQL as executed by Power BI (query folding enabled).
+   ------------------------------------------------------------------ */
+
+SELECT DISTINCT
+    CASE LTRIM(RTRIM(ib.IBMCU))
+         WHEN 'CINC' THEN 'Americas'
+         WHEN 'CIN2' THEN 'Americas'
+         WHEN 'CIN4' THEN 'Americas'
+         WHEN 'AUBA' THEN 'EMEA'
+         WHEN 'AUB2' THEN 'EMEA'
+         WHEN 'SING' THEN 'PacRim'
+         WHEN 'SNG4' THEN 'PacRim'
+         WHEN 'MUM3' THEN 'India'
+         WHEN 'SHAN' THEN 'China'
+    END                                     AS [REGION],
+    LTRIM(RTRIM(ib.IBMCU))                  AS [Branch Plant],
+    LTRIM(RTRIM(tag.IMGBLK))                AS [Global Bulk Item],
+    LTRIM(RTRIM(tag.IMBULK))                AS [Bulk Item],
+    LTRIM(RTRIM(ib.IBLITM))                 AS [2nd Item Number],
+    im.IMUOM1                               AS [Primary UOM],
+    ib.IBSAFE/10000.0                       AS [Safety Stock],
+    CASE WHEN im.IMUOM1 = 'LB' THEN ib.IBSAFE/10000.0
+         WHEN im.IMUOM1 = 'KG' THEN (ib.IBSAFE/10000.0) / 0.453593
+         WHEN im.IMUOM1 = 'EA' THEN (ib.IBSAFE/10000.0) * 40
+         ELSE 0
+    END                                     AS [LB Safety Stock]
+FROM PRODDTA.F4102 ib
+JOIN PRODDTA.F4101   im  ON ib.IBITM = im.IMITM
+JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+WHERE LTRIM(RTRIM(ib.IBMCU)) IN ('AUBA', 'AUB2', 'SING', 'SNG4', 'SHAN', 'MUM3')
+  AND LTRIM(RTRIM(tag.IMBULK)) IN ('JS168.S', 'ME91735.S', 'ME92040.S', 'PP05S.S', 'ME91240G.S', 'MG7140.S', 'TSPP01.S', 'ME92040.S', 'ME91735.S', 'ME87235.S', 'ME91735.S', 'ME90640.S', '211018IX.S', 'ME92040.S', 'PP236A.S', 'NYS2104.S', 'PP236A.S', 'ME91240G.S', 'JS168.E', 'ME92040.S', 'PP236A.S', 'ME91240G.S', 'ME91735.S', 'ME91735.S', 'ME91735.S', 'BRIJS2.S', 'BRIJS20.S', 'JS168.E', 'BRIJS2.E', 'BRIJS20.E', 'ME91735.E')

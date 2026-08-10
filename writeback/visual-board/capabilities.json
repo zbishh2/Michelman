@@ -1,0 +1,50 @@
+{
+  "dataRoles": [
+    {
+      "displayName": "Current User Email",
+      "name": "currentUser",
+      "kind": "Measure",
+      "description": "Bind [Current User] (USERPRINCIPALNAME()). Stamps the author on each post; the thread is readable without it."
+    }
+  ],
+  "dataViewMappings": [
+    {
+      "conditions": [{ "currentUser": { "max": 1 } }],
+      "single": { "role": "currentUser" }
+    }
+  ],
+  "objects": {
+    "title": {
+      "displayName": "Title",
+      "properties": {
+        "show": { "type": { "bool": true } },
+        "titleText": { "type": { "text": true } },
+        "fontSize": { "type": { "numeric": true } },
+        "fontColor": { "type": { "fill": { "solid": { "color": true } } } }
+      }
+    },
+    "board": {
+      "displayName": "Board",
+      "properties": {
+        "boardKey": { "type": { "text": true } },
+        "placeholder": { "type": { "text": true } },
+        "readOnly": { "type": { "bool": true } }
+      }
+    },
+    "text": {
+      "displayName": "Text",
+      "properties": {
+        "fontSize": { "type": { "numeric": true } }
+      }
+    }
+  },
+  "supportsHighlight": false,
+  "suppressDefaultTitle": true,
+  "privileges": [
+    {
+      "name": "WebAccess",
+      "essential": true,
+      "parameters": ["https://michelman-writeback.michelman-bi.workers.dev"]
+    }
+  ]
+}

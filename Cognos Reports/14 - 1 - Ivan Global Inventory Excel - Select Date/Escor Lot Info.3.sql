@@ -1,0 +1,8 @@
+
+select distinct "ITEM_LOT_NUMBER"."BRANCH_PLANT" "Branch_Plant", "ITEM"."BULK_ITEM" "Bulk_Item", "ITEM"."ITEM_NUMBER_2ND" "C_2nd_Item_Number", "ITEM_LOT_NUMBER"."ITEM_NUMBER__SHORT" "Item_Short_ID", "ITEM_LOT_NUMBER"."LOT_NUMBER" "Lot_Number", "ITEM_LOT_NUMBER"."SUPPLIER_LOT_NUMBER" "Supplier_Lot_Number", "ITEM_LOT_NUMBER"."MEMO_LOT_1" "Memo_Lot_1", "ITEM_LOT_NUMBER"."MEMO_LOT_2" "Memo_Lot_2", "ITEM_LOT_NUMBER"."ON_HAND_DATE" "On_Hand_Date"
+ from "DW_LEGACY"."ITEM_LOT_NUMBERS" "ITEM_LOT_NUMBER", "DW_LEGACY"."ITEM" "ITEM"
+ where "ITEM"."BULK_ITEM" in (N'ESC5200', N'ESC5200.E', N'ESC5200.S') and "ITEM_LOT_NUMBER"."ITEM_LOT_NUMBERS__ITEM_SID"="ITEM"."ITEM_SID"
+ order by "On_Hand_Date" asc nulls last
+
+
+

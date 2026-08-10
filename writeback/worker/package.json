@@ -1,0 +1,18 @@
+{
+  "name": "michelman-writeback-worker",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "db:init": "wrangler d1 execute michelman-writeback --remote --file=./schema.sql",
+    "db:init-local": "wrangler d1 execute michelman-writeback --local --file=./schema.sql",
+    "secret:set": "wrangler secret put SHARED_SECRET"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250101.0",
+    "typescript": "^5.4.0",
+    "wrangler": "^4.0.0"
+  }
+}

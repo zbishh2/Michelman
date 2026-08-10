@@ -1,0 +1,19 @@
+metric,value
+cognos_rows,24
+pbi_rows,22
+exact_match_rows,17
+only_cognos_rows,7
+only_pbi_rows,5
+match_rate_vs_cognos,0.7083
+
+--- column-level mismatches on shared-key rows ---
+key,column,cognos_value,pbi_value
+"('2647987', 'PP05S.S-OP', 'SNG4')",Next Status,540,530
+"('2647987', 'PP05S.S-OP', 'SNG4')",Last Status,535,525
+"('2660394', 'ME90640.S-PD', 'SNG4')",Hold Orders Code,C1,OC
+"('2660394', 'ME91240G.S-PD', 'SNG4')",Hold Orders Code,C1,OC
+"('2726427', 'NYS2104.S-OP', 'SNG4')",Next Status,560,540
+"('2726427', 'NYS2104.S-OP', 'SNG4')",ORDER KGs,39600.0,40000.0
+"('2726427', 'NYS2104.S-OP', 'SNG4')",ORDER LBs,87302.935,88184.782
+"('2726427', 'NYS2104.S-OP', 'SNG4')",Prim QTY,39600.0,40000.0
+"('2726427', 'NYS2104.S-OP', 'SNG4')",2nd QTY,198.0,200.0

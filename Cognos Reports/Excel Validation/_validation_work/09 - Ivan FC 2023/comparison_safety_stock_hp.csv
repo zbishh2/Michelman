@@ -1,0 +1,10 @@
+metric,value
+cognos_rows,140
+pbi_rows,140
+exact_match_rows,140
+only_cognos_rows,0
+only_pbi_rows,0
+match_rate_vs_cognos,1.0
+
+--- column-level mismatches on shared-key rows ---
+key,column,cognos_value,pbi_value

@@ -1,0 +1,272 @@
+select distinct decode(trim(both
+ from "F4211_Open_Sales_Orders"."SDMCU"), 'CINC', 'Americas', 'CIN2', 'Americas', 'CIN4', 'Americas', 'GRAN', 'Americas', 'DANC', 'Americas', 'BPIP', 'Americas', 'AUBA', 'Aubange', 'AUB2', 'Aubange', 'SHAN', 'Shanghai', 'SING', 'Singapore', 'SNG4', 'Singapore', 'MUM3', 'Mumbai', 'Americas') "REGION"
+ from "PRODDTA"."F4211" "F4211_Open_Sales_Orders"
+ where "F4211_Open_Sales_Orders"."SDNXTR" not  in ('999')
+ order by "REGION" asc nulls last
+
+
+
+
+with "Item_Branch7" as (
+select distinct trim(both
+ from "F4102_Item_Branch_Alias_WO"."IBMCU") "Branch_Plant", trim(both
+ from "F554101_ITEM_TAG"."IMGBLK") "Global_Bulk_Item", trim(both
+ from "F554101_ITEM_TAG"."IMBULK") "Bulk_Item", trim(both
+ from "F4102_Item_Branch_Alias_WO"."IBLITM") "C_2nd_Item_Number"
+ from "PRODDTA"."F4102" "F4102_Item_Branch_Alias_WO", "PRODDTA"."F554101" "F554101_ITEM_TAG", "PRODDTA"."F4101" "F4101_Item_Master"
+ where "F4102_Item_Branch_Alias_WO"."IBITM"="F4101_Item_Master"."IMITM" and "F4101_Item_Master"."IMITM"="F554101_ITEM_TAG"."IMITM"), "F4211_Open_Sales_Orders" as (
+select "F4211"."SDKCOO", "F4211"."SDDOCO", "F4211"."SDDCTO", "F4211"."SDLNID", "F4211"."SDMCU", "F4211"."SDSHAN", case  when "F4211"."SDDRQJ">0 then "PRODDTA".JUL2DATE("F4211"."SDDRQJ") else NULL end  "SDDRQJ", case  when "F4211"."SDTRDJ">0 then "PRODDTA".JUL2DATE("F4211"."SDTRDJ") else NULL end  "SDTRDJ", case  when "F4211"."SDPDDJ">0 then "PRODDTA".JUL2DATE("F4211"."SDPDDJ") else NULL end  "SDPDDJ", "F4211"."SDVR01", "F4211"."SDLITM", "F4211"."SDNXTR", "F4211"."SDUOM1", "F4211"."SDPQOR", "F4211"."SDUOM2", "F4211"."SDSQOR"
+ from "PRODDTA"."F4211" "F4211"), "F4211_F0006_join_to_F42140" as (
+select "F4211"."SDKCOO", "F4211"."SDDOCO", "F4211"."SDDCTO", "F4211"."SDLNID", "F4211"."SDSHAN", case  when NVL(trim(both
+ from "F0006"."MCRP01"), '-') is null  then  null  else NVL(trim(both
+ from "F0006"."MCRP01"), '-') || 'GTM' end  "CMRTYPE"
+ from "PRODDTA"."F4211" "F4211" LEFT OUTER JOIN "PRODDTA"."F0006" "F0006" on "F4211"."SDEMCU"="F0006"."MCMCU"), "Sales_Orders6" as (
+select "F4211_Open_Sales_Orders"."SDKCOO" "Order_Company", trim(both
+ from "F4211_Open_Sales_Orders"."SDMCU") "Branch_Plant", "F4211_Open_Sales_Orders"."SDDOCO" "Order_Number", "F4211_Open_Sales_Orders"."SDLNID"/1000 "Order_Line", trim(both
+ from "F4211_Open_Sales_Orders"."SDLITM") "C_2nd_Item_Number", "F4211_Open_Sales_Orders"."SDNXTR" "Next_Status", "F4211_Open_Sales_Orders"."SDTRDJ" "Order_Date", sum("F4211_Open_Sales_Orders"."SDPQOR"/10000) "Primary_Quantity_Ordered", "F4211_Open_Sales_Orders"."SDUOM1" "Primary_UOM", sum("F4211_Open_Sales_Orders"."SDSQOR"/10000) "Secondary_Quantity_Ordered", "F4211_Open_Sales_Orders"."SDUOM2" "Secondary_UOM", "F4211_Open_Sales_Orders"."SDDRQJ" "Requested_Date", "F4211_Open_Sales_Orders"."SDPDDJ" "Promised_Ship_Date", trim(both
+ from decode("F0101_Sales_Rep"."ABALPH", NULL, 'Unassigned', "F0101_Sales_Rep"."ABALPH")) "TM_Name", trim(both
+ from "F4211_Open_Sales_Orders"."SDVR01") "Customer_PO", trim(both
+ from "F0101_Ship_To_Customer"."ABALPH") "Customer_Name", decode(trim(both
+ from "F4211_Open_Sales_Orders"."SDMCU"), 'CINC', 'Americas', 'CIN2', 'Americas', 'CIN4', 'Americas', 'GRAN', 'Americas', 'DANC', 'Americas', 'BPIP', 'Americas', 'AUBA', 'Aubange', 'AUB2', 'Aubange', 'SHAN', 'Shanghai', 'SING', 'Singapore', 'SNG4', 'Singapore', 'MUM3', 'Mumbai', 'Americas') "REGION"
+ from (("F4211_Open_Sales_Orders" INNER JOIN "PRODDTA"."F0101" "F0101_Ship_To_Customer" on "F4211_Open_Sales_Orders"."SDSHAN"="F0101_Ship_To_Customer"."ABAN8") LEFT OUTER JOIN "F4211_F0006_join_to_F42140" on "F4211_Open_Sales_Orders"."SDKCOO"="F4211_F0006_join_to_F42140"."SDKCOO" and "F4211_Open_Sales_Orders"."SDDOCO"="F4211_F0006_join_to_F42140"."SDDOCO" and "F4211_Open_Sales_Orders"."SDDCTO"="F4211_F0006_join_to_F42140"."SDDCTO" and "F4211_Open_Sales_Orders"."SDLNID"="F4211_F0006_join_to_F42140"."SDLNID") LEFT OUTER JOIN ("PRODDTA"."F42140" "F42140_Sales_Rep" INNER JOIN "PRODDTA"."F0101" "F0101_Sales_Rep" on "F42140_Sales_Rep"."CMSLSM"="F0101_Sales_Rep"."ABAN8") on "F4211_F0006_join_to_F42140"."SDSHAN"="F42140_Sales_Rep"."CMAN8" and "F4211_F0006_join_to_F42140"."CMRTYPE"="F42140_Sales_Rep"."CMRTYPE"
+ where "F4211_Open_Sales_Orders"."SDNXTR" not  in ('999')
+ group by "F4211_Open_Sales_Orders"."SDKCOO", trim(both
+ from "F4211_Open_Sales_Orders"."SDMCU"), "F4211_Open_Sales_Orders"."SDDOCO", "F4211_Open_Sales_Orders"."SDLNID"/1000, trim(both
+ from "F4211_Open_Sales_Orders"."SDLITM"), "F4211_Open_Sales_Orders"."SDNXTR", "F4211_Open_Sales_Orders"."SDTRDJ", "F4211_Open_Sales_Orders"."SDUOM1", "F4211_Open_Sales_Orders"."SDUOM2", "F4211_Open_Sales_Orders"."SDDRQJ", "F4211_Open_Sales_Orders"."SDPDDJ", trim(both
+ from decode("F0101_Sales_Rep"."ABALPH", NULL, 'Unassigned', "F0101_Sales_Rep"."ABALPH")), trim(both
+ from "F4211_Open_Sales_Orders"."SDVR01"), trim(both
+ from "F0101_Ship_To_Customer"."ABALPH"), decode(trim(both
+ from "F4211_Open_Sales_Orders"."SDMCU"), 'CINC', 'Americas', 'CIN2', 'Americas', 'CIN4', 'Americas', 'GRAN', 'Americas', 'DANC', 'Americas', 'BPIP', 'Americas', 'AUBA', 'Aubange', 'AUB2', 'Aubange', 'SHAN', 'Shanghai', 'SING', 'Singapore', 'SNG4', 'Singapore', 'MUM3', 'Mumbai', 'Americas')) 
+select "Sales_Orders6"."Order_Company" "Order_Company", "Sales_Orders6"."Branch_Plant" "Branch_Plant", "Sales_Orders6"."Order_Number" "Order_Number", "Sales_Orders6"."Order_Line" "Order_Line", "Sales_Orders6"."Customer_PO" "Customer_PO", "Sales_Orders6"."Order_Date" "Order_Date", "Sales_Orders6"."Requested_Date" "Requested_Date", "Sales_Orders6"."Promised_Ship_Date" "Promised_Ship_Date", "Sales_Orders6"."C_2nd_Item_Number" "C_2nd_Item_Number", "Sales_Orders6"."Next_Status" "Next_Status", sum("Sales_Orders6"."Primary_Quantity_Ordered") "Primary_Quantity_Ordered", "Sales_Orders6"."Primary_UOM" "Primary_UOM", sum("Sales_Orders6"."Secondary_Quantity_Ordered") "Secondary_Quantity_Ordered", "Sales_Orders6"."Secondary_UOM" "Secondary_UOM", "Sales_Orders6"."Customer_Name" "Customer_Name", "Sales_Orders6"."TM_Name" "TM_Name"
+ from "Item_Branch7" LEFT OUTER JOIN "Sales_Orders6" on "Item_Branch7"."C_2nd_Item_Number"="Sales_Orders6"."C_2nd_Item_Number" and "Item_Branch7"."Branch_Plant"="Sales_Orders6"."Branch_Plant"
+ where "Sales_Orders6"."Branch_Plant"="Item_Branch7"."Branch_Plant" and "Sales_Orders6"."C_2nd_Item_Number"="Item_Branch7"."C_2nd_Item_Number" and "Item_Branch7"."Bulk_Item" in ('161017CX', '161190PX', '171143PX', '171228PX.E', '181020CX.E', '181136IX', '181192IX', '181193EU.E', '191011CX', '191026CX.E', '191245PX', '23409A', 'ABEX2525', 'APT10', 'APT11', 'DMAEMA', 'EMA3065', 'ET2012.E', 'ET2022.E', 'ET4075.E', 'ET440.E', 'FERSUL7W', 'HP1432AT', 'HP1632', 'MD4020', 'MD4020C', 'MD4020S', 'MD4021', 'MD4021C', 'MD4021S', 'MD4022', 'MD4022C', 'MD4023', 'MD4023C', 'MDU20', 'MDU2012.E', 'MDU2012B.E', 'MDU4075.E', 'MDU4075B.E', 'MDU440.E', 'MDU440B.E', 'MPEG2000', 'MW40504', 'MW40514', 'NP4LF', 'NP4LF.S', 'OMS', 'PUD1.E', 'STODSO', 'U1001', 'U101', 'U201', 'U2022', 'U2022EU.E', 'U2023', 'U204', 'U204EU.E', 'U470', 'U501', 'U501B', 'U502', 'U502.E', 'U502X1.E', 'U601', 'U701', 'U802', 'U802.E', 'WAV501', 'WD40', 'WD40T', 'DPE3500', 'DPE3500.E', 'JS037', 'HP401', 'HSCF410', 'UNYTEC201')
+ group by "Sales_Orders6"."Order_Company", "Sales_Orders6"."Branch_Plant", "Sales_Orders6"."Order_Number", "Sales_Orders6"."Order_Line", "Sales_Orders6"."C_2nd_Item_Number", "Sales_Orders6"."Next_Status", "Sales_Orders6"."Order_Date", "Sales_Orders6"."Primary_UOM", "Sales_Orders6"."Secondary_UOM", "Sales_Orders6"."Requested_Date", "Sales_Orders6"."Promised_Ship_Date", "Sales_Orders6"."TM_Name", "Sales_Orders6"."Customer_PO", "Sales_Orders6"."Customer_Name"
+ order by "Promised_Ship_Date" asc nulls last, "Order_Number" asc nulls last, "Order_Line" asc nulls last
+
+
+
+
+<report xmlns="http://developer.cognos.com/schemas/report/12.0/" useStyleVersion="10" expressionLocale="en-us">
+	<modelPath>/content/package[@name='JDE Live Data']/model[@name='model']</modelPath>
+	<drillBehavior modelBasedDrillThru="true" drillUpDown="true"/>
+	<queries>
+		<query name="Sales Orders">
+			<source>
+				<model/>
+			</source>
+			<selection><dataItem name="Order Company" aggregate="none" rollupAggregate="none"><expression>[Open Order Star Schema - JDE].[Open Orders].[Order Company]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Branch Plant" aggregate="none" rollupAggregate="none"><expression>trim([Open Order Star Schema - JDE].[Open Orders].[Branch Plant])</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Order Number" aggregate="none" rollupAggregate="none"><expression>[Open Order Star Schema - JDE].[Open Orders].[Order Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Order Line" aggregate="none" rollupAggregate="none"><expression>[Open Order Star Schema - JDE].[Open Orders].[Order Line]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="2nd Item Number" aggregate="none" rollupAggregate="none"><expression>trim([Open Order Star Schema - JDE].[Open Orders].[2nd Item Number])</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Next Status" aggregate="none" rollupAggregate="none"><expression>[Open Order Star Schema - JDE].[Open Orders].[Next Status]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Order Date" aggregate="none" rollupAggregate="none"><expression>[Open Order Star Schema - JDE].[Open Orders].[Order Date]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="4" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Primary Quantity Ordered" aggregate="total"><expression>[Open Order Star Schema - JDE].[Open Orders].[Primary Quantity Ordered]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="fact" output="no"/></XMLAttributes></dataItem><dataItem name="Primary UOM" aggregate="none" rollupAggregate="none"><expression>[Open Order Star Schema - JDE].[Open Orders].[Primary UOM]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Secondary Quantity Ordered" aggregate="total"><expression>[Open Order Star Schema - JDE].[Open Orders].[Secondary Quantity Ordered]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="fact" output="no"/></XMLAttributes></dataItem><dataItem name="Secondary UOM" aggregate="none" rollupAggregate="none"><expression>[Open Order Star Schema - JDE].[Open Orders].[Secondary UOM]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Requested Date" aggregate="none" rollupAggregate="none"><expression>[Open Order Star Schema - JDE].[Open Orders].[Requested Date]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="4" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Promised Ship Date" aggregate="none" rollupAggregate="none"><expression>[Open Order Star Schema - JDE].[Open Orders].[Promised Ship Date]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="4" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="TM Name" aggregate="none" rollupAggregate="none"><expression>trim([Open Order Star Schema - JDE].[Open Orders].[TM Name])</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Customer PO" aggregate="none" rollupAggregate="none"><expression>trim([Open Order Star Schema - JDE].[Open Orders].[Customer PO])</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Customer Name" aggregate="none" rollupAggregate="none"><expression>trim([Open Order Star Schema - JDE].[Ship To Customer].[Customer Name])</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="REGION"><expression>Decode ([Branch Plant],'CINC', 'Americas', 'CIN2', 'Americas', 'CIN4', 'Americas', 'GRAN', 'Americas', 'DANC', 'Americas', 'BPIP', 'Americas', 'AUBA', 'Aubange', 'AUB2', 'Aubange', 'SHAN', 'Shanghai', 'SING', 'Singapore', 'SNG4', 'Singapore', 'MUM3', 'Mumbai', 'Americas')</expression></dataItem></selection>
+			<detailFilters><detailFilter><filterExpression>[Next Status] not in ('999')</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Promised Ship Date] between ?1 - Start? and ?2 - End?</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[REGION] in ?Select_Region?</filterExpression></detailFilter></detailFilters></query>
+		<query name="Item Branch">
+			<source>
+				<model/>
+			</source>
+			<selection><dataItem name="Branch Plant" aggregate="none" rollupAggregate="none"><expression>[Work Order Star Schema - JDE].[Item Branch].[Branch Plant]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Global Bulk Item" aggregate="none" rollupAggregate="none"><expression>[Work Order Star Schema - JDE].[Item Tag].[Global Bulk Item]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Bulk Item" aggregate="none" rollupAggregate="none"><expression>[Work Order Star Schema - JDE].[Item Tag].[Bulk Item]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="2nd Item Number" aggregate="none" rollupAggregate="none"><expression>[Work Order Star Schema - JDE].[Item Branch].[2nd Item Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem></selection>
+		</query><query name="Sales Summary">
+			<source>
+				<joinOperation>
+					<joinOperands>
+						<joinOperand cardinality="0:N"><queryRef refQuery="Sales Orders"/></joinOperand>
+						<joinOperand cardinality="1:1"><queryRef refQuery="Item Branch"/></joinOperand>
+					</joinOperands>
+					<joinFilter>
+						<filterExpression>[Sales Orders].[2nd Item Number] = [Item Branch].[2nd Item Number] and
+[Sales Orders].[Branch Plant] = [Item Branch].[Branch Plant]</filterExpression>
+					</joinFilter>
+				</joinOperation></source>
+			<selection><dataItem name="Order Company" label="Company"><expression>[Sales Orders].[Order Company]</expression></dataItem><dataItem name="Branch Plant" label="Branch"><expression>[Sales Orders].[Branch Plant]</expression></dataItem><dataItem name="Order Number" label="Order #"><expression>[Sales Orders].[Order Number]</expression></dataItem><dataItem name="Order Line" label="Line #"><expression>[Sales Orders].[Order Line]</expression></dataItem><dataItem name="2nd Item Number" label="Item"><expression>[Sales Orders].[2nd Item Number]</expression></dataItem><dataItem name="Next Status"><expression>[Sales Orders].[Next Status]</expression></dataItem><dataItem name="Order Date"><expression>[Sales Orders].[Order Date]</expression></dataItem><dataItem name="Primary Quantity Ordered" label="QTY"><expression>[Sales Orders].[Primary Quantity Ordered]</expression></dataItem><dataItem name="Primary UOM" label="UOM"><expression>[Sales Orders].[Primary UOM]</expression></dataItem><dataItem name="Secondary Quantity Ordered" label="QTY"><expression>[Sales Orders].[Secondary Quantity Ordered]</expression></dataItem><dataItem name="Secondary UOM" label="UOM"><expression>[Sales Orders].[Secondary UOM]</expression></dataItem><dataItem name="Requested Date" label="Requested"><expression>[Sales Orders].[Requested Date]</expression></dataItem><dataItem name="Promised Ship Date" label="Promised Ship"><expression>[Sales Orders].[Promised Ship Date]</expression></dataItem><dataItem name="TM Name"><expression>[Sales Orders].[TM Name]</expression></dataItem><dataItem name="Customer PO"><expression>[Sales Orders].[Customer PO]</expression></dataItem><dataItem name="Customer Name"><expression>[Sales Orders].[Customer Name]</expression></dataItem><dataItem name="Branch Plant1"><expression>[Item Branch].[Branch Plant]</expression></dataItem><dataItem name="Global Bulk Item"><expression>[Item Branch].[Global Bulk Item]</expression></dataItem><dataItem name="Bulk Item"><expression>[Item Branch].[Bulk Item]</expression></dataItem><dataItem name="2nd Item Number1"><expression>[Item Branch].[2nd Item Number]</expression></dataItem></selection>
+			<detailFilters><detailFilter><filterExpression>[Branch Plant]=[Branch Plant1]</filterExpression></detailFilter><detailFilter><filterExpression>[2nd Item Number]=[2nd Item Number1]</filterExpression></detailFilter><detailFilter><filterExpression>[Bulk Item] in ('161017CX' ,
+'161190PX' ,
+'171143PX' ,
+'171228PX.E' ,
+'181020CX.E' ,
+'181136IX' ,
+'181192IX' ,
+'181193EU.E' ,
+'191011CX' ,
+'191026CX.E' ,
+'191245PX' ,
+'23409A' ,
+'ABEX2525' ,
+'APT10' , 'APT11', 
+'DMAEMA' ,
+'EMA3065' ,
+'ET2012.E' ,
+'ET2022.E' ,
+'ET4075.E' ,
+'ET440.E' ,
+'FERSUL7W' ,
+'HP1432AT' ,
+'HP1632' ,
+'MD4020' ,
+'MD4020C' ,
+'MD4020S' ,
+'MD4021' ,
+'MD4021C' ,
+'MD4021S' ,
+'MD4022' ,
+'MD4022C' ,
+'MD4023' ,
+'MD4023C' ,
+'MDU20' ,
+'MDU2012.E' ,
+'MDU2012B.E' ,
+'MDU4075.E' ,
+'MDU4075B.E' ,
+'MDU440.E' ,
+'MDU440B.E' ,
+'MPEG2000' ,
+'MW40504' ,
+'MW40514' ,
+'NP4LF' ,
+'NP4LF.S' ,
+'OMS' ,
+'PUD1.E' ,
+'STODSO' ,
+'U1001' ,
+'U101' ,
+'U201' ,
+'U2022' ,
+'U2022EU.E' ,
+'U2023' ,
+'U204' ,
+'U204EU.E' ,
+'U470' ,
+'U501' ,
+'U501B' ,
+'U502' ,
+'U502.E' ,
+'U502X1.E' ,
+'U601' ,
+'U701' ,
+'U802' ,
+'U802.E' ,
+'WAV501' ,
+'WD40' ,
+'WD40T', 'DPE3500', 'DPE3500.E', 'JS037', 'HP401', 'HSCF410', 'UNYTEC201')</filterExpression></detailFilter></detailFilters></query><query name="Query1"><source><model/></source><selection/></query></queries>
+	<layouts>
+		<layout>
+			<reportPages>
+				<page name="Page1"><style><defaultStyles><defaultStyle refStyle="pg"/></defaultStyles></style>
+					<pageBody><style><defaultStyles><defaultStyle refStyle="pb"/></defaultStyles></style>
+						<contents>
+							<table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Enter the Date Range:  Beginning </staticValue></dataSource><style><CSS value="font-weight:bold;color:red"/></style></textItem><selectDate parameter="1 - Start" multiSelect="false" range="false" required="false" selectDateUI="editBox"/><textItem><dataSource><staticValue>    and End Date</staticValue></dataSource><style><CSS value="font-weight:bold;color:red"/></style></textItem><selectDate parameter="2 - End" multiSelect="false" range="false" required="false" selectDateUI="editBox"/></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Select the Region: </staticValue></dataSource><style><CSS value="font-weight:bold;color:red"/></style></textItem><selectValue parameter="Select_Region" refQuery="Sales Orders" multiSelect="false" range="false" required="false" autoSubmit="true"><useItem refDataItem="REGION"><displayItem refDataItem="REGION"/></useItem><sortList><sortItem refDataItem="REGION"/></sortList></selectValue><promptButton type="finish">
+														<contents/>
+														<style>
+															<defaultStyles>
+																<defaultStyle refStyle="bp"/>
+															</defaultStyles>
+														</style>
+													</promptButton></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>
+															</staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow></tableRows></table><list horizontalPagination="true" name="List1" refQuery="Sales Summary">
+								<noDataHandler>
+									<contents>
+										<block name="RAP_NDH_List1"><contents><block>
+													<contents>
+														<textItem>
+															<dataSource>
+																<staticValue>No Data Available</staticValue>
+															</dataSource>
+															<style>
+																<CSS value="padding:10px 18px;"/>
+															</style>
+														</textItem>
+													</contents>
+												</block></contents></block></contents>
+								</noDataHandler>
+								<style>
+									<defaultStyles>
+										<defaultStyle refStyle="ls"/>
+									</defaultStyles>
+									<CSS value="border-collapse:collapse"/>
+								</style>
+								<listColumns><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Order Company"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="4e396087-1cfd-49b1-bcac-fc39784ba06b" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Order Company"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="3def7075-efd1-4f07-a8fa-526463898eea" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Branch Plant"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="19337291-ae67-427e-97e1-07775f72e392" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Branch Plant"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="cbd34bcd-db9e-430e-a4d7-ae69e5a754fa" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Order Number"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="da62ab92-05dc-4196-88fb-7884840c58db" output="HTML"/><XMLAttribute name="rp_sort" value="a.2" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Order Number"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="e2549a82-ca19-41ed-bb95-4bfd725442f0" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Order Line"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="5aca1def-8e1b-4014-8ca9-3bd1e6a0706c" output="HTML"/><XMLAttribute name="rp_sort" value="a.3" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Order Line"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="877b91d8-3800-4080-85f0-961e7e381e35" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Customer PO"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="039d2948-7cc3-4729-8e78-89146df44ed9" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Customer PO"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="b6274683-0aa7-49ec-88b9-c5fd6ddbfebb" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Order Date"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="02726042-b40c-4d37-a0fd-72704d590978" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><dataFormat><dateFormat dateStyle="medium" displayOrder="DMY"/></dataFormat><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Order Date"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="14c80862-9d54-4508-9ab4-2771c1c307ff" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Requested Date"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="21e05f32-851b-424e-9d33-19974c8b808f" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><dataFormat><dateFormat dateStyle="medium" displayOrder="DMY"/></dataFormat><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Requested Date"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="232d77b8-b088-4cb5-9908-8dd95329f654" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Promised Ship Date"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="84160dc0-c967-430c-b535-0d4c5ef883ff" output="HTML"/><XMLAttribute name="rp_sort" value="a.1" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><dataFormat><dateFormat dateStyle="medium" displayOrder="DMY"/></dataFormat><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Promised Ship Date"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="5c8582be-ec5f-4f39-8c61-53925639c1b1" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="2nd Item Number"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="d3cd450e-88e6-4a14-918d-c1524a63f72d" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="2nd Item Number"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="ef084323-1076-4b60-957d-2c2f081e43ec" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Next Status"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="d47b8b18-4c6f-433e-803e-369d61c0f4f1" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Next Status"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="b9cd9bf0-4a79-43c1-be6f-0df6023f5069" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Primary Quantity Ordered"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="73ac0560-bb6a-4538-8592-575c67ae08ba" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:right;border:1pt solid black"/><dataFormat><numberFormat decimalSize="0"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Primary Quantity Ordered"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="7477e8f4-83be-4af9-b8c3-0298f5ec22fc" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Primary UOM"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="fe8ed471-638e-48a9-b169-65bf6b232c72" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Primary UOM"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="df75e2b0-87da-4b1d-8b86-735ee207137f" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Secondary Quantity Ordered"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="70c98673-397b-4f83-b7ad-df48c8b74a90" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:right;border:1pt solid black"/><dataFormat><numberFormat decimalSize="0"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Secondary Quantity Ordered"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="b9039bae-1c7b-454e-bdc3-dc562fc9447c" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Secondary UOM"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="655484e1-54fe-4f4e-99b2-54199f6f5a40" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Secondary UOM"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="40c14069-90ba-42f5-9bbb-ee3fc8d6aff2" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Customer Name"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="eb3d0554-d04f-474b-9e71-2f1294e7c4de" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Customer Name"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="7479d5f3-72ad-4080-aec1-37cca56520cd" output="HTML"/></XMLAttributes></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left;font-weight:bold;color:red;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="TM Name"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="51a56761-2cc2-44af-a7ae-4f7b16cea53b" output="HTML"/></XMLAttributes></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left;border:1pt solid black"/></style><contents><textItem><dataSource><dataItemValue refDataItem="TM Name"/></dataSource></textItem></contents><XMLAttributes><XMLAttribute name="rap_layout_tag" value="af65877a-e5c3-47e4-8046-87889b98f83d" output="HTML"/></XMLAttributes></listColumnBody></listColumn></listColumns><sortList><sortItem refDataItem="Promised Ship Date"/><sortItem refDataItem="Order Number"/><sortItem refDataItem="Order Line"/></sortList></list>
+						</contents>
+					</pageBody>
+					<pageHeader>
+						<contents>
+							<block><style><defaultStyles><defaultStyle refStyle="ta"/></defaultStyles><CSS value="text-align:left"/></style>
+								<contents>
+									<textItem><style><defaultStyles><defaultStyle refStyle="tt"/></defaultStyles><CSS value="color:blue"/></style>
+										<dataSource>
+											<staticValue>CM - Open Sales Orders LIVE</staticValue>
+										</dataSource>
+									</textItem>
+								</contents>
+							</block>
+						</contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ph"/>
+							</defaultStyles>
+							<CSS value="padding-bottom:10px"/>
+						</style>
+					</pageHeader>
+					<pageFooter>
+						<contents>
+							<table>
+								<tableRows>
+									<tableRow>
+										<tableCells>
+											<tableCell>
+												<contents>
+													<date>
+														<style>
+															<dataFormat>
+																<dateFormat/>
+															</dataFormat>
+														</style>
+													</date>
+												</contents>
+												<style>
+													<CSS value="vertical-align:top;text-align:left;width:25%"/>
+												</style>
+											</tableCell>
+											<tableCell>
+												<contents>
+													<pageNumber/>
+												</contents>
+												<style>
+													<CSS value="vertical-align:top;text-align:center;width:50%"/>
+												</style>
+											</tableCell>
+											<tableCell>
+												<contents>
+													<time>
+														<style>
+															<dataFormat>
+																<timeFormat/>
+															</dataFormat>
+														</style>
+													</time>
+												</contents>
+												<style>
+													<CSS value="vertical-align:top;text-align:right;width:25%"/>
+												</style>
+											</tableCell>
+										</tableCells>
+									</tableRow>
+								</tableRows>
+								<style>
+									<defaultStyles>
+										<defaultStyle refStyle="tb"/>
+									</defaultStyles>
+									<CSS value="border-collapse:collapse;width:100%"/>
+								</style>
+							</table>
+						</contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="pf"/>
+							</defaultStyles>
+							<CSS value="padding-top:10px"/>
+						</style>
+					</pageFooter>
+				</page>
+			</reportPages>
+		</layout>
+	</layouts>
+	<XMLAttributes><XMLAttribute name="RS_CreateExtendedDataItems" value="true" output="no"/><XMLAttribute name="listSeparator" value="," output="no"/><XMLAttribute name="RS_modelModificationTime" value="2020-12-14T17:09:59.699Z" output="no"/><XMLAttribute name="RAP_originalUseStyleVersion" value="10" output="no"/></XMLAttributes><reportName>CM - Open Sales Orders Live</reportName></report>
+
+
+
+

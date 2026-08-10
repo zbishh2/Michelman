@@ -1,0 +1,42 @@
+with "F30026_Standard_Cost_By_Type" as (
+select "F4102"."IBITM", "F4102"."IBMCU", "F30026"."IELEDG", sum(Decode("F30026"."IECOST", 'A1 ', "F30026"."IECSL"/10000, 0)) "A1_Unit_Cost", sum(Decode("F30026"."IECOST", 'B1 ', "F30026"."IECSL"/10000, 0)) "B1_Unit_Cost", sum(Decode("F30026"."IECOST", 'C1 ', "F30026"."IECSL"/10000, 0)) "C1_Unit_Cost", sum(Decode("F30026"."IECOST", 'C2 ', "F30026"."IECSL"/10000, 0)) "C2_Unit_Cost"
+ from "PRODDTA"."F4102" "F4102", "PRODDTA"."F4105" "F4105" LEFT OUTER JOIN "PRODDTA"."F30026" "F30026" on "F4105"."COITM"="F30026"."IEITM" and "F4105"."COMCU"="F30026"."IEMMCU" and "F4105"."COLEDG"="F30026"."IELEDG"
+ where "F4102"."IBITM"="F4105"."COITM" and "F4102"."IBMCU"="F4105"."COMCU" and "F4105"."COCSIN"='I'
+ group by "F4102"."IBITM", "F4102"."IBMCU", "F30026"."IELEDG"), "Inventory6" as (
+select "T0"."C0" "Branch_Plant", "T0"."C1" "Global_Bulk_Item", "T0"."C2" "Bulk_Item", "T0"."C3" "C_2nd_Item_Number", "T0"."C4" "Commodity_Class", "T0"."C5" "Sub_Class", "T0"."C6" "Master_Planning_Family", "T0"."C7" "Safety_Stock", "T0"."C8" "Shelf_Life", "T0"."C9" "Stock_Type", "T0"."C10" "GL_Category", "T0"."C11" "Leadtime_Level", "T0"."C12" "Leadtime_MFG", "T0"."C13" "Location", "T0"."C14" "Lot_Number", "T0"."C15" "Status", sum("T0"."C16") over (partition by "T0"."C0", "T0"."C1", "T0"."C2", "T0"."C3", "T0"."C4", "T0"."C5", "T0"."C6", "T0"."C7", "T0"."C8", "T0"."C9", "T0"."C10", "T0"."C11", "T0"."C12", "T0"."C13", "T0"."C14", "T0"."C15", "T0"."C17") "Quantity_On_Hand", "T0"."C17" "Primary_UOM", sum("T0"."C18") over (partition by "T0"."C0", "T0"."C1", "T0"."C2", "T0"."C3", "T0"."C4", "T0"."C5", "T0"."C6", "T0"."C7", "T0"."C8", "T0"."C9", "T0"."C10", "T0"."C11", "T0"."C12", "T0"."C13", "T0"."C14", "T0"."C15", "T0"."C17") "Hard_Commit", sum("T0"."C19") over (partition by "T0"."C0", "T0"."C1", "T0"."C2", "T0"."C3", "T0"."C4", "T0"."C5", "T0"."C6", "T0"."C7", "T0"."C8", "T0"."C9", "T0"."C10", "T0"."C11", "T0"."C12", "T0"."C13", "T0"."C14", "T0"."C15", "T0"."C17") "A1_Cost", sum("T0"."C20") over (partition by "T0"."C0", "T0"."C1", "T0"."C2", "T0"."C3", "T0"."C4", "T0"."C5", "T0"."C6", "T0"."C7", "T0"."C8", "T0"."C9", "T0"."C10", "T0"."C11", "T0"."C12", "T0"."C13", "T0"."C14", "T0"."C15", "T0"."C17") "B1_Cost", sum("T0"."C21") over (partition by "T0"."C0", "T0"."C1", "T0"."C2", "T0"."C3", "T0"."C4", "T0"."C5", "T0"."C6", "T0"."C7", "T0"."C8", "T0"."C9", "T0"."C10", "T0"."C11", "T0"."C12", "T0"."C13", "T0"."C14", "T0"."C15", "T0"."C17") "C1_Cost", sum("T0"."C22") over (partition by "T0"."C0", "T0"."C1", "T0"."C2", "T0"."C3", "T0"."C4", "T0"."C5", "T0"."C6", "T0"."C7", "T0"."C8", "T0"."C9", "T0"."C10", "T0"."C11", "T0"."C12", "T0"."C13", "T0"."C14", "T0"."C15", "T0"."C17") "C2_Cost", "T0"."C23" "TIME24"
+ from (
+select trim(both
+ from trim(both
+ from "F4102_Item_Branch_Alias_WO"."IBMCU")) "C0", trim(both
+ from "F554101_ITEM_TAG"."IMGBLK") "C1", trim(both
+ from "F554101_ITEM_TAG"."IMBULK") "C2", trim(both
+ from trim(both
+ from "F4102_Item_Branch_Alias_WO"."IBLITM")) "C3", "F4102_Item_Branch_Alias_WO"."IBPRP1" "C4", "F4102_Item_Branch_Alias_WO"."IBPRP2" "C5", "F4102_Item_Branch_Alias_WO"."IBPRP4" "C6", "F4102_Item_Branch_Alias_WO"."IBSAFE"/10000 "C7", "F4102_Item_Branch_Alias_WO"."IBSLD" "C8", "F4102_Item_Branch_Alias_WO"."IBSTKT" "C9", "F4102_Item_Branch_Alias_WO"."IBGLPT" "C10", "F4102_Item_Branch_Alias_WO"."IBLTLV" "C11", "F4102_Item_Branch_Alias_WO"."IBLTMF" "C12", trim(both
+ from "F41021_Item_Location"."LILOCN") "C13", trim(both
+ from "F41021_Item_Location"."LILOTN") "C14", "F41021_Item_Location"."LILOTS" "C15", sum("F41021_Item_Location"."LIPQOH"/10000) "C16", "F4101_Item_Master"."IMUOM1" "C17", sum("F41021_Item_Location"."LIHCOM"/10000) "C18", sum(("F41021_Item_Location"."LIPQOH"/10000)*"F30026_Standard_Cost_By_Type"."A1_Unit_Cost") "C19", sum(("F41021_Item_Location"."LIPQOH"/10000)*"F30026_Standard_Cost_By_Type"."B1_Unit_Cost") "C20", sum(("F41021_Item_Location"."LIPQOH"/10000)*"F30026_Standard_Cost_By_Type"."C1_Unit_Cost") "C21", sum(("F41021_Item_Location"."LIPQOH"/10000)*"F30026_Standard_Cost_By_Type"."C2_Unit_Cost") "C22", sysdate "C23"
+ from "PRODDTA"."F4102" "F4102_Item_Branch_Alias_WO", "PRODDTA"."F554101" "F554101_ITEM_TAG", "PRODDTA"."F41021" "F41021_Item_Location", "PRODDTA"."F4101" "F4101_Item_Master", "F30026_Standard_Cost_By_Type"
+ where "F41021_Item_Location"."LIPQOH"/10000>0 and "F4102_Item_Branch_Alias_WO"."IBITM"="F4101_Item_Master"."IMITM" and "F4101_Item_Master"."IMITM"="F554101_ITEM_TAG"."IMITM" and "F4102_Item_Branch_Alias_WO"."IBITM"="F41021_Item_Location"."LIITM" and "F4102_Item_Branch_Alias_WO"."IBMCU"="F41021_Item_Location"."LIMCU" and "F4102_Item_Branch_Alias_WO"."IBITM"="F30026_Standard_Cost_By_Type"."IBITM" and "F4102_Item_Branch_Alias_WO"."IBMCU"="F30026_Standard_Cost_By_Type"."IBMCU"
+ group by trim(both
+ from trim(both
+ from "F4102_Item_Branch_Alias_WO"."IBMCU")), trim(both
+ from "F554101_ITEM_TAG"."IMGBLK"), trim(both
+ from "F554101_ITEM_TAG"."IMBULK"), trim(both
+ from trim(both
+ from "F4102_Item_Branch_Alias_WO"."IBLITM")), "F4102_Item_Branch_Alias_WO"."IBPRP1", "F4102_Item_Branch_Alias_WO"."IBPRP2", "F4102_Item_Branch_Alias_WO"."IBPRP4", "F4102_Item_Branch_Alias_WO"."IBSAFE"/10000, "F4102_Item_Branch_Alias_WO"."IBSLD", "F4102_Item_Branch_Alias_WO"."IBSTKT", "F4102_Item_Branch_Alias_WO"."IBGLPT", "F4102_Item_Branch_Alias_WO"."IBLTLV", "F4102_Item_Branch_Alias_WO"."IBLTMF", trim(both
+ from "F41021_Item_Location"."LILOCN"), trim(both
+ from "F41021_Item_Location"."LILOTN"), "F41021_Item_Location"."LILOTS", "F4101_Item_Master"."IMUOM1", sysdate) "T0"), "F4108_Lot_Master" as (
+select "F4108"."IOLOTN", "F4108"."IORLOT", case  when "F4108"."IOMMEJ">0 then "PRODDTA".JUL2DATE("F4108"."IOMMEJ") else NULL end  "IOMMEJ", case  when "F4108"."IOOHDJ">0 then "PRODDTA".JUL2DATE("F4108"."IOOHDJ") else NULL end  "IOOHDJ"
+ from "PRODDTA"."F4108" "F4108"), "Quality7" as (
+select distinct trim(both
+ from "F4108_Lot_Master"."IOLOTN") "Lot_Number", trim(both
+ from "F4108_Lot_Master"."IORLOT") "Supplier_Lot_Number", TRUNC(cast("F4108_Lot_Master"."IOMMEJ" as TIMESTAMP(9))) "Expiration_Date_Month", TRUNC(cast("F4108_Lot_Master"."IOOHDJ" as TIMESTAMP(9))) "On_Hand_Date"
+ from "F4108_Lot_Master"
+ where not TRUNC(cast("F4108_Lot_Master"."IOMMEJ" as TIMESTAMP(9))) is null) 
+select "Inventory6"."Branch_Plant" "Branch_Plant", "Inventory6"."Global_Bulk_Item" "Global_Bulk_Item", "Inventory6"."Bulk_Item" "Bulk_Item", "Inventory6"."C_2nd_Item_Number" "C_2nd_Item_Number", "Inventory6"."Commodity_Class" "Commodity_Class", "Inventory6"."Sub_Class" "Sub_Class", "Inventory6"."Master_Planning_Family" "Master_Planning_Family", "Inventory6"."Safety_Stock" "Safety_Stock", "Inventory6"."Shelf_Life" "Shelf_Life", "Inventory6"."Stock_Type" "Stock_Type", "Inventory6"."GL_Category" "GL_Category", "Inventory6"."Leadtime_Level" "Leadtime_Level", "Inventory6"."Leadtime_MFG" "Leadtime_MFG", "Inventory6"."Location" "Location", "Inventory6"."Lot_Number" "Lot_Number", "Inventory6"."Status" "Status", sum("Inventory6"."Quantity_On_Hand") "Quantity_On_Hand", "Inventory6"."Primary_UOM" "Primary_UOM", sum("Inventory6"."Hard_Commit") "Hard_Commit", sum("Inventory6"."A1_Cost") "A1_Cost", sum("Inventory6"."B1_Cost") "B1_Cost", sum("Inventory6"."C1_Cost") "C1_Cost", sum("Inventory6"."C2_Cost") "C2_Cost", "Quality7"."Lot_Number" "Lot_Number1", "Quality7"."Supplier_Lot_Number" "Supplier_Lot_Number", "Quality7"."On_Hand_Date" "On_Hand_Date", "Quality7"."Expiration_Date_Month" "Expiration_Date_Month", "Inventory6"."TIME24" "TIME28"
+ from "Inventory6" FULL OUTER JOIN "Quality7" on "Inventory6"."Lot_Number"="Quality7"."Lot_Number"
+ where "Inventory6"."Lot_Number"="Quality7"."Lot_Number"
+ group by "Inventory6"."Branch_Plant", "Inventory6"."Global_Bulk_Item", "Inventory6"."Bulk_Item", "Inventory6"."C_2nd_Item_Number", "Inventory6"."Commodity_Class", "Inventory6"."Sub_Class", "Inventory6"."Master_Planning_Family", "Inventory6"."Safety_Stock", "Inventory6"."Shelf_Life", "Inventory6"."Stock_Type", "Inventory6"."GL_Category", "Inventory6"."Leadtime_Level", "Inventory6"."Leadtime_MFG", "Inventory6"."Location", "Inventory6"."Lot_Number", "Inventory6"."Status", "Inventory6"."Primary_UOM", "Quality7"."Lot_Number", "Quality7"."Supplier_Lot_Number", "Quality7"."On_Hand_Date", "Quality7"."Expiration_Date_Month", "Inventory6"."TIME24"
+ order by "Global_Bulk_Item" asc nulls last, "Bulk_Item" asc nulls last, "C_2nd_Item_Number" asc nulls last, "Branch_Plant" asc nulls last
+
+
+

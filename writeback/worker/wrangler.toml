@@ -1,0 +1,12 @@
+name = "michelman-writeback"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+account_id = "90b8807948312a9dc357d690babd40ff"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "michelman-writeback"
+database_id = "72fa2e02-ba2c-478c-b1f7-5f2f5f288564"
+
+[observability]
+enabled = true

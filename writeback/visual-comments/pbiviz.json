@@ -1,0 +1,26 @@
+{
+  "visual": {
+    "name": "orderLineComments",
+    "displayName": "Order Line Comments",
+    "guid": "orderLineComments88047B9E539DE9CAC108867D64853E1A",
+    "visualClassName": "Visual",
+    "version": "1.0.7.0",
+    "description": "Read-only Orders grid with per-line comment threads backed by Cloudflare D1",
+    "supportUrl": "https://github.com/zbishh2/michelman-writeback",
+    "gitHubUrl": "https://github.com/zbishh2/michelman-writeback"
+  },
+  "apiVersion": "5.3.0",
+  "author": {
+    "name": "Zack Bishop",
+    "email": "zbishh2@gmail.com"
+  },
+  "assets": {
+    "icon": "assets/icon.png"
+  },
+  "externalJS": null,
+  "style": "style/visual.less",
+  "capabilities": "capabilities.json",
+  "dependencies": null,
+  "stringResources": [],
+  "version": "1.0.7.0"
+}

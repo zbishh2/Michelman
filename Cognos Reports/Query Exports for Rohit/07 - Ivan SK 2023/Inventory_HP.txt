@@ -1,0 +1,61 @@
+/* ------------------------------------------------------------------
+   Report : 07 - Ivan SK 2023
+   Query  : Inventory_HP
+   Source : ODSPROD / ODS / PRODDTA (JDE), SQL Server
+   Note   : Native T-SQL as executed by Power BI (query folding enabled).
+   ------------------------------------------------------------------ */
+
+SELECT
+    CASE LTRIM(RTRIM(ib.IBMCU))
+         WHEN 'CINC' THEN 'Americas'
+         WHEN 'CIN2' THEN 'Americas'
+         WHEN 'CIN4' THEN 'Americas'
+         WHEN 'AUBA' THEN 'EMEA'
+         WHEN 'AUB2' THEN 'EMEA'
+         WHEN 'SING' THEN 'PacRim'
+         WHEN 'SNG4' THEN 'PacRim'
+         WHEN 'MUM3' THEN 'India'
+         WHEN 'SHAN' THEN 'China'
+    END                                     AS [REGION],
+    LTRIM(RTRIM(ib.IBMCU))                  AS [Branch Plant],
+    LTRIM(RTRIM(tag.IMGBLK))                AS [Global Bulk Item],
+    LTRIM(RTRIM(tag.IMBULK))                AS [Bulk Item],
+    LTRIM(RTRIM(ib.IBLITM))                 AS [2nd Item Number],
+    LTRIM(RTRIM(loc.LILOCN))                AS [Location],
+    LTRIM(RTRIM(loc.LILOTN))                AS [Lot Number],
+    LTRIM(RTRIM(loc.LILOTS))                AS [Status],
+    im.IMUOM1                               AS [Primary UOM],
+    SUM(loc.LIPQOH/10000.0)                 AS [Quantity On Hand],
+    CASE WHEN MIN(im.IMUOM1) = 'LB' THEN SUM(loc.LIPQOH/10000.0)
+         WHEN MIN(im.IMUOM1) = 'KG' THEN SUM(loc.LIPQOH/10000.0) / 0.453593
+         WHEN MIN(im.IMUOM1) = 'EA' THEN SUM(loc.LIPQOH/10000.0) * 40
+         ELSE 0
+    END                                     AS [LB]
+FROM PRODDTA.F4102 ib
+JOIN PRODDTA.F4101   im  ON ib.IBITM = im.IMITM
+JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+JOIN PRODDTA.F41021  loc ON ib.IBITM = loc.LIITM
+                        AND ib.IBMCU = loc.LIMCU
+WHERE (loc.LILOTS IS NULL OR LTRIM(RTRIM(loc.LILOTS)) = '' OR LTRIM(RTRIM(loc.LILOTS)) IN ('T', 'B', 'Q', 'H'))
+  AND LTRIM(RTRIM(ib.IBMCU)) IN ('AUBA', 'AUB2', 'SING', 'SNG4', 'MUM3', 'SHAN', 'CINC', 'CIN2', 'CIN4')
+  AND LTRIM(RTRIM(tag.IMBULK)) IN ('251194NX.E', 'DPI8200.E', '201250PX.E', '251095NX.E', 'DPI8600.E', 'DP040', '251194NX', 'DPI8600', '251095NX', '251194NX.S', 'PR5985', 'PR5985.E', 'PR5985.S')
+GROUP BY
+    CASE LTRIM(RTRIM(ib.IBMCU))
+         WHEN 'CINC' THEN 'Americas'
+         WHEN 'CIN2' THEN 'Americas'
+         WHEN 'CIN4' THEN 'Americas'
+         WHEN 'AUBA' THEN 'EMEA'
+         WHEN 'AUB2' THEN 'EMEA'
+         WHEN 'SING' THEN 'PacRim'
+         WHEN 'SNG4' THEN 'PacRim'
+         WHEN 'MUM3' THEN 'India'
+         WHEN 'SHAN' THEN 'China'
+    END,
+    LTRIM(RTRIM(ib.IBMCU)),
+    LTRIM(RTRIM(tag.IMGBLK)),
+    LTRIM(RTRIM(tag.IMBULK)),
+    LTRIM(RTRIM(ib.IBLITM)),
+    LTRIM(RTRIM(loc.LILOCN)),
+    LTRIM(RTRIM(loc.LILOTN)),
+    LTRIM(RTRIM(loc.LILOTS)),
+    im.IMUOM1

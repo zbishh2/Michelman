@@ -1,0 +1,35 @@
+{
+  "dataRoles": [
+    {
+      "displayName": "Current User Email",
+      "name": "currentUser",
+      "kind": "Measure",
+      "description": "Bind [Current User] (USERPRINCIPALNAME()). Sent as x-actor-email so the Worker can resolve the viewer's role and record who changed each KPI. Leave it unbound and the table still reads, but saves come back 403."
+    }
+  ],
+  "dataViewMappings": [
+    {
+      "conditions": [{ "currentUser": { "max": 1 } }],
+      "single": { "role": "currentUser" }
+    }
+  ],
+  "objects": {
+    "table": {
+      "displayName": "Table",
+      "properties": {
+        "fontSize": { "type": { "numeric": true } },
+        "trendHeader": { "type": { "text": true } },
+        "readOnly": { "type": { "bool": true } }
+      }
+    }
+  },
+  "supportsHighlight": false,
+  "suppressDefaultTitle": true,
+  "privileges": [
+    {
+      "name": "WebAccess",
+      "essential": true,
+      "parameters": ["https://michelman-writeback.michelman-bi.workers.dev"]
+    }
+  ]
+}

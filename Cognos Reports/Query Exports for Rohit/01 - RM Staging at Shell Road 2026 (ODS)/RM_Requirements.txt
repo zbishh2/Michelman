@@ -1,0 +1,56 @@
+/* ------------------------------------------------------------------
+   Report : 01 - RM Staging at Shell Road 2026 (ODS)
+   Query  : RM_Requirements
+   Source : ODSPROD / ODS / PRODDTA (JDE), SQL Server
+   Note   : Native T-SQL as executed by Power BI (query folding enabled).
+   ------------------------------------------------------------------ */
+
+SELECT
+    p.Component2nd                                            AS [RM],
+    AVG(ioh.QtyOnHand)                                        AS [Qty On Hand CINC],
+    SUM(p.OpenRM)                                             AS [Total RM Needed],
+    CASE WHEN AVG(ioh.QtyOnHand) IS NULL OR AVG(ioh.QtyOnHand) = 0
+         THEN SUM(p.OpenRM)
+         ELSE SUM(p.OpenRM) - AVG(ioh.QtyOnHand)
+    END                                                       AS [Qty Required From CIN2]
+FROM (
+    SELECT
+        LTRIM(RTRIM(wp.WMCPIL))               AS Component2nd,
+        SUM((wp.WMUORG - wp.WMTRQT) / 10000.0) AS OpenRM
+    FROM PRODDTA.F4801 wo
+    JOIN PRODDTA.F3111 wp ON wo.WADOCO = wp.WMDOCO
+    JOIN PRODDTA.F4102 ib ON wp.WMMCU = ib.IBMCU AND wp.WMCPIT = ib.IBITM
+    CROSS JOIN (SELECT CAST(GETDATE() AS date) AS Today) t
+    CROSS APPLY (SELECT (((DATEDIFF(DAY, '2003-01-06', t.Today) % 7) + 7) % 7) + 1 AS DowMon1) dw
+    CROSS APPLY (SELECT CASE WHEN dw.DowMon1 IN (4,5) THEN 4 WHEN dw.DowMon1 = 6 THEN 3 ELSE 2 END AS DaysFwd) fw
+    WHERE LTRIM(RTRIM(wo.WAMMCU)) = 'CINC'
+      AND wo.WASRST NOT IN ('93','94','95','97','99','MM','CD')
+      AND ((wp.WMUORG - wp.WMTRQT) / 10000.0) > 0
+      AND LTRIM(RTRIM(wo.WALITM)) NOT LIKE '%-%'
+      AND LTRIM(RTRIM(wp.WMCPIL)) NOT LIKE '%H2O%'
+      AND ib.IBPRP4 IN ('RRC','REC','RCB','TOL','PKG','RBW')
+      AND (CASE WHEN wp.WMDRQJ > 0
+                THEN DATEADD(DAY, (wp.WMDRQJ % 1000) - 1, DATEFROMPARTS(1900 + (wp.WMDRQJ / 1000), 1, 1))
+           END)
+          BETWEEN DATEADD(DAY, -7, t.Today) AND DATEADD(DAY, fw.DaysFwd, t.Today)
+    GROUP BY LTRIM(RTRIM(wp.WMCPIL))
+) p
+LEFT JOIN (
+    SELECT
+        LTRIM(RTRIM(ib.IBLITM))  AS Component2nd,
+        il.LILOTS                AS Status,
+        SUM(il.LIPQOH / 10000.0) AS QtyOnHand
+    FROM PRODDTA.F4102 ib
+    JOIN PRODDTA.F41021 il ON ib.IBITM = il.LIITM AND ib.IBMCU = il.LIMCU
+    WHERE (il.LIPQOH / 10000.0) > 0
+      AND LTRIM(RTRIM(ib.IBMCU)) = 'CINC'
+      AND LTRIM(RTRIM(ib.IBLITM)) NOT LIKE '%H2O%'
+      AND il.LILOTS IN (' ','-')
+    GROUP BY LTRIM(RTRIM(ib.IBLITM)), il.LILOTS
+) ioh ON p.Component2nd = ioh.Component2nd
+WHERE p.Component2nd <> ' '
+GROUP BY p.Component2nd
+HAVING CASE WHEN AVG(ioh.QtyOnHand) IS NULL                    THEN 'SHORT'
+            WHEN AVG(ioh.QtyOnHand) = 0                        THEN 'SHORT'
+            WHEN AVG(ioh.QtyOnHand) < SUM(p.OpenRM)            THEN 'SHORT'
+            ELSE 'OK' END = 'SHORT'

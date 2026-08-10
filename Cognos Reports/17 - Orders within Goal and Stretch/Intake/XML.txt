@@ -1,0 +1,276 @@
+<report xmlns="http://developer.cognos.com/schemas/report/12.0/" expressionLocale="en-us" useStyleVersion="10"><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/8.0/" to "http://developer.cognos.com/schemas/report/12.0/" at 2017-5-17. 18:19:27-->
+				<modelPath>/content/package[@name='Data Warehouse']/model[@name='model']</modelPath>
+				<drillBehavior/>
+				<queries>
+					<query name="Sales Ledger/Orders">
+			<source>
+				
+			<joinOperation>
+			<joinOperands>
+				<joinOperand cardinality="1:1"><queryRef refQuery="Orders"/></joinOperand>
+				<joinOperand cardinality="1:1"><queryRef refQuery="Sales Order Ledger"/></joinOperand>
+			</joinOperands>
+			<joinFilter>
+				<filterExpression>[Orders].[JDE Order Line ID] = [Sales Order Ledger].[Order Line ID]</filterExpression>
+			</joinFilter>
+		</joinOperation></source>
+			<selection><dataItem name="Company Code"><expression>[Orders].[Company Code]</expression></dataItem><dataItem name="Company Name"><expression>[Orders].[Company Name]</expression></dataItem><dataItem name="Branch Plant"><expression>[Orders].[Branch Plant]</expression></dataItem><dataItem name="Order Number"><expression>[Orders].[Order Number]</expression></dataItem><dataItem name="Freight Handling Code"><expression>[Orders].[Freight Handling Code]</expression></dataItem><dataItem name="Ordered Quantity"><expression>[Orders].[Ordered Quantity]</expression></dataItem><dataItem name="2nd Item Number"><expression>[Orders].[2nd Item Number]</expression></dataItem><dataItem name="Sold To Customer Code"><expression>[Orders].[Sold To Customer Code]</expression></dataItem><dataItem name="Sold To Customer Name"><expression>[Orders].[Sold To Customer Name]</expression></dataItem><dataItem name="Ship To Customer Code"><expression>[Orders].[Ship To Customer Code]</expression></dataItem><dataItem name="Ship To Customer Name"><expression>[Orders].[Ship To Customer Name]</expression></dataItem><dataItem name="Shipped Date"><expression>[Orders].[Shipped Date]</expression></dataItem><dataItem name="Requested Date"><expression>[Orders].[Requested Date]</expression></dataItem><dataItem name="Scheduled Pick Date"><expression>[Orders].[Scheduled Pick Date]</expression></dataItem><dataItem label="Order Date" name="Order Date"><expression>[Sales Order Ledger].[525 Date]</expression></dataItem><dataItem label="Confirmation Date" name="Confirmation Date"><expression>[Sales Order Ledger].[540 Date]</expression></dataItem><dataItem name="Goal"><expression>case
+when [Orders].[Company Level 2 Code] = 'RAME' and [Sales Order Ledger].[Business Days Between 525 and 540] &lt;= 1 then 1
+when [Orders].[Company Level 2 Code] = 'REUR' and [Sales Order Ledger].[Business Days Between 525 and 540] &lt;= 2 then 1
+when [Orders].[Company Level 2 Code] = 'RASI' and [Sales Order Ledger].[Business Days Between 525 and 540] &lt;= 2 then 1
+else 0 
+end</expression></dataItem><dataItem name="Stretch"><expression>case
+when [Sales Order Ledger].[Business Days Between 525 and 540] &lt;= 1 then 1
+else 0 
+end</expression></dataItem><dataItem name="&gt;48h"><expression>case
+when [Sales Order Ledger].[Business Days Between 525 and 540] &gt; 2 then 1
+else 0 
+end</expression></dataItem><dataItem name="&gt;72h"><expression>case
+when [Sales Order Ledger].[Business Days Between 525 and 540] &gt; 3 then 1
+else 0 
+end</expression></dataItem><dataItem name="&lt;72h"><expression>case
+when [Sales Order Ledger].[Business Days Between 525 and 540] &lt; 3 then 1
+else 0 
+end</expression></dataItem><dataItem name="Total Line Count"><expression>1</expression></dataItem><dataItemListSummary aggregateMethod="total" name="Total(Goal)" refDataItem="Goal"/><dataItemListSummary aggregateMethod="total" name="Total(Stretch)" refDataItem="Stretch"/><dataItemListSummary aggregateMethod="total" name="Total(Total Line Count)" refDataItem="Total Line Count"/><dataItem name="Customer Segmentation"><expression>[Orders].[Customer Segmentation]</expression></dataItem><dataItem name="Customer Segmentation Description"><expression>[Orders].[Customer Segmentation Description]</expression></dataItem><dataItemListSummary aggregateMethod="total" name="Total(&gt;48h)" refDataItem="&gt;48h"/><dataItemListSummary aggregateMethod="total" name="Total(&lt;72h)" refDataItem="&lt;72h"/><dataItemListSummary aggregateMethod="total" name="Total(&gt;72h)" refDataItem="&gt;72h"/></selection>
+		</query><query name="Orders">
+						<source>
+							<model/>
+						</source>
+						<selection><dataItem aggregate="none" name="Company Code" rollupAggregate="none"><expression>[Order Activity Star Schema].[Company].[Company Code]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Company Name" rollupAggregate="none"><expression>[Order Activity Star Schema].[Company].[Company Name]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Company Level 2 Code" rollupAggregate="none"><expression>[Order Activity Star Schema].[Company Hierarchy].[Company Level 2 Code]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Branch Plant" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Branch Plant]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Freight Handling Code" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Freight Handling Code]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Order Number" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Order Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="total" name="Ordered Quantity"><expression>[Order Activity Star Schema].[Order Activity].[Ordered Quantity]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="fact"/></XMLAttributes></dataItem><dataItem aggregate="none" name="2nd Item Number" rollupAggregate="none"><expression>[Order Activity Star Schema].[Item].[2nd Item Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Sold To Customer Code" name="Sold To Customer Code" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Sold To].[Customer Code]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Sold To Customer Name" name="Sold To Customer Name" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Sold To].[Customer Name]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Ship To Customer Code" name="Ship To Customer Code" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Sold To].[Customer Code]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Ship To Customer Name" name="Ship To Customer Name" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Sold To].[Customer Name]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Ordered Date" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Ordered Date]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Shipped Date" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Shipped Date]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Requested Date" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Requested Date]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Scheduled Pick Date" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Scheduled Pick Date]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Revision Reason" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[Revision Reason]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="JDE Order Line ID" rollupAggregate="none"><expression>[Order Activity Star Schema].[Order Activity].[JDE Order Line ID]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Customer Segmentation" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Ship To].[Customer Segmentation]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Customer Segmentation Description" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Ship To].[Customer Segmentation Description]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem></selection>
+					<detailFilters><detailFilter><filterExpression>[Order Activity Star Schema].[Exclude Budget Data]</filterExpression></detailFilter><detailFilter><filterExpression>[Order Activity Star Schema].[Exclude Cancelled Orders]</filterExpression></detailFilter><detailFilter><filterExpression>[Order Activity Star Schema].[Exclude Intercompany Orders]</filterExpression></detailFilter><detailFilter><filterExpression>[Order Activity Star Schema].[Exclude Transfer Orders]</filterExpression></detailFilter><detailFilter><filterExpression>[Order Activity Star Schema].[Time Order Date].[Date] between ?FromDate? and ?ToDate?</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Order Activity Star Schema].[Company].[Company Code] = ?Company?</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Order Activity Star Schema].[Customer Sold To].[Customer Code] = ?Customer?</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Order Activity Star Schema].[Organization RBU].[Business Group] = ?BusinessGroup?</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Order Activity Star Schema].[Item].[Bulk Item] = ?BulkItem?</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Order Activity Star Schema].[Customer Ship To Sales Rep].[CSR Number] = ?CSR?</filterExpression></detailFilter><detailFilter use="prohibited"><filterExpression>[Order Number]='599788'</filterExpression></detailFilter></detailFilters></query>
+				<query name="Sales Order Ledger">
+			<source>
+				
+			<joinOperation>
+			<joinOperands>
+				<joinOperand cardinality="1:1"><queryRef refQuery="Sales Order Ledger @525"/></joinOperand>
+				<joinOperand cardinality="1:1"><queryRef refQuery="Sales Order Ledger @540"/></joinOperand>
+			</joinOperands>
+			<joinFilter>
+				<filterExpression>[Sales Order Ledger @525].[Order Line ID] = [Sales Order Ledger @540].[Order Line ID]</filterExpression>
+			</joinFilter>
+		</joinOperation></source>
+			<selection><dataItem name="Order Number"><expression>[Sales Order Ledger @525].[Order Number]</expression></dataItem><dataItem name="Line Number"><expression>[Sales Order Ledger @525].[Line Number]</expression></dataItem><dataItem name="Order Line ID"><expression>[Sales Order Ledger @525].[Order Line ID]</expression></dataItem><dataItem name="2nd Item Number"><expression>[Sales Order Ledger @525].[2nd Item Number]</expression></dataItem><dataItem name="525 Date"><expression>[Sales Order Ledger @525].[525 Date]</expression></dataItem><dataItem name="540 Date"><expression>[Sales Order Ledger @540].[540 Date]</expression></dataItem><dataItem name="Ordered Date"><expression>[Sales Order Ledger @525].[Ordered Date]</expression></dataItem><dataItem name="Days Between 525 and 540"><expression>_days_between([540 Date], [525 Date])</expression></dataItem><dataItem name="Weekend Days"><expression>floor((_days_between([540 Date],[525 Date]) +_day_of_week([525 Date],1)) / 7) * 2 - 
+if (_day_of_week([525 Date],1) = 7) then (1) else (0) +
+if (_day_of_week([540 Date],1) = 6) then (1) else (0)</expression></dataItem><dataItem name="Business Days Between 525 and 540"><expression>[Days Between 525 and 540] - [Weekend Days]</expression></dataItem></selection>
+		</query><query name="Sales Order Ledger @525">
+			<source>
+				<model/>
+			</source>
+			<selection><dataItem aggregate="none" name="Order Number" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[Order Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Line Number" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[Line Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Order Line ID" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[Order Line ID]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="2nd Item Number" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[2nd Item Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Next Status" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[Next Status]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" label="525 Date" name="525 Date" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[Order Line Last Updated]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Ordered Date" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[Ordered Date]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem name="525 Day of Week"><expression>_day_of_week ([525 Date],1)</expression></dataItem><dataItem name="525 Date (Business Days)"><expression>case
+when ( [525 Day of Week] = 6 ) then ( [525 Date] + 2 )
+when ( [525 Day of Week] = 7 ) then ( [525 Date] + 1 )
+else ( [525 Date] )
+end</expression></dataItem></selection>
+		<detailFilters><detailFilter><filterExpression>[Data Warehouse].[Sales Order Ledger].[Ordered Date] between ?FromDate? and ?ToDate?</filterExpression></detailFilter><detailFilter><filterExpression>[Data Warehouse].[Sales Order Ledger].[Next Status] = '525'</filterExpression></detailFilter><detailFilter><filterExpression>[Data Warehouse].[Sales Order Ledger].[Order Line Last Updated] = minimum([525 Date] for [Order Number],[Line Number])</filterExpression></detailFilter></detailFilters></query><query name="Sales Order Ledger @540">
+			<source>
+				<model/>
+			</source>
+			<selection><dataItem aggregate="none" name="Order Number" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[Order Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Line Number" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[Line Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Order Line ID" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[Order Line ID]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="2nd Item Number" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[2nd Item Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Next Status" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[Next Status]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" label="540 Date" name="540 Date" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[Order Line Last Updated]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Ordered Date" rollupAggregate="none"><expression>[Data Warehouse].[Sales Order Ledger].[Ordered Date]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem name="540 Day of Week"><expression>_day_of_week ([540 Date],1)</expression></dataItem><dataItem name="540 Date (Business Days)"><expression>case
+when ( [540 Day of Week] = 6 ) then ( [540 Date] + 2 )
+when ( [540 Day of Week] = 7 ) then ( [540 Date] + 1 )
+else ( [540 Date] )
+end</expression></dataItem></selection>
+		<detailFilters><detailFilter><filterExpression>[Data Warehouse].[Sales Order Ledger].[Ordered Date] between ?FromDate? and ?ToDate?</filterExpression></detailFilter><detailFilter><filterExpression>[Data Warehouse].[Sales Order Ledger].[Next Status] = '540'</filterExpression></detailFilter><detailFilter><filterExpression>[Data Warehouse].[Sales Order Ledger].[Order Line Last Updated] = minimum([540 Date] for [Order Number],[Line Number])</filterExpression></detailFilter></detailFilters></query><query name="Company"><source><model/></source><selection><dataItem aggregate="none" name="Company Code"><expression>[Order Activity Star Schema].[Company].[Company Code]</expression></dataItem><dataItem aggregate="none" name="Company Name" sort="ascending"><expression>[Order Activity Star Schema].[Company].[Company Name]</expression></dataItem></selection><detailFilters><detailFilter><filterExpression>[Order Activity Star Schema].[Exclude Budget Data]</filterExpression></detailFilter><detailFilter><filterExpression>[Order Activity Star Schema].[Time Order Date].[Date] between _add_days(current_date, -150) and current_date</filterExpression></detailFilter></detailFilters></query><query name="Business Group"><source><model/></source><selection><dataItem aggregate="none" name="Business Group"><expression>[Order Activity Star Schema].[Organization RBU].[Business Group]</expression></dataItem><dataItem aggregate="none" name="Business Group Description" sort="ascending"><expression>[Order Activity Star Schema].[Organization RBU].[Business Group Description]</expression></dataItem></selection><detailFilters><detailFilter><filterExpression>[Order Activity Star Schema].[Time Order Date].[Date] between _add_days(current_date, -150) and current_date</filterExpression></detailFilter></detailFilters></query><query name="Bulk Item"><source><model/></source><selection><dataItem aggregate="none" name="Bulk Item"><expression>[Order Activity Star Schema].[Item].[Bulk Item]</expression></dataItem></selection><detailFilters><detailFilter><filterExpression>[Order Activity Star Schema].[Exclude Budget Data]</filterExpression></detailFilter><detailFilter><filterExpression>[Order Activity Star Schema].[Time Order Date].[Date] between _add_days(current_date, -150) and current_date</filterExpression></detailFilter></detailFilters></query><query name="Customer"><source><model/></source><selection><dataItem aggregate="none" name="Customer Code"><expression>[Order Activity Star Schema].[Customer Sold To].[Customer Code]</expression></dataItem><dataItem aggregate="none" name="Customer Name" sort="ascending"><expression>[Order Activity Star Schema].[Customer Sold To].[Customer Name]</expression></dataItem></selection><detailFilters><detailFilter><filterExpression>[Order Activity Star Schema].[Exclude Budget Data]</filterExpression></detailFilter><detailFilter><filterExpression>[Order Activity Star Schema].[Time Order Date].[Date] between _add_days(current_date, -150) and current_date</filterExpression></detailFilter></detailFilters></query><query name="CSR">
+			<source>
+				<model/>
+			</source>
+			<selection><dataItem aggregate="none" name="CSR Name" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Ship To Sales Rep].[CSR Name]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="CSR Number" rollupAggregate="none"><expression>[Order Activity Star Schema].[Customer Ship To Sales Rep].[CSR Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem></selection>
+		</query></queries>
+				<layouts>
+					<layout>
+						<reportPages>
+							<page name="Page1"><style><defaultStyles><defaultStyle refStyle="pg"/></defaultStyles></style>
+								<pageBody><style><defaultStyles><defaultStyle refStyle="pb"/></defaultStyles></style>
+									<contents>
+										
+									<block>
+			<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse"/></style><tableRows><tableRow><tableCells><tableCell><contents><selectValue parameter="Company" refQuery="Company" required="false"><useItem refDataItem="Company Code"><displayItem refDataItem="Company Name"/></useItem><style><CSS value="width:100px;font-size:8pt"/></style><sortList><sortItem refDataItem="Company Name"/></sortList></selectValue></contents></tableCell><tableCell><contents><selectValue parameter="BusinessGroup" refQuery="Business Group" required="false"><useItem refDataItem="Business Group"><displayItem refDataItem="Business Group Description"/></useItem><style><CSS value="width:100px;font-size:8pt"/></style><sortList><sortItem refDataItem="Business Group Description"/></sortList></selectValue></contents></tableCell><tableCell><contents><selectValue parameter="Customer" refQuery="Customer" required="false"><useItem refDataItem="Customer Code"><displayItem refDataItem="Customer Name"/></useItem><style><CSS value="width:100px;font-size:8pt"/></style><sortList><sortItem refDataItem="Customer Name"/></sortList></selectValue></contents></tableCell><tableCell><contents><selectValue parameter="BulkItem" refQuery="Bulk Item" required="false"><useItem refDataItem="Bulk Item"/><style><CSS value="width:100px;font-size:8pt"/></style><sortList><sortItem refDataItem="Bulk Item"/></sortList></selectValue></contents></tableCell><tableCell><contents><promptButton type="finish">
+			<contents/>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="bp"/>
+				</defaultStyles>
+			</style>
+		</promptButton></contents></tableCell></tableCells></tableRow></tableRows></table></contents>
+		</block><list horizontalPagination="true" name="List1" refQuery="Sales Ledger/Orders">
+			
+			
+			
+			<noDataHandler>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue>No Data Available</staticValue>
+								</dataSource>
+								<style>
+									<CSS value="padding:10px 18px;"/>
+								</style>
+							</textItem>
+						</contents>
+					</block>
+				</contents>
+			</noDataHandler>
+			<style>
+				<CSS value="border-collapse:collapse"/>
+				<defaultStyles>
+					<defaultStyle refStyle="ls"/>
+				</defaultStyles>
+			</style>
+		<listColumns><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Company Code"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Company Code"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Company Name"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Company Name"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Branch Plant"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Branch Plant"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Freight Handling Code"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Freight Handling Code"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Order Number"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Order Number"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Ordered Quantity"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Ordered Quantity"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="2nd Item Number"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="2nd Item Number"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Sold To Customer Code"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Sold To Customer Code"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Sold To Customer Name"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Sold To Customer Name"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Ship To Customer Code"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Ship To Customer Code"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Ship To Customer Name"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Ship To Customer Name"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Customer Segmentation"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Customer Segmentation"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Customer Segmentation Description"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Customer Segmentation Description"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Order Date"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/><dataFormat><dateFormat dateStyle="short"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Order Date"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Confirmation Date"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/><dataFormat><dateFormat dateStyle="short"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Confirmation Date"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Shipped Date"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/><dataFormat><dateFormat dateStyle="short"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Shipped Date"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Requested Date"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/><dataFormat><dateFormat dateStyle="short"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Requested Date"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Goal"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Goal"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Stretch"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Stretch"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="&gt;48h"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="&gt;48h"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="&lt;72h"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="&lt;72h"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="&gt;72h"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="&gt;72h"/></dataSource></textItem></contents></listColumnBody></listColumn></listColumns><sortList><sortItem refDataItem="Order Number"/><sortItem refDataItem="2nd Item Number"/></sortList><listOverallGroup><listFooter><listRows><listRow><rowCells><rowCell colSpan="15"><contents><textItem><dataSource><staticValue>Overall</staticValue></dataSource></textItem><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem><textItem><dataSource><staticValue>Total</staticValue></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="if"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><staticValue>Total Order Lines</staticValue></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="if"/></defaultStyles><CSS value="text-align:right"/></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Total(Total Line Count)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="if"/></defaultStyles><CSS value="text-align:right"/></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Total(Goal)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Total(Stretch)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Total(&gt;48h)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Total(&lt;72h)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Total(&gt;72h)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles></style></rowCell></rowCells></listRow></listRows></listFooter></listOverallGroup></list></contents>
+								</pageBody>
+								<pageHeader>
+									<contents>
+										<block><style><defaultStyles><defaultStyle refStyle="ta"/></defaultStyles></style>
+											<contents>
+												<textItem><style><defaultStyles><defaultStyle refStyle="tt"/></defaultStyles></style>
+													<dataSource>
+														<staticValue/>
+													</dataSource>
+												</textItem>
+											</contents>
+										</block>
+									</contents>
+									<style>
+										<defaultStyles>
+											<defaultStyle refStyle="ph"/>
+										</defaultStyles>
+										<CSS value="padding-bottom:10px"/>
+									</style>
+								</pageHeader>
+								<pageFooter>
+									<contents>
+										<table>
+											<tableRows>
+												<tableRow>
+													<tableCells>
+														<tableCell>
+															<contents>
+																<date>
+																	<style>
+																		<dataFormat>
+																			<dateFormat/>
+																		</dataFormat>
+																	</style>
+																</date>
+															</contents>
+															<style>
+																<CSS value="vertical-align:top;text-align:left;width:25%"/>
+															</style>
+														</tableCell>
+														<tableCell>
+															<contents>
+																<pageNumber/>
+															</contents>
+															<style>
+																<CSS value="vertical-align:top;text-align:center;width:50%"/>
+															</style>
+														</tableCell>
+														<tableCell>
+															<contents>
+																<time>
+																	<style>
+																		<dataFormat>
+																			<timeFormat/>
+																		</dataFormat>
+																	</style>
+																</time>
+															</contents>
+															<style>
+																<CSS value="vertical-align:top;text-align:right;width:25%"/>
+															</style>
+														</tableCell>
+													</tableCells>
+												</tableRow>
+											</tableRows>
+											<style>
+												<defaultStyles>
+													<defaultStyle refStyle="tb"/>
+												</defaultStyles>
+												<CSS value="border-collapse:collapse;width:100%"/>
+											</style>
+										</table>
+									</contents>
+									<style>
+										<defaultStyles>
+											<defaultStyle refStyle="pf"/>
+										</defaultStyles>
+										<CSS value="padding-top:10px"/>
+									</style>
+								</pageFooter>
+							</page>
+						</reportPages>
+					<promptPages><page name="Prompt Page1">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue/>
+								</dataSource>
+								<style>
+									<defaultStyles>
+										<defaultStyle refStyle="tt"/>
+									</defaultStyles>
+								</style>
+							</textItem>
+						</contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						</style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse"/></style><tableRows><tableRow><tableCells><tableCell><contents><selectValue parameter="Company" refQuery="Company" required="false"><useItem refDataItem="Company Code"><displayItem refDataItem="Company Name"/></useItem><sortList><sortItem refDataItem="Company Name"/></sortList></selectValue></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Select Company</staticValue></dataSource></textItem></contents><style><CSS value="font-weight:bold"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><selectValue parameter="BusinessGroup" refQuery="Business Group" required="false"><useItem refDataItem="Business Group"><displayItem refDataItem="Business Group Description"/></useItem><sortList><sortItem refDataItem="Business Group Description"/></sortList></selectValue></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Select Business Group</staticValue></dataSource></textItem></contents><style><CSS value="font-weight:bold"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><selectValue parameter="Customer" refQuery="Customer" required="false"><useItem refDataItem="Customer Code"><displayItem refDataItem="Customer Name"/></useItem><sortList><sortItem refDataItem="Customer Name"/></sortList></selectValue></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Select Customer</staticValue></dataSource></textItem></contents><style><CSS value="font-weight:bold"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><selectValue parameter="BulkItem" refQuery="Bulk Item" required="false"><useItem refDataItem="Bulk Item"/><sortList><sortItem refDataItem="Bulk Item"/></sortList></selectValue></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Select Bulk Item</staticValue></dataSource></textItem></contents><style><CSS value="font-weight:bold"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><selectValue parameter="CSR" refQuery="CSR" required="false"><useItem refDataItem="CSR Number"><displayItem refDataItem="CSR Name"/></useItem><sortList><sortItem refDataItem="CSR Name"/></sortList></selectValue></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Select CSR</staticValue></dataSource><style><CSS value="font-weight:bold"/></style></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><selectDate parameter="FromDate" selectDateUI="editBox"/></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Select Order Start Date</staticValue></dataSource></textItem></contents><style><CSS value="font-weight:bold"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><selectDate parameter="ToDate" selectDateUI="editBox"/></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Select Order End Date</staticValue></dataSource></textItem></contents><style><CSS value="font-weight:bold"/></style></tableCell></tableCells></tableRow></tableRows></table></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				</style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					<promptButton type="cancel">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					
+					
+					<promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				</style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page></promptPages></layout>
+				</layouts>
+			<XMLAttributes><XMLAttribute name="RS_CreateExtendedDataItems" output="no" value="true"/><XMLAttribute name="listSeparator" output="no" value=","/><XMLAttribute name="RS_modelModificationTime" output="no" value="2018-07-31T15:02:04.658Z"/></XMLAttributes><reportName>Orders within Goal and Stretch</reportName></report>

@@ -1,0 +1,5 @@
+node_modules
+.tmp
+dist
+src/config.ts
+webpack.statistics.*.html

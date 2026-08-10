@@ -1,0 +1,94 @@
+Query + XML
+
+select 
+       ITEM.BRANCH_PLANT  as  Branch_Plant,
+       INVENTORY_ON_HAND_MEASURE.ITEM_NUMBER_2ND  as  C_2nd_Item_Number,
+       ITEM.BULK_ITEM  as  Bulk_Item,
+       ITEM.GLOBAL_BULK_ITEM  as  Global_Bulk_Item,
+       INVENTORY_ON_HAND.MASTER_PLANNING_FAMILY  as  Master_Planning_Family,
+       XSUM((INVENTORY_ON_HAND_MEASURE.QUANTITY_ON_HAND * INVENTORY_ON_HAND_MEASURE.CONVERSION_FACTOR_LB)  for ITEM.BULK_ITEM,ITEM.GLOBAL_BULK_ITEM,ITEM.BRANCH_PLANT,INVENTORY_ON_HAND.MASTER_PLANNING_FAMILY,INVENTORY_ON_HAND.INVENTORY_DATE,INVENTORY_ON_HAND_MEASURE.ITEM_NUMBER_2ND )  as  Quantity_on_Hand_LBs,
+       INVENTORY_ON_HAND.INVENTORY_DATE  as  Inventory_Date
+ from 
+       "Data Warehouse"..DW_LEGACY.ITEM ITEM,
+       "Data Warehouse"..DW_LEGACY.INVENTORY_ON_HAND_MEASURES INVENTORY_ON_HAND_MEASURE,
+       "Data Warehouse"..DW_LEGACY.INVENTORY_ON_HAND INVENTORY_ON_HAND
+ where 
+       (INVENTORY_ON_HAND.INVENTORY_DATE between TIMESTAMP '2020-01-01 00:00:00.000' and TIMESTAMP '2020-12-31 00:00:00.000') and 
+       (ITEM.BRANCH_PLANT in (N'CINC',N'CIN2')) and 
+       (INVENTORY_ON_HAND_MEASURE.INVENTORY_ON_HAND__ITEM_SID = ITEM.ITEM_SID) and 
+       (INVENTORY_ON_HAND.INVENTORY_ON_HAND_SID = INVENTORY_ON_HAND_MEASURE.INVENTORY_ON_HAND_SID)
+ group by 
+       ITEM.BRANCH_PLANT,
+       INVENTORY_ON_HAND_MEASURE.ITEM_NUMBER_2ND,
+       ITEM.BULK_ITEM,
+       ITEM.GLOBAL_BULK_ITEM,
+       INVENTORY_ON_HAND.MASTER_PLANNING_FAMILY,
+       INVENTORY_ON_HAND.INVENTORY_DATE
+
+
+<report xmlns="http://developer.cognos.com/schemas/report/12.0/" useStyleVersion="10" expressionLocale="en-us">
+				<modelPath>/content/package[@name='Data Warehouse']/model[@name='model']</modelPath>
+				<drillBehavior/>
+				
+				<layouts>
+					<layout>
+						<reportPages>
+							<page name="Page1"><style><defaultStyles><defaultStyle refStyle="pg"/></defaultStyles></style>
+								<pageBody><style><defaultStyles><defaultStyle refStyle="pb"/></defaultStyles></style>
+									<contents>
+										
+									<list horizontalPagination="true" refQuery="Query1" name="List1">
+			
+			
+			
+			<noDataHandler>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue>No Data Available</staticValue>
+								</dataSource>
+								<style>
+									<CSS value="padding:10px 18px;"/>
+								</style>
+							</textItem>
+						</contents>
+					</block>
+				</contents>
+			</noDataHandler>
+			<style>
+				<CSS value="border-collapse:collapse"/>
+				<defaultStyles>
+					<defaultStyle refStyle="ls"/>
+				</defaultStyles>
+			</style>
+		<listColumns><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Branch Plant"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Branch Plant"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="2nd Item Number"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="2nd Item Number"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Bulk Item"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Bulk Item"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Global Bulk Item"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Global Bulk Item"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Master Planning Family"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Master Planning Family"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Quantity on Hand LBs"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Quantity on Hand LBs"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Inventory Date"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Inventory Date"/></dataSource></textItem></contents></listColumnBody></listColumn></listColumns></list></contents>
+								</pageBody>
+								<pageHeader>
+									<contents>
+										
+									</contents>
+									<style>
+										<defaultStyles>
+											<defaultStyle refStyle="ph"/>
+										</defaultStyles>
+										<CSS value="padding-bottom:10px"/>
+									</style>
+								</pageHeader>
+								<pageFooter>
+									<contents>
+										
+									</contents>
+									<style>
+										<defaultStyles>
+											<defaultStyle refStyle="pf"/>
+										</defaultStyles>
+										<CSS value="padding-top:10px"/>
+									</style>
+								</pageFooter>
+							</page>
+						</reportPages>
+					</layout>
+				</layouts>
+			<XMLAttributes><XMLAttribute name="RS_CreateExtendedDataItems" value="true" output="no"/><XMLAttribute name="listSeparator" value="," output="no"/><XMLAttribute name="RS_modelModificationTime" value="2018-07-31T15:02:04.658Z" output="no"/></XMLAttributes><reportName>Inventory for tier 2 report</reportName><queries><query name="Query1"><source><model/></source><selection><dataItem name="Bulk Item" aggregate="none" rollupAggregate="none"><expression>[Inventory On Hand Star Schema].[Item].[Bulk Item]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Global Bulk Item" aggregate="none" rollupAggregate="none"><expression>[Inventory On Hand Star Schema].[Item].[Global Bulk Item]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Branch Plant" aggregate="none" rollupAggregate="none"><expression>[Inventory On Hand Star Schema].[Item].[Branch Plant]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Master Planning Family" aggregate="none" rollupAggregate="none"><expression>[Inventory On Hand Star Schema].[Inventory On Hand].[Master Planning Family]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Inventory Date" aggregate="none" rollupAggregate="none"><expression>[Inventory On Hand Star Schema].[Inventory On Hand].[Inventory Date]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="4" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="2nd Item Number" aggregate="none" rollupAggregate="none"><expression>[Inventory On Hand Star Schema].[Inventory On Hand].[2nd Item Number]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="3" output="no"/><XMLAttribute name="RS_dataUsage" value="attribute" output="no"/></XMLAttributes></dataItem><dataItem name="Quantity on Hand LBs" aggregate="total"><expression>[Inventory On Hand Star Schema].[Inventory On Hand].[Quantity on Hand LBs]</expression><XMLAttributes><XMLAttribute name="RS_dataType" value="9" output="no"/><XMLAttribute name="RS_dataUsage" value="fact" output="no"/></XMLAttributes></dataItem></selection><detailFilters><detailFilter><filterDefinition><filterRange refDataItem="Inventory Date" dataType="dateTime"><filterFrom>2020-01-01 00:00:00.000</filterFrom><filterTo>2020-12-31 00:00:00.000</filterTo></filterRange></filterDefinition></detailFilter><detailFilter><filterExpression>[Branch Plant] in ('CINC', 'CIN2')</filterExpression></detailFilter></detailFilters></query></queries></report>
