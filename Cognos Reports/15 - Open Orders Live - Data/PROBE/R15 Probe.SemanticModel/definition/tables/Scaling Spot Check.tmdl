@@ -1,0 +1,132 @@
+table 'Scaling Spot Check'
+	lineageTag: 15000000-0000-0006-0000-000000000000
+
+	column Order
+		dataType: int64
+		formatString: 0
+		lineageTag: 15000000-0000-0006-0001-000000000001
+		summarizeBy: none
+		sourceColumn: Order
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer
+		dataType: string
+		lineageTag: 15000000-0000-0006-0001-000000000002
+		summarizeBy: none
+		sourceColumn: Customer
+
+		annotation SummarizationSetBy = Automatic
+
+	column Next
+		dataType: string
+		lineageTag: 15000000-0000-0006-0001-000000000003
+		summarizeBy: none
+		sourceColumn: Next
+
+		annotation SummarizationSetBy = Automatic
+
+	column BP
+		dataType: string
+		lineageTag: 15000000-0000-0006-0001-000000000004
+		summarizeBy: none
+		sourceColumn: BP
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Promised Ship'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 15000000-0000-0006-0001-000000000005
+		summarizeBy: none
+		sourceColumn: Promised Ship
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Qty
+		dataType: double
+		formatString: #,##0
+		lineageTag: 15000000-0000-0006-0001-000000000006
+		summarizeBy: none
+		sourceColumn: Qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOM
+		dataType: string
+		lineageTag: 15000000-0000-0006-0001-000000000007
+		summarizeBy: none
+		sourceColumn: UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weight
+		dataType: double
+		formatString: #,##0
+		lineageTag: 15000000-0000-0006-0001-000000000008
+		summarizeBy: none
+		sourceColumn: Weight
+
+		annotation SummarizationSetBy = Automatic
+
+	column Item
+		dataType: string
+		lineageTag: 15000000-0000-0006-0001-000000000009
+		summarizeBy: none
+		sourceColumn: Item
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Scaling Spot Check' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT TOP 20
+				            o.SDDOCO AS [Order], sold.ABALPH AS [Customer], o.SDNXTR AS [Next], o.SDMCU AS [BP],
+				            CASE WHEN o.SDPDDJ>0 THEN DATEADD(DAY,(o.SDPDDJ%1000)-1,DATEFROMPARTS(1900+(o.SDPDDJ/1000),1,1)) END AS [Promised Ship],
+				            SUM(o.SDUORG/10000.0) AS [Qty], o.SDUOM AS [UOM],
+				            SUM(CASE WHEN o.SDUOM4=o.SDUOM1 THEN o.SDPQOR/10000.0
+				                     WHEN o.SDUOM4=o.SDUOM2 THEN o.SDSQOR/10000.0
+				                     WHEN o.SDUOM4=o.SDUOM  THEN o.SDUORG/10000.0
+				                     ELSE ISNULL((conv.UMCONV/10000000.0*o.SDUORG)/10000.0,0) END) AS [Weight],
+				            o.SDLITM AS [Item]
+				        FROM PRODDTA.F4211 o
+				        INNER JOIN PRODDTA.F0101 sold ON o.SDAN8=sold.ABAN8
+				        INNER JOIN (SELECT c.CMAN8, LTRIM(RTRIM(n.ABALPH)) AS ABALPH
+				                    FROM PRODDTA.F42140 c INNER JOIN PRODDTA.F0101 n ON c.CMSLSM=n.ABAN8
+				                    WHERE c.CMRTYPE='CSR') csr ON o.SDSHAN=csr.CMAN8
+				        LEFT JOIN PRODDTA.F41002 conv ON o.SDMCU=conv.UMMCU AND o.SDITM=conv.UMITM AND o.SDUOM=conv.UMUM AND o.SDUOM4=conv.UMRUM
+				        WHERE o.SDNXTR < '570' AND o.SDKCOO='00010' AND o.SDLNTY NOT IN ('FS','T') AND o.SDDCTO <> 'SQ'
+				        GROUP BY o.SDDOCO, sold.ABALPH, o.SDNXTR, o.SDMCU,
+				            CASE WHEN o.SDPDDJ>0 THEN DATEADD(DAY,(o.SDPDDJ%1000)-1,DATEFROMPARTS(1900+(o.SDPDDJ/1000),1,1)) END,
+				            o.SDUOM, o.SDLITM
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Order", Int64.Type},
+				            {"Customer", type text},
+				            {"Next", type text},
+				            {"BP", type text},
+				            {"Promised Ship", type date},
+				            {"Qty", type number},
+				            {"UOM", type text},
+				            {"Weight", type number},
+				            {"Item", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

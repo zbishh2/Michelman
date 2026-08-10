@@ -1,0 +1,534 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "379a312edd384faeb677",
+  "position": {
+    "x": 8,
+    "y": 100,
+    "z": 0,
+    "height": 608,
+    "width": 1264,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales"
+                    }
+                  },
+                  "Property": "Order Company"
+                }
+              },
+              "queryRef": "Sales.Order Company",
+              "nativeQueryRef": "Order Company",
+              "displayName": "Order Company"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Branch"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Branch.Branch Plant",
+              "nativeQueryRef": "Branch Plant",
+              "displayName": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Item Num Global Bulk"
+                }
+              },
+              "queryRef": "Item Branch.Item Num Global Bulk",
+              "nativeQueryRef": "Item Num Global Bulk",
+              "displayName": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Item Num Bulk"
+                }
+              },
+              "queryRef": "Item Branch.Item Num Bulk",
+              "nativeQueryRef": "Item Num Bulk",
+              "displayName": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales"
+                    }
+                  },
+                  "Property": "Item Num 2nd"
+                }
+              },
+              "queryRef": "Sales.Item Num 2nd",
+              "nativeQueryRef": "Item Num 2nd",
+              "displayName": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales"
+                    }
+                  },
+                  "Property": "Order Num"
+                }
+              },
+              "queryRef": "Sales.Order Num",
+              "nativeQueryRef": "Order Num",
+              "displayName": "Order Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales"
+                    }
+                  },
+                  "Property": "Status Code Next"
+                }
+              },
+              "queryRef": "Sales.Status Code Next",
+              "nativeQueryRef": "Status Code Next",
+              "displayName": "Next Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales"
+                    }
+                  },
+                  "Property": "Promised Ship Date - Year"
+                }
+              },
+              "queryRef": "Sales.Promised Ship Date - Year",
+              "nativeQueryRef": "Promised Ship Date - Year",
+              "displayName": "Year"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales"
+                    }
+                  },
+                  "Property": "Promised Ship Date - Month"
+                }
+              },
+              "queryRef": "Sales.Promised Ship Date - Month",
+              "nativeQueryRef": "Promised Ship Date - Month",
+              "displayName": "Month"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales"
+                    }
+                  },
+                  "Property": "Promised Shipment Date"
+                }
+              },
+              "queryRef": "Sales.Promised Shipment Date",
+              "nativeQueryRef": "Promised Shipment Date",
+              "displayName": "Promised Ship Date"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sales"
+                        }
+                      },
+                      "Property": "QuantityOrderedKG"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Sales.QuantityOrderedKG)",
+              "nativeQueryRef": "Sum of QuantityOrderedKG",
+              "displayName": "Ordered Quantity KGs"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Revenue Business Unit"
+                    }
+                  },
+                  "Property": "RBU"
+                }
+              },
+              "queryRef": "Revenue Business Unit.RBU",
+              "nativeQueryRef": "RBU",
+              "displayName": "Revenue Business Unit"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customer"
+                    }
+                  },
+                  "Property": "Customer Sold To Num"
+                }
+              },
+              "queryRef": "Customer.Customer Sold To Num",
+              "nativeQueryRef": "Customer Sold To Num",
+              "displayName": "Customer Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customer"
+                    }
+                  },
+                  "Property": "Customer Sold To Name"
+                }
+              },
+              "queryRef": "Customer.Customer Sold To Name",
+              "nativeQueryRef": "Customer Sold To Name",
+              "displayName": "Customer Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customer"
+                    }
+                  },
+                  "Property": "Global Parent Num"
+                }
+              },
+              "queryRef": "Customer.Global Parent Num",
+              "nativeQueryRef": "Global Parent Num",
+              "displayName": "Global Parent"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customer"
+                    }
+                  },
+                  "Property": "Global Parent Name"
+                }
+              },
+              "queryRef": "Customer.Global Parent Name",
+              "nativeQueryRef": "Global Parent Name",
+              "displayName": "Global Parent Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Territory Manager"
+                    }
+                  },
+                  "Property": "Mailing Name"
+                }
+              },
+              "queryRef": "Territory Manager.Mailing Name",
+              "nativeQueryRef": "Mailing Name",
+              "displayName": "TM Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customer"
+                    }
+                  },
+                  "Property": "Country Desc"
+                }
+              },
+              "queryRef": "Customer.Country Desc",
+              "nativeQueryRef": "Country Desc",
+              "displayName": "Country Name"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sales"
+                        }
+                      },
+                      "Property": "QuantityOrdered"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Sales.QuantityOrdered)",
+              "nativeQueryRef": "Sum of QuantityOrdered",
+              "displayName": "Ordered Quantity"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales"
+                    }
+                  },
+                  "Property": "UOM"
+                }
+              },
+              "queryRef": "Sales.UOM",
+              "nativeQueryRef": "UOM",
+              "displayName": "Ordering Unit of Measure"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sales"
+                        }
+                      },
+                      "Property": "QuantityOrderedLB"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Sales.QuantityOrderedLB)",
+              "nativeQueryRef": "Sum of QuantityOrderedLB",
+              "displayName": "Ordered Quantity LBs"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales"
+                    }
+                  },
+                  "Property": "Open Order Flag"
+                }
+              },
+              "queryRef": "Sales.Open Order Flag",
+              "nativeQueryRef": "Open Order Flag",
+              "displayName": "Open Indicator"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Sales"
+                  }
+                },
+                "Property": "Promised Shipment Date"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

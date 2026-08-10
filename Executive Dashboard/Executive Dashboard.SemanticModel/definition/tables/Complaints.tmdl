@@ -1,0 +1,421 @@
+table Complaints
+	lineageTag: 39c33b49-47f6-42be-a873-12cd6773b73f
+
+	column CaseNumber
+		dataType: string
+		lineageTag: 3bcd5fd4-9d5f-46f4-a030-11a5297be62d
+		summarizeBy: none
+		sourceColumn: CaseNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: dd785a3a-97ce-4a4c-bfb1-faa94978856d
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		variation Variation
+			isDefault
+			relationship: 41238093-dbef-413c-8f8a-040828274102
+			defaultHierarchy: LocalDateTable_649e5e77-eb7e-4431-b085-da03386a0d0a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column RecordTypeId
+		dataType: string
+		lineageTag: 50ef0306-906b-4588-8953-af59209ed568
+		summarizeBy: none
+		sourceColumn: RecordTypeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Region Mapped' = ```
+			
+			  VAR ByRegion =
+			      SWITCH (
+			          TRUE (),
+			          Complaints[Region] = "Americas", "Americas",
+			          Complaints[Region] = "EMEA", "EMEA",
+			          Complaints[Region] IN { "Asia", "China", "India", "Pacific Rim" }, "Asia",
+			          BLANK ()   // Global / (Blank) -> not resolvable, fall through to Location
+			      )
+			  VAR ByLocation =
+			      SWITCH (
+			          TRUE (),
+			          Complaints[Location] IN { "Kemper", "Shell" }, "Americas",
+			          Complaints[Location] IN { "Aubange", "Windhof" }, "EMEA",
+			          Complaints[Location] = "Singapore", "Asia",
+			          BLANK ()   // All Sites / (Blank) -> not resolvable
+			      )
+			  RETURN
+			      COALESCE ( ByRegion, ByLocation, "Unmapped" )
+			```
+		lineageTag: 45cf05f0-ad4c-4458-82d9-e58a5f62b8cf
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Target Line' = .99
+		formatString: 0%;-0%;0%
+		lineageTag: aff2aaf1-00a8-424e-a337-8566283a1c4d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date_of_Occurrence
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 574db292-9aa4-4dba-9503-75949adcfa4c
+		summarizeBy: none
+		sourceColumn: Date_of_Occurrence
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Level_1
+		dataType: string
+		lineageTag: 5b8232e7-1c43-4aea-921e-6d66870e8c48
+		summarizeBy: none
+		sourceColumn: Level_1
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level_2
+		dataType: string
+		lineageTag: 45c62ea2-8d87-45e5-ab6f-7609b8c25559
+		summarizeBy: none
+		sourceColumn: Level_2
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 70a5a3f9-b5a8-475d-b3db-838e08cb4d80
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: 88091fd3-125a-4a0f-9181-db0080544515
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column Complaint_Valid
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1ea320b4-7729-494c-95ab-66ea998698bc
+		summarizeBy: none
+		sourceColumn: Complaint_Valid
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_ID
+		dataType: string
+		lineageTag: 41a8ecaa-e8f8-4c3b-afde-2c116d7c061d
+		summarizeBy: none
+		sourceColumn: Product_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Champion_ID
+		dataType: string
+		lineageTag: 03409808-839b-4571-b234-905883408e95
+		summarizeBy: none
+		sourceColumn: Champion_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Case_Status
+		dataType: string
+		lineageTag: 4d809b3d-8458-45bb-918f-950b1adf1659
+		summarizeBy: none
+		sourceColumn: Case_Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Subject
+		dataType: string
+		lineageTag: 19abd513-da18-44f1-887b-ea06b7d4788e
+		summarizeBy: none
+		sourceColumn: Subject
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: d3fe3580-b712-49ef-81e0-01de8addd6ad
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Responsible_Department
+		dataType: string
+		lineageTag: 66d44ad1-db24-49f4-a6e0-1996847d2f72
+		summarizeBy: none
+		sourceColumn: Responsible_Department
+
+		annotation SummarizationSetBy = Automatic
+
+	column Root_Cause_Detail_1
+		dataType: string
+		lineageTag: 4746ea1e-fed0-4e13-8cf1-1be997fd91f6
+		summarizeBy: none
+		sourceColumn: Root_Cause_Detail_1
+
+		annotation SummarizationSetBy = Automatic
+
+	column Root_Cause_Detail_2
+		dataType: string
+		lineageTag: 1f3b5636-3393-4063-a4c3-411963746a1e
+		summarizeBy: none
+		sourceColumn: Root_Cause_Detail_2
+
+		annotation SummarizationSetBy = Automatic
+
+	column Root_Cause_Description
+		dataType: string
+		lineageTag: e5446f25-18ab-4ac7-8bcb-64334904576a
+		summarizeBy: none
+		sourceColumn: Root_Cause_Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Preventive_Action
+		dataType: string
+		lineageTag: eb512a17-088f-42c3-8212-d2096ab6c155
+		summarizeBy: none
+		sourceColumn: Preventive_Action
+
+		annotation SummarizationSetBy = Automatic
+
+	column Lot_Number
+		dataType: string
+		lineageTag: 95307607-51f0-40e1-bfbe-c8dd4bc8d321
+		summarizeBy: none
+		sourceColumn: Lot_Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer
+		dataType: string
+		lineageTag: 940f725f-cc08-4182-a430-5b67a8161d01
+		summarizeBy: none
+		sourceColumn: Customer
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_Code
+		dataType: string
+		lineageTag: 6a7163b2-0bd6-432c-a72b-b20dba9a0810
+		summarizeBy: none
+		sourceColumn: Customer_Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_Segmentation
+		dataType: string
+		lineageTag: aabfc77c-e85c-4c17-a0f5-5a26f892abb8
+		summarizeBy: none
+		sourceColumn: Customer_Segmentation
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity_Impacted
+		dataType: double
+		lineageTag: 548ff697-aeec-4aff-a61e-22684b7e4f2d
+		summarizeBy: sum
+		sourceColumn: Quantity_Impacted
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Quantity_Delivered
+		dataType: double
+		lineageTag: db1910cd-3e28-4e35-936e-4e77d6f11e66
+		summarizeBy: sum
+		sourceColumn: Quantity_Delivered
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column UOM
+		dataType: string
+		lineageTag: 902073ae-aa7f-4187-b2b8-f4e2b1cd5cc0
+		summarizeBy: none
+		sourceColumn: UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Name
+		dataType: string
+		lineageTag: 5cf24bd1-7505-4a1e-b044-59bc5bc5d434
+		summarizeBy: none
+		sourceColumn: Product_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Code
+		dataType: string
+		lineageTag: a4323a8c-7598-4c38-8b54-b3b20d0d2b5a
+		summarizeBy: none
+		sourceColumn: Product_Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Champion_Name
+		dataType: string
+		lineageTag: 7f65a045-83be-4741-aa3f-cfcff95d6777
+		summarizeBy: none
+		sourceColumn: Champion_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date of Occurence' = Complaints[Date_of_Occurrence]
+		formatString: General Date
+		lineageTag: 5aa491b3-f664-4944-9b29-6f96cf548d4d
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: 8b9bb879-b827-4dad-9df1-23695f6e3558
+			defaultHierarchy: LocalDateTable_fba67149-d28a-43a5-8ad5-f12317641574.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Tier' =
+			
+			SWITCH (
+			    TRUE(),
+			    Complaints[Customer_Segmentation] IN { "Gold", "Platinum" }, "Strategic",
+			    "Standard"
+			)
+		lineageTag: 30f9af1e-6e50-4d92-8367-e25c07485db6
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segmentation = IF(ISBLANK(Complaints[Customer_Segmentation]),"Unknown",Complaints[Customer_Segmentation])
+		lineageTag: f85f0d18-ce03-4e84-87d3-bf5627b34187
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Record_Type
+		dataType: string
+		lineageTag: 35833519-ffa6-41da-8491-7afc0c8188a9
+		summarizeBy: none
+		sourceColumn: Record_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Days_Case_Open
+		dataType: int64
+		formatString: 0
+		lineageTag: 3deac84e-d0ff-4363-a693-c94c8ed059a5
+		summarizeBy: none
+		sourceColumn: Days_Case_Open
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Complaints = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("ODSDEV"),
+				    ODS_SF = Source{[Name = "ODS_SalesForce"]}[Data],
+				    SF_Case = ODS_SF{[Schema = "dbo", Item = "Case"]}[Data],
+				    Kept = Table.SelectColumns(
+				        SF_Case,
+				        {
+				            "CaseNumber", "Date_of_Occurance__c", "CreatedDate",
+				            "Level_1__c", "Level_2__c", "Region__c", "Location__c",
+				            "Complaint_Valid__c", "RecordTypeId", "AccountId",
+				            "Product_Code__c", "Champion__c",
+				            "Status", "Subject", "Description",
+				            "Responsible_Department__c",
+				            "Root_Cause_Detail_1__c", "Root_Cause_Detail_2__c",
+				            "Root_Cause_Description__c", "Preventive_Action__c",
+				            "Lot_Number__c",
+				            "Ship_To_Customer_Code__c",
+				            "Account_Segmentation__c",
+				            "Quantity_Impacted__c", "Quantity_Delivered__c",
+				            "UOM__c",
+				            "days_Case_Open__c"
+				        }
+				    ),
+				    Renamed = Table.RenameColumns(
+				        Kept,
+				        {
+				            {"Date_of_Occurance__c", "Date_of_Occurrence"},
+				            {"Level_1__c", "Level_1"},
+				            {"Level_2__c", "Level_2"},
+				            {"Region__c", "Region"},
+				            {"Location__c", "Location"},
+				            {"Complaint_Valid__c", "Complaint_Valid"},
+				            {"Product_Code__c", "Product_ID"},
+				            {"Champion__c", "Champion_ID"},
+				            {"Status", "Case_Status"},
+				            {"Responsible_Department__c", "Responsible_Department"},
+				            {"Root_Cause_Detail_1__c", "Root_Cause_Detail_1"},
+				            {"Root_Cause_Detail_2__c", "Root_Cause_Detail_2"},
+				            {"Root_Cause_Description__c", "Root_Cause_Description"},
+				            {"Preventive_Action__c", "Preventive_Action"},
+				            {"Lot_Number__c", "Lot_Number"},
+				            {"Ship_To_Customer_Code__c", "Customer_Code"},
+				            {"Account_Segmentation__c", "Customer_Segmentation"},
+				            {"Quantity_Impacted__c", "Quantity_Impacted"},
+				            {"Quantity_Delivered__c", "Quantity_Delivered"},
+				            {"UOM__c", "UOM"},
+				            {"days_Case_Open__c", "Days_Case_Open"}
+				        }
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Renamed,
+				        {
+				            {"Date_of_Occurrence", type date},
+				            {"CreatedDate", type datetime},
+				            {"Days_Case_Open", Int64.Type}
+				        },
+				        "en-US"
+				    ),
+				    RecordTypeDim = Table.SelectColumns(
+				        ODS_SF{[Schema = "dbo", Item = "RecordType"]}[Data], {"Id", "Name"}),
+				    AccountDim = Table.SelectColumns(
+				        ODS_SF{[Schema = "dbo", Item = "Account"]}[Data], {"Id", "Name"}),
+				    Product2Dim = Table.SelectColumns(
+				        ODS_SF{[Schema = "dbo", Item = "Product2"]}[Data], {"Id", "Name", "ProductCode"}),
+				    UserDim = Table.SelectColumns(
+				        ODS_SF{[Schema = "dbo", Item = "User"]}[Data], {"Id", "Name"}),
+				    JoinRecordType = Table.NestedJoin(
+				        Typed, {"RecordTypeId"}, RecordTypeDim, {"Id"}, "RTJoin", JoinKind.LeftOuter),
+				    AddRecordType = Table.ExpandTableColumn(JoinRecordType, "RTJoin", {"Name"}, {"Record_Type"}),
+				    JoinAccount = Table.NestedJoin(
+				        AddRecordType, {"AccountId"}, AccountDim, {"Id"}, "AcctJoin", JoinKind.LeftOuter),
+				    AddCustomer = Table.ExpandTableColumn(JoinAccount, "AcctJoin", {"Name"}, {"Customer"}),
+				    JoinProduct = Table.NestedJoin(
+				        AddCustomer, {"Product_ID"}, Product2Dim, {"Id"}, "Product2Join", JoinKind.LeftOuter),
+				    AddProduct = Table.ExpandTableColumn(
+				        JoinProduct, "Product2Join", {"Name", "ProductCode"}, {"Product_Name", "Product_Code"}),
+				    JoinChampion = Table.NestedJoin(
+				        AddProduct, {"Champion_ID"}, UserDim, {"Id"}, "UserJoin", JoinKind.LeftOuter),
+				    AddChampion = Table.ExpandTableColumn(JoinChampion, "UserJoin", {"Name"}, {"Champion_Name"}),
+				    RemovedIds = Table.RemoveColumns(AddChampion, {"AccountId"})
+				in
+				    RemovedIds
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

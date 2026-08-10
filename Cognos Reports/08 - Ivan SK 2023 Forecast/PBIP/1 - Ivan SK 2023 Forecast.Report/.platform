@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "1 - Ivan SK 2023 Forecast"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "dd9dd60c-9dc6-45a7-9b72-3d553d25c90e"
+  }
+}

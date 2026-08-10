@@ -1,0 +1,111 @@
+table 'P11 FX 2026 Summary'
+	lineageTag: 18000c00-0000-4000-8000-000000000001
+
+	column src
+		dataType: string
+		lineageTag: 18000c01-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: src
+
+		annotation SummarizationSetBy = Automatic
+
+	column code_from
+		dataType: string
+		lineageTag: 18000c01-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: code_from
+
+		annotation SummarizationSetBy = Automatic
+
+	column code_to
+		dataType: string
+		lineageTag: 18000c01-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: code_to
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_rows
+		dataType: int64
+		formatString: 0
+		lineageTag: 18000c01-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: n_rows
+
+		annotation SummarizationSetBy = Automatic
+
+	column min_date
+		dataType: string
+		lineageTag: 18000c01-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: min_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column max_date
+		dataType: string
+		lineageTag: 18000c01-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: max_date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P11 FX 2026 Summary' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT 'USDDaily' AS src, LTRIM(RTRIM(fx.CurrencyCodeFrom)) AS code_from, 'USD' AS code_to,
+				               COUNT(*) AS n_rows,
+				               CONVERT(varchar(10), MIN(fx.CalendarDate), 120) AS min_date,
+				               CONVERT(varchar(10), MAX(fx.CalendarDate), 120) AS max_date
+				        FROM BIQL.DimCurrencyExchangeRatesUSDDaily fx
+				        WHERE fx.CalendarDate >= '2026-01-01'
+				        GROUP BY LTRIM(RTRIM(fx.CurrencyCodeFrom))
+				        UNION ALL
+				        SELECT 'TbCurrencyRates', LTRIM(RTRIM(r.CurrencyCodeFrom)), LTRIM(RTRIM(r.CurrencyCodeTo)),
+				               COUNT(*),
+				               CONVERT(varchar(10), MIN(r.CalendarDate), 120),
+				               CONVERT(varchar(10), MAX(r.CalendarDate), 120)
+				        FROM BIQL.TbCurrencyRates r
+				        WHERE r.CalendarDate >= '2026-01-01'
+				          AND (r.ToRateDaily IS NOT NULL OR r.ToRateA IS NOT NULL OR r.ToRateM IS NOT NULL)
+				        GROUP BY LTRIM(RTRIM(r.CurrencyCodeFrom)), LTRIM(RTRIM(r.CurrencyCodeTo))
+				        UNION ALL
+				        SELECT 'CurrencyRatesTo', LTRIM(RTRIM(c.CurrencyCodeFrom)), LTRIM(RTRIM(c.CurrencyCodeTo)),
+				               COUNT(*),
+				               CONVERT(varchar(10), MIN(c.CalendarDate), 120),
+				               CONVERT(varchar(10), MAX(c.CalendarDate), 120)
+				        FROM BIQL.CurrencyRatesTo c
+				        WHERE c.CalendarDate >= '2026-01-01'
+				          AND (c.ToRateDaily IS NOT NULL OR c.ToRateA IS NOT NULL OR c.ToRateM IS NOT NULL)
+				        GROUP BY LTRIM(RTRIM(c.CurrencyCodeFrom)), LTRIM(RTRIM(c.CurrencyCodeTo))
+				        UNION ALL
+				        SELECT 'RatesToCXA', LTRIM(RTRIM(x.CurrencyCodeFrom)), LTRIM(RTRIM(x.CurrencyCodeTo)),
+				               COUNT(*),
+				               CONVERT(varchar(10), MIN(x.CalendarDate), 120),
+				               CONVERT(varchar(10), MAX(x.CalendarDate), 120)
+				        FROM BIQL.DimCurrencyRatesToCXA x
+				        WHERE x.CalendarDate >= '2026-01-01'
+				          AND (x.ToRateDaily IS NOT NULL OR x.ToRateA IS NOT NULL OR x.ToRateM IS NOT NULL)
+				        GROUP BY LTRIM(RTRIM(x.CurrencyCodeFrom)), LTRIM(RTRIM(x.CurrencyCodeTo))
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"src", type text},
+							{"code_from", type text},
+							{"code_to", type text},
+							{"n_rows", Int64.Type},
+							{"min_date", type text},
+							{"max_date", type text}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

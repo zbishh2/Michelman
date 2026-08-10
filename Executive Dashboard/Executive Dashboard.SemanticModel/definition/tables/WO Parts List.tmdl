@@ -1,0 +1,221 @@
+/// JDE work order parts list (F3111) from EDW, one row per component line. The components issued to a work order. Drives the rename test on WorkOrders, and is the evidence behind it: click a work order to see what was actually consumed. Source query: edw_model/WOPartsList.m.
+table 'WO Parts List'
+	lineageTag: d94f80c1-3a65-4e27-b108-5271ea08c396
+
+	/// Work order this component belongs to. Relates many-to-one to WorkOrders.
+	column WorkOrderSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 1f8a34d7-06be-4c25-93e0-58721acb0f64
+		summarizeBy: none
+		sourceColumn: WorkOrderSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	/// The JDE work order number. Matches WorkOrders[WorkOrderNum].
+	column WorkOrderNum
+		dataType: string
+		lineageTag: 4b0e2c81-97fa-4d36-b58c-13d7f6209ae5
+		summarizeBy: none
+		sourceColumn: WorkOrderNum
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Unique identifier of the parts list row. Bind this in any table visual - it is the ONLY thing that keeps identical component rows from collapsing into one, because ComponentLineNum is zero on every row.
+	column 'Unique Key ID'
+		dataType: double
+		lineageTag: 9e5713bc-42d0-4a87-b6f1-8c0524e3d719
+		summarizeBy: count
+		sourceColumn: Unique Key ID
+
+		annotation SummarizationSetBy = Automatic
+
+	/// The component item number consumed by the work order.
+	column 'Component Item'
+		dataType: string
+		lineageTag: 62d19f05-8a4c-43e7-95b8-704fe1263c8a
+		summarizeBy: none
+		sourceColumn: Component Item
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Description of the component item.
+	column 'Component Desc'
+		dataType: string
+		lineageTag: 08c46be2-31d7-45a9-8e02-b95f37102d6b
+		summarizeBy: none
+		sourceColumn: Component Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Lot the component was issued from. Blank on 27.6% of issued rows, which is why the rename rule degrades to item-only for those - measured harmless, only five work orders are affected.
+	column 'Lot Num'
+		dataType: string
+		lineageTag: 3a7f5d94-c012-4b68-a739-6e81250bc4f7
+		summarizeBy: none
+		sourceColumn: Lot Num
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Quantity required by the parts list.
+	column 'Qty Ordered'
+		dataType: double
+		lineageTag: 5d802a71-6ecb-4f39-81a0-42731fe95cb8
+		summarizeBy: sum
+		sourceColumn: Qty Ordered
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Quantity actually issued to the work order. This is what the rename test counts. Negative values are JDE backing out a mis-keyed issue - only 281 rows carry one.
+	column 'Qty Issued'
+		dataType: double
+		lineageTag: 71fe36c0-9d84-42b5-a613-0857e492d13f
+		summarizeBy: sum
+		sourceColumn: Qty Issued
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Unit of measure of the issue.
+	column UOM
+		dataType: string
+		lineageTag: 2c95f381-40a6-4e73-9d15-b60847e2c13f
+		summarizeBy: none
+		sourceColumn: UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Branch plant the component was issued from.
+	column 'Component Branch'
+		dataType: string
+		lineageTag: 8f4b07e5-13ca-4269-b830-95e7164a2f04
+		summarizeBy: none
+		sourceColumn: Component Branch
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Inventory location the component was issued from.
+	column Location
+		dataType: string
+		lineageTag: 6a2d18fb-7350-49ec-8214-cf90536b7e18
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE line type.
+	column 'Line Type'
+		dataType: string
+		lineageTag: 4e73c1d5-28fb-41a7-9c60-1b8342e05f9a
+		summarizeBy: none
+		sourceColumn: Line Type
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE component type.
+	column 'Component Type'
+		dataType: string
+		lineageTag: 03fa8e26-b915-4c07-a562-79d1830be4c7
+		summarizeBy: none
+		sourceColumn: Component Type
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE issue type code.
+	column 'Issue Type'
+		dataType: string
+		lineageTag: 9b607e14-5d2f-483a-b71c-0248fa39c56d
+		summarizeBy: none
+		sourceColumn: Issue Type
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE material status code.
+	column 'Material Status'
+		dataType: string
+		lineageTag: 15c840d3-6b79-42fe-98a1-c73e0b5924af
+		summarizeBy: none
+		sourceColumn: Material Status
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Date the component was required.
+	column 'Requested Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 7d3956ea-24b1-40cf-85d7-e6108b47f230
+		summarizeBy: none
+		sourceColumn: Requested Date
+
+		variation Variation
+			isDefault
+			relationship: 30c82d4b-a320-4c1a-8459-84b87e3d61c3
+			defaultHierarchy: LocalDateTable_0df48de4-08e7-4fe3-9da7-5727fee7492b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	partition 'WO Parts List' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(
+				        "EDWPROD",
+				        "EDW",
+				        [
+				            Query = "
+				SELECT
+				    p.WorkOrderSKey,
+				    wo.WorkOrderNum,
+				    p.UniqueKeyID                                            AS [Unique Key ID],
+				    LTRIM(RTRIM(ISNULL(p.ComponentItemNum2nd,  '')))         AS [Component Item],
+				    LTRIM(RTRIM(ISNULL(p.ComponentItemDesc2nd, '')))         AS [Component Desc],
+				    LTRIM(RTRIM(ISNULL(p.LotNum, '')))                       AS [Lot Num],
+				    p.QuantityOrdered                                        AS [Qty Ordered],
+				    p.QuantityTransaction                                    AS [Qty Issued],
+				    LTRIM(RTRIM(ISNULL(p.UOM, '')))                          AS [UOM],
+				    LTRIM(RTRIM(ISNULL(p.ComponentBranch, '')))              AS [Component Branch],
+				    LTRIM(RTRIM(ISNULL(p.Location, '')))                     AS [Location],
+				    LTRIM(RTRIM(ISNULL(p.LineType, '')))                     AS [Line Type],
+				    LTRIM(RTRIM(ISNULL(p.ComponentType, '')))                AS [Component Type],
+				    LTRIM(RTRIM(ISNULL(p.IssueTypeCode, '')))                AS [Issue Type],
+				    LTRIM(RTRIM(ISNULL(p.MaterialStatusCode, '')))           AS [Material Status],
+				    p.RequestedDate                                          AS [Requested Date]
+				FROM       BIQL.FactWOPartsList p  WITH (NOLOCK)
+				INNER JOIN BIQL.DimWorkOrder    wo WITH (NOLOCK)
+				       ON  wo.WorkOrderSKey = p.WorkOrderSKey
+				WHERE      wo.CompletionDate >= '2024-01-01' OR wo.RequestedDate >= '2024-01-01'
+				",
+				            CreateNavigationProperties = false
+				        ]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {
+				            {"WorkOrderSKey",     Int64.Type},
+				            {"WorkOrderNum",      type text},
+				            {"Unique Key ID",     type number},
+				            {"Component Item",    type text},
+				            {"Component Desc",    type text},
+				            {"Lot Num",           type text},
+				            {"Qty Ordered",       type number},
+				            {"Qty Issued",        type number},
+				            {"UOM",               type text},
+				            {"Component Branch",  type text},
+				            {"Location",          type text},
+				            {"Line Type",         type text},
+				            {"Component Type",    type text},
+				            {"Issue Type",        type text},
+				            {"Material Status",   type text},
+				            {"Requested Date",    type date}
+				        }
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

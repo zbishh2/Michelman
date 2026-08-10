@@ -1,0 +1,71 @@
+table 'F42140 Sample'
+	lineageTag: 4d0a6f53-3a74-4e95-b1b6-84f5d90b7f01
+
+	column 'Customer AN8'
+		dataType: int64
+		lineageTag: 4d0a6f53-3a74-4e95-b1b6-84f5d90b7f02
+		summarizeBy: none
+		sourceColumn: Customer AN8
+
+		annotation SummarizationSetBy = User
+
+	column 'Rep Type'
+		dataType: string
+		lineageTag: 4d0a6f53-3a74-4e95-b1b6-84f5d90b7f03
+		summarizeBy: none
+		sourceColumn: Rep Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Rep AN8'
+		dataType: int64
+		lineageTag: 4d0a6f53-3a74-4e95-b1b6-84f5d90b7f04
+		summarizeBy: none
+		sourceColumn: Rep AN8
+
+		annotation SummarizationSetBy = User
+
+	column 'Rep AB Name'
+		dataType: string
+		lineageTag: 4d0a6f53-3a74-4e95-b1b6-84f5d90b7f05
+		summarizeBy: none
+		sourceColumn: Rep AB Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'F42140 Sample' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT TOP 200
+				            CAST(f.CMAN8 AS int)      AS [Customer AN8],
+				            LTRIM(RTRIM(f.CMRTYPE))   AS [Rep Type],
+				            CAST(f.CMSLSM AS int)     AS [Rep AN8],
+				            LTRIM(RTRIM(ab.ABALPH))   AS [Rep AB Name]
+				        FROM PRODDTA.F42140 f
+				        LEFT JOIN PRODDTA.F0101 ab ON ab.ABAN8 = f.CMSLSM
+				        WHERE f.CMAN8 IN (SELECT SDSHAN FROM PRODDTA.F4211
+				                          WHERE LTRIM(RTRIM(SDMCU)) IN ('CINC','CIN2','CIN4'))
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Customer AN8", Int64.Type},
+				            {"Rep Type", type text},
+				            {"Rep AN8", Int64.Type},
+				            {"Rep AB Name", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,17 @@
+relationship 14a1re01-snapshot-item
+	fromColumn: Snapshot.ItemSKey
+	toColumn: Item.ItemSKey
+
+relationship 14a1re02-snapshot-lot
+	fromColumn: Snapshot.LotSKey
+	toColumn: Lot.LotSKey
+
+relationship 14a1re03-snapshot-company
+	fromColumn: Snapshot.CompanySKey
+	toColumn: Company.CompanySKey
+
+relationship 14a1re05-lot-item
+	isActive: false
+	fromColumn: Lot.ItemSKey
+	toColumn: Item.ItemSKey
+

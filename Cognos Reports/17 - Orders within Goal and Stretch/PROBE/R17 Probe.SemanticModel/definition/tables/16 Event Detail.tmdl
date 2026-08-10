@@ -1,0 +1,177 @@
+table '16 Event Detail'
+	lineageTag: 17100000-0000-4000-8000-000000000001
+
+	column order_number
+		dataType: string
+		lineageTag: 17100001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: order_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_number
+		dataType: double
+		lineageTag: 17100001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: line_number
+
+		annotation SummarizationSetBy = User
+
+	column order_type
+		dataType: string
+		lineageTag: 17100001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: order_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column cohort
+		dataType: string
+		lineageTag: 17100001-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: cohort
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_status
+		dataType: string
+		lineageTag: 17100001-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: last_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column next_status
+		dataType: string
+		lineageTag: 17100001-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: next_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_dt
+		dataType: dateTime
+		lineageTag: 17100001-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: event_dt
+
+		annotation SummarizationSetBy = User
+
+	column upmj
+		dataType: int64
+		lineageTag: 17100001-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: upmj
+
+		annotation SummarizationSetBy = User
+
+	column tday
+		dataType: int64
+		lineageTag: 17100001-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: tday
+
+		annotation SummarizationSetBy = User
+
+	column pid
+		dataType: string
+		lineageTag: 17100001-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: pid
+
+		annotation SummarizationSetBy = Automatic
+
+	column userid
+		dataType: string
+		lineageTag: 17100001-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: userid
+
+		annotation SummarizationSetBy = Automatic
+
+	column jobn
+		dataType: string
+		lineageTag: 17100001-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: jobn
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '16 Event Detail' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        SELECT
+				          CAST(l.SLDOCO AS varchar(20)) AS order_number,
+				          l.SLLNID/1000.0 AS line_number,
+				          LTRIM(RTRIM(l.SLDCTO)) AS order_type,
+				          x.cohort AS cohort,
+				          LTRIM(RTRIM(l.SLLTTR)) AS last_status,
+				          LTRIM(RTRIM(l.SLNXTR)) AS next_status,
+				          CASE WHEN l.SLUPMJ > 0 THEN DATEADD(SECOND,(l.SLTDAY/10000)*3600+((l.SLTDAY/100)%100)*60+(l.SLTDAY%100),CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2)) END AS event_dt,
+				          l.SLUPMJ AS upmj,
+				          l.SLTDAY AS tday,
+				          LTRIM(RTRIM(l.SLPID)) AS pid,
+				          LTRIM(RTRIM(l.SLUSER)) AS userid,
+				          LTRIM(RTRIM(l.SLJOBN)) AS jobn
+				        FROM PRODDTA.F42199 l
+				        JOIN (VALUES
+				          (26001037, 1000, 'CTRL clean real-time confirm'),
+				          (2710964,  1000, 'CTRL matched, d540 hourly :50:08'),
+				          (2711439,  1000, 'CTRL matched, d540 3:01 PM'),
+				          (2715940, 17000, 'CTRL matched line, order w/ extras'),
+				          (2715940, 18000, 'CTRL matched line, order w/ extras'),
+				          (26001181, 1000, 'MISMATCH 525 intermediate pick'),
+				          (26001153, 3000, 'MISMATCH 540 intermediate pick'),
+				          (2708703,  1000, 'MISMATCH 525 near-max pick'),
+				          (26001182, 4000, 'MISMATCH min-540 in Cognos 540/900'),
+				          (26001182, 5000, 'MISMATCH min-540 in Cognos 540/900'),
+				          (2724711,  1000, 'EXTRA 540/535 daily-batch'),
+				          (2713483,  1000, 'EXTRA sibling of 129-event line'),
+				          (2713483,  2000, 'EXTRA 129 daily 540 events'),
+				          (2726950,  1000, 'EXTRA whole order absent, completed'),
+				          (2726950,  2000, 'EXTRA whole order absent, completed'),
+				          (2726950,  3000, 'EXTRA whole order absent, completed'),
+				          (2715940, 23000, 'EXTRA line beyond export count'),
+				          (2715940, 26000, 'EXTRA line beyond export count'),
+				          (2727544,  1000, 'MISMATCH exemplar'),
+				          (26001059, 1000, 'EXTRA whole order absent 999/900'),
+				          (2722060,  1000, 'EXTRA partial 3v1'),
+				          (2722060,  2000, 'EXTRA partial 3v1'),
+				          (2722060,  3000, 'EXTRA partial 3v1'),
+				          (2728566,  1000, 'EXTRA SA whole order absent')
+				        ) x(doco, lnid, cohort)
+				          ON l.SLDOCO = x.doco AND l.SLLNID = x.lnid
+				        ORDER BY CAST(l.SLDOCO AS varchar(20)), l.SLLNID, l.SLUPMJ, l.SLTDAY;
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"order_number", type text},
+				            {"line_number", type number},
+				            {"order_type", type text},
+				            {"cohort", type text},
+				            {"last_status", type text},
+				            {"next_status", type text},
+				            {"event_dt", type datetime},
+				            {"upmj", Int64.Type},
+				            {"tday", Int64.Type},
+				            {"pid", type text},
+				            {"userid", type text},
+				            {"jobn", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

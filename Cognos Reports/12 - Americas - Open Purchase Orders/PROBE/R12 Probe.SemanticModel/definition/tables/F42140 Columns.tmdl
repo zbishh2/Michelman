@@ -1,0 +1,47 @@
+table 'F42140 Columns'
+	lineageTag: 3c9f5e42-2f63-4d84-a0a5-73e4c8fa6f01
+
+	column 'Col ID'
+		dataType: int64
+		lineageTag: 3c9f5e42-2f63-4d84-a0a5-73e4c8fa6f02
+		summarizeBy: none
+		sourceColumn: Col ID
+
+		annotation SummarizationSetBy = User
+
+	column 'Column Name'
+		dataType: string
+		lineageTag: 3c9f5e42-2f63-4d84-a0a5-73e4c8fa6f03
+		summarizeBy: none
+		sourceColumn: Column Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'F42140 Columns' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT CAST(column_id AS int) AS [Col ID], name AS [Column Name]
+				        FROM sys.columns
+				        WHERE object_id = OBJECT_ID('PRODDTA.F42140')
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Col ID", Int64.Type},
+				            {"Column Name", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

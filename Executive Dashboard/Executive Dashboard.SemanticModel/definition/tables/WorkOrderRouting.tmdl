@@ -1,0 +1,222 @@
+/// Work order routing operations from EDW, one row per operation, from 2024 onward. Supplies the work centre each work order ran at, which is what the batch definition on WorkOrders tests. Source query: edw_model/WorkOrderRouting.m.
+table WorkOrderRouting
+	lineageTag: 1c9d70a4-58e3-4b26-9f01-6a28375ed4b9
+
+	/// Work order this operation belongs to. Relates many-to-one to WorkOrders.
+	column WorkOrderSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 6b21f9c3-0d47-4e58-a83b-52907cf1ad6e
+		summarizeBy: none
+		sourceColumn: WorkOrderSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Operation sequence number within the work order routing.
+	column 'Operation Seq'
+		dataType: double
+		lineageTag: 3f8c04d1-97a2-4e63-b510-8ea27c1f6b95
+		summarizeBy: sum
+		sourceColumn: Operation Seq
+
+		annotation SummarizationSetBy = Automatic
+
+	column BusinessUnitSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 89e4a17b-2c50-4d39-b6f7-0431c8de5a20
+		summarizeBy: count
+		sourceColumn: BusinessUnitSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Work order order date.
+	column 'Order Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5d0b93e6-4a18-427c-8f52-b1e7304a96cf
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		variation Variation
+			isDefault
+			relationship: 68393d50-9ac5-4a36-810b-e837a0da084a
+			defaultHierarchy: LocalDateTable_f7701ae0-8af0-45a4-b20d-e4977bde6450.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Work order completion date.
+	column 'Completed Date WO'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a7f61382-6e05-4b91-9c3d-27085fb4e1d7
+		summarizeBy: none
+		sourceColumn: Completed Date WO
+
+		variation Variation
+			isDefault
+			relationship: f63ed0a1-35f8-43b9-9732-16144f574b2b
+			defaultHierarchy: LocalDateTable_0d499bdf-ffa2-4314-9af1-9c2d43a58c28.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// JDE work centre this operation ran at. Matched against the S&OP production work centre list.
+	column 'Work Center'
+		dataType: string
+		lineageTag: 2e58c0b7-4193-4d76-a025-9b6413e8f7c1
+		summarizeBy: none
+		sourceColumn: Work Center
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Work Center Type'
+		dataType: string
+		lineageTag: 74a2b6e9-5c03-4187-9de6-31f80c25a4b3
+		summarizeBy: none
+		sourceColumn: Work Center Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Type Of Routing'
+		dataType: string
+		lineageTag: c30e871f-6b24-4a95-8107-5de92634bf08
+		summarizeBy: none
+		sourceColumn: Type Of Routing
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Operation Status Code'
+		dataType: string
+		lineageTag: 91d5c368-0a47-4e12-bf83-6207a4915ce7
+		summarizeBy: none
+		sourceColumn: Operation Status Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstWCFlag
+		dataType: int64
+		formatString: 0
+		lineageTag: 4c07e293-8d61-4b50-a739-16f8250bc3da
+		summarizeBy: sum
+		sourceColumn: FirstWCFlag
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Highest status code reached by the work order.
+	column MaxStatusCodeWorkOrder
+		dataType: double
+		lineageTag: e6835b1a-49f2-4c07-8db3-50a17924e6bf
+		summarizeBy: sum
+		sourceColumn: MaxStatusCodeWorkOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Standard run machine hours for the operation.
+	column RunMachineStandard
+		dataType: double
+		lineageTag: b8140fd7-3ea6-4c95-8021-79df3c6b5e42
+		summarizeBy: sum
+		sourceColumn: RunMachineStandard
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Actual run machine hours. Sparsely populated on this view.
+	column RunMachineActual
+		dataType: double
+		lineageTag: 0a72f5e8-3c19-4b64-97d2-8e5013b7a6c9
+		summarizeBy: sum
+		sourceColumn: RunMachineActual
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit'
+		dataType: string
+		lineageTag: d29b4e07-5138-4a26-b0c7-3f6810e2495d
+		summarizeBy: none
+		sourceColumn: Business Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit Type'
+		dataType: string
+		lineageTag: 8f3c1a0b-7a25-4e91-b348-06d975143ae2
+		summarizeBy: none
+		sourceColumn: Business Unit Type
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Marks a bulk production work centre. From the business unit dimension.
+	column 'Bulk Production Work Center'
+		dataType: string
+		lineageTag: 5b90a4c2-1e78-4d36-a952-c407813f6ed5
+		summarizeBy: none
+		sourceColumn: Bulk Production Work Center
+
+		annotation SummarizationSetBy = Automatic
+
+	partition WorkOrderRouting = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(
+				        "EDWPROD",
+				        "EDW",
+				        [
+				            Query = "
+				SELECT
+				    r.WorkOrderSKey,
+				    r.[Sequence Num Operations]                    AS [Operation Seq],
+				    r.BusinessUnitSKey,
+				    r.[Order Date],
+				    r.[Completed Date WO],
+				    LTRIM(RTRIM(r.[Work Center]))                  AS [Work Center],
+				    LTRIM(RTRIM(r.[Work Center Type]))             AS [Work Center Type],
+				    LTRIM(RTRIM(r.[Type Of Routing]))              AS [Type Of Routing],
+				    LTRIM(RTRIM(r.[Operation Status Code]))        AS [Operation Status Code],
+				    r.FirstWCFlag,
+				    r.MaxStatusCodeWorkOrder,
+				    r.RunMachineStandard,
+				    r.RunMachineActual,
+				    LTRIM(RTRIM(bu.[Business Unit]))               AS [Business Unit],
+				    LTRIM(RTRIM(bu.[Business Unit Type]))          AS [Business Unit Type],
+				    LTRIM(RTRIM(bu.[Bulk Production Work Center])) AS [Bulk Production Work Center]
+				FROM       BIQL.TbWorkOrderRouting_Routing r  WITH (NOLOCK)
+				LEFT JOIN  BIQL.TbBusinessUnit             bu WITH (NOLOCK)
+				       ON  bu.BusinessUnitSKey = r.BusinessUnitSKey
+				WHERE      r.[Order Date] >= '2024-01-01' OR r.[Completed Date WO] >= '2024-01-01'
+				",
+				            CreateNavigationProperties = false
+				        ]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {
+				            {"WorkOrderSKey",                Int64.Type},
+				            {"Operation Seq",                type number},
+				            {"BusinessUnitSKey",             Int64.Type},
+				            {"Order Date",                   type date},
+				            {"Completed Date WO",            type date},
+				            {"Work Center",                  type text},
+				            {"Work Center Type",             type text},
+				            {"Type Of Routing",              type text},
+				            {"Operation Status Code",        type text},
+				            {"FirstWCFlag",                  Int64.Type},
+				            {"MaxStatusCodeWorkOrder",       type number},
+				            {"RunMachineStandard",           type number},
+				            {"RunMachineActual",             type number},
+				            {"Business Unit",                type text},
+				            {"Business Unit Type",           type text},
+				            {"Bulk Production Work Center",  type text}
+				        }
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

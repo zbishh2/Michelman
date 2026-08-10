@@ -1,0 +1,55 @@
+table '02 Cols F42140'
+	lineageTag: cd3a3927-be23-49cc-b541-a6c1c4eb1fe8
+
+	column CMAN8
+		dataType: int64
+		lineageTag: 4ec929b5-4e6c-4d1f-b1be-2e62cdf1ce4d
+		summarizeBy: none
+		sourceColumn: CMAN8
+
+		annotation SummarizationSetBy = User
+
+	column CMSLSM
+		dataType: int64
+		lineageTag: 2279dd3c-b203-46a3-9aaa-eff9ed62aef0
+		summarizeBy: none
+		sourceColumn: CMSLSM
+
+		annotation SummarizationSetBy = User
+
+	column CMRTYPE
+		dataType: string
+		lineageTag: 6d8bf1e4-021a-459a-a082-3652001accf5
+		summarizeBy: none
+		sourceColumn: CMRTYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '02 Cols F42140' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT TOP 1 CMAN8, CMSLSM, CMRTYPE
+				        FROM PRODDTA.F42140
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"CMAN8", Int64.Type},
+				            {"CMSLSM", Int64.Type},
+				            {"CMRTYPE", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

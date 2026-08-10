@@ -1,0 +1,78 @@
+table 'Items - Active'
+	lineageTag: 21a10000-0000-4000-8000-000000001003
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 21a10000-0000-4000-8000-000000000301
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	/// D-21c: 382 of 5,286 export rows show '-' here while EDW carries a real derived item
+	/// number, all at branch CINC. NOT the '-'-renders-missing issue - the in-scope population
+	/// has zero NULLs and zero blanks in this column. A source derivation difference that
+	/// cannot be reproduced from EDW; six alternative columns were checked. BUILD.md 4.5 case 2.
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 21a10000-0000-4000-8000-000000000302
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	/// See 'Global Bulk Item' - same 382 rows, D-21c.
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 21a10000-0000-4000-8000-000000000303
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 21a10000-0000-4000-8000-000000000304
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	/// 'Active' on the page name means Stocking Type NOT IN ('O'), O = obsolete.
+	column 'Stock Type Code'
+		dataType: string
+		lineageTag: 21a10000-0000-4000-8000-000000000305
+		summarizeBy: none
+		sourceColumn: Stock Type Code
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Items - Active' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				
+				        SELECT DISTINCT
+				            LTRIM(RTRIM(ib.[Business Unit]))             AS [Branch Plant],
+				            ib.[Item Global Bulk]                        AS [Global Bulk Item],
+				            ib.[Item Bulk]                               AS [Bulk Item],
+				            ib.[Item Num 2nd]                            AS [2nd Item Number],
+				            LTRIM(RTRIM(ib.[Stocking Type]))             AS [Stock Type Code]
+				        FROM BIQL.TbItemBranch ib WITH (NOLOCK)
+				        WHERE LTRIM(RTRIM(ib.[Category GL F4101])) = 'IN32'
+				          AND LTRIM(RTRIM(ib.[Stocking Type])) NOT IN ('O')
+				          AND LTRIM(RTRIM(ib.[Business Unit])) IN ('CINC', 'CIN2', 'CIN4', 'AUBA', 'AUB2', 'SING', 'SNG4')
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

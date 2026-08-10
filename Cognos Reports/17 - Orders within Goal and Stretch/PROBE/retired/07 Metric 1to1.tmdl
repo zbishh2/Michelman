@@ -1,0 +1,61 @@
+table '07 Metric 1to1'
+	lineageTag: 17070000-0000-4000-8000-000000000001
+
+	column distinct_525_lines
+		dataType: int64
+		lineageTag: 17070001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: distinct_525_lines
+
+		annotation SummarizationSetBy = User
+
+	column distinct_540_lines
+		dataType: int64
+		lineageTag: 17070001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: distinct_540_lines
+
+		annotation SummarizationSetBy = User
+
+	column orderline_2part_with_multi_4part
+		dataType: int64
+		lineageTag: 17070001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: orderline_2part_with_multi_4part
+
+		annotation SummarizationSetBy = User
+
+	partition '07 Metric 1to1' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				          (SELECT COUNT(*) FROM (SELECT SLKCOO,SLDOCO,SLDCTO,SLLNID FROM PRODDTA.F42199 WHERE SLNXTR='525' AND SLUPMJ>0 GROUP BY SLKCOO,SLDOCO,SLDCTO,SLLNID) a) AS distinct_525_lines,
+				          (SELECT COUNT(*) FROM (SELECT SLKCOO,SLDOCO,SLDCTO,SLLNID FROM PRODDTA.F42199 WHERE SLNXTR='540' AND SLUPMJ>0 GROUP BY SLKCOO,SLDOCO,SLDCTO,SLLNID) b) AS distinct_540_lines,
+				          (SELECT COUNT(*) FROM (
+				               SELECT SLDOCO, SLLNID, COUNT(DISTINCT LTRIM(RTRIM(SLKCOO))+'|'+LTRIM(RTRIM(SLDCTO))) AS k4
+				               FROM PRODDTA.F42199 WHERE SLNXTR IN ('525','540') AND SLUPMJ>0
+				               GROUP BY SLDOCO, SLLNID
+				           ) c WHERE c.k4 > 1) AS orderline_2part_with_multi_4part
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"distinct_525_lines", Int64.Type},
+				            {"distinct_540_lines", Int64.Type},
+				            {"orderline_2part_with_multi_4part", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

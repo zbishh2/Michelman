@@ -1,0 +1,5 @@
+*.abf
+.pbi/localSettings.json
+.pbi/editorSettings.json
+pbip-shots/
+.tmp/

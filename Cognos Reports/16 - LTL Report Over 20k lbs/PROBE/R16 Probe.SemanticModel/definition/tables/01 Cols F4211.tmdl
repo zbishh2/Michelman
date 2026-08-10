@@ -1,0 +1,118 @@
+table '01 Cols F4211'
+	lineageTag: b05bc4d2-1eb3-4ca1-92bd-742a49f2764b
+
+	column SDKCOO
+		dataType: string
+		lineageTag: dabd7cdf-d01c-4e4b-b33a-6d860cffe0d7
+		summarizeBy: none
+		sourceColumn: SDKCOO
+
+		annotation SummarizationSetBy = Automatic
+
+	column SDDOCO
+		dataType: int64
+		lineageTag: a11b6688-b4f2-45f2-8af0-575af9239f49
+		summarizeBy: none
+		sourceColumn: SDDOCO
+
+		annotation SummarizationSetBy = User
+
+	column SDDCTO
+		dataType: string
+		lineageTag: 412ad454-7c81-4e84-9a11-28b10507b62c
+		summarizeBy: none
+		sourceColumn: SDDCTO
+
+		annotation SummarizationSetBy = Automatic
+
+	column SDLNID
+		dataType: int64
+		lineageTag: b9a227c2-f809-4726-9399-fd36c3f013a6
+		summarizeBy: none
+		sourceColumn: SDLNID
+
+		annotation SummarizationSetBy = User
+
+	column SDSHAN
+		dataType: int64
+		lineageTag: 363cab1c-e6d8-431d-a4f3-2a43a98fb2ef
+		summarizeBy: none
+		sourceColumn: SDSHAN
+
+		annotation SummarizationSetBy = User
+
+	column SDCARS
+		dataType: int64
+		lineageTag: 047f45b9-c9a6-41c2-b8f9-bc3aeb4bc178
+		summarizeBy: none
+		sourceColumn: SDCARS
+
+		annotation SummarizationSetBy = User
+
+	column SDNXTR
+		dataType: string
+		lineageTag: 18a02fea-ee0a-451b-ac04-3c5a4a3d1a84
+		summarizeBy: none
+		sourceColumn: SDNXTR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SDUOM1
+		dataType: string
+		lineageTag: 4fa4aa66-d8b2-4dab-ba45-e0f67c98ce59
+		summarizeBy: none
+		sourceColumn: SDUOM1
+
+		annotation SummarizationSetBy = Automatic
+
+	column SDPQOR
+		dataType: double
+		lineageTag: 531621ad-60e1-4cf6-b56b-3bf6cfb74d0d
+		summarizeBy: none
+		sourceColumn: SDPQOR
+
+		annotation SummarizationSetBy = User
+
+	column SDPDDJ
+		dataType: int64
+		lineageTag: 3e1f125b-51ac-4c68-9ff3-cf1b059815dc
+		summarizeBy: none
+		sourceColumn: SDPDDJ
+
+		annotation SummarizationSetBy = User
+
+	partition '01 Cols F4211' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT TOP 1 SDKCOO, SDDOCO, SDDCTO, SDLNID, SDSHAN, SDCARS, SDNXTR, SDUOM1, SDPQOR, SDPDDJ
+				        FROM PRODDTA.F4211
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"SDKCOO", type text},
+				            {"SDDOCO", Int64.Type},
+				            {"SDDCTO", type text},
+				            {"SDLNID", Int64.Type},
+				            {"SDSHAN", Int64.Type},
+				            {"SDCARS", Int64.Type},
+				            {"SDNXTR", type text},
+				            {"SDUOM1", type text},
+				            {"SDPQOR", type number},
+				            {"SDPDDJ", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

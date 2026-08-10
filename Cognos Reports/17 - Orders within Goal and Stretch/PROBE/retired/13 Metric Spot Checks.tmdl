@@ -1,0 +1,125 @@
+table '13 Metric Spot Checks'
+	lineageTag: 170d0000-0000-4000-8000-000000000001
+
+	column order_number
+		dataType: string
+		lineageTag: 170d0001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: order_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column line
+		dataType: double
+		lineageTag: 170d0001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: line
+
+		annotation SummarizationSetBy = User
+
+	column date525
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 170d0001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: date525
+
+		annotation SummarizationSetBy = Automatic
+
+	column date540
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 170d0001-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: date540
+
+		annotation SummarizationSetBy = Automatic
+
+	column business_days
+		dataType: int64
+		lineageTag: 170d0001-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: business_days
+
+		annotation SummarizationSetBy = User
+
+	column goal
+		dataType: int64
+		lineageTag: 170d0001-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: goal
+
+		annotation SummarizationSetBy = User
+
+	column gt48h
+		dataType: int64
+		lineageTag: 170d0001-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: gt48h
+
+		annotation SummarizationSetBy = User
+
+	column gt72h
+		dataType: int64
+		lineageTag: 170d0001-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: gt72h
+
+		annotation SummarizationSetBy = User
+
+	partition '13 Metric Spot Checks' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            CAST(o.SDDOCO AS varchar(20)) AS order_number,
+				            o.SDLNID/1000.0 AS line,
+				            x.Date525 AS date525,
+				            x.Date540 AS date540,
+				            cal.diff - (((cal.diff+cal.dow525)/7)*2 - CASE WHEN cal.dow525=7 THEN 1 ELSE 0 END + CASE WHEN cal.dow540=6 THEN 1 ELSE 0 END) AS business_days,
+				            CASE WHEN cal.diff - (((cal.diff+cal.dow525)/7)*2 - CASE WHEN cal.dow525=7 THEN 1 ELSE 0 END + CASE WHEN cal.dow540=6 THEN 1 ELSE 0 END) > 2 THEN 1 ELSE 0 END AS gt48h,
+				            0 AS goal,
+				            CASE WHEN cal.diff - (((cal.diff+cal.dow525)/7)*2 - CASE WHEN cal.dow525=7 THEN 1 ELSE 0 END + CASE WHEN cal.dow540=6 THEN 1 ELSE 0 END) > 3 THEN 1 ELSE 0 END AS gt72h
+				        FROM (
+				            SELECT SDKCOO,SDDOCO,SDDCTO,SDLNID FROM PRODDTA.F4211
+				            UNION ALL
+				            SELECT h.SDKCOO,h.SDDOCO,h.SDDCTO,h.SDLNID FROM PRODDTA.F42119 h
+				            WHERE NOT EXISTS (SELECT 1 FROM PRODDTA.F4211 c WHERE c.SDKCOO=h.SDKCOO AND c.SDDOCO=h.SDDOCO AND c.SDDCTO=h.SDDCTO AND c.SDLNID=h.SDLNID)
+				        ) o
+				        CROSS APPLY (SELECT
+				            (SELECT MIN(CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2)) FROM PRODDTA.F42199 l WHERE l.SLKCOO=o.SDKCOO AND l.SLDOCO=o.SDDOCO AND l.SLDCTO=o.SDDCTO AND l.SLLNID=o.SDLNID AND l.SLNXTR='525' AND l.SLUPMJ>0) AS Date525,
+				            (SELECT MIN(CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2)) FROM PRODDTA.F42199 l WHERE l.SLKCOO=o.SDKCOO AND l.SLDOCO=o.SDDOCO AND l.SLDCTO=o.SDDCTO AND l.SLLNID=o.SDLNID AND l.SLNXTR='540' AND l.SLUPMJ>0) AS Date540
+				        ) x
+				        CROSS APPLY (SELECT
+				            diff=DATEDIFF(DAY,CAST(x.Date525 AS date),CAST(x.Date540 AS date)),
+				            dow525=((DATEDIFF(DAY,'2003-01-06',CAST(x.Date525 AS date))%7)+7)%7+1,
+				            dow540=((DATEDIFF(DAY,'2003-01-06',CAST(x.Date540 AS date))%7)+7)%7+1
+				        ) cal
+				        WHERE o.SDDOCO IN (26001039, 26001051) AND x.Date525 IS NOT NULL AND x.Date540 IS NOT NULL
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"order_number", type text},
+				            {"line", type number},
+				            {"date525", type datetime},
+				            {"date540", type datetime},
+				            {"business_days", Int64.Type},
+				            {"goal", Int64.Type},
+				            {"gt48h", Int64.Type},
+				            {"gt72h", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

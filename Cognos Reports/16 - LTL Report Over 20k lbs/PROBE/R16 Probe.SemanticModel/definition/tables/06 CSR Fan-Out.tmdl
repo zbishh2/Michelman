@@ -1,0 +1,60 @@
+table '06 CSR Fan-Out'
+	lineageTag: 3af4c8ac-d5e6-463d-aca3-b6de6a9201bb
+
+	column CMAN8
+		dataType: int64
+		lineageTag: a93d90a9-cc06-4529-8b3a-3d96fa5564dd
+		summarizeBy: none
+		sourceColumn: CMAN8
+
+		annotation SummarizationSetBy = User
+
+	column csr_rows
+		dataType: int64
+		lineageTag: 4102d2b3-b393-44a1-8365-8dc5da0af1b1
+		summarizeBy: none
+		sourceColumn: csr_rows
+
+		annotation SummarizationSetBy = User
+
+	column distinct_csr_reps
+		dataType: int64
+		lineageTag: d970d634-8b47-4099-8b6a-91688e0768b8
+		summarizeBy: none
+		sourceColumn: distinct_csr_reps
+
+		annotation SummarizationSetBy = User
+
+	partition '06 CSR Fan-Out' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT TOP 20 CMAN8, COUNT(*) AS csr_rows,
+				               COUNT(DISTINCT CMSLSM) AS distinct_csr_reps
+				        FROM PRODDTA.F42140
+				        WHERE CMRTYPE = 'CSR'
+				        GROUP BY CMAN8
+				        HAVING COUNT(*) > 1
+				        ORDER BY COUNT(*) DESC
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"CMAN8", Int64.Type},
+				            {"csr_rows", Int64.Type},
+				            {"distinct_csr_reps", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

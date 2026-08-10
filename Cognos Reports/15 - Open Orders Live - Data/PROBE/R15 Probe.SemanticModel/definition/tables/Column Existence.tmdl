@@ -1,0 +1,74 @@
+table 'Column Existence'
+	lineageTag: 15000000-0000-0001-0000-000000000000
+
+	column Table
+		dataType: string
+		lineageTag: 15000000-0000-0001-0001-000000000001
+		summarizeBy: none
+		sourceColumn: Table
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Cols Found'
+		dataType: int64
+		formatString: 0
+		lineageTag: 15000000-0000-0001-0001-000000000002
+		summarizeBy: none
+		sourceColumn: Cols Found
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Cols Expected'
+		dataType: int64
+		formatString: 0
+		lineageTag: 15000000-0000-0001-0001-000000000003
+		summarizeBy: none
+		sourceColumn: Cols Expected
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Column Existence' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            TABLE_NAME AS [Table],
+				            COUNT(*)   AS [Cols Found],
+				            CASE TABLE_NAME
+				                WHEN 'F4211'  THEN 21
+				                WHEN 'F4201'  THEN 8
+				                WHEN 'F42140' THEN 3
+				                WHEN 'F0101'  THEN 2
+				                WHEN 'F41002' THEN 5
+				            END AS [Cols Expected]
+				        FROM INFORMATION_SCHEMA.COLUMNS
+				        WHERE TABLE_SCHEMA = 'PRODDTA' AND (
+				            (TABLE_NAME='F4211'  AND COLUMN_NAME IN ('SDKCOO','SDDOCO','SDDCTO','SDSFXO','SDMCU','SDAN8','SDSHAN','SDITM','SDLITM','SDLNTY','SDNXTR','SDUOM','SDUORG','SDCARS','SDUOM1','SDPQOR','SDUOM2','SDSQOR','SDUOM4','SDDRQJ','SDPDDJ')) OR
+				            (TABLE_NAME='F4201'  AND COLUMN_NAME IN ('SHKCOO','SHDOCO','SHDCTO','SHSFXO','SHHOLD','SHMOT','SHDEL1','SHDEL2')) OR
+				            (TABLE_NAME='F42140' AND COLUMN_NAME IN ('CMAN8','CMRTYPE','CMSLSM')) OR
+				            (TABLE_NAME='F0101'  AND COLUMN_NAME IN ('ABAN8','ABALPH')) OR
+				            (TABLE_NAME='F41002' AND COLUMN_NAME IN ('UMMCU','UMITM','UMUM','UMRUM','UMCONV'))
+				        )
+				        GROUP BY TABLE_NAME
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Table", type text},
+				            {"Cols Found", Int64.Type},
+				            {"Cols Expected", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,82 @@
+table 'UOM Conversions'
+	lineageTag: 664fe212-4f99-4d6a-b502-99f68ea11b4e
+
+	column 'Conv Key'
+		dataType: string
+		lineageTag: d46b2955-533d-49e7-8233-f18904686bf9
+		summarizeBy: none
+		sourceColumn: Conv Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Key'
+		dataType: int64
+		formatString: 0
+		lineageTag: 88726944-103d-43ec-b37f-083526f35563
+		summarizeBy: none
+		sourceColumn: Item Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'From UOM'
+		dataType: string
+		lineageTag: 4a9899c3-3814-4965-a571-9f7f8324ba14
+		summarizeBy: none
+		sourceColumn: From UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'To UOM'
+		dataType: string
+		lineageTag: e01ad7c1-a914-4b8d-9dab-94a2c7d991a7
+		summarizeBy: none
+		sourceColumn: To UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column Factor
+		dataType: double
+		lineageTag: 90c6d2e4-5629-45e4-ac2f-e16f26431386
+		summarizeBy: none
+		sourceColumn: Factor
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	partition 'UOM Conversions' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            CAST(UMITM AS varchar(20)) + '|' + LTRIM(RTRIM(UMUM)) + '|' + LTRIM(RTRIM(UMRUM)) AS [Conv Key],
+				            UMITM                       AS [Item Key],
+				            LTRIM(RTRIM(UMUM))          AS [From UOM],
+				            LTRIM(RTRIM(UMRUM))         AS [To UOM],
+				            MAX(UMCONV) / 10000000.0    AS [Factor]
+				        FROM PRODDTA.F41002
+				        GROUP BY UMITM, LTRIM(RTRIM(UMUM)), LTRIM(RTRIM(UMRUM))
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Conv Key", type text},
+				            {"Item Key", Int64.Type},
+				            {"From UOM", type text},
+				            {"To UOM", type text},
+				            {"Factor", type number}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

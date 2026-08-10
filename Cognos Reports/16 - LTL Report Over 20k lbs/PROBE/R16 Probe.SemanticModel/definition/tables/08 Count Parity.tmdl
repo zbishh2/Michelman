@@ -1,0 +1,90 @@
+table '08 Count Parity'
+	lineageTag: b71c615f-a399-4c77-92fa-28bac5c4aaa3
+
+	column deployed_line_rows
+		dataType: int64
+		lineageTag: fd102390-982d-4e59-a280-2386fa336cda
+		summarizeBy: none
+		sourceColumn: deployed_line_rows
+
+		annotation SummarizationSetBy = User
+
+	column having_line_rows
+		dataType: int64
+		lineageTag: b04fa92f-a35f-4533-b04b-0579d52b14c6
+		summarizeBy: none
+		sourceColumn: having_line_rows
+
+		annotation SummarizationSetBy = User
+
+	column diff_having_minus_deployed
+		dataType: int64
+		lineageTag: 3e9d044c-028a-43a8-8f51-fadd36deaa50
+		summarizeBy: none
+		sourceColumn: diff_having_minus_deployed
+
+		annotation SummarizationSetBy = User
+
+	partition '08 Count Parity' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            dep.deployed_line_rows,
+				            hav.having_line_rows,
+				            hav.having_line_rows - dep.deployed_line_rows AS diff_having_minus_deployed
+				        FROM
+				        (
+				            SELECT COUNT(*) AS deployed_line_rows FROM (
+				                SELECT o.SDDOCO, o.SDLNID/1000.0 AS ln, o.SDDCTO, o.SDCARS, o.SDNXTR,
+				                       o.SDUOM1, o.SDSHAN, o.SDPDDJ, csr.CMSLSM
+				                FROM PRODDTA.F4211 o
+				                INNER JOIN PRODDTA.F0101 st ON o.SDSHAN = st.ABAN8
+				                LEFT JOIN (SELECT c.CMAN8, c.CMSLSM, a.ABALPH FROM PRODDTA.F42140 c
+				                           INNER JOIN PRODDTA.F0101 a ON c.CMSLSM=a.ABAN8 WHERE c.CMRTYPE='CSR') csr
+				                    ON o.SDSHAN = csr.CMAN8
+				                LEFT JOIN PRODDTA.F0101 carr ON o.SDCARS = carr.ABAN8
+				                WHERE o.SDKCOO='00010' AND o.SDDCTO IN ('S4','S5','SZ','SC','ST')
+				                  AND o.SDNXTR IN ('560','550','545','540','535','530','525')
+				                  AND o.SDCARS NOT IN (293371,29671,288676,26185,293492,98725,301322,195487,136656,293919,304977,309791,301333,309741,27710,26171,283919,26175,301761,292099,309757,316502)
+				                  AND o.SDPQOR/10000.0 > 20000 AND o.SDCARS <> 308636
+				                GROUP BY o.SDDOCO, o.SDLNID/1000.0, o.SDDCTO, o.SDCARS, o.SDNXTR,
+				                         o.SDUOM1, o.SDSHAN, o.SDPDDJ, csr.CMSLSM
+				            ) d
+				        ) dep
+				        CROSS JOIN
+				        (
+				            SELECT COUNT(*) AS having_line_rows FROM (
+				                SELECT o.SDDOCO, o.SDLNID/1000.0 AS ln
+				                FROM PRODDTA.F4211 o
+				                INNER JOIN PRODDTA.F0101 st ON o.SDSHAN = st.ABAN8
+				                WHERE o.SDKCOO='00010' AND o.SDDCTO IN ('S4','S5','SZ','SC','ST')
+				                  AND o.SDNXTR IN ('560','550','545','540','535','530','525')
+				                  AND o.SDCARS NOT IN (293371,29671,288676,26185,293492,98725,301322,195487,136656,293919,304977,309791,301333,309741,27710,26171,283919,26175,301761,292099,309757,316502)
+				                  AND o.SDCARS <> 308636
+				                GROUP BY o.SDDOCO, o.SDLNID/1000.0
+				                HAVING SUM(o.SDPQOR/10000.0) > 20000
+				            ) h
+				        ) hav
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"deployed_line_rows", Int64.Type},
+				            {"having_line_rows", Int64.Type},
+				            {"diff_having_minus_deployed", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,82 @@
+table 'P5 Count Parity'
+	lineageTag: 18000600-0000-4000-8000-000000000001
+
+	column PageLabel
+		dataType: string
+		lineageTag: 18000601-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: PageLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	column RawRows
+		dataType: int64
+		lineageTag: 18000601-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: RawRows
+
+		annotation SummarizationSetBy = Automatic
+
+	column SnapDates
+		dataType: int64
+		lineageTag: 18000601-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: SnapDates
+
+		annotation SummarizationSetBy = Automatic
+
+	column SumQOH
+		dataType: double
+		lineageTag: 18000601-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: SumQOH
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P5 Count Parity' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT 'Singapore' AS PageLabel, COUNT(*) AS RawRows,
+				               COUNT(DISTINCT snap.CalendarDate) AS SnapDates,
+				               SUM(snap.QuantityOnHandPrimaryUOM) AS SumQOH
+				        FROM BIQL.FactInventorySnapshot_History_Filtered snap
+				        JOIN BIQL.DimItem it ON it.ItemSKey = snap.ItemSKey
+				        WHERE snap.CalendarDate >= CAST(GETDATE() - (365.0/3.0) AS date)
+				          AND (DATEDIFF(DAY, '1900-01-07', snap.CalendarDate) % 7) IN (0, 3)
+				          AND snap.CalendarDate <> '2025-05-07'
+				          AND snap.QuantityOnHandPrimaryUOM > 0
+				          AND LTRIM(RTRIM(snap.BusinessUnit)) IN ('SING','SNG4')
+				          AND it.MasterPlanningFamily NOT IN ('H2O','PKG')
+				        UNION ALL
+				        SELECT 'Lot Status', COUNT(*),
+				               COUNT(DISTINCT snap.CalendarDate),
+				               SUM(snap.QuantityOnHandPrimaryUOM)
+				        FROM BIQL.FactInventorySnapshot_History_Filtered snap
+				        JOIN BIQL.DimItem it ON it.ItemSKey = snap.ItemSKey
+				        WHERE snap.CalendarDate >= CAST(GETDATE() - (365.0/2.0) AS date)
+				          AND (DATEDIFF(DAY, '1900-01-07', snap.CalendarDate) % 7) IN (0, 2, 5)
+				          AND snap.CalendarDate <> '2025-05-07'
+				          AND snap.QuantityOnHandPrimaryUOM > 0
+				          AND LTRIM(RTRIM(snap.BusinessUnit)) IN ('SING','SNG4','CIN4','CIN2','CINC','AUBA','AUB2')
+				          AND it.MasterPlanningFamily NOT IN ('H2O','PKG')
+				          AND LTRIM(RTRIM(ISNULL(snap.LotStatusCode,''))) NOT IN ('', '-')
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"PageLabel", type text},
+							{"RawRows", Int64.Type},
+							{"SnapDates", Int64.Type},
+							{"SumQOH", type number}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

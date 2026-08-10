@@ -1,0 +1,1073 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "16d1a2b3c4d5e6f70819",
+  "position": {
+    "x": 7.7811550151975686,
+    "y": 158.54103343465047,
+    "z": 0,
+    "height": 561.21580547112467,
+    "width": 1264.4376899696049
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Scheduled Pick Date"
+                }
+              },
+              "queryRef": "LTL Over 20k.Scheduled Pick Date",
+              "nativeQueryRef": "Scheduled Pick Date",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Carrier AB Number"
+                }
+              },
+              "queryRef": "LTL Over 20k.Carrier AB Number",
+              "nativeQueryRef": "Carrier AB Number",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Customer Name"
+                }
+              },
+              "queryRef": "LTL Over 20k.Customer Name",
+              "nativeQueryRef": "Customer Name",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Order Number"
+                }
+              },
+              "queryRef": "LTL Over 20k.Order Number",
+              "nativeQueryRef": "Order Number",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Next Status"
+                }
+              },
+              "queryRef": "LTL Over 20k.Next Status",
+              "nativeQueryRef": "Next Status",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Order Type"
+                }
+              },
+              "queryRef": "LTL Over 20k.Order Type",
+              "nativeQueryRef": "Order Type",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Order Line"
+                }
+              },
+              "queryRef": "LTL Over 20k.Order Line",
+              "nativeQueryRef": "Order Line",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Carrier Name"
+                }
+              },
+              "queryRef": "LTL Over 20k.Carrier Name",
+              "nativeQueryRef": "Carrier Name",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "CSR Name"
+                }
+              },
+              "queryRef": "LTL Over 20k.CSR Name",
+              "nativeQueryRef": "CSR Name",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Primary UOM"
+                }
+              },
+              "queryRef": "LTL Over 20k.Primary UOM",
+              "nativeQueryRef": "Primary UOM",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "LTL Over 20k"
+                        }
+                      },
+                      "Property": "Primary Quantity Ordered"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(LTL Over 20k.Primary Quantity Ordered)",
+              "nativeQueryRef": "Primary Quantity Ordered",
+              "displayName": "Primary Quantity Ordered"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "LTL Over 20k"
+                  }
+                },
+                "Property": "Scheduled Pick Date"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "LTL Over 20k"
+                  }
+                },
+                "Property": "Carrier AB Number"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "LTL Over 20k"
+                  }
+                },
+                "Property": "Customer Name"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "expansionStates": [
+      {
+        "roles": [
+          "Rows"
+        ],
+        "levels": [
+          {
+            "queryRefs": [
+              "LTL Over 20k.Scheduled Pick Date"
+            ],
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Scheduled Pick Date"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "LTL Over 20k.Carrier AB Number"
+            ],
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Carrier AB Number"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "LTL Over 20k.Customer Name"
+            ],
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Customer Name"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "LTL Over 20k.Order Number"
+            ],
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Order Number"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "LTL Over 20k.Next Status"
+            ],
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Next Status"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "LTL Over 20k.Order Type"
+            ],
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Order Type"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "LTL Over 20k.Order Line"
+            ],
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Order Line"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "LTL Over 20k.Carrier Name"
+            ],
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "Carrier Name"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "LTL Over 20k.CSR Name"
+            ],
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LTL Over 20k"
+                    }
+                  },
+                  "Property": "CSR Name"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "LTL Over 20k.Primary UOM"
+            ],
+            "isPinned": true
+          }
+        ],
+        "root": {}
+      }
+    ],
+    "objects": {
+      "grid": [
+        {
+          "properties": {
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {}
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "rowHeaders": [
+        {
+          "properties": {}
+        }
+      ],
+      "subTotals": [
+        {
+          "properties": {
+            "rowSubtotals": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "perRowLevel": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "columnSubtotals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "levelSubtotalEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "levelSubtotalLabel": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Grand Total'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Scheduled Pick Date"
+          }
+        },
+        {
+          "properties": {
+            "levelSubtotalEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "levelSubtotalLabel": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Carrier Total'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Carrier AB Number"
+          }
+        },
+        {
+          "properties": {
+            "levelSubtotalEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "levelSubtotalLabel": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Customer Total'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Customer Name"
+          }
+        },
+        {
+          "properties": {
+            "levelSubtotalEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Order Number"
+          }
+        },
+        {
+          "properties": {
+            "levelSubtotalEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Next Status"
+          }
+        },
+        {
+          "properties": {
+            "levelSubtotalEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Order Type"
+          }
+        },
+        {
+          "properties": {
+            "levelSubtotalEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Order Line"
+          }
+        },
+        {
+          "properties": {
+            "levelSubtotalEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Carrier Name"
+          }
+        },
+        {
+          "properties": {
+            "levelSubtotalEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.CSR Name"
+          }
+        },
+        {
+          "properties": {
+            "levelSubtotalEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Primary UOM"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "applyToHeaders": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 2,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "Row"
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "layout": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Tabular'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnFormatting": [
+        {
+          "properties": {
+            "styleSubtotals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "styleValues": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Avg(LTL Over 20k.Primary Quantity Ordered)"
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "151.56102587779893D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Carrier Name"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "258.93771206147767D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Customer Name"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "93.06686844140064D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Carrier AB Number"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "114.68389109676588D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Scheduled Pick Date"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "85.49240222488055D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Order Number"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "55.73860942868685D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Order Type"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "65.90272778487875D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LTL Over 20k.Primary UOM"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "119.53189259343418D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Avg(LTL Over 20k.Primary Quantity Ordered)"
+          }
+        }
+      ],
+      "columnTotal": [
+        {
+          "properties": {
+            "applyToHeaders": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "87995f77f17e8b72ff00",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "LTL Over 20k"
+              }
+            },
+            "Property": "Scheduled Pick Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "5560fe55fb7801c523f9",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "LTL Over 20k"
+              }
+            },
+            "Property": "Carrier AB Number"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "f22a82e687c749964ad7",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "LTL Over 20k"
+              }
+            },
+            "Property": "Customer Name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "424669ce45a1d09fd362",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "LTL Over 20k"
+              }
+            },
+            "Property": "Order Number"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "97e45c10aaee6f91c6ee",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "LTL Over 20k"
+              }
+            },
+            "Property": "Next Status"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "bd874b5ec8fc020917f6",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "LTL Over 20k"
+              }
+            },
+            "Property": "Order Type"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "ee499ce3f23803c279ca",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "LTL Over 20k"
+              }
+            },
+            "Property": "Order Line"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "f40e88f91a06653c4f85",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "LTL Over 20k"
+              }
+            },
+            "Property": "Carrier Name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9f69c66627b20f06ad47",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "LTL Over 20k"
+              }
+            },
+            "Property": "CSR Name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "c1db808d8a770a71718a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "LTL Over 20k"
+              }
+            },
+            "Property": "Primary UOM"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "936349ebd3fe446cb077",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "LTL Over 20k"
+                  }
+                },
+                "Property": "Primary Quantity Ordered"
+              }
+            },
+            "Function": 1
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

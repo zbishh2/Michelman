@@ -1,0 +1,221 @@
+cultureInfo en-US
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "inventory.region": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Inventory",
+			          "ConceptualProperty": "REGION"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Site": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "inventory.master_planning_family": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Inventory",
+			          "ConceptualProperty": "Master Planning Family"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "MPF": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "inventory.now": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Inventory",
+			          "ConceptualProperty": "NOW"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Date": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sales_order_summary.customer_segmentation": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Sales_Order_Summary",
+			          "ConceptualProperty": "Customer Segmentation"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Segmentation": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sales_order_summary.primary_quantity_ordered": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Sales_Order_Summary",
+			          "ConceptualProperty": "Primary Quantity Ordered"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Prim QTY": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sales_order_summary.primary_uom": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Sales_Order_Summary",
+			          "ConceptualProperty": "Primary UOM"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "UOM": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sales_order_summary.secondary_quantity_ordered": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Sales_Order_Summary",
+			          "ConceptualProperty": "Secondary Quantity Ordered"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "2nd QTY": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sales_order_summary.secondary_uom": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Sales_Order_Summary",
+			          "ConceptualProperty": "Secondary UOM"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "UOM2": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sales_order_summary.master_planning_family": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Sales_Order_Summary",
+			          "ConceptualProperty": "Master Planning Family"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "MPF": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "safety_stock_hp.region": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Safety_Stock_HP",
+			          "ConceptualProperty": "REGION"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "REGION": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
+			}
+		contentType: json
+

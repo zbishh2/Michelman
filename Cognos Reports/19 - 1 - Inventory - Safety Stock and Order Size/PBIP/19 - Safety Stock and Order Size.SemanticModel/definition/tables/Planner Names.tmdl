@@ -1,0 +1,51 @@
+/// Hidden lookup. Supplies the Cognos 'Last, First' planner rendering from JDE F0101.ABALPH. Separate table rather than a join because EDWPROD and ODSPROD are different servers.
+table 'Planner Names'
+	isHidden
+	lineageTag: 19a3a000-0000-4000-8000-000000000001
+
+	column 'Planner Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 19a30000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Planner Number
+
+		annotation SummarizationSetBy = Automatic
+
+	/// F0101.ABALPH verbatim - this is the string Cognos prints, accents and all ('Bertrand, Joel').
+	column 'Planner Name (JDE)'
+		dataType: string
+		lineageTag: 19a30000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Planner Name (JDE)
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Planner Names' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				
+				        SELECT
+				            ab.ABAN8                    AS [Planner Number],
+				            LTRIM(RTRIM(ab.ABALPH))     AS [Planner Name (JDE)]
+				        FROM PRODDTA.F0101 ab WITH (NOLOCK)
+				        WHERE ab.ABAN8 IN (
+				                  SELECT ibp.IBANPL
+				                  FROM PRODDTA.F4102 ibp WITH (NOLOCK)
+				                  WHERE LTRIM(RTRIM(ibp.IBMCU)) IN ('CINC','CIN2','AUBA','AUB2','SING','SNG4')
+				              )
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

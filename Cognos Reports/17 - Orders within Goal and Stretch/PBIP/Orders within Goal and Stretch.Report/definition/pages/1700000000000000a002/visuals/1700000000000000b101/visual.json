@@ -1,0 +1,47 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "1700000000000000b101",
+  "position": {
+    "x": 8,
+    "y": 6,
+    "z": 1000,
+    "height": 34,
+    "width": 1264,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Validation - orders with known Cognos differences (2026-07-21 tight capture)",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "13pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Top: the production report query, filtered to the orders in question. Bottom: every F42199 status-ledger row for those orders, straight from ODS. Next Status defaults to 525/540; clear it to see every revision. Select a row or use the slicers to focus one order.",
+                    "textStyle": {
+                      "fontSize": "9pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

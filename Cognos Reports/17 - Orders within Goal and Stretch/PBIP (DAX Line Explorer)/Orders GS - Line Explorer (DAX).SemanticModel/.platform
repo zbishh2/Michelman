@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Orders GS - Line Explorer (DAX)"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "17da7b3c-8d5e-4a29-b1f4-c93d62e800a2"
+  }
+}

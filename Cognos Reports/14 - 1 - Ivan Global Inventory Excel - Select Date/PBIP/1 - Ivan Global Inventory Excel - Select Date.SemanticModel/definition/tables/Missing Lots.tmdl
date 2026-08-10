@@ -1,0 +1,82 @@
+table 'Missing Lots'
+	lineageTag: 14a1a000-0000-4000-8000-000000000017
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 14a1da08-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Number'
+		dataType: string
+		lineageTag: 14a1da08-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Lot Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'In Lot Master' = COUNTROWS(FILTER('Lot', 'Lot'[Lot Number] = 'Missing Lots'[Lot Number] && 'Lot'[Branch Plant] = 'Missing Lots'[Branch Plant])) > 0
+		lineageTag: 14a1da08-0000-4000-8000-000000000003
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot ItemSKey' = MAXX(FILTER('Lot', 'Lot'[Lot Number] = 'Missing Lots'[Lot Number] && 'Lot'[Branch Plant] = 'Missing Lots'[Branch Plant]), 'Lot'[ItemSKey])
+		formatString: 0
+		lineageTag: 14a1da08-0000-4000-8000-000000000004
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+	column 'Item Bulk Today' = LOOKUPVALUE('Item'[Bulk Item], 'Item'[ItemSKey], 'Missing Lots'[Lot ItemSKey])
+		lineageTag: 14a1da08-0000-4000-8000-000000000005
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Verdict =
+			SWITCH(
+			    TRUE(),
+			    NOT 'Missing Lots'[In Lot Master], "Not in DimLot - retention gap (reroute Escor Lot Info to ODS F4108)",
+			    ISBLANK('Missing Lots'[Item Bulk Today]), "In DimLot but ItemSKey does not resolve (re-key the join)",
+			    'Missing Lots'[Item Bulk Today] IN {"ESC5200", "ESC5200.E", "ESC5200.S"}, "In DimLot and still ESC - join/filter defect in our query",
+			    "In DimLot - Bulk Item changed to " & 'Missing Lots'[Item Bulk Today]
+			)
+		lineageTag: 14a1da08-0000-4000-8000-000000000006
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Missing Lots' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows({
+				        {"AUB2", "516152"}, {"AUB2", "516154"}, {"AUB2", "516403"}, {"AUB2", "516405"},
+				        {"AUB2", "516548"}, {"AUB2", "516550"}, {"AUB2", "516608"}, {"AUB2", "R16572"},
+				        {"AUB2", "R16573"}, {"AUB2", "R16628"}, {"AUBA", "13C518"}, {"AUBA", "516041"},
+				        {"AUBA", "516043"}, {"AUBA", "516045"}, {"AUBA", "516047"}, {"AUBA", "516152"},
+				        {"AUBA", "516154"}, {"AUBA", "516403"}, {"AUBA", "516405"}, {"AUBA", "516548"},
+				        {"AUBA", "516550"}, {"AUBA", "516608"}, {"AUBA", "526025"}, {"AUBA", "526027"},
+				        {"AUBA", "529001"}, {"AUBA", "R16062"}, {"AUBA", "R16349"}, {"AUBA", "R16504"},
+				        {"AUBA", "R16572"}, {"AUBA", "R16573"}, {"AUBA", "R16628"}, {"CIN2", "514956"},
+				        {"CIN2", "517379"}, {"CIN2", "616054"}, {"CINC", "514956"}, {"CINC", "517379"},
+				        {"CINC", "R16349"}, {"SING", "13C515"}, {"SING", "515460"}, {"SING", "516496"},
+				        {"SING", "516497"}, {"SING", "516498"}, {"SING", "516581"}, {"SING", "516582"},
+				        {"SING", "516583"}, {"SING", "516584"}, {"SING", "516585"}, {"SING", "516586"},
+				        {"SING", "516587"}, {"SING", "516588"}, {"SING", "517017"}, {"SING", "517236"},
+				        {"SING", "517515"}, {"SING", "517516"}, {"SING", "517517"}, {"SING", "517518"},
+				        {"SING", "517743"}, {"SING", "517744"}, {"SING", "518505"}, {"SING", "518506"},
+				        {"SING", "518507"}, {"SING", "518508"}, {"SING", "519106"}, {"SING", "519107"},
+				        {"SING", "519108"}, {"SING", "519109"}, {"SING", "519110"}, {"SING", "519111"},
+				        {"SING", "520049"}, {"SING", "520050"}, {"SING", "520538"}, {"SING", "520539"},
+				        {"SING", "522647"}, {"SING", "522886"}, {"SING", "523273"}, {"SING", "524160"},
+				        {"SING", "524663"}, {"SING", "525235"}, {"SING", "526606"}, {"SING", "526607"}
+				    }, type table [#"Branch Plant" = text, #"Lot Number" = text])
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Executive Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "c7d59ac8-1ef8-4a16-b6b8-b574d79deb0f"
+  }
+}

@@ -1,0 +1,208 @@
+table 'LTL Over 20k'
+	lineageTag: 736ba9b8-0fbf-4f44-8fa9-ab38326b6556
+
+	column 'Scheduled Pick Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 548e50ef-d85a-4540-885e-f39fa5927316
+		summarizeBy: none
+		sourceColumn: Scheduled Pick Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Carrier AB Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: f2e30fb5-7e7e-449f-bedb-741f2a7e3232
+		summarizeBy: none
+		sourceColumn: Carrier AB Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Name'
+		dataType: string
+		lineageTag: f45be6a5-e81f-43b3-b20d-42437ea51e59
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: e8e48f2b-099d-4fb5-9358-5e6275b697c5
+		summarizeBy: none
+		sourceColumn: Order Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Next Status'
+		dataType: string
+		lineageTag: 3f493bd4-8e30-49ef-9b9b-87b6614558b0
+		summarizeBy: none
+		sourceColumn: Next Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Type'
+		dataType: string
+		lineageTag: ea71f61a-5538-41a6-a96c-62f174269bc6
+		summarizeBy: none
+		sourceColumn: Order Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Line'
+		dataType: double
+		formatString: 0.000
+		lineageTag: b4945e17-95f1-4943-ac7a-6dbfbb97f7f8
+		summarizeBy: none
+		sourceColumn: Order Line
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Carrier Name'
+		dataType: string
+		lineageTag: 28f83b07-df4e-48d8-8373-12c22cf05047
+		summarizeBy: none
+		sourceColumn: Carrier Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CSR Name'
+		dataType: string
+		lineageTag: b689ff59-8c66-4833-b1b3-9e45a0fff8c9
+		summarizeBy: none
+		sourceColumn: CSR Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Primary Quantity Ordered'
+		dataType: double
+		formatString: #,##0
+		lineageTag: 049e3dee-04e0-4b42-92f9-549feac78266
+		summarizeBy: sum
+		sourceColumn: Primary Quantity Ordered
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Primary UOM'
+		dataType: string
+		lineageTag: fbcfd287-d16e-48aa-ac8b-1481e4a768c2
+		summarizeBy: none
+		sourceColumn: Primary UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CSR AB Number'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8d19766e-9d28-4d78-9396-c1b34cafda99
+		summarizeBy: none
+		sourceColumn: CSR AB Number
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'LTL Over 20k' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            base.Scheduled_Pick_Date              AS [Scheduled Pick Date],
+				            base.Carrier_AB_Number                AS [Carrier AB Number],
+				            base.Customer_Name                    AS [Customer Name],
+				            base.Order_Number                     AS [Order Number],
+				            base.Next_Status                      AS [Next Status],
+				            base.Order_Type                       AS [Order Type],
+				            base.Order_Line                       AS [Order Line],
+				            base.Carrier_Name                     AS [Carrier Name],
+				            base.CSR_Name                         AS [CSR Name],
+				            SUM(base.Primary_Quantity_Ordered)    AS [Primary Quantity Ordered],
+				            base.Primary_UOM                      AS [Primary UOM],
+				            base.CSR_AB_Number                    AS [CSR AB Number]
+				        FROM (
+				            SELECT
+				                o.SDDOCO                          AS Order_Number,
+				                o.SDDCTO                          AS Order_Type,
+				                o.SDCARS                          AS Carrier_AB_Number,
+				                LTRIM(RTRIM(carr.ABALPH))         AS Carrier_Name,
+				                LTRIM(RTRIM(csr.ABALPH))          AS CSR_Name,
+				                o.SDPQOR / 10000.0                AS Primary_Quantity_Ordered,
+				                LTRIM(RTRIM(o.SDUOM1))            AS Primary_UOM,
+				                o.SDNXTR                          AS Next_Status,
+				                LTRIM(RTRIM(shipto.ABALPH))       AS Customer_Name,
+				                o.SDLNID / 1000.0                 AS Order_Line,
+				                CASE WHEN o.SDPDDJ > 0
+				                     THEN DATEADD(DAY, (o.SDPDDJ % 1000) - 1, DATEFROMPARTS(1900 + (o.SDPDDJ / 1000), 1, 1))
+				                END                               AS Scheduled_Pick_Date,
+				                csr.CMSLSM                        AS CSR_AB_Number
+				            FROM PRODDTA.F4211 o
+				            INNER JOIN PRODDTA.F0101 shipto
+				                ON o.SDSHAN = shipto.ABAN8
+				            LEFT OUTER JOIN (
+				                SELECT c.CMAN8, c.CMSLSM, a.ABALPH
+				                FROM PRODDTA.F42140 c
+				                INNER JOIN PRODDTA.F0101 a
+				                    ON c.CMSLSM = a.ABAN8
+				                WHERE c.CMRTYPE = 'CSR'
+				            ) csr
+				                ON o.SDSHAN = csr.CMAN8
+				            LEFT OUTER JOIN PRODDTA.F0101 carr
+				                ON o.SDCARS = carr.ABAN8
+				            WHERE o.SDKCOO = '00010'
+				              AND o.SDDCTO IN ('S4','S5','SZ','SC','ST')
+				              AND o.SDNXTR IN ('560','550','545','540','535','530','525')
+				              AND o.SDCARS NOT IN (293371,29671,288676,26185,293492,98725,301322,195487,136656,293919,304977,309791,301333,309741,27710,26171,283919,26175,301761,292099,309757,316502)
+				              AND o.SDPQOR / 10000.0 > 20000
+				              AND o.SDCARS <> 308636
+				        ) base
+				        GROUP BY
+				            base.Scheduled_Pick_Date,
+				            base.Carrier_AB_Number,
+				            base.Customer_Name,
+				            base.Order_Number,
+				            base.Next_Status,
+				            base.Order_Type,
+				            base.Order_Line,
+				            base.Carrier_Name,
+				            base.CSR_Name,
+				            base.Primary_UOM,
+				            base.CSR_AB_Number
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Scheduled Pick Date", type date},
+				            {"Carrier AB Number", Int64.Type},
+				            {"Customer Name", type text},
+				            {"Order Number", Int64.Type},
+				            {"Next Status", type text},
+				            {"Order Type", type text},
+				            {"Order Line", type number},
+				            {"Carrier Name", type text},
+				            {"CSR Name", type text},
+				            {"Primary Quantity Ordered", type number},
+				            {"Primary UOM", type text},
+				            {"CSR AB Number", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

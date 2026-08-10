@@ -1,0 +1,57 @@
+table 'P2 Col Existence'
+	lineageTag: 18000200-0000-4000-8000-000000000001
+
+	column TableName
+		dataType: string
+		lineageTag: 18000201-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: TableName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ColumnName
+		dataType: string
+		lineageTag: 18000201-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: ColumnName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataType
+		dataType: string
+		lineageTag: 18000201-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P2 Col Existence' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT o.name AS TableName, c.name AS ColumnName, ty.name AS DataType
+				        FROM sys.columns c
+				        JOIN sys.objects o ON o.object_id = c.object_id
+				        JOIN sys.types ty ON ty.user_type_id = c.user_type_id
+				        WHERE SCHEMA_NAME(o.schema_id) = 'BIQL'
+				          AND o.name IN ('DimItem','DimCompany')
+				          AND c.name IN ('ItemGlobalBulk','ItemBulk','ItemNum2nd','StockingType','MasterPlanningFamily','ItemSKey','CurrencyCode','CompanySKey')
+				        ORDER BY o.name, c.name
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"TableName", type text},
+							{"ColumnName", type text},
+							{"DataType", type text}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

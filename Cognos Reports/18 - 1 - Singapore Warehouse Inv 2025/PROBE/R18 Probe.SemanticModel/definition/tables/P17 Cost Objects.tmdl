@@ -1,0 +1,74 @@
+table 'P17 Cost Objects'
+	lineageTag: 18001200-0000-4000-8000-000000000001
+
+	column kind
+		dataType: string
+		lineageTag: 18001201-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: kind
+
+		annotation SummarizationSetBy = Automatic
+
+	column schema_name
+		dataType: string
+		lineageTag: 18001201-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: schema_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column object_name
+		dataType: string
+		lineageTag: 18001201-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: object_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column detail
+		dataType: string
+		lineageTag: 18001201-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: detail
+
+		annotation SummarizationSetBy = Automatic
+
+	column ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: 18001201-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P17 Cost Objects' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        SELECT 'object' AS kind, t.TABLE_SCHEMA AS schema_name, t.TABLE_NAME AS object_name,
+				               t.TABLE_TYPE AS detail, CAST(0 AS int) AS ordinal
+				        FROM INFORMATION_SCHEMA.TABLES t
+				        WHERE t.TABLE_NAME LIKE '%Cost%'
+				        UNION ALL
+				        SELECT 'column', c.TABLE_SCHEMA, c.TABLE_NAME, c.COLUMN_NAME + ' (' + c.DATA_TYPE + ')', c.ORDINAL_POSITION
+				        FROM INFORMATION_SCHEMA.COLUMNS c
+				        WHERE (c.TABLE_NAME LIKE '%ItemCostLookup%' OR c.TABLE_NAME LIKE '%ItemCost%History%'
+				               OR c.TABLE_NAME = 'DimItemCost' OR c.TABLE_NAME = 'DimItemCost_History')
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"kind", type text}, {"schema_name", type text}, {"object_name", type text},
+							{"detail", type text}, {"ordinal", Int64.Type}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

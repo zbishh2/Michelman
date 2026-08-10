@@ -1,0 +1,262 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "3d91b62ac05f7e148b3a",
+  "position": {
+    "x": 340,
+    "y": 71.818181818181813,
+    "z": 2000,
+    "height": 300,
+    "width": 939.99999999999989,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "WorkOrderNum"
+                }
+              },
+              "queryRef": "WorkOrders.WorkOrderNum",
+              "nativeQueryRef": "WorkOrderNum",
+              "displayName": "WO number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "Item Num"
+                }
+              },
+              "queryRef": "WorkOrders.Item Num",
+              "nativeQueryRef": "Item Num",
+              "displayName": "Item number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "WorkOrders.Branch Plant",
+              "nativeQueryRef": "Branch Plant",
+              "displayName": "Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "WO Status"
+                }
+              },
+              "queryRef": "WorkOrders.WO Status",
+              "nativeQueryRef": "WO Status",
+              "displayName": "Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "Completion Date (SOP Basis)"
+                }
+              },
+              "queryRef": "WorkOrders.Completion Date (SOP Basis)",
+              "nativeQueryRef": "Completion Date (SOP Basis)",
+              "displayName": "S&OP date (ledger)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "Completion Date (Header Basis)"
+                }
+              },
+              "queryRef": "WorkOrders.Completion Date (Header Basis)",
+              "nativeQueryRef": "Completion Date (Header Basis)",
+              "displayName": "S&OP date (header)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "QuantityShipped"
+                }
+              },
+              "queryRef": "WorkOrders.QuantityShipped",
+              "nativeQueryRef": "QuantityShipped",
+              "displayName": "Qty completed"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "SOP Flag - Counts As Batch"
+                }
+              },
+              "queryRef": "WorkOrders.SOP Flag - Counts As Batch",
+              "nativeQueryRef": "SOP Flag - Counts As Batch",
+              "displayName": "Counts as batch"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "WorkOrders"
+                  }
+                },
+                "Property": "Completion Date (SOP Basis)"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Work order header (EDW)'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#221c35'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

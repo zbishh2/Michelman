@@ -1,0 +1,366 @@
+table Sales_History
+	lineageTag: 55728fc3-f35d-4606-9fb1-6a046c2deff3
+
+	column 'Order Company'
+		dataType: string
+		lineageTag: f397f42a-577a-45f9-bd7a-99a2a3c36a86
+		summarizeBy: none
+		sourceColumn: Order Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 559dbf08-ce08-4b5d-8f6e-42b95464c343
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 96b18300-26de-4df9-8e64-946565b373c7
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: fb5062ca-964b-4532-9990-a56464f93b23
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: ccf4b532-2138-48bb-9f85-0776f2911cd8
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: fb1c6272-46d8-48f2-bc5a-a4be6408ae15
+		summarizeBy: none
+		sourceColumn: Order Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Next Status'
+		dataType: string
+		lineageTag: 4aeaff8e-aba9-4430-9a75-d1d58a1a392d
+		summarizeBy: none
+		sourceColumn: Next Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: ab6aae14-8d1a-490b-9d75-a377dcc852ed
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: e31fc858-69c9-4d05-9e6a-5e28dba2a5cc
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Week
+		dataType: int64
+		formatString: 0
+		lineageTag: bb374266-35eb-47f9-a2ed-276fd044beb1
+		summarizeBy: none
+		sourceColumn: Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Promised Ship Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 355c46c0-31ec-4438-ad4e-815f1ca40b84
+		summarizeBy: none
+		sourceColumn: Promised Ship Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ordered Quantity KGs'
+		dataType: double
+		formatString: #,0
+		lineageTag: 1aa95e41-ff67-4aa3-8fd4-63494340b732
+		summarizeBy: none
+		sourceColumn: Ordered Quantity KGs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Revenue Business Unit'
+		dataType: string
+		lineageTag: 0a36fdcb-1ce2-4f20-8e15-a4f7c86b7499
+		summarizeBy: none
+		sourceColumn: Revenue Business Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Code'
+		dataType: string
+		lineageTag: 9e325110-69a7-4c4c-b042-8e2de42ef416
+		summarizeBy: none
+		sourceColumn: Customer Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Name'
+		dataType: string
+		lineageTag: d0a1dba4-7595-4711-a533-126886b4b41d
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Parent'
+		dataType: int64
+		formatString: 0
+		lineageTag: 01f1f820-315f-47fe-ab21-229cb158dfa1
+		summarizeBy: none
+		sourceColumn: Global Parent
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Parent Name'
+		dataType: string
+		lineageTag: 8f8e1b1f-3e48-44f4-b2c1-e5dd696dfab8
+		summarizeBy: none
+		sourceColumn: Global Parent Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TM Name'
+		dataType: string
+		lineageTag: 305189d4-9fc9-4f84-8d5a-75586a2e00c7
+		summarizeBy: none
+		sourceColumn: TM Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Country Name'
+		dataType: string
+		lineageTag: b85055ec-ab2e-4abc-b1ef-2cb005111a83
+		summarizeBy: none
+		sourceColumn: Country Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ordered Quantity'
+		dataType: double
+		formatString: #,0
+		lineageTag: 4b0c4002-6917-4da7-ac0c-f8c36094c198
+		summarizeBy: none
+		sourceColumn: Ordered Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Ordering Unit of Measure'
+		dataType: string
+		lineageTag: 1179a62d-44b4-435c-9881-f76059c07f71
+		summarizeBy: none
+		sourceColumn: Ordering Unit of Measure
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ordered Quantity LBs'
+		dataType: double
+		formatString: #,0
+		lineageTag: 9601c669-78d4-484b-a6aa-0af8b3f7a648
+		summarizeBy: none
+		sourceColumn: Ordered Quantity LBs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Open Indicator'
+		dataType: string
+		lineageTag: 10f53af8-7516-4a4a-a3bc-16c0b5bfb27e
+		summarizeBy: none
+		sourceColumn: Open Indicator
+
+		annotation SummarizationSetBy = Automatic
+
+	column DATE
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b1eec589-3705-4b2c-b42d-7f31305ded4b
+		summarizeBy: none
+		sourceColumn: DATE
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sales_History = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            b.OrderCompany                                   AS [Order Company],
+				            b.Branch                                         AS [Branch Plant],
+				            b.GlobalBulkItem                                 AS [Global Bulk Item],
+				            b.BulkItem                                       AS [Bulk Item],
+				            b.SecondItem                                     AS [2nd Item Number],
+				            b.OrderNumber                                    AS [Order Number],
+				            b.NextStatus                                     AS [Next Status],
+				            DATEPART(YEAR,     b.PromisedDate)               AS [Year],
+				            DATEPART(MONTH,    b.PromisedDate)               AS [Month],
+				            DATEPART(ISO_WEEK, b.PromisedDate)               AS [Week],
+				            b.PromisedDate                                   AS [Promised Ship Date],
+				            CASE WHEN MIN(b.PrimUOM) = 'LB' THEN SUM(b.q) * 0.453593
+				                 WHEN MIN(b.PrimUOM) = 'KG' THEN SUM(b.q)
+				                 WHEN MIN(b.PrimUOM) = 'EA' THEN SUM(b.q) * 20
+				                 ELSE SUM(b.q)
+				            END                                              AS [Ordered Quantity KGs],
+				            b.RevBU                                          AS [Revenue Business Unit],
+				            b.CustCode                                       AS [Customer Code],
+				            b.CustName                                       AS [Customer Name],
+				            b.GlobalParent                                   AS [Global Parent],
+				            b.GlobalParentName                               AS [Global Parent Name],
+				            b.TMName                                         AS [TM Name],
+				            b.CountryName                                    AS [Country Name],
+				            SUM(b.q)                                         AS [Ordered Quantity],
+				            b.OrderingUOM                                    AS [Ordering Unit of Measure],
+				            CASE WHEN MIN(b.PrimUOM) = 'LB' THEN SUM(b.q)
+				                 WHEN MIN(b.PrimUOM) = 'KG' THEN SUM(b.q) * 2.2045992
+				                 WHEN MIN(b.PrimUOM) = 'EA' THEN SUM(b.q) * 44
+				                 ELSE SUM(b.q)
+				            END                                              AS [Ordered Quantity LBs],
+				            b.OpenIndicator                                  AS [Open Indicator],
+				            GETDATE()                                        AS [DATE]
+				        FROM (
+				            SELECT
+				                LTRIM(RTRIM(sd.SDKCOO))                      AS OrderCompany,
+				                LTRIM(RTRIM(sd.SDMCU))                       AS Branch,
+				                LTRIM(RTRIM(tag.IMGBLK))                     AS GlobalBulkItem,
+				                LTRIM(RTRIM(tag.IMBULK))                     AS BulkItem,
+				                LTRIM(RTRIM(sd.SDLITM))                      AS SecondItem,
+				                sd.SDDOCO                                    AS OrderNumber,
+				                LTRIM(RTRIM(sd.SDNXTR))                      AS NextStatus,
+				                CASE WHEN sd.SDPDDJ > 0
+				                     THEN DATEADD(DAY, (sd.SDPDDJ % 1000) - 1, DATEFROMPARTS(1900 + (sd.SDPDDJ / 1000), 1, 1))
+				                     ELSE NULL
+				                END                                          AS PromisedDate,
+				                sd.SDPQOR / 10000.0                          AS q,
+				                LTRIM(RTRIM(sd.SDUOM1))                      AS PrimUOM,
+				                LTRIM(RTRIM(sd.SDUOM))                       AS OrderingUOM,
+				                LTRIM(RTRIM(sd.SDEMCU))                      AS RevBU,
+				                LTRIM(RTRIM(CAST(sd.SDSHAN AS varchar(20)))) AS CustCode,
+				                LTRIM(RTRIM(shipto.ABALPH))                  AS CustName,
+				                shipto.ABAN86                                AS GlobalParent,
+				                LTRIM(RTRIM(gp.ABALPH))                      AS GlobalParentName,
+				                ISNULL(NULLIF(LTRIM(RTRIM(srn.ABALPH)), ''), 'Not Available') AS TMName,
+				                LTRIM(RTRIM(ctry.DRDL01))                    AS CountryName,
+				                CASE WHEN LTRIM(RTRIM(sd.SDNXTR)) = '999' THEN 'N' ELSE 'Y' END AS OpenIndicator
+				            FROM (
+				                SELECT SDKCOO, SDMCU, SDLITM, SDDOCO, SDNXTR, SDPDDJ, SDPQOR,
+				                       SDUOM1, SDUOM, SDEMCU, SDSHAN, SDITM, SDLNTY, SDCNDJ
+				                FROM PRODDTA.F4211
+				                UNION ALL
+				                SELECT SDKCOO, SDMCU, SDLITM, SDDOCO, SDNXTR, SDPDDJ, SDPQOR,
+				                       SDUOM1, SDUOM, SDEMCU, SDSHAN, SDITM, SDLNTY, SDCNDJ
+				                FROM PRODDTA.F42119
+				            ) sd
+				            INNER JOIN PRODDTA.F554101 tag ON tag.IMITM = sd.SDITM
+				            LEFT  JOIN PRODDTA.F0101 shipto ON shipto.ABAN8 = sd.SDSHAN
+				            LEFT  JOIN PRODDTA.F0101 gp     ON gp.ABAN8 = shipto.ABAN86
+				            LEFT  JOIN PRODDTA.F0116 addr   ON addr.ALAN8 = sd.SDSHAN
+				            LEFT  JOIN PRODCTL.F0005 ctry   ON LTRIM(RTRIM(ctry.DRKY)) = LTRIM(RTRIM(addr.ALCTR))
+				                                           AND ctry.DRSY = '00  '
+				                                           AND ctry.DRRT = 'CN'
+				            LEFT  JOIN PRODDTA.F0006 bu     ON bu.MCMCU = sd.SDEMCU
+				            LEFT  JOIN PRODDTA.F42140 sr    ON sr.CMAN8 = sd.SDSHAN
+				                                           AND LTRIM(RTRIM(sr.CMRTYPE)) = LTRIM(RTRIM(ISNULL(bu.MCRP01, '-'))) + 'GTM'
+				            LEFT  JOIN PRODDTA.F0101 srn    ON srn.ABAN8 = sr.CMSLSM
+				            WHERE sd.SDLNTY NOT LIKE '%F%'
+				              AND sd.SDCNDJ = 0
+				              AND sd.SDPQOR / 10000.0 > 0
+				              AND LTRIM(RTRIM(tag.IMBULK)) IN ('JS168.S', 'ME91735.S', 'ME92040.S', 'PP05S.S', 'ME91240G.S', 'MG7140.S', 'TSPP01.S', 'ME92040.S', 'ME91735.S', 'ME87235.S', 'ME91735.S', 'ME90640.S', '211018IX.S', 'ME92040.S', 'PP236A.S', 'NYS2104.S', 'PP236A.S', 'ME91240G.S', 'JS168.E', 'ME92040.S', 'PP236A.S', 'ME91240G.S', 'ME91735.S', 'ME91735.S', 'ME91735.S', 'BRIJS2.S', 'BRIJS20.S', 'BRIJS2.E', 'BRIJS20.E')
+				              AND CASE WHEN LTRIM(RTRIM(tag.IMGBLK)) = '-' THEN LTRIM(RTRIM(sd.SDLITM)) ELSE LTRIM(RTRIM(tag.IMGBLK)) END NOT IN ('IGST', 'CGST', 'SGST', 'CVD', 'ADD')
+				        ) b
+				        WHERE b.PromisedDate >= '2025-11-01'
+				          AND b.PromisedDate <= EOMONTH(DATEADD(DAY, 180, CAST(GETDATE() AS date)))
+				        GROUP BY
+				            b.OrderCompany,
+				            b.Branch,
+				            b.GlobalBulkItem,
+				            b.BulkItem,
+				            b.SecondItem,
+				            b.OrderNumber,
+				            b.NextStatus,
+				            DATEPART(YEAR,     b.PromisedDate),
+				            DATEPART(MONTH,    b.PromisedDate),
+				            DATEPART(ISO_WEEK, b.PromisedDate),
+				            b.PromisedDate,
+				            b.RevBU,
+				            b.CustCode,
+				            b.CustName,
+				            b.GlobalParent,
+				            b.GlobalParentName,
+				            b.TMName,
+				            b.CountryName,
+				            b.OrderingUOM,
+				            b.OpenIndicator
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Order Company", type text},
+				            {"Branch Plant", type text},
+				            {"Global Bulk Item", type text},
+				            {"Bulk Item", type text},
+				            {"2nd Item Number", type text},
+				            {"Order Number", Int64.Type},
+				            {"Next Status", type text},
+				            {"Year", Int64.Type},
+				            {"Month", Int64.Type},
+				            {"Week", Int64.Type},
+				            {"Promised Ship Date", type date},
+				            {"Ordered Quantity KGs", type number},
+				            {"Revenue Business Unit", type text},
+				            {"Customer Code", type text},
+				            {"Customer Name", type text},
+				            {"Global Parent", Int64.Type},
+				            {"Global Parent Name", type text},
+				            {"TM Name", type text},
+				            {"Country Name", type text},
+				            {"Ordered Quantity", type number},
+				            {"Ordering Unit of Measure", type text},
+				            {"Ordered Quantity LBs", type number},
+				            {"Open Indicator", type text},
+				            {"DATE", type datetime}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

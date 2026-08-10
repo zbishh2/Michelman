@@ -1,0 +1,79 @@
+table Hours
+	lineageTag: 3ad6b2e6-2e4b-46bf-998e-42029182a177
+
+	column Site
+		dataType: string
+		lineageTag: a2f4465f-6adb-4fe3-9a51-f907e60282b7
+		summarizeBy: none
+		sourceColumn: Site
+
+		annotation SummarizationSetBy = Automatic
+
+	column Hours
+		dataType: int64
+		formatString: 0
+		lineageTag: e1c06b5d-fe16-4de2-a154-6cb5cc907179
+		summarizeBy: sum
+		sourceColumn: Hours
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4a3713a1-b1a9-4dc3-8715-a461222e90db
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column RI
+		dataType: int64
+		formatString: 0
+		lineageTag: d07a2abd-2721-4df2-89f5-5ca91064440c
+		summarizeBy: sum
+		sourceColumn: RI
+
+		annotation SummarizationSetBy = Automatic
+
+	column DAI
+		dataType: int64
+		formatString: 0
+		lineageTag: 290474f2-a22e-4286-972b-f994852c7840
+		summarizeBy: sum
+		sourceColumn: DAI
+
+		annotation SummarizationSetBy = Automatic
+
+	column Spills
+		dataType: int64
+		formatString: 0
+		lineageTag: 91479164-3bf8-4969-b8dc-ce2fb8469576
+		summarizeBy: sum
+		sourceColumn: Spills
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Spills (kg)'
+		dataType: int64
+		formatString: 0
+		lineageTag: b93eb1ff-1d36-4a9a-86a8-1626041e9b03
+		summarizeBy: sum
+		sourceColumn: Spills (kg)
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Hours = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(Web.Contents("https://michem.sharepoint.com/sites/MichelmanGlobalEHSTeam/Shared Documents/EHS KPIs/Injury Rates 2026 V2.xlsx"), null, true),
+				    Hours_Table = Source{[Item="Hours",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Hours_Table,{{"Site", type text}, {"Hours", Int64.Type}, {"Date", type date}, {"RI", Int64.Type}, {"DAI", Int64.Type}, {"Spills", Int64.Type}, {"Spills (kg)", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

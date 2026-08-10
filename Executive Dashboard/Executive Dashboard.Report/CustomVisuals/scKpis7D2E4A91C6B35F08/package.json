@@ -1,0 +1,17 @@
+{
+		"version": "1.0.1.0",
+		"author": {"name":"Zack Bishop","email":"zbishh2@gmail.com"},
+		"resources": [
+			{
+				"resourceId": "rId0",
+				"sourceType": 5,
+				"file": "resources/scKpis7D2E4A91C6B35F08.pbiviz.json"
+			}
+		],
+		"visual": {"name":"scorecardKpis","displayName":"Scorecard KPIs","guid":"scKpis7D2E4A91C6B35F08","visualClassName":"Visual","version":"1.0.1.0","description":"The Executive Scorecard's section-3 KPI table (Drive Continuous Improvement). Renders KPI / Target / YTD Global / Trend rows styled to match the page's native tableEx tables, but the rows are hand-maintained: values live in D1 (manual_kpis) and editors update them in-place through a per-row dialog — no model backing, no refresh dependency. GUID is deliberately short: it appears TWICE in the CustomVisuals path Power BI Desktop writes on save, and a full-length form pushes this report past the 256-char Windows limit.","supportUrl":"https://github.com/zbishh2/michelman-writeback","gitHubUrl":"https://github.com/zbishh2/michelman-writeback"},
+		"metadata": {
+			"pbivizjson": {
+				"resourceId": "rId0"
+			}
+		}
+	}

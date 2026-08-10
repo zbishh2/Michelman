@@ -1,0 +1,244 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "14b1050000000000f005",
+  "position": {
+    "x": 8,
+    "y": 8,
+    "z": 0,
+    "height": 300,
+    "width": 1264
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Region"
+                }
+              },
+              "queryRef": "Snapshot.Region",
+              "nativeQueryRef": "Region"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Snapshot.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Rows (DAX)"
+                }
+              },
+              "queryRef": "Snapshot.Rows (DAX)",
+              "nativeQueryRef": "Rows (DAX)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Rows (SQL)"
+                }
+              },
+              "queryRef": "Snapshot.Rows (SQL)",
+              "nativeQueryRef": "Rows (SQL)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "QOH (DAX)"
+                }
+              },
+              "queryRef": "Snapshot.QOH (DAX)",
+              "nativeQueryRef": "QOH (DAX)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "QOH (SQL)"
+                }
+              },
+              "queryRef": "Snapshot.QOH (SQL)",
+              "nativeQueryRef": "QOH (SQL)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "QOH Delta"
+                }
+              },
+              "queryRef": "Snapshot.QOH Delta",
+              "nativeQueryRef": "QOH Delta"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "KGs Delta"
+                }
+              },
+              "queryRef": "Snapshot.KGs Delta",
+              "nativeQueryRef": "KGs Delta"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "LBs Delta"
+                }
+              },
+              "queryRef": "Snapshot.LBs Delta",
+              "nativeQueryRef": "LBs Delta"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "USD (DAX)"
+                }
+              },
+              "queryRef": "Snapshot.USD (DAX)",
+              "nativeQueryRef": "USD (DAX)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "USD (SQL)"
+                }
+              },
+              "queryRef": "Snapshot.USD (SQL)",
+              "nativeQueryRef": "USD (SQL)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "USD Delta"
+                }
+              },
+              "queryRef": "Snapshot.USD Delta",
+              "nativeQueryRef": "USD Delta"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "EUR Delta"
+                }
+              },
+              "queryRef": "Snapshot.EUR Delta",
+              "nativeQueryRef": "EUR Delta"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Snapshot"
+                  }
+                },
+                "Property": "Region"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Inventory tie-out - DAX rebuild vs production SQL query (deltas should be 0)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

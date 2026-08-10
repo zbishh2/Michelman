@@ -1,0 +1,12 @@
+relationship 1ddbaa81-d228-4a73-a59d-3649f3ce8e0f
+	fromColumn: SO_Not_Shipping.Item
+	toColumn: Item.Item
+
+relationship 464ac5a7-0d37-4bf1-b465-f6a30724a035
+	fromColumn: Inventory_Availability.Item
+	toColumn: Item.Item
+
+relationship 9ce24c0f-267e-430c-b8f5-43ff58a5f09f
+	fromColumn: WorkOrder_Detail.Item
+	toColumn: Item.Item
+

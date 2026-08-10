@@ -1,0 +1,113 @@
+table '04 Join Drops'
+	lineageTag: 17040000-0000-4000-8000-000000000001
+
+	column orders_in_window
+		dataType: int64
+		lineageTag: 17040001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: orders_in_window
+
+		annotation SummarizationSetBy = User
+
+	column lines_with_525
+		dataType: int64
+		lineageTag: 17040001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: lines_with_525
+
+		annotation SummarizationSetBy = User
+
+	column lines_with_540
+		dataType: int64
+		lineageTag: 17040001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: lines_with_540
+
+		annotation SummarizationSetBy = User
+
+	column lines_525_and_540
+		dataType: int64
+		lineageTag: 17040001-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: lines_525_and_540
+
+		annotation SummarizationSetBy = User
+
+	column lines_525_no_540
+		dataType: int64
+		lineageTag: 17040001-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: lines_525_no_540
+
+		annotation SummarizationSetBy = User
+
+	column shipto_no_F0101
+		dataType: int64
+		lineageTag: 17040001-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: shipto_no_F0101
+
+		annotation SummarizationSetBy = User
+
+	column branch_no_F0006
+		dataType: int64
+		lineageTag: 17040001-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: branch_no_F0006
+
+		annotation SummarizationSetBy = User
+
+	partition '04 Join Drops' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        SELECT o.SDKCOO, o.SDDOCO, o.SDDCTO, o.SDLNID, o.SDMCU, o.SDSHAN
+				        INTO #o
+				        FROM (
+				            SELECT SDKCOO,SDDOCO,SDDCTO,SDLNID,SDMCU,SDSHAN,SDDCTO AS dc,SDNXTR,SDTRDJ FROM PRODDTA.F4211
+				            UNION ALL
+				            SELECT h.SDKCOO,h.SDDOCO,h.SDDCTO,h.SDLNID,h.SDMCU,h.SDSHAN,h.SDDCTO,h.SDNXTR,h.SDTRDJ FROM PRODDTA.F42119 h
+				            WHERE NOT EXISTS (SELECT 1 FROM PRODDTA.F4211 c WHERE c.SDKCOO=h.SDKCOO AND c.SDDOCO=h.SDDOCO AND c.SDDCTO=h.SDDCTO AND c.SDLNID=h.SDLNID)
+				        ) o
+				        LEFT JOIN PRODDTA.F0006 bu ON LTRIM(RTRIM(bu.MCMCU))=LTRIM(RTRIM(o.SDMCU))
+				        WHERE o.SDDCTO NOT IN ('S5','ST') AND o.SDNXTR<>'980'
+				          AND o.SDTRDJ BETWEEN 126152 AND 126181
+				          AND LTRIM(RTRIM(bu.MCCO)) NOT IN ('00024','00025');
+				
+				        SELECT
+				          (SELECT COUNT(*) FROM #o) AS orders_in_window,
+				          (SELECT COUNT(*) FROM #o o WHERE EXISTS (SELECT 1 FROM PRODDTA.F42199 l WHERE l.SLKCOO=o.SDKCOO AND l.SLDOCO=o.SDDOCO AND l.SLDCTO=o.SDDCTO AND l.SLLNID=o.SDLNID AND l.SLNXTR='525')) AS lines_with_525,
+				          (SELECT COUNT(*) FROM #o o WHERE EXISTS (SELECT 1 FROM PRODDTA.F42199 l WHERE l.SLKCOO=o.SDKCOO AND l.SLDOCO=o.SDDOCO AND l.SLDCTO=o.SDDCTO AND l.SLLNID=o.SDLNID AND l.SLNXTR='540')) AS lines_with_540,
+				          (SELECT COUNT(*) FROM #o o WHERE EXISTS (SELECT 1 FROM PRODDTA.F42199 l WHERE l.SLKCOO=o.SDKCOO AND l.SLDOCO=o.SDDOCO AND l.SLDCTO=o.SDDCTO AND l.SLLNID=o.SDLNID AND l.SLNXTR='525')
+				                                                AND EXISTS (SELECT 1 FROM PRODDTA.F42199 l WHERE l.SLKCOO=o.SDKCOO AND l.SLDOCO=o.SDDOCO AND l.SLDCTO=o.SDDCTO AND l.SLLNID=o.SDLNID AND l.SLNXTR='540')) AS lines_525_and_540,
+				          (SELECT COUNT(*) FROM #o o WHERE EXISTS (SELECT 1 FROM PRODDTA.F42199 l WHERE l.SLKCOO=o.SDKCOO AND l.SLDOCO=o.SDDOCO AND l.SLDCTO=o.SDDCTO AND l.SLLNID=o.SDLNID AND l.SLNXTR='525')
+				                                                AND NOT EXISTS (SELECT 1 FROM PRODDTA.F42199 l WHERE l.SLKCOO=o.SDKCOO AND l.SLDOCO=o.SDDOCO AND l.SLDCTO=o.SDDCTO AND l.SLLNID=o.SDLNID AND l.SLNXTR='540')) AS lines_525_no_540,
+				          (SELECT COUNT(*) FROM #o o WHERE NOT EXISTS (SELECT 1 FROM PRODDTA.F0101 f WHERE f.ABAN8=o.SDSHAN)) AS shipto_no_F0101,
+				          (SELECT COUNT(*) FROM #o o WHERE NOT EXISTS (SELECT 1 FROM PRODDTA.F0006 f WHERE LTRIM(RTRIM(f.MCMCU))=LTRIM(RTRIM(o.SDMCU)))) AS branch_no_F0006;
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"orders_in_window", Int64.Type},
+				            {"lines_with_525", Int64.Type},
+				            {"lines_with_540", Int64.Type},
+				            {"lines_525_and_540", Int64.Type},
+				            {"lines_525_no_540", Int64.Type},
+				            {"shipto_no_F0101", Int64.Type},
+				            {"branch_no_F0006", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

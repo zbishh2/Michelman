@@ -1,0 +1,73 @@
+/// Writeback: latest comment + count per sales order line from the Order Line Comments visual (michelman-writeback Worker/D1). Source of truth: edw_model/LineComments.m
+table LineComments
+	lineageTag: f6686c08-4069-4873-bf22-8b1ba7f7bd07
+
+	column 'Order Line ID'
+		dataType: string
+		lineageTag: 4c5991d9-a5c1-46c2-adb5-e59ed4fdf841
+		summarizeBy: none
+		sourceColumn: Order Line ID
+
+	column 'Comment Count'
+		dataType: int64
+		lineageTag: 1881dbfc-2ee8-4d30-9751-723dde05a4f2
+		summarizeBy: sum
+		sourceColumn: Comment Count
+
+	column 'Latest Comment'
+		dataType: string
+		lineageTag: 74718e12-da33-44cf-83d2-f9a179d257da
+		summarizeBy: none
+		sourceColumn: Latest Comment
+
+	column 'Latest Comment By'
+		dataType: string
+		lineageTag: 5e63a4d2-4dfc-4c04-822d-fb0b297e05d4
+		summarizeBy: none
+		sourceColumn: Latest Comment By
+
+	column 'Latest Comment At'
+		dataType: dateTime
+		lineageTag: b04a809f-d9f1-4096-8ed1-fead84e88e85
+		summarizeBy: none
+		sourceColumn: Latest Comment At
+
+		variation Variation
+			isDefault
+			relationship: 64f4ca71-de07-42ad-96b2-96e34126100a
+			defaultHierarchy: LocalDateTable_fcef210c-7e8b-409d-b0ee-97b4bb8f30e4.'Date Hierarchy'
+
+	partition LineComments = m
+		mode: import
+		source =
+				let
+				    BaseUrl = "https://michelman-writeback.michelman-bi.workers.dev",
+				    Secret  = "2dd9c06c0d1c63e82ee7740c3ac61be1c5ec14c2455bbd45e97c67995a5ecf2c",
+				    Headers = [ #"x-secret" = Secret ],
+				    LatestRaw = Json.Document(Web.Contents(BaseUrl, [RelativePath = "comments/latest", Headers = Headers])),
+				    Latest = Table.ExpandRecordColumn(
+				        Record.ToTable(LatestRaw),
+				        "Value",
+				        {"body", "actorEmail", "createdAt"},
+				        {"Latest Comment", "Latest Comment By", "Latest Comment At"}
+				    ),
+				    CountsRaw = Json.Document(Web.Contents(BaseUrl, [RelativePath = "comments/counts", Headers = Headers])),
+				    Counts = Table.RenameColumns(Record.ToTable(CountsRaw), {{"Name", "Order Line ID"}, {"Value", "Comment Count"}}),
+				    Joined = Table.NestedJoin(Counts, {"Order Line ID"}, Latest, {"Name"}, "latest", JoinKind.LeftOuter),
+				    Expanded = Table.ExpandTableColumn(Joined, "latest", {"Latest Comment", "Latest Comment By", "Latest Comment At"}),
+				    Typed = Table.TransformColumnTypes(
+				        Expanded,
+				        {
+				            {"Order Line ID", type text},
+				            {"Comment Count", Int64.Type},
+				            {"Latest Comment", type text},
+				            {"Latest Comment By", type text},
+				            {"Latest Comment At", type datetime}
+				        }
+				    ),
+				    Filtered = Table.SelectRows(Typed, each [Order Line ID] <> null and Text.Trim([Order Line ID]) <> "")
+				in
+				    Filtered
+
+	annotation PBI_ResultType = Exception
+

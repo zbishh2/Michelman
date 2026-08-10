@@ -1,0 +1,510 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "82f66354493343bab446",
+  "position": {
+    "x": 8,
+    "y": 46,
+    "z": 0,
+    "height": 650,
+    "width": 1264
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "WO_Parts_List.Branch Plant",
+              "nativeQueryRef": "Branch Plant",
+              "displayName": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Global Bulk Item"
+                }
+              },
+              "queryRef": "WO_Parts_List.Global Bulk Item",
+              "nativeQueryRef": "Global Bulk Item",
+              "displayName": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Bulk Item"
+                }
+              },
+              "queryRef": "WO_Parts_List.Bulk Item",
+              "nativeQueryRef": "Bulk Item",
+              "displayName": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "WO_Parts_List.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number",
+              "displayName": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "WO Number"
+                }
+              },
+              "queryRef": "WO_Parts_List.WO Number",
+              "nativeQueryRef": "WO Number",
+              "displayName": "WO Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "WO Status"
+                }
+              },
+              "queryRef": "WO_Parts_List.WO Status",
+              "nativeQueryRef": "WO Status",
+              "displayName": "WO Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Order Date"
+                }
+              },
+              "queryRef": "WO_Parts_List.Order Date",
+              "nativeQueryRef": "Order Date",
+              "displayName": "Order Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Start Date"
+                }
+              },
+              "queryRef": "WO_Parts_List.Start Date",
+              "nativeQueryRef": "Start Date",
+              "displayName": "Start Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Completed Date"
+                }
+              },
+              "queryRef": "WO_Parts_List.Completed Date",
+              "nativeQueryRef": "Completed Date",
+              "displayName": "Completed Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Quantity Requested"
+                }
+              },
+              "queryRef": "WO_Parts_List.Quantity Requested",
+              "nativeQueryRef": "Quantity Requested",
+              "displayName": "Quantity Requested"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Quantity Completed"
+                }
+              },
+              "queryRef": "WO_Parts_List.Quantity Completed",
+              "nativeQueryRef": "Quantity Completed",
+              "displayName": "Quantity Completed"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Unit of Measure"
+                }
+              },
+              "queryRef": "WO_Parts_List.Unit of Measure",
+              "nativeQueryRef": "Unit of Measure",
+              "displayName": "Unit of Measure"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Component Branch"
+                }
+              },
+              "queryRef": "WO_Parts_List.Component Branch",
+              "nativeQueryRef": "Component Branch",
+              "displayName": "Component Branch"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Component 2nd Item Number"
+                }
+              },
+              "queryRef": "WO_Parts_List.Component 2nd Item Number",
+              "nativeQueryRef": "Component 2nd Item Number",
+              "displayName": "Component 2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Ordered Quantity"
+                }
+              },
+              "queryRef": "WO_Parts_List.Ordered Quantity",
+              "nativeQueryRef": "Ordered Quantity",
+              "displayName": "Ordered Quantity"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Issued Quantity"
+                }
+              },
+              "queryRef": "WO_Parts_List.Issued Quantity",
+              "nativeQueryRef": "Issued Quantity",
+              "displayName": "Issued Quantity"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Component UOM"
+                }
+              },
+              "queryRef": "WO_Parts_List.Component UOM",
+              "nativeQueryRef": "Component UOM",
+              "displayName": "Component UOM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO_Parts_List"
+                    }
+                  },
+                  "Property": "Requested Date"
+                }
+              },
+              "queryRef": "WO_Parts_List.Requested Date",
+              "nativeQueryRef": "Requested Date",
+              "displayName": "Requested Date"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "WO_Parts_List"
+                  }
+                },
+                "Property": "Global Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "WO_Parts_List"
+                  }
+                },
+                "Property": "Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "WO_Parts_List"
+                  }
+                },
+                "Property": "2nd Item Number"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "WO_Parts_List"
+                  }
+                },
+                "Property": "Start Date"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

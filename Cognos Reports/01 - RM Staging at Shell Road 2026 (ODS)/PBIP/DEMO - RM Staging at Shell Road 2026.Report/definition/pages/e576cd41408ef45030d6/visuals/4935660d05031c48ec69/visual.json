@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "4935660d05031c48ec69",
+  "position": {
+    "x": 7.7811550151975686,
+    "y": 6.8085106382978724,
+    "z": 1000,
+    "height": 71.00303951367782,
+    "width": 782.97872340425533,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Raw Materials Needed in CINC",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#e40011"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "OBJECTIVE: Identify the materials that need to be transferred to CINC from CIN2.",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#001eff"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "SCOPE: Parts list required within next (2) business days and material is not finished good MPF.",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#001eff"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

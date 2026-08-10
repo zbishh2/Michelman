@@ -1,0 +1,17 @@
+/// BUILD.md §9.3 J2. ssasprod.bim is a dump of the STALE BIQLTabular model, so §1.1's "SSAS live is blocked" verdict is provisional. The blocker is one column: 'Lead Time MFG_BP' (= F4102.IBLTMF) appears in ZERO of the 34 perspectives in the stale dump, and 'Lead time Level' (= IBLTLV) is NOT a substitute - they disagree on real rows. Filter the result to Item Branch and look for it. If BIQLTabular_v2 exposes it in the 'Supply and Demand' perspective - which already carries both safety-stock columns and every Sales column this report needs - then SSAS live becomes the mandated route and report 19 collapses to two tables with zero Power Query. That is a rewrite, not a patch, so answer it before any rework, not after.
+table 'J2 SSAS Perspective Columns'
+	lineageTag: 19b1a000-0000-4000-8000-000000000002
+
+	partition 'J2 SSAS Perspective Columns' = m
+		mode: import
+		source =
+				let
+				    Source = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular_v2",
+				        [Query = "SELECT * FROM $SYSTEM.TMSCHEMA_PERSPECTIVE_COLUMNS", Implementation = "2.0"]
+				    )
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

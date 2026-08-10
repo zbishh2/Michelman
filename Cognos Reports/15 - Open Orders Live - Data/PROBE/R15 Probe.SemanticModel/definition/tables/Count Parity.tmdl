@@ -1,0 +1,66 @@
+table 'Count Parity'
+	lineageTag: 15000000-0000-0005-0000-000000000000
+
+	column 'CSR Page'
+		dataType: string
+		lineageTag: 15000000-0000-0005-0001-000000000001
+		summarizeBy: none
+		sourceColumn: CSR Page
+
+		annotation SummarizationSetBy = Automatic
+
+	column Lines
+		dataType: int64
+		formatString: 0
+		lineageTag: 15000000-0000-0005-0001-000000000002
+		summarizeBy: none
+		sourceColumn: Lines
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Count Parity' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            CASE
+				                WHEN csr.ABALPH='Runyan, Tammy'   THEN 'Tammy'
+				                WHEN csr.ABALPH='McCrary, Nae'    THEN 'Nae'
+				                WHEN csr.ABALPH='Benjamin, Kim'   THEN 'Kim'
+				                WHEN csr.ABALPH='Garner, Shannon' THEN 'Shannon'
+				                ELSE 'Other'
+				            END AS [CSR Page],
+				            COUNT(*) AS [Lines]
+				        FROM PRODDTA.F4211 o
+				        INNER JOIN (SELECT c.CMAN8, LTRIM(RTRIM(n.ABALPH)) AS ABALPH
+				                    FROM PRODDTA.F42140 c INNER JOIN PRODDTA.F0101 n ON c.CMSLSM=n.ABAN8
+				                    WHERE c.CMRTYPE='CSR') csr ON o.SDSHAN = csr.CMAN8
+				        WHERE o.SDNXTR < '570' AND o.SDKCOO='00010' AND o.SDLNTY NOT IN ('FS','T') AND o.SDDCTO <> 'SQ'
+				        GROUP BY CASE
+				                WHEN csr.ABALPH='Runyan, Tammy'   THEN 'Tammy'
+				                WHEN csr.ABALPH='McCrary, Nae'    THEN 'Nae'
+				                WHEN csr.ABALPH='Benjamin, Kim'   THEN 'Kim'
+				                WHEN csr.ABALPH='Garner, Shannon' THEN 'Shannon'
+				                ELSE 'Other'
+				            END
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"CSR Page", type text},
+				            {"Lines", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

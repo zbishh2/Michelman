@@ -1,0 +1,508 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "6b4e74c8fc3840ffaace",
+  "position": {
+    "x": 8,
+    "y": 48,
+    "z": 0,
+    "height": 648,
+    "width": 1264
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Order Number"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Order Number",
+              "nativeQueryRef": "Order Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Line Number"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Line Number",
+              "nativeQueryRef": "Line Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Ordered Date"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Ordered Date",
+              "nativeQueryRef": "Ordered Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Promised Ship Date"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Promised Ship Date",
+              "nativeQueryRef": "Promised Ship Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "CSR Name"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.CSR Name",
+              "nativeQueryRef": "CSR Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Customer Name"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Customer Name",
+              "nativeQueryRef": "Customer Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Description 1"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Description 1",
+              "nativeQueryRef": "Description 1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Description 1 (2)"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Description 1 (2)",
+              "nativeQueryRef": "Description 1 (2)",
+              "displayName": "Description 1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Delivery Instructions Line 1"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Delivery Instructions Line 1",
+              "nativeQueryRef": "Delivery Instructions Line 1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Delivery Instructions Line 2"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Delivery Instructions Line 2",
+              "nativeQueryRef": "Delivery Instructions Line 2"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Next Status"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Next Status",
+              "nativeQueryRef": "Next Status"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sales_Orders_Static"
+                        }
+                      },
+                      "Property": "Ordered Quantity"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Sales_Orders_Static.Ordered Quantity)",
+              "nativeQueryRef": "Ordered Quantity",
+              "displayName": "Ordered Quantity"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sales_Orders_Static"
+                        }
+                      },
+                      "Property": "Ordered Quantity LBs"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Sales_Orders_Static.Ordered Quantity LBs)",
+              "nativeQueryRef": "Ordered Quantity LBs",
+              "displayName": "Ordered Quantity LBs"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Customer Segmentation"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Customer Segmentation",
+              "nativeQueryRef": "Customer Segmentation"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "TM Name"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.TM Name",
+              "nativeQueryRef": "TM Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Make Site"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Make Site",
+              "nativeQueryRef": "Make Site"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Lead Time Order to Ship"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Lead Time Order to Ship",
+              "nativeQueryRef": "Lead Time Order to Ship"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Ship Site"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Ship Site",
+              "nativeQueryRef": "Ship Site"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Carrier Name"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Carrier Name",
+              "nativeQueryRef": "Carrier Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sales_Orders_Static"
+                    }
+                  },
+                  "Property": "Freight Handling Code"
+                }
+              },
+              "queryRef": "Sales_Orders_Static.Freight Handling Code",
+              "nativeQueryRef": "Freight Handling Code"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Sales_Orders_Static"
+                  }
+                },
+                "Property": "Promised Ship Date"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

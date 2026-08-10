@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Slow Moving Packaged Items"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "21d2f3b8-2108-4d13-ae42-21b1d1ef2100"
+  }
+}

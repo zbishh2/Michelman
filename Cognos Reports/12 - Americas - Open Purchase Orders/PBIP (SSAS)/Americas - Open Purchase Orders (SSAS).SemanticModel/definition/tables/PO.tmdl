@@ -1,0 +1,247 @@
+table PO
+	lineageTag: fe670294-066e-4cee-b9fd-d043bcdcb912
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: b19c3137-1d1e-403e-bf17-ca30b7b5ee78
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PO Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0be245e5-c8ab-4384-a8c8-7a7ddac23fe8
+		summarizeBy: none
+		sourceColumn: PO Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Line Number'
+		dataType: double
+		lineageTag: 3ad93f34-9735-431a-8107-1733a194d11c
+		summarizeBy: none
+		sourceColumn: Line Number
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 7ac8c94b-8b6b-40ed-806e-5551dcf19cc2
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PO Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 1f26f8e5-704c-49c9-abe7-8989dc979c7d
+		summarizeBy: none
+		sourceColumn: PO Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Requested Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: b57391df-a1c9-4eb2-b167-a359b43b04bb
+		summarizeBy: none
+		sourceColumn: Requested Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Promised Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 4506efbe-d1ea-446b-9ad4-bb69e18bc316
+		summarizeBy: none
+		sourceColumn: Promised Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Receipt Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 77ab6502-e455-49d7-b580-fb5fa7757d83
+		summarizeBy: none
+		sourceColumn: Receipt Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Vendor ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7d3e4093-4865-4a79-9e00-c1519579f68d
+		summarizeBy: none
+		sourceColumn: Vendor ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Vendor Name'
+		dataType: string
+		lineageTag: 7a6020ff-05d9-49e4-a768-30d0bdd288c8
+		summarizeBy: none
+		sourceColumn: Vendor Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lead Time Level'
+		dataType: int64
+		formatString: #0
+		lineageTag: 84109cea-f6ee-4041-8ced-6b491fd86d2c
+		summarizeBy: none
+		sourceColumn: Lead Time Level
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quantity Cancelled'
+		dataType: double
+		formatString: #,##0
+		lineageTag: ed18897b-3c22-479b-ae77-5a07ac661cca
+		summarizeBy: sum
+		sourceColumn: Quantity Cancelled
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PO Quantity Ordered LBs'
+		dataType: double
+		formatString: #,##0
+		lineageTag: 2a6d1c1f-4250-400f-a305-78ecf36f8884
+		summarizeBy: sum
+		sourceColumn: PO Quantity Ordered LBs
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Open Quantity'
+		dataType: double
+		formatString: #,##0
+		lineageTag: 2a432982-e504-429e-bad3-0708fda21d7a
+		summarizeBy: sum
+		sourceColumn: Open Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Open Quantity LBs'
+		dataType: double
+		formatString: #,##0
+		lineageTag: 523b3c51-5f12-46a8-848e-ed27e422b235
+		summarizeBy: sum
+		sourceColumn: Open Quantity LBs
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Spend Amount USD'
+		dataType: double
+		formatString: $#,##0;($#,##0)
+		lineageTag: 0ff7d1b2-cfcc-4f3a-9875-1195360655b5
+		summarizeBy: sum
+		sourceColumn: Spend Amount USD
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Purchase Amount USD'
+		dataType: double
+		formatString: $#,##0;($#,##0)
+		lineageTag: 10bbd5e5-60ac-40db-809e-5682300eff8a
+		summarizeBy: sum
+		sourceColumn: Purchase Amount USD
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'PO' = m
+		mode: import
+		source =
+				let
+				    Source = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular_v2",
+				        [Query = "
+				        EVALUATE
+				        SELECTCOLUMNS(
+				            SUMMARIZECOLUMNS(
+				                'Branch'[Branch Plant],
+				                'Purchase Order Detail'[Order Num],
+				                'Purchase Order Detail'[Line Num],
+				                'Item Branch'[Item Num 2nd],
+				                'Purchase Order Detail'[Order Date],
+				                'Purchase Order Detail'[Requested Date],
+				                'Purchase Order Detail'[Scheduled Pick Date],
+				                'Purchase Order Detail'[LastReceivedDate],
+				                'Purchase Order Detail'[Address Num PO],
+				                'Purchase Order Detail'[Vendor Name],
+				                'Item Branch'[Lead time Level],
+				                FILTER(ALL('Purchase Order Detail'[Scheduled Pick Date]), 'Purchase Order Detail'[Scheduled Pick Date] >= TODAY() - 365),
+				                FILTER(ALL('Branch'[Branch Plant]), 'Branch'[Branch Plant] IN {""CINC"", ""CIN2"", ""CIN4""}),
+				                FILTER(ALL('Purchase Order Detail'[Order Type]), 'Purchase Order Detail'[Order Type] IN {""OP"", ""OD""}),
+				                ""@Ord"", SUM('Purchase Order Detail'[QuantityOrdered]),
+				                ""@Open"", SUM('Purchase Order Detail'[QuantityOpen]),
+				                ""@Rec"", SUM('Purchase Order Detail'[QuantityReceived]),
+				                ""@OrdLB"", SUM('Purchase Order Detail'[QuantityOrderedLB]),
+				                ""@OpenLB"", SUM('Purchase Order Detail'[QuantityOpenLB]),
+				                ""@CxlU"", IF(NOT ISBLANK(MAX('Purchase Order Detail'[Cancel Date])), SUM('Purchase Order Detail'[QuantityOrdered]) - SUM('Purchase Order Detail'[QuantityOpen]) - SUM('Purchase Order Detail'[QuantityReceived]), 0),
+				                ""@CxlLB"", IF(NOT ISBLANK(MAX('Purchase Order Detail'[Cancel Date])), SUM('Purchase Order Detail'[QuantityOrderedLB]) - SUM('Purchase Order Detail'[QuantityOpenLB]) - SUM('Purchase Order Detail'[QuantityReceivedLB]), 0),
+				                ""@Spend"", SUM('Purchase Order Detail'[AmountExtendedPrice])
+				            ),
+				            ""Branch Plant"", 'Branch'[Branch Plant],
+				            ""PO Number"", 'Purchase Order Detail'[Order Num],
+				            ""Line Number"", 'Purchase Order Detail'[Line Num],
+				            ""2nd Item Number"", IF(ISBLANK('Item Branch'[Item Num 2nd]) || 'Item Branch'[Item Num 2nd] = ""??????"", ""Not Applicable"", 'Item Branch'[Item Num 2nd]),
+				            ""PO Date"", 'Purchase Order Detail'[Order Date],
+				            ""Requested Date"", 'Purchase Order Detail'[Requested Date],
+				            ""Promised Date"", 'Purchase Order Detail'[Scheduled Pick Date],
+				            ""Receipt Date"", 'Purchase Order Detail'[LastReceivedDate],
+				            ""Vendor ID"", 'Purchase Order Detail'[Address Num PO],
+				            ""Vendor Name"", 'Purchase Order Detail'[Vendor Name],
+				            ""Lead Time Level"", 'Item Branch'[Lead time Level],
+				            ""Quantity Cancelled"", IF(ISBLANK('Item Branch'[Item Num 2nd]) || 'Item Branch'[Item Num 2nd] = ""??????"", 0, [@CxlLB]),
+				            ""PO Quantity Ordered LBs"", IF(ISBLANK('Item Branch'[Item Num 2nd]) || 'Item Branch'[Item Num 2nd] = ""??????"", 0, [@OrdLB] - [@CxlLB]),
+				            ""Open Quantity"", [@Open],
+				            ""Open Quantity LBs"", IF(ISBLANK('Item Branch'[Item Num 2nd]) || 'Item Branch'[Item Num 2nd] = ""??????"", 0, [@OpenLB]),
+				            ""Spend Amount USD"", IF([@CxlU] > 0 && [@Open] + [@Rec] <= 0, 0, [@Spend]),
+				            ""Purchase Amount USD"", IF([@CxlU] > 0 && [@Open] + [@Rec] <= 0, 0, [@Spend])
+				        )
+				        ", Implementation = "2.0"]
+				    ),
+				    Renamed = Table.TransformColumnNames(
+				        Source,
+				        each if Text.StartsWith(_, "[") then Text.BetweenDelimiters(_, "[", "]") else _
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Renamed,
+				        {
+				            {"Branch Plant", type text},
+				            {"PO Number", Int64.Type},
+				            {"Line Number", type number},
+				            {"2nd Item Number", type text},
+				            {"PO Date", type date},
+				            {"Requested Date", type date},
+				            {"Promised Date", type date},
+				            {"Receipt Date", type date},
+				            {"Vendor ID", Int64.Type},
+				            {"Vendor Name", type text},
+				            {"Lead Time Level", Int64.Type},
+				            {"Quantity Cancelled", type number},
+				            {"PO Quantity Ordered LBs", type number},
+				            {"Open Quantity", type number},
+				            {"Open Quantity LBs", type number},
+				            {"Spend Amount USD", type number},
+				            {"Purchase Amount USD", type number}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+	annotation PBI_ResultType = Table
+

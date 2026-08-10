@@ -1,0 +1,9 @@
+relationship 6a90d2a2-5604-4415-9fb4-9e4776bf4a4a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WorkOrder_Detail.'Work Order Start'
+	toColumn: LocalDateTable_b0ce310d-f69f-4679-b646-c317e1e587fd.Date
+
+relationship b1f2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d
+	fromColumn: WorkOrder_Detail.'Raw Material'
+	toColumn: 'RM Requirements'.RM
+

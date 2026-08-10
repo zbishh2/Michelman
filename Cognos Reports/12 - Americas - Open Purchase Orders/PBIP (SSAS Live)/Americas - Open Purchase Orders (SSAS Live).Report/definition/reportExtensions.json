@@ -1,0 +1,111 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/reportExtension/1.0.0/schema.json",
+  "name": "extension",
+  "entities": [
+    {
+      "name": "Purchase Order Detail",
+      "measures": [
+        {
+          "name": "R12 PO Quantity Cancelled",
+          "dataType": "Double",
+          "expression": "VAR unk = ISBLANK(MAX('Item Branch'[Item Num 2nd])) || MAX('Item Branch'[Item Num 2nd]) = \"??????\"\nVAR cxlLB = CALCULATE(SUM('Purchase Order Detail'[QuantityOrderedLB]) - SUM('Purchase Order Detail'[QuantityOpenLB]) - SUM('Purchase Order Detail'[QuantityReceivedLB]), NOT ISBLANK('Purchase Order Detail'[Cancel Date]))\nRETURN IF(unk, 0, cxlLB + 0)",
+          "formatString": "#,##0"
+        },
+        {
+          "name": "R12 PO Ordered LBs",
+          "dataType": "Double",
+          "expression": "VAR unk = ISBLANK(MAX('Item Branch'[Item Num 2nd])) || MAX('Item Branch'[Item Num 2nd]) = \"??????\"\nVAR cxlLB = CALCULATE(SUM('Purchase Order Detail'[QuantityOrderedLB]) - SUM('Purchase Order Detail'[QuantityOpenLB]) - SUM('Purchase Order Detail'[QuantityReceivedLB]), NOT ISBLANK('Purchase Order Detail'[Cancel Date]))\nRETURN IF(unk, 0, SUM('Purchase Order Detail'[QuantityOrderedLB]) - cxlLB)",
+          "formatString": "#,##0"
+        },
+        {
+          "name": "R12 PO Open Quantity",
+          "dataType": "Double",
+          "expression": "SUM('Purchase Order Detail'[QuantityOpen])",
+          "formatString": "#,##0"
+        },
+        {
+          "name": "R12 PO Open LBs",
+          "dataType": "Double",
+          "expression": "VAR unk = ISBLANK(MAX('Item Branch'[Item Num 2nd])) || MAX('Item Branch'[Item Num 2nd]) = \"??????\"\nRETURN IF(unk, 0, SUM('Purchase Order Detail'[QuantityOpenLB]))",
+          "formatString": "#,##0"
+        },
+        {
+          "name": "R12 PO Spend USD",
+          "dataType": "Double",
+          "expression": "VAR cxlU = CALCULATE(SUM('Purchase Order Detail'[QuantityOrdered]) - SUM('Purchase Order Detail'[QuantityOpen]) - SUM('Purchase Order Detail'[QuantityReceived]), NOT ISBLANK('Purchase Order Detail'[Cancel Date]))\nRETURN IF(cxlU > 0 && SUM('Purchase Order Detail'[QuantityOpen]) + SUM('Purchase Order Detail'[QuantityReceived]) <= 0, 0, SUM('Purchase Order Detail'[AmountExtendedPrice]))",
+          "formatString": "$#,##0;($#,##0)"
+        },
+        {
+          "name": "R12 PO Purchase USD",
+          "dataType": "Double",
+          "expression": "VAR cxlU = CALCULATE(SUM('Purchase Order Detail'[QuantityOrdered]) - SUM('Purchase Order Detail'[QuantityOpen]) - SUM('Purchase Order Detail'[QuantityReceived]), NOT ISBLANK('Purchase Order Detail'[Cancel Date]))\nRETURN IF(cxlU > 0 && SUM('Purchase Order Detail'[QuantityOpen]) + SUM('Purchase Order Detail'[QuantityReceived]) <= 0, 0, SUM('Purchase Order Detail'[AmountExtendedPrice]))",
+          "formatString": "$#,##0;($#,##0)"
+        },
+        {
+          "name": "R12 PO Include",
+          "dataType": "Integer",
+          "expression": "IF(MAX('Purchase Order Detail'[Scheduled Pick Date]) >= TODAY() - 365, 1, 0)",
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "name": "Sales",
+      "measures": [
+        {
+          "name": "R12 SO Ordered Quantity",
+          "dataType": "Double",
+          "expression": "VAR raw = SUM('Sales'[QuantityOrdered])\nVAR prim = SUM('Sales'[QuantityOrderedPrimaryUOM])\nRETURN IF(MAX('Sales'[UOM]) <> MAX('Sales'[UOM Primary]) && prim = raw, 0, prim)",
+          "formatString": "#,##0"
+        },
+        {
+          "name": "R12 SO Ordered LBs",
+          "dataType": "Double",
+          "expression": "VAR raw = SUM('Sales'[QuantityOrdered])\nVAR prim = SUM('Sales'[QuantityOrderedPrimaryUOM])\nVAR lb = SUM('Sales'[QuantityOrderedLB])\nRETURN IF((MAX('Sales'[UOM]) <> MAX('Sales'[UOM Primary]) && prim = raw) || (MAX('Sales'[UOM]) <> \"LB\" && lb = raw), 0, lb)",
+          "formatString": "#,##0"
+        },
+        {
+          "name": "R12 SO CSR Name",
+          "dataType": "Text",
+          "expression": "VAR c = MAX('CSR for Sales Orders'[CSRName])\nVAR p = SEARCH(\",\", c, 1, 0)\nRETURN IF(TRIM(c) = \"\", \"-\", IF(p = 0, c, TRIM(MID(c, p + 1, 200)) & \" \" & TRIM(LEFT(c, p - 1))))"
+        },
+        {
+          "name": "R12 SO TM Name",
+          "dataType": "Text",
+          "expression": "VAR t = MAX('Territory Manager'[Mailing Name])\nRETURN IF(TRIM(t) = \"\", \"Not Available\", t)"
+        },
+        {
+          "name": "R12 SO Delivery Instr 1",
+          "dataType": "Text",
+          "expression": "VAR d = MAX('Sales'[Delivery Instructions Line 1])\nRETURN IF(TRIM(d) = \"\", \"-\", d)"
+        },
+        {
+          "name": "R12 SO Delivery Instr 2",
+          "dataType": "Text",
+          "expression": "VAR d = MAX('Sales'[Delivery Instructions Line 2])\nRETURN IF(TRIM(d) = \"\", \"-\", d)"
+        },
+        {
+          "name": "R12 SO Make Site",
+          "dataType": "Text",
+          "expression": "VAR b = MAX('Branch'[Branch Plant])\nVAR st = MAX('Item Branch'[Stocking Type])\nRETURN SWITCH(TRUE(), b = \"CIN2\" && st IN {\"S\",\"M\",\"Q\",\"P\"}, \"Kemper\", b = \"CIN2\" && st = \"D\", \"Shell\", b = \"CINC\" && st IN {\"S\",\"M\",\"Q\",\"P\"}, \"Shell\", \"OTHER\")"
+        },
+        {
+          "name": "R12 SO Ship Site",
+          "dataType": "Text",
+          "expression": "SWITCH(TRUE(), MAX('Branch'[Branch Plant]) = \"CIN2\", \"Kemper\", MAX('Branch'[Branch Plant]) = \"CINC\", \"Shell\", \"OTHER\")"
+        },
+        {
+          "name": "R12 SO Description 1",
+          "dataType": "Text",
+          "expression": "MAX('Sales'[Description 1])"
+        },
+        {
+          "name": "R12 SO Include",
+          "dataType": "Integer",
+          "expression": "VAR d = MAX('Sales'[Scheduled Pick Date])\nVAR gb = MAX('Item Branch'[Item Num Global Bulk])\nVAR eff = IF(gb = \"-\" || ISBLANK(gb), MAX('Sales'[Item Num 2nd]), gb)\nRETURN IF(NOT ISBLANK(d) && d >= TODAY() - 365 && d <= TODAY() + 30 && NOT eff IN {\"IGST\",\"CGST\",\"SGST\",\"CVD\",\"ADD\"} && NOT ISBLANK(MAX('CSR for Sales Orders'[CSRNum])), 1, 0)",
+          "hidden": true
+        }
+      ]
+    }
+  ]
+}

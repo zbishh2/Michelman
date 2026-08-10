@@ -1,0 +1,62 @@
+table 'P6 Date Cadence'
+	lineageTag: 18000700-0000-4000-8000-000000000001
+
+	column SnapDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 18000701-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: SnapDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Weekday
+		dataType: string
+		lineageTag: 18000701-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Weekday
+
+		annotation SummarizationSetBy = Automatic
+
+	column RawRows
+		dataType: int64
+		lineageTag: 18000701-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: RawRows
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P6 Date Cadence' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT CAST(snap.CalendarDate AS date) AS SnapDate,
+				               CASE (DATEDIFF(DAY, '1900-01-07', snap.CalendarDate) % 7)
+				                    WHEN 0 THEN 'SUNDAY' WHEN 1 THEN 'MONDAY' WHEN 2 THEN 'TUESDAY'
+				                    WHEN 3 THEN 'WEDNESDAY' WHEN 4 THEN 'THURSDAY' WHEN 5 THEN 'FRIDAY'
+				                    WHEN 6 THEN 'SATURDAY' END AS Weekday,
+				               COUNT(*) AS RawRows
+				        FROM BIQL.FactInventorySnapshot_History_Filtered snap
+				        WHERE snap.CalendarDate >= CAST(GETDATE() - 200 AS date)
+				        GROUP BY CAST(snap.CalendarDate AS date), (DATEDIFF(DAY, '1900-01-07', snap.CalendarDate) % 7)
+				        ORDER BY SnapDate
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"SnapDate", type date},
+							{"Weekday", type text},
+							{"RawRows", Int64.Type}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

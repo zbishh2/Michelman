@@ -1,0 +1,112 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "b4976550a49546708f30",
+  "position": {
+    "x": 7.7811550151975686,
+    "y": 5.8358662613981762,
+    "z": 6000,
+    "height": 161.45896656534956,
+    "width": 999.87841945288756,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "CM (Brent Planner 3 December 2024) - Sales Orders < 560 (Problem: Not Enough Inventory to Ship)",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "18px",
+                      "color": "#0000ff"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "PURPOSE: Report shows Brent's planner number for next 21 days that do not have available inventory to ship",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "12px",
+                      "color": "#000000"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "NOTES: ",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "12px",
+                      "color": "#000000"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "1. Sales Orders at status 530 or 535 OR Work Orders at status 90 are color coded YELLOW",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "12px",
+                      "color": "#000000"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "2. Sales Orders with promised ship date of today or prior are color coded RED",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "12px",
+                      "color": "#000000"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "\\\\kaylee\\shared\\OPS-PROD\\Schedule\\Shipment Date Change Log - Change History File.xlsm",
+                    "textStyle": {
+                      "fontSize": "12px",
+                      "textDecoration": "underline",
+                      "color": "#0000ff"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

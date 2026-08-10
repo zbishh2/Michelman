@@ -1,0 +1,224 @@
+table SO_Not_Shipping
+	lineageTag: 2993c351-0803-442f-a45c-4d821e312ac8
+
+	measure 'Qty Ordered Per Item (m)' = SUM('SO_Not_Shipping'[Primary Qty])
+		formatString: #,0
+		lineageTag: 6f6d43bc-f753-4e29-afe2-16b93b45ca89
+
+	measure 'Show Item' =
+			VAR ord = [Qty Ordered Per Item (m)]
+			VAR avail = [Available Total]
+			RETURN
+				IF ( ISBLANK ( ord ), 0,
+					IF ( ord > avail || avail = 0 || ISBLANK ( avail ), 1, 0 ) )
+		lineageTag: facaa69d-c4d1-4a56-bf0a-ad2b1c57b112
+
+	measure 'SO Cell Color' =
+			VAR prm = SELECTEDVALUE ( 'SO_Not_Shipping'[Promised Ship] )
+			VAR isPastDue = NOT ISBLANK ( prm ) && prm <= TODAY ()
+			VAR isFlagSts = SELECTEDVALUE ( 'SO_Not_Shipping'[Next Status] ) IN { "525", "530", "535" }
+			RETURN
+				IF ( isPastDue, "#FF0000", IF ( isFlagSts, "#FFFF00", BLANK () ) )
+		lineageTag: 91b94e8c-4434-4d03-97fc-5c88bf292bee
+
+	measure 'SO Lines (Order Count)' = DISTINCTCOUNT('SO_Not_Shipping'[Order#])
+		formatString: 0
+		lineageTag: e8aab01e-7e2c-459e-9ed0-08cb5c7070aa
+
+	measure 'SO Qty Total' = SUM('SO_Not_Shipping'[Primary Qty])
+		formatString: #,0
+		lineageTag: 78d468fc-0a80-4ebe-a30d-4666efedb593
+
+	column Plant
+		dataType: string
+		lineageTag: 11fa1f58-27cc-4e4f-9532-bc0616960eba
+		summarizeBy: none
+		sourceColumn: Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column Item
+		dataType: string
+		lineageTag: 977d03ce-d7a4-4415-87fa-436db50c9ed1
+		summarizeBy: none
+		sourceColumn: Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: ce0f807c-75cb-4b27-a4f5-aeb70c418d12
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Order#
+		dataType: int64
+		formatString: 0
+		lineageTag: 8f7babe3-44d2-4777-aa93-0da8ff93764e
+		summarizeBy: none
+		sourceColumn: Order#
+
+		annotation SummarizationSetBy = Automatic
+
+	column Line#
+		dataType: double
+		lineageTag: 4af1bdcc-5d27-4086-b747-e80af1495065
+		summarizeBy: none
+		sourceColumn: Line#
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Promised Ship'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: a000089b-4c6d-45d5-a1b9-8987d6e51c3e
+		summarizeBy: none
+		sourceColumn: Promised Ship
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Customer
+		dataType: string
+		lineageTag: a5fd0aa6-ee71-4664-a8b2-1e044a6dfc13
+		summarizeBy: none
+		sourceColumn: Customer
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Next Status'
+		dataType: string
+		lineageTag: 7c054680-1110-44dc-8c3d-8425b6d1d940
+		summarizeBy: none
+		sourceColumn: Next Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Qty
+		dataType: double
+		formatString: #,0
+		lineageTag: f368e8b6-5c11-45d0-ba67-9e37dd2fda0b
+		summarizeBy: none
+		sourceColumn: Qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Primary Qty'
+		dataType: double
+		formatString: #,0
+		lineageTag: 94f56f39-0856-4646-a572-e877ed32c381
+		summarizeBy: none
+		sourceColumn: Primary Qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column Lot#
+		dataType: string
+		lineageTag: fbbbc60f-2507-446c-bff5-ce7876e909fc
+		summarizeBy: none
+		sourceColumn: Lot#
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Qty Ordered Per Item'
+		dataType: double
+		formatString: #,0
+		lineageTag: 4503fec0-8b2e-4df5-8e9c-512c3d192b0f
+		summarizeBy: none
+		sourceColumn: Qty Ordered Per Item
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	partition SO_Not_Shipping = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            LTRIM(RTRIM(so.SDMCU))                                   AS [Plant],
+				            LTRIM(RTRIM(so.SDLITM))                                  AS [Item],
+				            (CASE WHEN so.SDTRDJ > 0
+				                  THEN DATEADD(DAY, (so.SDTRDJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDTRDJ / 1000), 1, 1))
+				             END)                                                    AS [Order Date],
+				            so.SDDOCO                                                AS [Order#],
+				            so.SDLNID / 1000.0                                       AS [Line#],
+				            (CASE WHEN so.SDPDDJ > 0
+				                  THEN DATEADD(DAY, (so.SDPDDJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDPDDJ / 1000), 1, 1))
+				             END)                                                    AS [Promised Ship],
+				            shipto.ABALPH                                            AS [Customer],
+				            so.SDNXTR                                                AS [Next Status],
+				            so.SDUORG / 10000.0                                      AS [Qty],
+				            so.SDPQOR / 10000.0                                      AS [Primary Qty],
+				            LTRIM(RTRIM(so.SDLOTN))                                  AS [Lot#],
+				            SUM(so.SDPQOR / 10000.0)
+				                OVER (PARTITION BY LTRIM(RTRIM(so.SDLITM)))          AS [Qty Ordered Per Item]
+				        FROM PRODDTA.F4211 so
+				        INNER JOIN PRODDTA.F0101 shipto ON so.SDSHAN = shipto.ABAN8
+				        INNER JOIN PRODDTA.F0101 soldto ON so.SDAN8  = soldto.ABAN8
+				        INNER JOIN PRODDTA.F0010 comp   ON so.SDKCOO = comp.CCCO
+				        WHERE so.SDNXTR IN ('525','530','535','536','537','540','545','550')
+				          AND so.SDLNTY = 'S'
+				          AND LTRIM(RTRIM(so.SDLITM)) IN (
+				                '161017CX-FD','161017CX-OP','161190PX-T2','161190PX-T3','171143PX-T2',
+				                '191245PX-T2','APT10','APT10-T2','APT11','APT11-T2','BPADA','BTDA','BYK3565',
+				                'C2','CAN','CORNERB','CRTNCLEAR','CRTNDARK','CRTNWHITE','DMAEMA','DMEA',
+				                'DPE3500-T2','EMA3065','FERSUL7W','GEN926','HP1432AT-OP','HP1632','HP1632-T2',
+				                'HP1632-T2*OP10','IND139','KOH50','MD4020-C1','MD4020-C2','MD4020C-C2','MD4021',
+				                'MD4021-C1','MD4021-C2','MD4021C-C2','MD4022','MD4022C-C2','MD4023','MD4023-C2',
+				                'MD4023C-C2','MDU20-T2','MPD','MW40504','MW40504-C2','MW40514','MW40514-C2',
+				                'NS41-PL','PEG1450','PEG1450.S','PERSD','PTMG','STODSO','TC275','THERMOT','THF',
+				                'U1001-OP','U101-OP','U201-T2','U2022-OP','U2023-OP','U204-OP','U204-T2','U470-OP',
+				                'U501B','U501B-OP','U501-OP','U502.E','U502-OP','U601-OP','U701-OP','UNYTE201',
+				                'UNYTEC201-FD','WAH12MDI','WAV501','WD40','WD40-SP','WD40-UN','JS037-OP','HP401-OP',
+				                'HSCF410-PL','UNYTEC201-FD'
+				              )
+				          AND (so.SDLOTN IS NULL OR LTRIM(RTRIM(so.SDLOTN)) = '')
+				          AND (CASE WHEN so.SDPDDJ > 0
+				                    THEN DATEADD(DAY, (so.SDPDDJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDPDDJ / 1000), 1, 1))
+				               END) <= DATEADD(DAY, 21, CAST(GETDATE() AS date))
+				          AND LTRIM(RTRIM(so.SDMCU)) IN ('CINC','CIN2','CIN4')
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Plant", type text},
+				            {"Item", type text},
+				            {"Order Date", type date},
+				            {"Order#", Int64.Type},
+				            {"Line#", type number},
+				            {"Promised Ship", type date},
+				            {"Customer", type text},
+				            {"Next Status", type text},
+				            {"Qty", type number},
+				            {"Primary Qty", type number},
+				            {"Lot#", type text},
+				            {"Qty Ordered Per Item", type number}
+				        }
+				    )
+				in
+				    Typed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

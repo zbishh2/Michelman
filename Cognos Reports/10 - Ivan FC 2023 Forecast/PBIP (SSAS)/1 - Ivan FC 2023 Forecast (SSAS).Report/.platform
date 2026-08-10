@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "1 - Ivan FC 2023 Forecast (SSAS)"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f2bb4f89-30f4-41b9-8995-295ba2e53e4d"
+  }
+}

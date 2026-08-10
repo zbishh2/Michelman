@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "RM Staging at Shell Road 2026 (ODS)"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5977e974-7601-4589-9c05-45407e472e44"
+  }
+}

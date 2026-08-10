@@ -1,0 +1,26 @@
+relationship 12f20000-0000-4000-8000-000000000001
+	fromColumn: Sales_Orders_Static.'Conv Key'
+	toColumn: 'UOM Conversions'.'Conv Key'
+
+relationship 12f20000-0000-4000-8000-000000000002
+	fromColumn: Sales_Orders_Static.'LB Key'
+	toColumn: 'UOM To LB'.'LB Key'
+
+relationship 12f20000-0000-4000-8000-000000000003
+	fromColumn: PO.'LB Key'
+	toColumn: 'UOM To LB'.'LB Key'
+
+relationship 12f20000-0000-4000-8000-000000000004
+	fromColumn: PO.'Line Key'
+	toColumn: 'PO Receipts'.'Line Key'
+
+relationship 12f20000-0000-4000-8000-000000000005
+	toCardinality: many
+	fromColumn: Sales_Orders_Static.'Ship To Key'
+	toColumn: 'CSR Assignments'.'Ship To'
+
+relationship 12f20000-0000-4000-8000-000000000006
+	toCardinality: many
+	fromColumn: Sales_Orders_Static.'Ship To Key'
+	toColumn: 'TM Assignments'.'Ship To'
+

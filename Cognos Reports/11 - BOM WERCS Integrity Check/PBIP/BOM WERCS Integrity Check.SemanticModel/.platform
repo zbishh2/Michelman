@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "BOM WERCS Integrity Check"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "240c5e52-2080-4166-b799-b6326af65682"
+  }
+}

@@ -1,0 +1,362 @@
+table Shipments
+	lineageTag: 19a2a000-0000-4000-8000-000000000001
+
+	/// SUM of the line-grain primary-UOM quantity. Cognos sum(ORDERED_QTY * SALES_FACTOR) - NOT QuantityOrdered * SalesFactor, which is not a UOM conversion. Ties on 5,674 / 5,674 rows.
+	measure 'Ordered Quantity' = SUM ( Shipments[Ordered Quantity Primary UOM] )
+		formatString: #,##0
+		lineageTag: 19a2b000-0000-4000-8000-000000000001
+
+	/// Built from [Line Weight Adj], not from the conversion factors. Ties to within -0.0021% of the capture; 98.96% of groups exact.
+	measure 'Ordered Quantity LBs' = SUM ( Shipments[Ordered Quantity LBs (Line)] )
+		formatString: #,##0
+		lineageTag: 19a2b000-0000-4000-8000-000000000002
+
+	/// Built from [Line Weight Adj], not from the conversion factors. Ties to within -0.0021% of the capture; 99.00% of groups exact.
+	measure 'Ordered Quantity KGs' = SUM ( Shipments[Ordered Quantity KGs (Line)] )
+		formatString: #,##0
+		lineageTag: 19a2b000-0000-4000-8000-000000000003
+
+	/// THE KG->LB CONSTANT, DEFINED ONCE. Pinned to the Cognos DW's value for parity, deliberately NOT the physically-correct 2.20462262: measured, 176 / 2.2045992 = 79.833105 reproduces Cognos's 79.833105264, where the physical constant gives 79.8322571. Both weight calculated columns reference this and nothing else hardcodes it, so flipping the basis is a one-line change here.
+	measure 'K KG to LB' = 2.2045992
+		formatString: 0.0000000
+		isHidden
+		lineageTag: 19a2b000-0000-4000-8000-000000000004
+
+	/// Carries leading zeros ('00010'), so it must stay text - a numeric type would render 10.
+	column 'Order Company'
+		dataType: string
+		lineageTag: 19a20000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Order Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 19a20000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Identifier - never aggregate.
+	column 'Order Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 19a20000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Order Number
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Raw item-master value. Bind [Bulk Item (Display)] in visuals - this column keeps the NULL that Cognos renders as '-'.
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 19a20000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Fact-side, matching Cognos MEASURE.ITEM_NUMBER_2ND - not the item dimension's column.
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 19a20000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ordered Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 19a20000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Ordered Date
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Line-grain input to [Ordered Quantity]. Displayed via the measure, never bound directly.
+	column 'Ordered Quantity Primary UOM'
+		dataType: double
+		formatString: #,##0
+		lineageTag: 19a20000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Ordered Quantity Primary UOM
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Ordering Unit of Measure'
+		dataType: string
+		lineageTag: 19a20000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Ordering Unit of Measure
+
+		annotation SummarizationSetBy = Automatic
+
+	/// EDW's Unit_Weight_Adj. Despite the name it is the LINE TOTAL weight, not a per-unit weight, expressed in [Line Weight Adj UOM]. This is what the two weight measures are built from.
+	column 'Line Weight Adj'
+		dataType: double
+		lineageTag: 19a20000-0000-4000-8000-00000000001b
+		summarizeBy: none
+		sourceColumn: Line Weight Adj
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Unit of [Line Weight Adj]. Domain is exactly LB and KG - no nulls, no blanks, no other value across 7,663 measured lines.
+	column 'Line Weight Adj UOM'
+		dataType: string
+		lineageTag: 19a20000-0000-4000-8000-00000000001c
+		summarizeBy: none
+		sourceColumn: Line Weight Adj UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	/// DIAGNOSTIC ONLY - no longer drives the weight measures. This is the superseded basis (qty x factor); it is item-specifically wrong on ~5% of rows and cost +0.376% on both weight totals. Kept visible so an auditor can reproduce the old number and see the discrepancy. Do not reintroduce it into the measures.
+	column 'Conversion Factor LB'
+		dataType: double
+		lineageTag: 19a20000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Conversion Factor LB
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// DIAGNOSTIC ONLY - see [Conversion Factor LB].
+	column 'Conversion Factor KG'
+		dataType: double
+		lineageTag: 19a20000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Conversion Factor KG
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Promised Ship Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 19a20000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Promised Ship Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Scheduled Pick Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 19a20000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Scheduled Pick Date
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE AN8 of the ship-to. Identifier - never aggregate.
+	column 'Customer Code'
+		dataType: int64
+		formatString: 0
+		lineageTag: 19a20000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Customer Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Name'
+		dataType: string
+		lineageTag: 19a20000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Reached via the ship-to address book's FIFTH address number, not the fact's parent SKey - the latter reproduces Cognos on only 20% of rows.
+	column 'Global Parent Name'
+		dataType: string
+		lineageTag: 19a20000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: Global Parent Name
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Address category code 06. Aliased c16 in the Cognos SQL, but the export header renders the full name.
+	column 'Customer Segmentation Description'
+		dataType: string
+		lineageTag: 19a20000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: Customer Segmentation Description
+
+		annotation SummarizationSetBy = Automatic
+
+	/// 'Not Available' where EDW's territory-manager dimension cannot resolve the key, which is how Cognos renders those rows.
+	column 'TM Name'
+		dataType: string
+		lineageTag: 19a20000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: TM Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Country Name'
+		dataType: string
+		lineageTag: 19a20000-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: Country Name
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Refresh stamp - constant on every row.
+	column DATE
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 19a20000-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: DATE
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Input to [Tax Item Key]. NULL here is what Cognos renders as '-'. Not displayed.
+	column 'Item Global Bulk'
+		dataType: string
+		isHidden
+		lineageTag: 19a20000-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: Item Global Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Carries the many-to-one relationship to Safety Stock. Not displayed.
+	column ItemBranchSKey
+		dataType: int64
+		isHidden
+		lineageTag: 19a20000-0000-4000-8000-000000000015
+		summarizeBy: none
+		sourceColumn: ItemBranchSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Line weight in POUNDS. [Line Weight Adj] is already a line total, so there is no multiplication by quantity - only a unit conversion when it is stored in KG. Suffixed '(Line)' because a column may not share a name with the measure that sums it.
+	column 'Ordered Quantity LBs (Line)' =
+			IF (
+			    Shipments[Line Weight Adj UOM] = "LB",
+			    Shipments[Line Weight Adj],
+			    Shipments[Line Weight Adj] * [K KG to LB]
+			)
+		dataType: double
+		formatString: #,##0
+		lineageTag: 19a20000-0000-4000-8000-000000000016
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Line weight in KILOGRAMS. Mirror of [Ordered Quantity LBs (Line)].
+	column 'Ordered Quantity KGs (Line)' =
+			IF (
+			    Shipments[Line Weight Adj UOM] = "KG",
+			    Shipments[Line Weight Adj],
+			    Shipments[Line Weight Adj] / [K KG to LB]
+			)
+		dataType: double
+		formatString: #,##0
+		lineageTag: 19a20000-0000-4000-8000-000000000017
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// The Oracle decode(GLOBAL_BULK_ITEM,'-',ITEM_NUMBER_2ND,GLOBAL_BULK_ITEM), ported to a MISSING test rather than a string comparison: DW_LEGACY stores a literal '-' where EDW stores NULL, so a literal = '-' port would never match and the fallback would be dead code. Tests all four shapes of missing - NULL, empty, whitespace, literal dash.
+	column 'Tax Item Key' =
+			VAR gbi = TRIM ( COALESCE ( Shipments[Item Global Bulk], "" ) )
+			RETURN
+			    IF ( gbi IN { "", "-" }, TRIM ( Shipments[2nd Item Number] ), gbi )
+		dataType: string
+		isHidden
+		lineageTag: 19a20000-0000-4000-8000-000000000018
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// India GST/customs pseudo-items. Applied as a REPORT-level filter (Is India Tax Item = False), not a WHERE clause, because it is a business rule with a non-obvious two-column fallback. Removes 0 rows today: all 15,316 such lines sit in Indian branch plants, outside both the six-plant and the finished-goods filters.
+	column 'Is India Tax Item' = Shipments[Tax Item Key] IN { "IGST", "CGST", "SGST", "CVD", "ADD" }
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 19a20000-0000-4000-8000-000000000019
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// What the table visual binds. Reproduces Cognos's '-' for a missing bulk item without collapsing the NULL/empty distinction that [Tax Item Key] depends on - which is why this is a column and not a format string.
+	column 'Bulk Item (Display)' = COALESCE ( Shipments[Bulk Item], "-" )
+		dataType: string
+		lineageTag: 19a20000-0000-4000-8000-00000000001a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Shipments = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				
+				        SELECT
+				            f.OrderCompany                              AS [Order Company],
+				            LTRIM(RTRIM(f.BusinessUnit))                AS [Branch Plant],
+				            f.OrderNum                                  AS [Order Number],
+				            ib.[Item Bulk]                              AS [Bulk Item],
+				            f.ItemNum2nd                                AS [2nd Item Number],
+				            f.OrderDate                                 AS [Ordered Date],
+				            f.QuantityOrderedPrimaryUOM                 AS [Ordered Quantity Primary UOM],
+				            LTRIM(RTRIM(f.UOMTransaction))              AS [Ordering Unit of Measure],
+				            f.Unit_Weight_Adj                           AS [Line Weight Adj],
+				            LTRIM(RTRIM(f.UOM_Weight_Adj))              AS [Line Weight Adj UOM],
+				            f.ConversionFactorLB                        AS [Conversion Factor LB],
+				            f.ConversionFactorKG                        AS [Conversion Factor KG],
+				            f.PromisedShipmentDate                      AS [Promised Ship Date],
+				            f.ScheduledPickDate                         AS [Scheduled Pick Date],
+				            f.AddressNumShipTo                          AS [Customer Code],
+				            LTRIM(RTRIM(sa.AddressDesc))                AS [Customer Name],
+				            LTRIM(RTRIM(p5.AddressDesc))                AS [Global Parent Name],
+				            sc.CustomerSegmentationDesc                 AS [Customer Segmentation Description],
+				            ISNULL(tm.[Mailing Name], 'Not Available')  AS [TM Name],
+				            sa.MailAddressCountryDesc                   AS [Country Name],
+				            CAST(GETDATE() AS date)                     AS [DATE],
+				            ib.[Item Global Bulk]                       AS [Item Global Bulk],
+				            f.ItemBranchSKey                            AS [ItemBranchSKey]
+				        FROM BIQL.FactSalesDetail f WITH (NOLOCK)
+				            INNER JOIN BIQL.TbItemBranch       ib WITH (NOLOCK) ON ib.ItemBranchSKey       = f.ItemBranchSKey
+				            INNER JOIN BIQL.DimCustomer        sc WITH (NOLOCK) ON sc.CustomerSKey         = f.ShipToCustomerSKey
+				            INNER JOIN BIQL.DimAddress         sa WITH (NOLOCK) ON sa.AddressSKey          = f.ShipToAddressSKey
+				            LEFT  JOIN BIQL.DimAddress         p5 WITH (NOLOCK) ON p5.AddressNum           = sa.AddressNum5th
+				                                                               AND p5.DWIsCurrent          = 1
+				            LEFT  JOIN BIQL.TbTerritoryManager tm WITH (NOLOCK) ON tm.TerritoryManagerSKey = f.TerritoryManagerSKey
+				        WHERE f.RecordType = 'Sales Detail'
+				          AND LTRIM(RTRIM(f.StatusCodeNext)) = '999'
+				          AND LTRIM(RTRIM(f.BusinessUnit)) IN ('CINC','CIN2','AUBA','AUB2','SING','SNG4')
+				          AND f.PromisedShipmentDate >= DATEADD(DAY, -183, CAST(GETDATE() AS date))
+				          AND LTRIM(RTRIM(f.OrderType)) NOT IN ('S5','ST')
+				          AND f.LineType NOT LIKE '%F%'
+				          AND f.StatusCodeLast NOT IN ('980','984')
+				          AND f.QuantityOrderedPrimaryUOM > 0
+				          AND LTRIM(RTRIM(ISNULL(sc.SalesBusinessUnit,''))) <> 'INT'
+				          AND ib.[Master Planning Family] LIKE '%F%'
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

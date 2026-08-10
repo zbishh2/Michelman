@@ -1,0 +1,47 @@
+table 'Rep Types'
+	lineageTag: 1a7f3c20-0d41-4b62-9e83-51c2a6d84e01
+
+	column 'Rep Type'
+		dataType: string
+		lineageTag: 1a7f3c20-0d41-4b62-9e83-51c2a6d84e02
+		summarizeBy: none
+		sourceColumn: Rep Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Assignments
+		dataType: int64
+		lineageTag: 1a7f3c20-0d41-4b62-9e83-51c2a6d84e03
+		summarizeBy: none
+		sourceColumn: Assignments
+
+		annotation SummarizationSetBy = User
+
+	partition 'Rep Types' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT LTRIM(RTRIM(CMRTYPE)) AS [Rep Type], COUNT(*) AS [Assignments]
+				        FROM PRODDTA.F42140
+				        GROUP BY LTRIM(RTRIM(CMRTYPE))
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Rep Type", type text},
+				            {"Assignments", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

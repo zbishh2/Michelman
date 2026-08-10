@@ -1,0 +1,49 @@
+table '02 Cols F4211 F42119'
+	lineageTag: 17020000-0000-4000-8000-000000000001
+
+	column src
+		dataType: string
+		lineageTag: 17020001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: src
+
+		annotation SummarizationSetBy = Automatic
+
+	column keycols
+		dataType: string
+		lineageTag: 17020001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: keycols
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '02 Cols F4211 F42119' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT 'F4211' AS src,
+				               (SELECT TOP 1 CONCAT(LTRIM(RTRIM(SDKCOO)),'|',CAST(SDDOCO AS varchar(20)),'|',LTRIM(RTRIM(SDDCTO)),'|',CAST(SDLNID AS varchar(20)),'|',LTRIM(RTRIM(SDMCU)),'|',CAST(SDAN8 AS varchar(20)),'|',CAST(SDSHAN AS varchar(20)),'|',LTRIM(RTRIM(SDLITM)),'|',CAST(SDITM AS varchar(20)),'|',CAST(SDUORG AS varchar(20)),'|',CAST(SDTRDJ AS varchar(20)),'|',CAST(SDDRQJ AS varchar(20)),'|',LTRIM(RTRIM(SDFRTH)),'|',CAST(SDADDJ AS varchar(20)),'|',CAST(SDCNDJ AS varchar(20)),'|',LTRIM(RTRIM(SDNXTR))) FROM PRODDTA.F4211) AS keycols
+				        UNION ALL
+				        SELECT 'F42119' AS src,
+				               (SELECT TOP 1 CONCAT(LTRIM(RTRIM(SDKCOO)),'|',CAST(SDDOCO AS varchar(20)),'|',LTRIM(RTRIM(SDDCTO)),'|',CAST(SDLNID AS varchar(20)),'|',LTRIM(RTRIM(SDMCU)),'|',CAST(SDAN8 AS varchar(20)),'|',CAST(SDSHAN AS varchar(20)),'|',LTRIM(RTRIM(SDLITM)),'|',CAST(SDITM AS varchar(20)),'|',CAST(SDUORG AS varchar(20)),'|',CAST(SDTRDJ AS varchar(20)),'|',CAST(SDDRQJ AS varchar(20)),'|',LTRIM(RTRIM(SDFRTH)),'|',CAST(SDADDJ AS varchar(20)),'|',CAST(SDCNDJ AS varchar(20)),'|',LTRIM(RTRIM(SDNXTR))) FROM PRODDTA.F42119) AS keycols
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"src", type text},
+				            {"keycols", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

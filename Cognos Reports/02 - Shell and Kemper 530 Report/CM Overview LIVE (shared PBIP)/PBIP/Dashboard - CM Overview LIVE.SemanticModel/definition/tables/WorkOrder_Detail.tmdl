@@ -1,0 +1,167 @@
+table WorkOrder_Detail
+	lineageTag: f682209e-f9b9-4a9f-a8de-ca249674f48e
+
+	measure 'WO Count' = DISTINCTCOUNT('WorkOrder_Detail'[WO#])
+		formatString: 0
+		lineageTag: c747d4c4-0ed4-4daf-8a17-8384edfe60eb
+
+	measure 'WO Qty Total' = SUM('WorkOrder_Detail'[Qty])
+		formatString: #,0
+		lineageTag: 2e1e1f99-9673-4bbb-a267-19b15f145a44
+
+	measure 'WO Status Color' = IF ( SELECTEDVALUE ( 'WorkOrder_Detail'[Status] ) = "90", "#FFFF00" )
+		lineageTag: a0be69e8-26a0-403e-9fd5-b9cdb73d00c8
+
+	column Item
+		dataType: string
+		lineageTag: 238da3ad-2cad-4321-8fff-ca768e1478cf
+		summarizeBy: none
+		sourceColumn: Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column Plant
+		dataType: string
+		lineageTag: be950c94-83d0-4901-96c7-01088ece9e09
+		summarizeBy: none
+		sourceColumn: Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column WO#
+		dataType: int64
+		formatString: 0
+		lineageTag: d609d4ad-4d8e-448c-b135-cb627f1c06b1
+		summarizeBy: none
+		sourceColumn: WO#
+
+		annotation SummarizationSetBy = Automatic
+
+	column Start
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: ef1edd82-986f-49fe-8f02-2399bf69a870
+		summarizeBy: none
+		sourceColumn: Start
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Requested
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: c50b78ae-7bb9-4ec5-ace9-52cb93bbeca8
+		summarizeBy: none
+		sourceColumn: Requested
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Qty
+		dataType: double
+		formatString: #,0
+		lineageTag: 9af6d079-3b7e-4dde-ba34-55a8201ea108
+		summarizeBy: none
+		sourceColumn: Qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column Lot#
+		dataType: string
+		lineageTag: b5431481-64fd-4632-ad0c-66d8d328192a
+		summarizeBy: none
+		sourceColumn: Lot#
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 83e4d2b3-bd0c-45b4-a47e-15be43cc805e
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Bulk
+		dataType: string
+		lineageTag: 9a0a0485-0d57-4d65-9cc9-b970452b9748
+		summarizeBy: none
+		sourceColumn: Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Qty Requested Per Item'
+		dataType: double
+		formatString: #,0
+		lineageTag: fffe60a0-da6a-4afb-a795-69e663145484
+		summarizeBy: none
+		sourceColumn: Qty Requested Per Item
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	partition WorkOrder_Detail = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            LTRIM(RTRIM(wo.WALITM))                                  AS [Item],
+				            LTRIM(RTRIM(wo.WAMMCU))                                  AS [Plant],
+				            wo.WADOCO                                                AS [WO#],
+				            (CASE WHEN wo.WASTRT > 0
+				                  THEN DATEADD(DAY, (wo.WASTRT % 1000) - 1, DATEFROMPARTS(1900 + (wo.WASTRT / 1000), 1, 1))
+				             END)                                                    AS [Start],
+				            (CASE WHEN wo.WADRQJ > 0
+				                  THEN DATEADD(DAY, (wo.WADRQJ % 1000) - 1, DATEFROMPARTS(1900 + (wo.WADRQJ / 1000), 1, 1))
+				             END)                                                    AS [Requested],
+				            wo.WAUORG / 10000.0                                      AS [Qty],
+				            LTRIM(RTRIM(wo.WALOTN))                                  AS [Lot#],
+				            wo.WASRST                                                AS [Status],
+				            LTRIM(RTRIM(tag.IMBULK))                                 AS [Bulk],
+				            SUM(wo.WAUORG / 10000.0)
+				                OVER (PARTITION BY LTRIM(RTRIM(wo.WALITM)))          AS [Qty Requested Per Item]
+				        FROM PRODDTA.F4801 wo
+				        INNER JOIN PRODDTA.F4102 ib   ON wo.WAITM = ib.IBITM AND wo.WAMMCU = ib.IBMCU
+				        INNER JOIN PRODDTA.F4101 im   ON ib.IBITM = im.IMITM
+				        INNER JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+				        WHERE wo.WASRST IN ('20','30','32','35','40','45','50','90')
+				          AND wo.WAUORG / 10000.0 > 0
+				          AND (CASE WHEN wo.WADRQJ > 0
+				                    THEN DATEADD(DAY, (wo.WADRQJ % 1000) - 1, DATEFROMPARTS(1900 + (wo.WADRQJ / 1000), 1, 1))
+				               END) <= DATEADD(DAY, 31, CAST(GETDATE() AS date))
+				          AND LTRIM(RTRIM(wo.WAMMCU)) IN ('CINC','CIN2','CIN4')
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Item", type text},
+				            {"Plant", type text},
+				            {"WO#", Int64.Type},
+				            {"Start", type date},
+				            {"Requested", type date},
+				            {"Qty", type number},
+				            {"Lot#", type text},
+				            {"Status", type text},
+				            {"Bulk", type text},
+				            {"Qty Requested Per Item", type number}
+				        }
+				    )
+				in
+				    Typed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

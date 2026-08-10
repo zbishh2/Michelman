@@ -1,0 +1,349 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "c48f2b70d1e63a95c087",
+  "position": {
+    "x": 340,
+    "y": 104,
+    "z": 2000,
+    "height": 292,
+    "width": 916,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "WorkOrderNum"
+                }
+              },
+              "queryRef": "WorkOrders.WorkOrderNum",
+              "nativeQueryRef": "WorkOrderNum",
+              "displayName": "WO number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "Item Num"
+                }
+              },
+              "queryRef": "WorkOrders.Item Num",
+              "nativeQueryRef": "Item Num",
+              "displayName": "Item number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "WorkOrders.Branch Plant",
+              "nativeQueryRef": "Branch Plant",
+              "displayName": "Plant"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": ".Measures"
+                    }
+                  },
+                  "Property": "Counted Component Lines"
+                }
+              },
+              "queryRef": ".Measures.Counted Component Lines",
+              "nativeQueryRef": "Counted Component Lines",
+              "displayName": "Counted lines"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "SOP Flag - Rename (Parts)"
+                }
+              },
+              "queryRef": "WorkOrders.SOP Flag - Rename (Parts)",
+              "nativeQueryRef": "SOP Flag - Rename (Parts)",
+              "displayName": "Rename (parts list)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "SOP Flag - Work Centre"
+                }
+              },
+              "queryRef": "WorkOrders.SOP Flag - Work Centre",
+              "nativeQueryRef": "SOP Flag - Work Centre",
+              "displayName": "Rename (work centre)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkOrders"
+                    }
+                  },
+                  "Property": "SOP Flag - Counts As Batch"
+                }
+              },
+              "queryRef": "WorkOrders.SOP Flag - Counts As Batch",
+              "nativeQueryRef": "SOP Flag - Counts As Batch",
+              "displayName": "Counts as batch"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "WorkOrders"
+                  }
+                },
+                "Property": "Completion Date (SOP Basis)"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Work order header (EDW)'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#221c35'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "69ca8bf2604069d6a9ce",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "WorkOrders"
+              }
+            },
+            "Property": "WorkOrderNum"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "443b92ef83a8595c04c7",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "WorkOrders"
+              }
+            },
+            "Property": "Item Num"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "defd3738c9e609b6743b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "WorkOrders"
+              }
+            },
+            "Property": "Branch Plant"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "8fd9a0c0e5790e7b0bd0",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": ".Measures"
+              }
+            },
+            "Property": "Counted Component Lines"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "ff91229670d209d99200",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "WorkOrders"
+              }
+            },
+            "Property": "SOP Flag - Rename (Parts)"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "f28799612503c44becde",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "WorkOrders"
+              }
+            },
+            "Property": "SOP Flag - Work Centre"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "83f37e536e05c42009a2",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "WorkOrders"
+              }
+            },
+            "Property": "SOP Flag - Counts As Batch"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

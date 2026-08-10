@@ -1,0 +1,86 @@
+table 'P4b FX Rows'
+	lineageTag: 18000500-0000-4000-8000-000000000001
+
+	column CurrencyCodeFrom
+		dataType: string
+		lineageTag: 18000501-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: CurrencyCodeFrom
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrencyCodeTo
+		dataType: string
+		lineageTag: 18000501-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: CurrencyCodeTo
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrencyRateType
+		dataType: string
+		lineageTag: 18000501-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: CurrencyRateType
+
+		annotation SummarizationSetBy = Automatic
+
+	column DWEffectiveFromDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 18000501-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: DWEffectiveFromDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DWEffectiveThruDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 18000501-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: DWEffectiveThruDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CurrencyConversionRateDivisor
+		dataType: double
+		lineageTag: 18000501-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: CurrencyConversionRateDivisor
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P4b FX Rows' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT TOP 500 fx.CurrencyCodeFrom, fx.CurrencyCodeTo, fx.CurrencyRateType,
+				               fx.DWEffectiveFromDate, fx.DWEffectiveThruDate, fx.CurrencyConversionRateDivisor
+				        FROM BIQL.DimCurrencyExchangeRates fx
+				        ORDER BY fx.DWEffectiveThruDate DESC, fx.CurrencyCodeFrom, fx.CurrencyCodeTo
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"CurrencyCodeFrom", type text},
+							{"CurrencyCodeTo", type text},
+							{"CurrencyRateType", type text},
+							{"DWEffectiveFromDate", type date},
+							{"DWEffectiveThruDate", type date},
+							{"CurrencyConversionRateDivisor", type number}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

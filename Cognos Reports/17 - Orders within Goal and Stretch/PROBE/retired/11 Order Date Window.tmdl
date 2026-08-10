@@ -1,0 +1,101 @@
+table '11 Order Date Window'
+	lineageTag: 170b0000-0000-4000-8000-000000000001
+
+	column order_number
+		dataType: string
+		lineageTag: 170b0001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: order_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column line
+		dataType: double
+		lineageTag: 170b0001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: line
+
+		annotation SummarizationSetBy = User
+
+	column order_date_julian
+		dataType: int64
+		lineageTag: 170b0001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: order_date_julian
+
+		annotation SummarizationSetBy = User
+
+	column order_date
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 170b0001-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: order_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column earliest_525
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 170b0001-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: earliest_525
+
+		annotation SummarizationSetBy = Automatic
+
+	column earliest_540
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 170b0001-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: earliest_540
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '11 Order Date Window' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            CAST(o.SDDOCO AS varchar(20)) AS order_number,
+				            o.SDLNID/1000.0 AS line,
+				            o.SDTRDJ AS order_date_julian,
+				            CASE WHEN o.SDTRDJ>0 THEN DATEADD(DAY,(o.SDTRDJ%1000)-1,DATEFROMPARTS(1900+(o.SDTRDJ/1000),1,1)) END AS order_date,
+				            (SELECT MIN(DATEADD(SECOND,(l.SLTDAY/10000)*3600+((l.SLTDAY/100)%100)*60+(l.SLTDAY%100),
+				                        CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2)))
+				             FROM PRODDTA.F42199 l WHERE l.SLKCOO=o.SDKCOO AND l.SLDOCO=o.SDDOCO AND l.SLDCTO=o.SDDCTO AND l.SLLNID=o.SDLNID AND l.SLNXTR='525' AND l.SLUPMJ>0) AS earliest_525,
+				            (SELECT MIN(DATEADD(SECOND,(l.SLTDAY/10000)*3600+((l.SLTDAY/100)%100)*60+(l.SLTDAY%100),
+				                        CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2)))
+				             FROM PRODDTA.F42199 l WHERE l.SLKCOO=o.SDKCOO AND l.SLDOCO=o.SDDOCO AND l.SLDCTO=o.SDDCTO AND l.SLLNID=o.SDLNID AND l.SLNXTR='540' AND l.SLUPMJ>0) AS earliest_540
+				        FROM (
+				            SELECT SDKCOO,SDDOCO,SDDCTO,SDLNID,SDTRDJ FROM PRODDTA.F4211
+				            UNION ALL
+				            SELECT h.SDKCOO,h.SDDOCO,h.SDDCTO,h.SDLNID,h.SDTRDJ FROM PRODDTA.F42119 h
+				            WHERE NOT EXISTS (SELECT 1 FROM PRODDTA.F4211 c WHERE c.SDKCOO=h.SDKCOO AND c.SDDOCO=h.SDDOCO AND c.SDDCTO=h.SDDCTO AND c.SDLNID=h.SDLNID)
+				        ) o
+				        WHERE o.SDDOCO IN (26001182, 2727528, 2742995)
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"order_number", type text},
+				            {"line", type number},
+				            {"order_date_julian", Int64.Type},
+				            {"order_date", type datetime},
+				            {"earliest_525", type datetime},
+				            {"earliest_540", type datetime}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

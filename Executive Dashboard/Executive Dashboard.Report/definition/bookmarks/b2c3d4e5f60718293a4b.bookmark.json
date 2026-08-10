@@ -1,0 +1,66 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/1.4.0/schema.json",
+  "displayName": "Scorecard info - hide",
+  "name": "b2c3d4e5f60718293a4b",
+  "options": {
+    "applyOnlyToTargetVisuals": true,
+    "targetVisualNames": [
+      "c3d4e5f60718293a4b5c",
+      "f60718293a4b5c6d7e8f",
+      "d4e5f60718293a4b5c6d",
+      "e5f60718293a4b5c6d7e",
+      "987d2f25dc9298b0a868",
+      "0718293a4b5c6d7e8f90"
+    ],
+    "suppressActiveSection": true,
+    "suppressData": true
+  },
+  "explorationState": {
+    "version": "1.0",
+    "activeSection": "31c5fda951ba4fc18910",
+    "sections": {
+      "31c5fda951ba4fc18910": {
+        "visualContainers": {
+          "c3d4e5f60718293a4b5c": {
+            "singleVisual": {
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "f60718293a4b5c6d7e8f": {
+            "singleVisual": {
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "d4e5f60718293a4b5c6d": {
+            "singleVisual": {
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "e5f60718293a4b5c6d7e": {
+            "singleVisual": {
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "987d2f25dc9298b0a868": {
+            "singleVisual": {}
+          },
+          "0718293a4b5c6d7e8f90": {
+            "singleVisual": {
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

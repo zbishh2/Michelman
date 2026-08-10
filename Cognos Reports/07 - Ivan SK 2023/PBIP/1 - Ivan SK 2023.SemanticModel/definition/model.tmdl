@@ -1,0 +1,26 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Inventory", "Work_Orders", "Sales_Order_Summary", "Inventory_HP", "Safety_Stock_HP", "Last Refreshed"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation PBIDesktopVersion = 2.144.1378.0 (25.06)+cba1e61f16ea36d44901f06fa446299040122394
+
+ref table Inventory
+ref table Work_Orders
+ref table Sales_Order_Summary
+ref table Inventory_HP
+ref table Safety_Stock_HP
+ref table 'Last Refreshed'
+ref table DateTableTemplate_13e223e7-872e-4324-a83f-c056e37bd3a0
+
+ref cultureInfo en-US
+

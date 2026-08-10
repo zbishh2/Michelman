@@ -1,0 +1,770 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "14b1030000000000f003",
+  "position": {
+    "x": 7.7811550151975686,
+    "y": 99.209726443769,
+    "z": 0,
+    "height": 597.20364741641345,
+    "width": 1264.4376899696049
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Escor Inventory Date"
+                }
+              },
+              "queryRef": "Snapshot.Escor Inventory Date",
+              "nativeQueryRef": "Escor Inventory Date",
+              "displayName": "Inventory Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Snapshot.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Global Bulk Item"
+                }
+              },
+              "queryRef": "Snapshot.Global Bulk Item",
+              "nativeQueryRef": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Bulk Item"
+                }
+              },
+              "queryRef": "Snapshot.Bulk Item",
+              "nativeQueryRef": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "Snapshot.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Last Receipt Date"
+                }
+              },
+              "queryRef": "Snapshot.Last Receipt Date",
+              "nativeQueryRef": "Last Receipt Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Location"
+                }
+              },
+              "queryRef": "Snapshot.Location",
+              "nativeQueryRef": "Location"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Lot Number"
+                }
+              },
+              "queryRef": "Snapshot.Lot Number",
+              "nativeQueryRef": "Lot Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "On Hand Date"
+                }
+              },
+              "queryRef": "Snapshot.On Hand Date",
+              "nativeQueryRef": "On Hand Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Lot Expiry Date"
+                }
+              },
+              "queryRef": "Snapshot.Lot Expiry Date",
+              "nativeQueryRef": "Lot Expiry Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Sell by Date"
+                }
+              },
+              "queryRef": "Snapshot.Sell by Date",
+              "nativeQueryRef": "Sell by Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Supplier Lot Number"
+                }
+              },
+              "queryRef": "Snapshot.Supplier Lot Number",
+              "nativeQueryRef": "Supplier Lot Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Memo Lot 1"
+                }
+              },
+              "queryRef": "Snapshot.Memo Lot 1",
+              "nativeQueryRef": "Memo Lot 1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Memo Lot 2"
+                }
+              },
+              "queryRef": "Snapshot.Memo Lot 2",
+              "nativeQueryRef": "Memo Lot 2"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Lot Status (Master)"
+                }
+              },
+              "queryRef": "Snapshot.Lot Status (Master)",
+              "nativeQueryRef": "Lot Status (Master)",
+              "displayName": "Lot Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Master Planning Family"
+                }
+              },
+              "queryRef": "Snapshot.Master Planning Family",
+              "nativeQueryRef": "Master Planning Family"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Escor OH KGs"
+                }
+              },
+              "queryRef": "Snapshot.Escor OH KGs",
+              "nativeQueryRef": "Escor OH KGs",
+              "displayName": "Quantity on Hand KGs"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Escor OH LBs"
+                }
+              },
+              "queryRef": "Snapshot.Escor OH LBs",
+              "nativeQueryRef": "Escor OH LBs",
+              "displayName": "Quantity on Hand LBs"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Escor On Hand"
+                }
+              },
+              "queryRef": "Snapshot.Escor On Hand",
+              "nativeQueryRef": "Escor On Hand",
+              "displayName": "Quantity on Hand"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Primary Unit of Measure"
+                }
+              },
+              "queryRef": "Snapshot.Primary Unit of Measure",
+              "nativeQueryRef": "Primary Unit of Measure"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Snapshot"
+                  }
+                },
+                "Property": "Global Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "37eac8bad5dd1b2a34a9",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Escor Inventory Date"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "439ca88d8cb50eaadd6a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Branch Plant"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a77a5a95bc7e9c228a61",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Global Bulk Item"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "09c9b9d90164d3e2ae1a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Bulk Item"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "6b8568b6891e309c119a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "2nd Item Number"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "465f743b0e9e430a558a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Last Receipt Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "b02fc0b0c8a0e50b5e07",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Location"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "52919e6308a3761008cb",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Lot Number"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "11f92177e8b341125255",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "On Hand Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "c75decea146cbca9c037",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Lot Expiry Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "b316cd9e664b849702c0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Sell by Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "5b00695f2ec29b008334",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Supplier Lot Number"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "3a478737dc07e5825e14",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Memo Lot 1"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "bfbff755302d0e47875c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Memo Lot 2"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "bc4e73ad99a9968c7cdc",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Lot Status (Master)"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "107d1424c56c82863c8e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Master Planning Family"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "93ee1a247877a046b3e5",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Escor OH KGs"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "1ae381a7b8b84463bcd5",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Escor OH LBs"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "e9e9e1c00adb7eda4b4d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Escor On Hand"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "60daa035917ed00e3a30",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Primary Unit of Measure"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

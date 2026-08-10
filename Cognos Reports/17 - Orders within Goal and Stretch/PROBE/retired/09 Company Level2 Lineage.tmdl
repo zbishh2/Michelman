@@ -1,0 +1,113 @@
+table '09 Company Level2 Lineage'
+	lineageTag: 17090000-0000-4000-8000-000000000001
+
+	column branch
+		dataType: string
+		lineageTag: 17090001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: branch
+
+		annotation SummarizationSetBy = Automatic
+
+	column company
+		dataType: string
+		lineageTag: 17090001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: company
+
+		annotation SummarizationSetBy = Automatic
+
+	column level2_branch_keyed
+		dataType: string
+		lineageTag: 17090001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: level2_branch_keyed
+
+		annotation SummarizationSetBy = Automatic
+
+	column level2_company_keyed
+		dataType: string
+		lineageTag: 17090001-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: level2_company_keyed
+
+		annotation SummarizationSetBy = Automatic
+
+	column lines
+		dataType: int64
+		lineageTag: 17090001-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: lines
+
+		annotation SummarizationSetBy = User
+
+	column level3_branch_keyed
+		dataType: string
+		lineageTag: 17090001-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: level3_branch_keyed
+
+		annotation SummarizationSetBy = Automatic
+
+	column level3_company_keyed
+		dataType: string
+		lineageTag: 17090001-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: level3_company_keyed
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '09 Company Level2 Lineage' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        SELECT o.SDKCOO,o.SDDOCO,o.SDDCTO,o.SDLNID, LTRIM(RTRIM(o.SDMCU)) AS Branch, LTRIM(RTRIM(bu.MCCO)) AS Company,
+				               LTRIM(RTRIM(bu.MCRP02)) AS L2Branch, LTRIM(RTRIM(bu.MCRP03)) AS L3Branch
+				        INTO #ow
+				        FROM (
+				            SELECT SDKCOO,SDDOCO,SDDCTO,SDLNID,SDMCU,SDNXTR,SDTRDJ FROM PRODDTA.F4211
+				            UNION ALL
+				            SELECT h.SDKCOO,h.SDDOCO,h.SDDCTO,h.SDLNID,h.SDMCU,h.SDNXTR,h.SDTRDJ FROM PRODDTA.F42119 h
+				            WHERE NOT EXISTS (SELECT 1 FROM PRODDTA.F4211 c WHERE c.SDKCOO=h.SDKCOO AND c.SDDOCO=h.SDDOCO AND c.SDDCTO=h.SDDCTO AND c.SDLNID=h.SDLNID)
+				        ) o
+				        LEFT JOIN PRODDTA.F0006 bu ON LTRIM(RTRIM(bu.MCMCU))=LTRIM(RTRIM(o.SDMCU))
+				        WHERE o.SDDCTO NOT IN ('S5','ST') AND o.SDNXTR<>'980'
+				          AND o.SDTRDJ BETWEEN 126152 AND 126181
+				          AND LTRIM(RTRIM(bu.MCCO)) NOT IN ('00024','00025');
+				
+				        SELECT o.Branch AS branch, o.Company AS company,
+				               o.L2Branch AS level2_branch_keyed,
+				               LTRIM(RTRIM(cc.MCRP02)) AS level2_company_keyed,
+				               o.L3Branch AS level3_branch_keyed,
+				               LTRIM(RTRIM(cc.MCRP03)) AS level3_company_keyed,
+				               COUNT(*) AS lines
+				        FROM #ow o
+				        LEFT JOIN PRODDTA.F0006 cc ON LTRIM(RTRIM(cc.MCMCU)) = CAST(TRY_CAST(o.Company AS int) AS varchar(12))
+				        GROUP BY o.Branch, o.Company, o.L2Branch, o.L3Branch, LTRIM(RTRIM(cc.MCRP02)), LTRIM(RTRIM(cc.MCRP03));
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"branch", type text},
+				            {"company", type text},
+				            {"level2_branch_keyed", type text},
+				            {"level2_company_keyed", type text},
+				            {"level3_branch_keyed", type text},
+				            {"level3_company_keyed", type text},
+				            {"lines", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

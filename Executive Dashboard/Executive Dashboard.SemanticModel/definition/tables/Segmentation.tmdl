@@ -1,0 +1,29 @@
+table Segmentation
+	lineageTag: 826132b3-8567-44f5-92f6-a9d9eb6297bd
+
+	column Segmentation
+		lineageTag: bc1ef156-e38e-4153-8287-d81e4c2e2185
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Segmentation]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Segmentation = calculated
+		mode: import
+		source =
+				
+				DISTINCT (
+				    SELECTCOLUMNS (
+				        'Sold-To',
+				        "Segmentation",
+				            SWITCH (
+				                TRUE(),
+				                'Sold-To'[Customer Segmentation] IN { "Gold", "Platinum" }, "Strategic",
+				                "Standard"
+				            )
+				    )
+				)
+
+	annotation PBI_Id = 81711ab0e4184bfa9b251527dc65f570
+

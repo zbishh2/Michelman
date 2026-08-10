@@ -1,0 +1,69 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["FactSalesDetail","Complaints","FactScheduleChange","Reason Codes","Ship-To","Sold-To","LineComments","RevisionOverrides","Hours","WorkOrders","WorkOrderRouting","Item Ledger","WO Parts List"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["MCP-PBIModeling","DevMode"]
+
+annotation PBIDesktopVersion = 2.146.1454.0 (25.08)+901d6c338d1dea81ac3e53073ffb10469f0f37b8
+
+ref table '.Measures'
+ref table DateTableTemplate_53bd5e2b-e7dd-46cb-a6e2-532bab0edded
+ref table DatePeriods
+ref table DateTable
+ref table FactSalesDetail
+ref table Complaints
+ref table LocalDateTable_649e5e77-eb7e-4431-b085-da03386a0d0a
+ref table LocalDateTable_d88802b0-b5e3-4797-8662-ad27309d85f5
+ref table LocalDateTable_4bf7e9d2-8adb-466d-8ac2-fd9f503cf7ac
+ref table LocalDateTable_d4236cc6-26db-4ccf-aa36-b8f9b45bcdcf
+ref table LocalDateTable_0eeb6476-51d6-40d1-a1b7-d3b41e9a0cbe
+ref table Ship-To
+ref table FactScheduleChange
+ref table LocalDateTable_d7c46811-2d3d-4b3c-8877-e021009cb7f0
+ref table LocalDateTable_80ff6d6a-2ee6-41a8-bc28-633b6127c93f
+ref table LocalDateTable_c1a2bcc3-4a2c-4112-9d48-e414710678dc
+ref table 'Reason Codes'
+ref table LocalDateTable_9f1c37b3-6910-4f50-a92c-1ea14253a6b7
+ref table LocalDateTable_19504664-740d-4d72-b7c1-a24f41f1f809
+ref table LocalDateTable_e5c26f2e-4779-47cd-b30c-024ab4d9444e
+ref table LocalDateTable_e6eec35d-782d-4c61-a7fb-60d04ee0ebaf
+ref table LocalDateTable_312c60d9-476c-4691-b62c-7ef5ea247995
+ref table LocalDateTable_05ed4563-576e-401d-a78b-f21012367a09
+ref table LocalDateTable_bbd50264-c981-4764-b26f-0335ae087307
+ref table 'Reason Filter'
+ref table LocalDateTable_72f5362f-44d4-4aee-9670-ad25b3d08d31
+ref table Sold-To
+ref table LineComments
+ref table LocalDateTable_fcef210c-7e8b-409d-b0ee-97b4bb8f30e4
+ref table LocalDateTable_fba67149-d28a-43a5-8ad5-f12317641574
+ref table Hours
+ref table Segmentation
+ref table Scorecard
+ref table 'Dim Region'
+ref table 'OTIF Target'
+ref table WorkOrders
+ref table WorkOrderRouting
+ref table 'SOP Excluded Items'
+ref table LocalDateTable_97203b4d-e1cd-4228-882e-84e28a20acbc
+ref table 'Item Ledger'
+ref table 'WO Parts List'
+ref table LocalDateTable_cec2f101-e260-4189-830a-33efa15cb0b4
+ref table LocalDateTable_6637d993-b113-40ab-9310-9e49be2425ca
+ref table LocalDateTable_05f10de0-d703-45d9-a92f-83de363914d4
+ref table LocalDateTable_f7701ae0-8af0-45a4-b20d-e4977bde6450
+ref table LocalDateTable_0d499bdf-ffa2-4314-9af1-9c2d43a58c28
+ref table LocalDateTable_181bd93b-93c6-4b13-95cf-07402ae3a9de
+ref table LocalDateTable_5eaa5b48-8683-4227-be85-ea89c33d94f4
+ref table LocalDateTable_254c5380-4a79-4111-86d0-ffda116da154
+ref table LocalDateTable_0df48de4-08e7-4fe3-9da7-5727fee7492b
+
+ref cultureInfo en-US
+

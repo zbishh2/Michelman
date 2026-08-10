@@ -1,0 +1,259 @@
+table Forecast
+	lineageTag: 016a0394-8c7c-478e-9df7-28e1b338d276
+
+	column 'Company Code'
+		dataType: string
+		lineageTag: ed12070b-a072-4a0a-b834-d4e452f65c5d
+		summarizeBy: none
+		sourceColumn: Company Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 4d0635e5-3185-459d-9464-e06b8e6a5cda
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 7956e37a-c9f9-4373-ac6b-af6469192412
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 4591a112-1a58-41a7-b730-b9b123b21c1d
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 8104ad19-9c6f-4c12-b55e-735c379fd509
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 86746603-af47-44e1-b8f3-1a752320216f
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: b0929d1e-1e9e-427f-bf54-b1ff533b0efe
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Week
+		dataType: int64
+		formatString: 0
+		lineageTag: b1736675-4769-4f9a-ad35-ad6328d84b66
+		summarizeBy: none
+		sourceColumn: Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Requested Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: eec5c947-159e-421f-b143-63603df92eff
+		summarizeBy: none
+		sourceColumn: Requested Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current Forecast KG'
+		dataType: double
+		formatString: #,0
+		lineageTag: 2dc0fb39-c764-4119-b790-96e91d2010c9
+		summarizeBy: none
+		sourceColumn: Current Forecast KG
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Revenue Business Unit'
+		dataType: string
+		lineageTag: be070a5c-00cd-4d79-94d6-b63c3b41eb3b
+		summarizeBy: none
+		sourceColumn: Revenue Business Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Code'
+		dataType: string
+		lineageTag: 5bb76f4c-a08c-4216-9742-77fb722615d3
+		summarizeBy: none
+		sourceColumn: Customer Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Name'
+		dataType: string
+		lineageTag: d3b81853-99f3-4eed-8640-7b791dbb38ac
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Parent'
+		dataType: int64
+		formatString: 0
+		lineageTag: 90fb8899-2501-4a10-b77b-a8ddbfb121f8
+		summarizeBy: none
+		sourceColumn: Global Parent
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Parent Name'
+		dataType: string
+		lineageTag: c2f970f8-a569-4270-ae2f-7078d43001c3
+		summarizeBy: none
+		sourceColumn: Global Parent Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TM Name'
+		dataType: string
+		lineageTag: 8972df44-929c-4cdf-985c-3a798248c880
+		summarizeBy: none
+		sourceColumn: TM Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current Forecast'
+		dataType: double
+		formatString: #,0
+		lineageTag: 7e9510b2-ea95-4c3d-8954-8f1700486fe7
+		summarizeBy: none
+		sourceColumn: Current Forecast
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Primary UOM'
+		dataType: string
+		lineageTag: 509fe301-3c34-4e55-9738-b0ae818a971c
+		summarizeBy: none
+		sourceColumn: Primary UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current Forecast LB'
+		dataType: double
+		formatString: #,0
+		lineageTag: af99c88e-e649-417c-9ff3-e62aa6764aa4
+		summarizeBy: none
+		sourceColumn: Current Forecast LB
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	partition Forecast = m
+		mode: import
+		source =
+				let
+				    Source = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular_v2",
+				        [Query = "
+				        EVALUATE
+				        SELECTCOLUMNS(
+				            SUMMARIZECOLUMNS(
+				                FactForecast[Company],
+				                FactForecast[BusinessUnit],
+				                FactForecast[Global Bulk],
+				                FactForecast[Bulk Item],
+				                FactForecast[ItemNum2nd],
+				                FactForecast[RequestedDate],
+				                FactForecast[AddressNum],
+				                Address[Address Name],
+				                Address[Global Parent],
+				                Address[Global Parent Desc],
+				                'Territory Manager'[Mailing Name],
+				                FactForecast[UOM Primary],
+				                FILTER(ALL(FactForecast[ForecastType]), FactForecast[ForecastType] = ""SA""),
+				                FILTER(ALL(FactForecast[Company]), NOT FactForecast[Company] IN {""00024"", ""00025""}),
+				                FILTER(ALL(FactForecast[BusinessUnit]), NOT FactForecast[BusinessUnit] IN {""CINC"", ""CIN2""}),
+				                FILTER(ALL(FactForecast[QuantityForecast]), FactForecast[QuantityForecast] > 0),
+				                FILTER(ALL(FactForecast[RequestedDate]), FactForecast[RequestedDate] >= EOMONTH(TODAY(), -13) + 1),
+				                ""@CF"", SUM(FactForecast[QuantityForecast]),
+				                ""@CFKG"", SUM(FactForecast[QuantityForecastKG]),
+				                ""@CFLB"", SUM(FactForecast[QuantityForecastLB])
+				            ),
+				            ""Company Code"", FactForecast[Company],
+				            ""Branch Plant"", FactForecast[BusinessUnit],
+				            ""Global Bulk Item"", FactForecast[Global Bulk],
+				            ""Bulk Item"", FactForecast[Bulk Item],
+				            ""2nd Item Number"", FactForecast[ItemNum2nd],
+				            ""Year"", YEAR(FactForecast[RequestedDate]),
+				            ""Month"", MONTH(FactForecast[RequestedDate]),
+				            ""Week"", WEEKNUM(FactForecast[RequestedDate], 21),
+				            ""Requested Date"", FactForecast[RequestedDate],
+				            ""Current Forecast KG"", [@CFKG],
+				            ""Revenue Business Unit"", FactForecast[BusinessUnit],
+				            ""Customer Code"", FORMAT(FactForecast[AddressNum], ""0""),
+				            ""Customer Name"", Address[Address Name],
+				            ""Global Parent"", Address[Global Parent],
+				            ""Global Parent Name"", Address[Global Parent Desc],
+				            ""TM Name"", IF(ISBLANK('Territory Manager'[Mailing Name]) || 'Territory Manager'[Mailing Name] = """", ""Not Available"", 'Territory Manager'[Mailing Name]),
+				            ""Current Forecast"", [@CF],
+				            ""Primary UOM"", FactForecast[UOM Primary],
+				            ""Current Forecast LB"", [@CFLB]
+				        )
+				        ", Implementation = "2.0"]
+				    ),
+				    Renamed = Table.TransformColumnNames(
+				        Source,
+				        each if Text.StartsWith(_, "[") then Text.BetweenDelimiters(_, "[", "]") else _
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Renamed,
+				        {
+				            {"Company Code", type text},
+				            {"Branch Plant", type text},
+				            {"Global Bulk Item", type text},
+				            {"Bulk Item", type text},
+				            {"2nd Item Number", type text},
+				            {"Year", Int64.Type},
+				            {"Month", Int64.Type},
+				            {"Week", Int64.Type},
+				            {"Requested Date", type date},
+				            {"Current Forecast KG", type number},
+				            {"Revenue Business Unit", type text},
+				            {"Customer Code", type text},
+				            {"Customer Name", type text},
+				            {"Global Parent", Int64.Type},
+				            {"Global Parent Name", type text},
+				            {"TM Name", type text},
+				            {"Current Forecast", type number},
+				            {"Primary UOM", type text},
+				            {"Current Forecast LB", type number}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

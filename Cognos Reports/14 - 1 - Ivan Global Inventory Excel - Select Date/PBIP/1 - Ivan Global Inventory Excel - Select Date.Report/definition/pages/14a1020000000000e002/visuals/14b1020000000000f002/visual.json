@@ -1,0 +1,947 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "14b1020000000000f002",
+  "position": {
+    "x": 7.7811550151975686,
+    "y": 89.483282674772042,
+    "z": 0,
+    "height": 606.93009118541033,
+    "width": 1264.4376899696049
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Inventory Date"
+                }
+              },
+              "queryRef": "Snapshot.Inventory Date",
+              "nativeQueryRef": "Inventory Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Region"
+                }
+              },
+              "queryRef": "Snapshot.Region",
+              "nativeQueryRef": "Region",
+              "displayName": "REGION"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Snapshot.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Global Bulk Item"
+                }
+              },
+              "queryRef": "Snapshot.Global Bulk Item",
+              "nativeQueryRef": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Bulk Item"
+                }
+              },
+              "queryRef": "Snapshot.Bulk Item",
+              "nativeQueryRef": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "Snapshot.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Stock Type Code"
+                }
+              },
+              "queryRef": "Snapshot.Stock Type Code",
+              "nativeQueryRef": "Stock Type Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "GL Class Code"
+                }
+              },
+              "queryRef": "Snapshot.GL Class Code",
+              "nativeQueryRef": "GL Class Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Location"
+                }
+              },
+              "queryRef": "Snapshot.Location",
+              "nativeQueryRef": "Location"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Lot Number"
+                }
+              },
+              "queryRef": "Snapshot.Lot Number",
+              "nativeQueryRef": "Lot Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Supplier Lot Number"
+                }
+              },
+              "queryRef": "Snapshot.Supplier Lot Number",
+              "nativeQueryRef": "Supplier Lot Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Lot Status (Position)"
+                }
+              },
+              "queryRef": "Snapshot.Lot Status (Position)",
+              "nativeQueryRef": "Lot Status (Position)",
+              "displayName": "Lot Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Master Planning Family"
+                }
+              },
+              "queryRef": "Snapshot.Master Planning Family",
+              "nativeQueryRef": "Master Planning Family"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "On Hand"
+                }
+              },
+              "queryRef": "Snapshot.On Hand",
+              "nativeQueryRef": "On Hand"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Primary Unit of Measure"
+                }
+              },
+              "queryRef": "Snapshot.Primary Unit of Measure",
+              "nativeQueryRef": "Primary Unit of Measure",
+              "displayName": "UOM"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "OH KGs"
+                }
+              },
+              "queryRef": "Snapshot.OH KGs",
+              "nativeQueryRef": "OH KGs"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "OH LBs"
+                }
+              },
+              "queryRef": "Snapshot.OH LBs",
+              "nativeQueryRef": "OH LBs"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "OH USD"
+                }
+              },
+              "queryRef": "Snapshot.OH USD",
+              "nativeQueryRef": "OH USD"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "OH EUR"
+                }
+              },
+              "queryRef": "Snapshot.OH EUR",
+              "nativeQueryRef": "OH EUR"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "On Hand Date"
+                }
+              },
+              "queryRef": "Snapshot.On Hand Date",
+              "nativeQueryRef": "On Hand Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Lot Expiry Date"
+                }
+              },
+              "queryRef": "Snapshot.Lot Expiry Date",
+              "nativeQueryRef": "Lot Expiry Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Memo Lot 1"
+                }
+              },
+              "queryRef": "Snapshot.Memo Lot 1",
+              "nativeQueryRef": "Memo Lot 1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Memo Lot 2"
+                }
+              },
+              "queryRef": "Snapshot.Memo Lot 2",
+              "nativeQueryRef": "Memo Lot 2"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Commodity Class Description"
+                }
+              },
+              "queryRef": "Snapshot.Commodity Class Description",
+              "nativeQueryRef": "Commodity Class Description"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Commodity Sub Class Description"
+                }
+              },
+              "queryRef": "Snapshot.Commodity Sub Class Description",
+              "nativeQueryRef": "Commodity Sub Class Description"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Snapshot"
+                  }
+                },
+                "Property": "Region"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Snapshot"
+                  }
+                },
+                "Property": "Global Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Snapshot"
+                  }
+                },
+                "Property": "Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Snapshot"
+                  }
+                },
+                "Property": "2nd Item Number"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a974eca69aac11dabd09",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Inventory Date"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "e902bf3270c3112800da",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Region"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "1229fcbc450e7990a6c5",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Branch Plant"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "fae4fd2b6541b3d6299a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Global Bulk Item"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "b5d8f9e77083d6cedb23",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Bulk Item"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "6172c5ea0e58c4011303",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "2nd Item Number"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "ac36b1129d577945b904",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Stock Type Code"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "07c75e999057e9704e24",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "GL Class Code"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "34ff1835519e72544dd1",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Location"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "ae8583863104330c7ae0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Lot Number"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "36d94465ccd6b98155d7",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Supplier Lot Number"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "f384e7b0c5604b702ee9",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Lot Status (Position)"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "111c8a50e870c4542601",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Master Planning Family"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "4ff92344850cdcd6b0e9",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "On Hand"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "5a365f50acac490d1eec",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Primary Unit of Measure"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "636f84dc267b200a8eb6",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "OH KGs"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "d858e07da87c15260a08",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "OH LBs"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "073c3b80aa9d2746a033",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "OH USD"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "4ee8c02489332e20c68d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "OH EUR"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "3310405cd6934751bcd7",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "On Hand Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a4100c55d37a3dd0bb13",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Lot Expiry Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "07b5127290da028e9a0a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Memo Lot 1"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "f49742c69cb7149ca9c8",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Memo Lot 2"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "1cf902de2dee22b1456b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Commodity Class Description"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a1d7ce7573a430e67a91",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Snapshot"
+              }
+            },
+            "Property": "Commodity Sub Class Description"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

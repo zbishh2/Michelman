@@ -1,0 +1,1814 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "e75d597687f8d4c45253",
+  "position": {
+    "x": 7.7811550151975686,
+    "y": 150.75987841945289,
+    "z": 0,
+    "height": 561.21580547112467,
+    "width": 1264.4376899696049,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Promised Ship"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Promised Ship",
+              "nativeQueryRef": "Promised Ship"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Requested"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Requested",
+              "nativeQueryRef": "Requested"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Plant"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Plant",
+              "nativeQueryRef": "Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Ship To"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Ship To",
+              "nativeQueryRef": "Ship To"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "CS"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.CS",
+              "nativeQueryRef": "CS"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Order#"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Order#",
+              "nativeQueryRef": "Order#"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Line#"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Line#",
+              "nativeQueryRef": "Line#"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Bulk"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Bulk",
+              "nativeQueryRef": "Bulk"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Item"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Item",
+              "nativeQueryRef": "Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Description"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Description",
+              "nativeQueryRef": "Description"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Owner"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Owner",
+              "nativeQueryRef": "Owner"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Planner"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Planner",
+              "nativeQueryRef": "Planner"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Status"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Status",
+              "nativeQueryRef": "Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Primary Qty"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Primary Qty",
+              "nativeQueryRef": "Primary Qty"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Primary UOM"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Primary UOM",
+              "nativeQueryRef": "Primary UOM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Secondary Qty"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Secondary Qty",
+              "nativeQueryRef": "Secondary Qty"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Secondary UOM"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Secondary UOM",
+              "nativeQueryRef": "Secondary UOM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Order Date"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Order Date",
+              "nativeQueryRef": "Order Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "CSR Name"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.CSR Name",
+              "nativeQueryRef": "CSR Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "Work Ctr"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.Work Ctr",
+              "nativeQueryRef": "Work Ctr"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shell_Kemper_530"
+                    }
+                  },
+                  "Property": "MPF"
+                }
+              },
+              "queryRef": "Shell_Kemper_530.MPF",
+              "nativeQueryRef": "MPF"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Shell_Kemper_530"
+                  }
+                },
+                "Property": "Bulk"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Shell_Kemper_530"
+                  }
+                },
+                "Property": "Promised Ship"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Shell_Kemper_530"
+                  }
+                },
+                "Property": "Order#"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Shell_Kemper_530"
+                  }
+                },
+                "Property": "Line#"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Shell_Kemper_530"
+                  }
+                },
+                "Property": "Owner"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "values": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Promised Ship"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Requested Cell Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Requested"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Plant"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Ship To"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.CS"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Order#"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Line#"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Bulk"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Item"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Description"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Owner"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Planner"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Status"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Primary Qty"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Primary UOM"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Secondary Qty"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Secondary UOM"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Order Date"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.CSR Name"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.Work Ctr"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Font Color"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shell_Kemper_530"
+                        }
+                      },
+                      "Property": "Row Background Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Shell_Kemper_530.MPF"
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "14ae854d5553c2f69d61",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Promised Ship"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "abf2301286eb7d12de95",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Requested"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9e4f15be472431e134eb",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Plant"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "27aed9aa9fa0862287e6",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Ship To"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "c7ead32671a36fe6b9bb",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "CS"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "354660a08a21f531a679",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Order#"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "3da96e755b61bb17e6b9",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Line#"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "f95895d9b34d0fad22cd",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Bulk"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "e2bf3b3cbe30f1de47d5",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Item"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "2ccfb75a73ca30c69720",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Description"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "830a24b2c4aaf10318ae",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Owner"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "67bca82841852903c531",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Planner"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "0e3bc5ded8aeabd5fe7f",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Status"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "724bed3927058f3fa382",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Primary Qty"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "c0be3e24d746d2411627",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Primary UOM"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "5b046768d076246208b1",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Secondary Qty"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "549b562b5e60e743a9c9",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Secondary UOM"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9966e113c186fe206b04",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Order Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "b8e273fdf482bff341ed",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "CSR Name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "6d26e3928c70771ca0c8",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "Work Ctr"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "531251942c959c26c0c6",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Shell_Kemper_530"
+              }
+            },
+            "Property": "MPF"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

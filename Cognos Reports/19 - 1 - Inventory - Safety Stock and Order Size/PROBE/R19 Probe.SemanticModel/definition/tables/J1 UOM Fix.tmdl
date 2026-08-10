@@ -1,0 +1,34 @@
+/// BUILD.md §9.3 J1. BIQL.FactSalesDetail and BIQL.FactSalesDetail_UOM_Fix are absent from the local SQL mirror, so this is the one weight question that cannot be closed off the jumpbox. Reconcile against the export's 176 LBs / 79.833105264 KGs for this row: EDW's ConversionFactorLB is 88 against a UnitWeight of 176, so Cognos's factor is exactly HALF EDW's. If an adjusted factor reproduces Cognos, change Shipments.m's FROM clause to BIQL.FactSalesDetail and use it - a one-word change worth +0.376% on both weight totals and about 285 structurally-wrong rows.
+table 'J1 UOM Fix'
+	lineageTag: 19b1a000-0000-4000-8000-000000000001
+
+	partition 'J1 UOM Fix' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+
+				        SELECT TOP 50
+				            f.FSDSKey,
+				            f.ConversionFactorLB,
+				            f.ConversionFactorKG,
+				            f.[Unit_Weight_Adj],
+				            f.[UOM_Weight_Adj],
+				            f.[Fix U/M],
+				            f.[Fix Qty],
+				            f.[Fix Actual Qty]
+				        FROM BIQL.FactSalesDetail f WITH (NOLOCK)
+				        WHERE f.OrderNum IN (2585134)
+				          AND f.ItemNum2nd = 'DP680-B1'
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table

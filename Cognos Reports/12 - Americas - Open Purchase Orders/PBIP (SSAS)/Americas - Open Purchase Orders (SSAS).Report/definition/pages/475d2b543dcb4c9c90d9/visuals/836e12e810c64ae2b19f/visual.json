@@ -1,0 +1,730 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "836e12e810c64ae2b19f",
+  "position": {
+    "x": 8,
+    "y": 48,
+    "z": 0,
+    "height": 648,
+    "width": 1264
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "PO.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO"
+                    }
+                  },
+                  "Property": "PO Number"
+                }
+              },
+              "queryRef": "PO.PO Number",
+              "nativeQueryRef": "PO Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO"
+                    }
+                  },
+                  "Property": "Line Number"
+                }
+              },
+              "queryRef": "PO.Line Number",
+              "nativeQueryRef": "Line Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "PO.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO"
+                    }
+                  },
+                  "Property": "PO Date"
+                }
+              },
+              "queryRef": "PO.PO Date",
+              "nativeQueryRef": "PO Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO"
+                    }
+                  },
+                  "Property": "Requested Date"
+                }
+              },
+              "queryRef": "PO.Requested Date",
+              "nativeQueryRef": "Requested Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO"
+                    }
+                  },
+                  "Property": "Promised Date"
+                }
+              },
+              "queryRef": "PO.Promised Date",
+              "nativeQueryRef": "Promised Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO"
+                    }
+                  },
+                  "Property": "Receipt Date"
+                }
+              },
+              "queryRef": "PO.Receipt Date",
+              "nativeQueryRef": "Receipt Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO"
+                    }
+                  },
+                  "Property": "Vendor ID"
+                }
+              },
+              "queryRef": "PO.Vendor ID",
+              "nativeQueryRef": "Vendor ID"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO"
+                    }
+                  },
+                  "Property": "Vendor Name"
+                }
+              },
+              "queryRef": "PO.Vendor Name",
+              "nativeQueryRef": "Vendor Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO"
+                    }
+                  },
+                  "Property": "Lead Time Level"
+                }
+              },
+              "queryRef": "PO.Lead Time Level",
+              "nativeQueryRef": "Lead Time Level"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "PO"
+                        }
+                      },
+                      "Property": "Quantity Cancelled"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(PO.Quantity Cancelled)",
+              "nativeQueryRef": "Quantity Cancelled",
+              "displayName": "Quantity Cancelled"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "PO"
+                        }
+                      },
+                      "Property": "PO Quantity Ordered LBs"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(PO.PO Quantity Ordered LBs)",
+              "nativeQueryRef": "PO Quantity Ordered LBs",
+              "displayName": "PO Quantity Ordered LBs"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "PO"
+                        }
+                      },
+                      "Property": "Open Quantity"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(PO.Open Quantity)",
+              "nativeQueryRef": "Open Quantity",
+              "displayName": "Open Quantity"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "PO"
+                        }
+                      },
+                      "Property": "Open Quantity LBs"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(PO.Open Quantity LBs)",
+              "nativeQueryRef": "Open Quantity LBs",
+              "displayName": "Open Quantity LBs"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "PO"
+                        }
+                      },
+                      "Property": "Spend Amount USD"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(PO.Spend Amount USD)",
+              "nativeQueryRef": "Spend Amount USD",
+              "displayName": "Spend Amount USD"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "PO"
+                        }
+                      },
+                      "Property": "Purchase Amount USD"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(PO.Purchase Amount USD)",
+              "nativeQueryRef": "Purchase Amount USD",
+              "displayName": "Purchase Amount USD"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "PO"
+                  }
+                },
+                "Property": "PO Number"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "PO"
+                  }
+                },
+                "Property": "Line Number"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "c862f85c4a01ba047ed4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Branch Plant"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "e452d6ba6ee8dae64d9e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "PO Number"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "26fe919e8730d58764b6",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Line Number"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "f65d5b33ab428a006e2a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "2nd Item Number"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "59e57023cb0d268140d2",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "PO Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "02bcff40b7d20b45a4c3",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Requested Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "01b083dd6d9538123e1e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Promised Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "779e56448828469ae661",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Receipt Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "f776bd709b0c36110e6e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Vendor ID"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "b1e662bb71c23e2912a1",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Vendor Name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "e5940dac5b0b5b30d719",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Lead Time Level"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "3757b351d8265223b421",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Quantity Cancelled"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "f894be72495256602ca3",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "PO Quantity Ordered LBs"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "634fbff93bb490215013",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Open Quantity"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "ce495decd895a3a8e9e8",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Open Quantity LBs"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "b7aaa341b08059646d00",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Spend Amount USD"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "a88f5eb4e3a7e5d15a63",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PO"
+              }
+            },
+            "Property": "Purchase Amount USD"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

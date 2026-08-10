@@ -1,0 +1,97 @@
+/// Disconnected row definition for the Executive Scorecard page (the 'Running a High Performing Organization' slide). One row per KPI line. [Basis] tells the [Scorecard Value] measure which model metric to fetch; [Polarity] drives trend-arrow coloring: Lower = down is good. 2026-08-03: every remaining row is model-backed. The two Basis='NA' placeholders (Audit actions, Footprint) were dropped because nothing in the model feeds them — they rendered a hardcoded literal next to live figures, which reads as data. [Basis] and [StaticValue] survive so the fallback in [Scorecard Value] still works if a placeholder row is ever needed again.
+table Scorecard
+	lineageTag: c6cca366-f93b-4c9b-98e1-b124aafbd72a
+
+	column Section
+		lineageTag: 8208b528-b027-4270-a88b-c951967f0eef
+		isNameInferred
+		sourceColumn: [Section]
+
+	column SectionSort
+		lineageTag: b5c980d3-5bff-43df-9c72-799a150780ba
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [SectionSort]
+
+	column Sort
+		lineageTag: 0277289e-9c18-4924-8bb5-aa64958968f6
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Sort]
+
+	column KPI
+		lineageTag: 5ec6f762-62ab-473a-9355-2ce73ba2cd70
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [KPI]
+		sortByColumn: Sort
+
+	column Target
+		lineageTag: 72e944fd-c3a0-4540-9d64-1afc79e4b524
+		isNameInferred
+		sourceColumn: [Target]
+
+	column Basis
+		lineageTag: e2122462-dcee-4a50-a912-cf2b4251c771
+		isNameInferred
+		sourceColumn: [Basis]
+
+	column Polarity
+		lineageTag: 814fe922-3754-4976-b8eb-71177f57500b
+		isNameInferred
+		sourceColumn: [Polarity]
+
+	column StaticValue
+		lineageTag: 20e3e94f-c28d-4bd0-9842-d6002426dfbe
+		isNameInferred
+		sourceColumn: [StaticValue]
+
+	/// Machine-readable form of [Target] (which is display text like "≥ 96%"). Percentages are stored as fractions so they compare directly against the rate measures. Drives [Scorecard Pace Target (num)].
+	column TargetNum
+		lineageTag: 3d81f0a7-5c26-4b19-9e84-7a2c6d5f1b30
+		isNameInferred
+		sourceColumn: [TargetNum]
+
+	/// Which side of [TargetNum] is good. "Max" = target is a ceiling, on pace means at or below it (Spills). "Min" = target is a floor, on pace means at or above it (OTIF, Complaint-free, Right-first-time). "None" = do not pace-score this KPI at all; it renders black. TRIR is "None" because its goal is zero injuries, so any recordable at all would pin it red for the rest of the year — a colour that can only ever say "bad" carries no information.
+	column TargetDir
+		lineageTag: 6b2e94c1-a70d-4f83-95ab-1c8e37d02f45
+		isNameInferred
+		sourceColumn: [TargetDir]
+
+	/// 1 = an annual count that accrues through the year, so the goal prorates by completed months ((38/12)×7 through July). 0 = a rate that is already period-normalized, so the annual threshold applies unchanged. Prorating a rate would compare a percentage against a fraction of a percentage and always read green.
+	column Prorate
+		lineageTag: c94f7a15-8e30-4d62-b7f1-05a83e6c9d28
+		isNameInferred
+		sourceColumn: [Prorate]
+
+	/// Decimal places the YTD Global figure is ROUNDED TO before it is compared with the target — matched to how that row is formatted on the page, so the colour always agrees with the number the reader can see. 3 for the rates because "0.0%" shows one decimal of a percent (0.001 of the fraction), 2 for TRIR ("0.00"), 0 for Spills ("#,0").
+	column RoundTo
+		lineageTag: 5a71c9e3-46f8-4d02-b31c-8e097f24a651
+		isNameInferred
+		sourceColumn: [RoundTo]
+
+	partition Scorecard = calculated
+		mode: import
+		source =
+				DATATABLE (
+				    "Section", STRING,
+				    "SectionSort", INTEGER,
+				    "Sort", INTEGER,
+				    "KPI", STRING,
+				    "Target", STRING,
+				    "Basis", STRING,
+				    "Polarity", STRING,
+				    "StaticValue", STRING,
+				    "TargetNum", DOUBLE,
+				    "TargetDir", STRING,
+				    "Prorate", INTEGER,
+				    "RoundTo", INTEGER,
+				    {
+				        { "1. Advance EHS & Sustainability", 1, 1, "TRIR", "0", "TRIR", "Lower", "", 0, "None", 0, 2 },
+				        { "1. Advance EHS & Sustainability", 1, 2, "Spills", "<38", "SPILLS", "Lower", "", 38, "Max", 1, 0 },
+				        { "2. Run the Plant Operations", 2, 1, "OTIF (strategic)", "≥ 96%", "OTIF", "Higher", "", 0.96, "Min", 0, 3 },
+				        { "2. Run the Plant Operations", 2, 2, "Complaint-free orders", "≥ 99%", "CLEAN", "Higher", "", 0.99, "Min", 0, 3 },
+				        { "2. Run the Plant Operations", 2, 3, "Right-first-time", "≥ 98%", "RTFT", "Higher", "", 0.98, "Min", 0, 3 }
+				    }
+				)
+

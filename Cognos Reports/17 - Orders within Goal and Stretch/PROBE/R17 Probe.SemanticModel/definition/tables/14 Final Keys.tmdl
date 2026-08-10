@@ -1,0 +1,149 @@
+table '14 Final Keys'
+	lineageTag: 170e0000-0000-4000-8000-000000000001
+
+	column order_number
+		dataType: string
+		lineageTag: 170e0001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: order_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_number
+		dataType: double
+		lineageTag: 170e0001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: line_number
+
+		annotation SummarizationSetBy = User
+
+	column order_type
+		dataType: string
+		lineageTag: 170e0001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: order_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column key_company
+		dataType: string
+		lineageTag: 170e0001-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: key_company
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_level2
+		dataType: string
+		lineageTag: 170e0001-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: company_level2
+
+		annotation SummarizationSetBy = Automatic
+
+	column business_days
+		dataType: int64
+		lineageTag: 170e0001-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: business_days
+
+		annotation SummarizationSetBy = User
+
+	column date525
+		dataType: dateTime
+		lineageTag: 170e0001-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: date525
+
+		annotation SummarizationSetBy = User
+
+	column date540
+		dataType: dateTime
+		lineageTag: 170e0001-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: date540
+
+		annotation SummarizationSetBy = User
+
+	partition '14 Final Keys' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        SELECT o.SDKCOO,o.SDDOCO,o.SDDCTO,o.SDLNID, o.SDSHAN, o.SDITM, LTRIM(RTRIM(o.SDLITM)) AS Item2nd, CASE LTRIM(RTRIM(bu.MCCO)) WHEN '00010' THEN 'RAME' WHEN '00020' THEN 'REUR' WHEN '00030' THEN 'RASI' WHEN '00034' THEN 'RASI' WHEN '00035' THEN 'RASI' ELSE '' END AS CompanyLevel2
+				        INTO #ord
+				        FROM (
+				            SELECT SDKCOO,SDDOCO,SDDCTO,SDLNID,SDMCU,SDSHAN,SDLITM,SDITM,SDNXTR,SDLTTR,SDTRDJ FROM PRODDTA.F4211
+				            UNION ALL
+				            SELECT h.SDKCOO,h.SDDOCO,h.SDDCTO,h.SDLNID,h.SDMCU,h.SDSHAN,h.SDLITM,h.SDITM,h.SDNXTR,h.SDLTTR,h.SDTRDJ FROM PRODDTA.F42119 h
+				            WHERE NOT EXISTS (SELECT 1 FROM PRODDTA.F4211 c WHERE c.SDKCOO=h.SDKCOO AND c.SDDOCO=h.SDDOCO AND c.SDDCTO=h.SDDCTO AND c.SDLNID=h.SDLNID)
+				        ) o
+				        LEFT JOIN PRODDTA.F0006 bu ON LTRIM(RTRIM(bu.MCMCU))=LTRIM(RTRIM(o.SDMCU))
+				        WHERE o.SDDCTO NOT IN ('S5','ST') AND o.SDNXTR<>'980' AND o.SDLTTR<>'980'
+				          AND o.SDTRDJ BETWEEN 126152 AND 126181
+				          AND LTRIM(RTRIM(bu.MCCO)) NOT IN ('00024','00025');
+				        CREATE UNIQUE CLUSTERED INDEX ixo ON #ord (SDKCOO,SDDOCO,SDDCTO,SDLNID);
+				
+				        SELECT l.SLKCOO,l.SLDOCO,l.SLDCTO,l.SLLNID,
+				               MIN(DATEADD(SECOND,(l.SLTDAY/10000)*3600+((l.SLTDAY/100)%100)*60+(l.SLTDAY%100),CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2))) AS Date525
+				        INTO #l525 FROM PRODDTA.F42199 l JOIN #ord o ON o.SDKCOO=l.SLKCOO AND o.SDDOCO=l.SLDOCO AND o.SDDCTO=l.SLDCTO AND o.SDLNID=l.SLLNID
+				        WHERE l.SLNXTR='525' AND l.SLUPMJ>0 GROUP BY l.SLKCOO,l.SLDOCO,l.SLDCTO,l.SLLNID;
+				        CREATE UNIQUE CLUSTERED INDEX ix5 ON #l525 (SLKCOO,SLDOCO,SLDCTO,SLLNID);
+				
+				        SELECT l.SLKCOO,l.SLDOCO,l.SLDCTO,l.SLLNID,
+				               MIN(DATEADD(SECOND,(l.SLTDAY/10000)*3600+((l.SLTDAY/100)%100)*60+(l.SLTDAY%100),CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2))) AS Date540
+				        INTO #l540 FROM PRODDTA.F42199 l JOIN #ord o ON o.SDKCOO=l.SLKCOO AND o.SDDOCO=l.SLDOCO AND o.SDDCTO=l.SLDCTO AND o.SDLNID=l.SLLNID
+				        WHERE l.SLNXTR='540' AND l.SLUPMJ>0 GROUP BY l.SLKCOO,l.SLDOCO,l.SLDCTO,l.SLLNID;
+				        CREATE UNIQUE CLUSTERED INDEX ix4 ON #l540 (SLKCOO,SLDOCO,SLDCTO,SLLNID);
+				
+				        SELECT b.SLKCOO,b.SLDOCO,b.SLDCTO,b.SLLNID, b.Date525, c.Date540,
+				               cal.diff - (((cal.diff+cal.dow525)/7)*2 - CASE WHEN cal.dow525=7 THEN 1 ELSE 0 END + CASE WHEN cal.dow540=6 THEN 1 ELSE 0 END) AS BusinessDays
+				        INTO #metric FROM #l525 b JOIN #l540 c ON b.SLKCOO=c.SLKCOO AND b.SLDOCO=c.SLDOCO AND b.SLDCTO=c.SLDCTO AND b.SLLNID=c.SLLNID
+				        CROSS APPLY (SELECT diff=DATEDIFF(DAY,CAST(b.Date525 AS date),CAST(c.Date540 AS date)),
+				                            dow525=((DATEDIFF(DAY,'2003-01-06',CAST(b.Date525 AS date))%7)+7)%7+1,
+				                            dow540=((DATEDIFF(DAY,'2003-01-06',CAST(c.Date540 AS date))%7)+7)%7+1) cal;
+				        CREATE UNIQUE CLUSTERED INDEX ixm ON #metric (SLKCOO,SLDOCO,SLDCTO,SLLNID);
+				
+				        SELECT
+				          CAST(o.SDDOCO AS varchar(20)) AS order_number,
+				          o.SDLNID/1000.0 AS line_number,
+				          LTRIM(RTRIM(o.SDDCTO)) AS order_type,
+				          LTRIM(RTRIM(o.SDKCOO)) AS key_company,
+				          o.CompanyLevel2 AS company_level2,
+				          m.BusinessDays AS business_days,
+				          m.Date525 AS date525,
+				          m.Date540 AS date540
+				        FROM #ord o
+				        JOIN #metric m ON m.SLKCOO=o.SDKCOO AND m.SLDOCO=o.SDDOCO AND m.SLDCTO=o.SDDCTO AND m.SLLNID=o.SDLNID
+				        LEFT JOIN PRODDTA.F0101 ship ON ship.ABAN8=o.SDSHAN
+				        LEFT JOIN PRODDTA.F554101 tag ON tag.IMITM=o.SDITM
+				        WHERE ISNULL(LTRIM(RTRIM(ship.ABAC01)),'') <> 'INT'
+				          AND CASE WHEN ISNULL(LTRIM(RTRIM(tag.IMGBLK)),'-')='-' THEN o.Item2nd ELSE LTRIM(RTRIM(tag.IMGBLK)) END NOT IN ('IGST','CGST','SGST','CVD','ADD')
+				        ORDER BY CAST(o.SDDOCO AS varchar(20)), o.SDLNID;
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"order_number", type text},
+				            {"line_number", type number},
+				            {"order_type", type text},
+				            {"key_company", type text},
+				            {"company_level2", type text},
+				            {"business_days", Int64.Type},
+				            {"date525", type datetime},
+				            {"date540", type datetime}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

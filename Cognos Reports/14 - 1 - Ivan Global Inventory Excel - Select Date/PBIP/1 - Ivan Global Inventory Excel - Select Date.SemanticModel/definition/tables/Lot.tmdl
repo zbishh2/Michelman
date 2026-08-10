@@ -1,0 +1,154 @@
+table Lot
+	lineageTag: 14a1a000-0000-4000-8000-000000000012
+
+	column LotSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 14a1da03-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: LotSKey
+
+		annotation SummarizationSetBy = User
+
+	column ItemSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 14a1da03-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: ItemSKey
+
+		annotation SummarizationSetBy = User
+
+	column 'Item Short ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 14a1da03-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Item Short ID
+
+		annotation SummarizationSetBy = User
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 14a1da03-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Number'
+		dataType: string
+		lineageTag: 14a1da03-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Lot Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supplier Lot Number'
+		dataType: string
+		lineageTag: 14a1da03-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Supplier Lot Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Status (Master)'
+		dataType: string
+		lineageTag: 14a1da03-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Lot Status (Master)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Memo Lot 1'
+		dataType: string
+		lineageTag: 14a1da03-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Memo Lot 1
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Memo Lot 2'
+		dataType: string
+		lineageTag: 14a1da03-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Memo Lot 2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'On Hand Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 14a1da03-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: On Hand Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Expiry Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 14a1da03-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Lot Expiry Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sell by Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 14a1da03-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Sell by Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Bulk' = LOOKUPVALUE('Item'[Bulk Item], 'Item'[ItemSKey], 'Lot'[ItemSKey])
+		lineageTag: 14a1da03-0000-4000-8000-00000000000d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item 2nd Number' = LOOKUPVALUE('Item'[2nd Item Number], 'Item'[ItemSKey], 'Lot'[ItemSKey])
+		lineageTag: 14a1da03-0000-4000-8000-00000000000e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is ESC Family' = 'Lot'[Item Bulk] IN {"ESC5200", "ESC5200.E", "ESC5200.S"}
+		lineageTag: 14a1da03-0000-4000-8000-00000000000f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Lot = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            lot.LotSKey                       AS [LotSKey],
+				            lot.ItemSKey                      AS [ItemSKey],
+				            lot.ItemNumShort                  AS [Item Short ID],
+				            LTRIM(RTRIM(lot.BusinessUnit))    AS [Branch Plant],
+				            LTRIM(RTRIM(lot.LotNum))          AS [Lot Number],
+				            lot.SupplierLotNum                AS [Supplier Lot Number],
+				            lot.LotStatusCode                 AS [Lot Status (Master)],
+				            lot.MemoLot1                      AS [Memo Lot 1],
+				            lot.MemoLot2                      AS [Memo Lot 2],
+				            lot.OnHandDate                    AS [On Hand Date],
+				            lot.LotExpirationDate             AS [Lot Expiry Date],
+				            lot.SellByDate                    AS [Sell by Date]
+				        FROM BIQL.DimLot lot
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

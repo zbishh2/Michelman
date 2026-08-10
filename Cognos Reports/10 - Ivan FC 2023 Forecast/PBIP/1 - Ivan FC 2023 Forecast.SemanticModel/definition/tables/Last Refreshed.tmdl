@@ -1,0 +1,43 @@
+table 'Last Refreshed'
+	lineageTag: 3e9391f3-aa04-493f-96b9-7a24da805d34
+
+	measure 'Last Refreshed Label' = "Last refreshed: " & FORMAT(MAX('Last Refreshed'[Last Refreshed]), "MMM d, yyyy h:mm:ss AM/PM") & " " & SELECTEDVALUE('Last Refreshed'[Time Zone], "ET")
+		lineageTag: 0bb0e482-3094-4557-88a9-e88631fe111c
+
+	column 'Last Refreshed'
+		dataType: dateTime
+		formatString: MMM d, yyyy h:mm:ss AM/PM
+		lineageTag: b7955060-e159-4a80-97fb-1d4fc17242cd
+		summarizeBy: none
+		sourceColumn: Last Refreshed
+
+	column 'Time Zone'
+		dataType: string
+		lineageTag: a8d7b0e9-6089-4c1d-95a9-0af722486b97
+		summarizeBy: none
+		sourceColumn: Time Zone
+
+	partition 'Last Refreshed' = m
+		mode: import
+		source =
+				let
+				    UtcNowZ = DateTimeZone.FixedUtcNow(),
+				    UtcNow  = DateTime.From(DateTimeZone.RemoveZone(UtcNowZ)),
+				    Yr      = Date.Year(UtcNow),
+				    NthSunday = (yr as number, mth as number, n as number) as date =>
+				        let
+				            first      = #date(yr, mth, 1),
+				            offsetDays = Number.Mod(7 - Date.DayOfWeek(first, Day.Sunday), 7)
+				        in
+				            Date.AddDays(first, offsetDays + 7 * (n - 1)),
+				    DstStartUtc = #datetime(Yr, 3,  Date.Day(NthSunday(Yr, 3,  2)), 7, 0, 0),
+				    DstEndUtc   = #datetime(Yr, 11, Date.Day(NthSunday(Yr, 11, 1)), 6, 0, 0),
+				    OffsetHours = if UtcNow >= DstStartUtc and UtcNow < DstEndUtc then -4 else -5,
+				    EasternNow  = DateTime.From(DateTimeZone.RemoveZone(DateTimeZone.SwitchZone(UtcNowZ, OffsetHours))),
+				    Output = #table(
+				        type table [ #"Last Refreshed" = datetime, #"Time Zone" = text ],
+				        { { EasternNow, if OffsetHours = -4 then "EDT" else "EST" } }
+				    )
+				in
+				    Output
+

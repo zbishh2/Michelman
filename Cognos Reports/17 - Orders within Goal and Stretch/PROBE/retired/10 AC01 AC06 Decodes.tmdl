@@ -1,0 +1,91 @@
+table '10 AC01 AC06 Decodes'
+	lineageTag: 170a0000-0000-4000-8000-000000000001
+
+	column kind
+		dataType: string
+		lineageTag: 170a0001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: kind
+
+		annotation SummarizationSetBy = Automatic
+
+	column code
+		dataType: string
+		lineageTag: 170a0001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: 170a0001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	column cnt
+		dataType: int64
+		lineageTag: 170a0001-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: cnt
+
+		annotation SummarizationSetBy = User
+
+	partition '10 AC01 AC06 Decodes' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        SELECT o.SDSHAN
+				        INTO #ow
+				        FROM (
+				            SELECT SDDCTO,SDLNID,SDSHAN,SDMCU,SDNXTR,SDTRDJ,SDKCOO,SDDOCO FROM PRODDTA.F4211
+				            UNION ALL
+				            SELECT h.SDDCTO,h.SDLNID,h.SDSHAN,h.SDMCU,h.SDNXTR,h.SDTRDJ,h.SDKCOO,h.SDDOCO FROM PRODDTA.F42119 h
+				            WHERE NOT EXISTS (SELECT 1 FROM PRODDTA.F4211 c WHERE c.SDKCOO=h.SDKCOO AND c.SDDOCO=h.SDDOCO AND c.SDDCTO=h.SDDCTO AND c.SDLNID=h.SDLNID)
+				        ) o
+				        LEFT JOIN PRODDTA.F0006 bu ON LTRIM(RTRIM(bu.MCMCU))=LTRIM(RTRIM(o.SDMCU))
+				        WHERE o.SDDCTO NOT IN ('S5','ST') AND o.SDNXTR<>'980'
+				          AND o.SDTRDJ BETWEEN 126152 AND 126181
+				          AND LTRIM(RTRIM(bu.MCCO)) NOT IN ('00024','00025');
+				
+				        SELECT 'AC01' AS kind, LTRIM(RTRIM(f.ABAC01)) AS code, '' AS description, COUNT(*) AS cnt
+				        FROM #ow o JOIN PRODDTA.F0101 f ON f.ABAN8 = o.SDSHAN
+				        GROUP BY LTRIM(RTRIM(f.ABAC01))
+				        UNION ALL
+				        SELECT 'AC06-00' AS kind, LTRIM(RTRIM(f.ABAC06)) AS code,
+				               LTRIM(RTRIM(MAX(d.DRDL01))) AS description, COUNT(*) AS cnt
+				        FROM #ow o JOIN PRODDTA.F0101 f ON f.ABAN8 = o.SDSHAN
+				        LEFT JOIN PRODCTL.F0005 d ON LTRIM(RTRIM(d.DRSY))='00' AND LTRIM(RTRIM(d.DRRT))='06' AND LTRIM(RTRIM(d.DRKY))=LTRIM(RTRIM(f.ABAC06))
+				        GROUP BY LTRIM(RTRIM(f.ABAC06))
+				        UNION ALL
+				        SELECT 'AC06-01' AS kind, LTRIM(RTRIM(f.ABAC06)) AS code,
+				               LTRIM(RTRIM(MAX(d.DRDL01))) AS description, COUNT(*) AS cnt
+				        FROM #ow o JOIN PRODDTA.F0101 f ON f.ABAN8 = o.SDSHAN
+				        LEFT JOIN PRODCTL.F0005 d ON LTRIM(RTRIM(d.DRSY))='01' AND LTRIM(RTRIM(d.DRRT))='06' AND LTRIM(RTRIM(d.DRKY))=LTRIM(RTRIM(f.ABAC06))
+				        GROUP BY LTRIM(RTRIM(f.ABAC06));
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"kind", type text},
+				            {"code", type text},
+				            {"description", type text},
+				            {"cnt", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

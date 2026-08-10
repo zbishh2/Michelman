@@ -1,0 +1,46 @@
+table '03 Cols F0101'
+	lineageTag: aea2b5cc-3f7c-4dff-82c9-cbbcf983039b
+
+	column ABAN8
+		dataType: int64
+		lineageTag: e9d08f56-bd40-48ef-aa03-80fa03548394
+		summarizeBy: none
+		sourceColumn: ABAN8
+
+		annotation SummarizationSetBy = User
+
+	column ABALPH
+		dataType: string
+		lineageTag: f274ccbb-d92a-4057-a55d-0247e430e3b4
+		summarizeBy: none
+		sourceColumn: ABALPH
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '03 Cols F0101' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT TOP 1 ABAN8, ABALPH
+				        FROM PRODDTA.F0101
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"ABAN8", Int64.Type},
+				            {"ABALPH", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

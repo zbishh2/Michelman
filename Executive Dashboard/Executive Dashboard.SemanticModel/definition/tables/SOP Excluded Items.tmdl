@@ -1,0 +1,27 @@
+/// Item codes that never count as a batch: boil-out and cleaning runs, which pass through production work centres but produce no saleable bulk. A maintained list - add a code here to exclude it from Right Time First Batch.
+table 'SOP Excluded Items'
+	lineageTag: 5d90e2c7-4a13-4b86-9f27-c30e158fa64b
+
+	/// JDE item number. Matches WorkOrders[Item Num].
+	column 'Item Num'
+		dataType: string
+		lineageTag: 8e12b40f-6c95-4d73-a5e8-2b7091fc3d58
+		summarizeBy: none
+		sourceColumn: [Item Num]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'SOP Excluded Items' = calculated
+		mode: import
+		source =
+				SELECTCOLUMNS (
+				    {
+				        "BOILOUT", "BOILOUT.E", "BOILOUT286", "BOILOUTC.E", "BOILOUTC",
+				        "BOILOUT286.E", "BOILEPOX", "BOILEPOX.E", "ECBOILOUT", "BOILOUT.S",
+				        "SBOILOUT.S", "BOILOUTA", "BOILOUTA.E", "BOILOUTH.E", "ECBOILOUT.S"
+				    },
+				    "Item Num", [Value]
+				)
+
+	annotation PBI_Id = 7c4b16e9f0a2438d95e17c60b83fa2d4
+

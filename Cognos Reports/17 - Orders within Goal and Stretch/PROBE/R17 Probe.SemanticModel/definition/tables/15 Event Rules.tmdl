@@ -1,0 +1,164 @@
+table '15 Event Rules'
+	lineageTag: 170f0000-0000-4000-8000-000000000001
+
+	column order_number
+		dataType: string
+		lineageTag: 170f0001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: order_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_number
+		dataType: double
+		lineageTag: 170f0001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: line_number
+
+		annotation SummarizationSetBy = User
+
+	column order_type
+		dataType: string
+		lineageTag: 170f0001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: order_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 170f0001-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_count
+		dataType: int64
+		lineageTag: 170f0001-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: event_count
+
+		annotation SummarizationSetBy = User
+
+	column min_event
+		dataType: dateTime
+		lineageTag: 170f0001-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: min_event
+
+		annotation SummarizationSetBy = User
+
+	column max_event
+		dataType: dateTime
+		lineageTag: 170f0001-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: max_event
+
+		annotation SummarizationSetBy = User
+
+	column cur_next_status
+		dataType: string
+		lineageTag: 170f0001-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: cur_next_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column cur_last_status
+		dataType: string
+		lineageTag: 170f0001-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: cur_last_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date_julian
+		dataType: int64
+		lineageTag: 170f0001-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: order_date_julian
+
+		annotation SummarizationSetBy = User
+
+	column qty_ordered
+		dataType: double
+		lineageTag: 170f0001-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: qty_ordered
+
+		annotation SummarizationSetBy = User
+
+	column src
+		dataType: string
+		lineageTag: 170f0001-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: src
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '15 Event Rules' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        SELECT o.SDKCOO,o.SDDOCO,o.SDDCTO,o.SDLNID, o.SDNXTR, o.SDLTTR, o.SDTRDJ, o.SDUORG, o.src
+				        INTO #ord
+				        FROM (
+				            SELECT SDKCOO,SDDOCO,SDDCTO,SDLNID,SDNXTR,SDLTTR,SDTRDJ,SDUORG, 'F4211' AS src FROM PRODDTA.F4211
+				            WHERE SDDOCO IN (2708703,2711647,2713312,2713483,2713502,2715940,2716389,2718817,2718961,2718980,2718981,2719480,2721385,2721404,2721749,2722027,2722060,2722091,2722153,2722854,2722901,2723349,2723942,2723990,2724067,2724146,2724198,2724200,2724217,2724233,2724545,2724561,2724564,2724579,2724595,2724596,2724661,2724677,2724678,2724694,2724695,2724711,2724712,2724746,2724781,2726572,2726799,2726816,2726848,2726864,2726896,2726897,2726913,2726914,2726915,2726931,2726932,2726948,2726949,2726950,2726966,2726982,2726998,2727125,2727144,2727160,2727477,2727544,2727910,2727911,2727930,2727932,2727933,2728076,2728376,2728566,2729267,2729283,2732070,26001059,26001111,26001138,26001153,26001173,26001176,26001177,26001181,26001182,26001183,26001200,26001232)
+				            UNION ALL
+				            SELECT h.SDKCOO,h.SDDOCO,h.SDDCTO,h.SDLNID,h.SDNXTR,h.SDLTTR,h.SDTRDJ,h.SDUORG, 'F42119' AS src FROM PRODDTA.F42119 h
+				            WHERE h.SDDOCO IN (2708703,2711647,2713312,2713483,2713502,2715940,2716389,2718817,2718961,2718980,2718981,2719480,2721385,2721404,2721749,2722027,2722060,2722091,2722153,2722854,2722901,2723349,2723942,2723990,2724067,2724146,2724198,2724200,2724217,2724233,2724545,2724561,2724564,2724579,2724595,2724596,2724661,2724677,2724678,2724694,2724695,2724711,2724712,2724746,2724781,2726572,2726799,2726816,2726848,2726864,2726896,2726897,2726913,2726914,2726915,2726931,2726932,2726948,2726949,2726950,2726966,2726982,2726998,2727125,2727144,2727160,2727477,2727544,2727910,2727911,2727930,2727932,2727933,2728076,2728376,2728566,2729267,2729283,2732070,26001059,26001111,26001138,26001153,26001173,26001176,26001177,26001181,26001182,26001183,26001200,26001232)
+				              AND NOT EXISTS (SELECT 1 FROM PRODDTA.F4211 c WHERE c.SDKCOO=h.SDKCOO AND c.SDDOCO=h.SDDOCO AND c.SDDCTO=h.SDDCTO AND c.SDLNID=h.SDLNID)
+				        ) o;
+				
+				        SELECT
+				          CAST(o.SDDOCO AS varchar(20)) AS order_number,
+				          o.SDLNID/1000.0 AS line_number,
+				          LTRIM(RTRIM(o.SDDCTO)) AS order_type,
+				          LTRIM(RTRIM(l.SLNXTR)) AS status,
+				          COUNT(l.SLUPMJ) AS event_count,
+				          MIN(DATEADD(SECOND,(l.SLTDAY/10000)*3600+((l.SLTDAY/100)%100)*60+(l.SLTDAY%100),CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2))) AS min_event,
+				          MAX(DATEADD(SECOND,(l.SLTDAY/10000)*3600+((l.SLTDAY/100)%100)*60+(l.SLTDAY%100),CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2))) AS max_event,
+				          LTRIM(RTRIM(o.SDNXTR)) AS cur_next_status,
+				          LTRIM(RTRIM(o.SDLTTR)) AS cur_last_status,
+				          o.SDTRDJ AS order_date_julian,
+				          o.SDUORG/10000.0 AS qty_ordered,
+				          o.src AS src
+				        FROM #ord o
+				        LEFT JOIN PRODDTA.F42199 l ON l.SLKCOO=o.SDKCOO AND l.SLDOCO=o.SDDOCO AND l.SLDCTO=o.SDDCTO AND l.SLLNID=o.SDLNID
+				             AND l.SLNXTR IN ('525','540') AND l.SLUPMJ>0
+				        GROUP BY o.SDKCOO,o.SDDOCO,o.SDDCTO,o.SDLNID,o.SDNXTR,o.SDLTTR,o.SDTRDJ,o.SDUORG,o.src,LTRIM(RTRIM(l.SLNXTR))
+				        ORDER BY CAST(o.SDDOCO AS varchar(20)), o.SDLNID, LTRIM(RTRIM(l.SLNXTR));
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"order_number", type text},
+				            {"line_number", type number},
+				            {"order_type", type text},
+				            {"status", type text},
+				            {"event_count", Int64.Type},
+				            {"min_event", type datetime},
+				            {"max_event", type datetime},
+				            {"cur_next_status", type text},
+				            {"cur_last_status", type text},
+				            {"order_date_julian", Int64.Type},
+				            {"qty_ordered", type number},
+				            {"src", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

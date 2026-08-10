@@ -1,0 +1,41 @@
+table Company
+	lineageTag: 14a1a000-0000-4000-8000-000000000013
+
+	column CompanySKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 14a1da04-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: CompanySKey
+
+		annotation SummarizationSetBy = User
+
+	column 'Currency Code'
+		dataType: string
+		lineageTag: 14a1da04-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Currency Code
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Company = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            co.CompanySKey                    AS [CompanySKey],
+				            co.CurrencyCode                   AS [Currency Code]
+				        FROM BIQL.DimCompany co
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

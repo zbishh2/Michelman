@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "LTL Report Over 20k lbs"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "a7c81e42-3d6b-4f9a-8b21-16d5e7c9042f"
+  }
+}

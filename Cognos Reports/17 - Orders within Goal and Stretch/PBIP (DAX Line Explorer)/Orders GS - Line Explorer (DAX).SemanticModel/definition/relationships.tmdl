@@ -1,0 +1,4 @@
+relationship 17da0000-0000-4000-8000-000000000301
+	fromColumn: 'Revision Ledger'.'Line Key'
+	toColumn: 'Order Lines'.'Line Key'
+

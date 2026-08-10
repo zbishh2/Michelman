@@ -1,0 +1,88 @@
+table '01 Cols F42199'
+	lineageTag: 17010000-0000-4000-8000-000000000001
+
+	column SLKCOO
+		dataType: string
+		lineageTag: 17010001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: SLKCOO
+
+		annotation SummarizationSetBy = Automatic
+
+	column SLDOCO
+		dataType: int64
+		lineageTag: 17010001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: SLDOCO
+
+		annotation SummarizationSetBy = User
+
+	column SLDCTO
+		dataType: string
+		lineageTag: 17010001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: SLDCTO
+
+		annotation SummarizationSetBy = Automatic
+
+	column SLLNID
+		dataType: int64
+		lineageTag: 17010001-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: SLLNID
+
+		annotation SummarizationSetBy = User
+
+	column SLNXTR
+		dataType: string
+		lineageTag: 17010001-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: SLNXTR
+
+		annotation SummarizationSetBy = Automatic
+
+	column SLUPMJ
+		dataType: int64
+		lineageTag: 17010001-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: SLUPMJ
+
+		annotation SummarizationSetBy = User
+
+	column SLTDAY
+		dataType: int64
+		lineageTag: 17010001-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: SLTDAY
+
+		annotation SummarizationSetBy = User
+
+	partition '01 Cols F42199' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "SELECT TOP 1 SLKCOO, SLDOCO, SLDCTO, SLLNID, SLNXTR, SLUPMJ, SLTDAY FROM PRODDTA.F42199",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"SLKCOO", type text},
+				            {"SLDOCO", Int64.Type},
+				            {"SLDCTO", type text},
+				            {"SLLNID", Int64.Type},
+				            {"SLNXTR", type text},
+				            {"SLUPMJ", Int64.Type},
+				            {"SLTDAY", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

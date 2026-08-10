@@ -1,0 +1,164 @@
+table Report
+	lineageTag: 9a2c7501-a7ea-4a08-b4fd-6a263206a591
+
+	measure 'Overall Count Distinct' = DISTINCTCOUNT ( Report[JDE Parent] )
+		lineageTag: e2db6f49-f9b8-44d3-85e2-ba5aa93aac55
+
+	column 'JDE Parent'
+		dataType: string
+		lineageTag: ddfb5e3e-5297-4796-b9c7-114c24a0b6cb
+		summarizeBy: none
+		sourceColumn: JDE Parent
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: d5041164-c416-40be-8e73-fb7791f557f2
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'JDE Raw'
+		dataType: string
+		lineageTag: dd89a99d-d4dc-4d63-9b9d-6c7ecd9b5100
+		summarizeBy: none
+		sourceColumn: JDE Raw
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'JDE Percent'
+		dataType: double
+		formatString: 0.####
+		lineageTag: e1fc2995-8f95-46ce-93a7-13fab449038f
+		summarizeBy: none
+		sourceColumn: JDE Percent
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'WERCS Percent'
+		dataType: double
+		formatString: 0.####
+		lineageTag: 62ace0d6-fc02-4ce7-8053-1612c97f05a2
+		summarizeBy: none
+		sourceColumn: WERCS Percent
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'WERCS Raw'
+		dataType: string
+		lineageTag: 084e5383-d032-465f-8df8-7cab42bedf33
+		summarizeBy: none
+		sourceColumn: WERCS Raw
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'WERCS Parent'
+		dataType: string
+		lineageTag: 618f3eb2-df25-42fe-ad4e-6ec98e6685ec
+		summarizeBy: none
+		sourceColumn: WERCS Parent
+
+		annotation SummarizationSetBy = Automatic
+
+	column Difference
+		dataType: double
+		lineageTag: 6012a126-2d41-450f-a921-9017a5075bfa
+		summarizeBy: none
+		sourceColumn: Difference
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	partition Report = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            z.[JDE Parent],
+				            z.[Branch Plant],
+				            z.[JDE Raw],
+				            z.[JDE Percent],
+				            z.[WERCS Percent],
+				            z.[WERCS Raw],
+				            z.[WERCS Parent],
+				            z.[Difference]
+				        FROM (
+				            SELECT
+				                j.Parent_Second_Item_Number                  AS [JDE Parent],
+				                j.Branch_Plant                               AS [Branch Plant],
+				                j.Component_2nd_Item_Number                  AS [JDE Raw],
+				                j.Quantity                                   AS [JDE Percent],
+				                w.WercsPercent                               AS [WERCS Percent],
+				                w.Component_2nd_item_Number                  AS [WERCS Raw],
+				                w.Parent_2nd_Item_Number                     AS [WERCS Parent],
+				                ABS(j.Quantity - ISNULL(w.WercsPercent, 0))  AS [Difference],
+				                SUM(ABS(j.Quantity - ISNULL(w.WercsPercent, 0)))
+				                    OVER (PARTITION BY j.Parent_Second_Item_Number) AS ParentDiffTotal
+				            FROM (
+				                SELECT
+				                    LTRIM(RTRIM(pib.IBLITM))              AS Parent_Second_Item_Number,
+				                    LTRIM(RTRIM(bom.IXLITM))              AS Component_2nd_Item_Number,
+				                    LTRIM(RTRIM(bom.IXMMCU))              AS Branch_Plant,
+				                    SUM(ROUND(bom.IXQNTY / 10000.0, 4))   AS Quantity
+				                FROM PRODDTA.F3002 bom
+				                    INNER JOIN PRODDTA.F4102 pib
+				                        ON pib.IBITM = bom.IXKIT
+				                       AND LTRIM(RTRIM(pib.IBMCU)) = LTRIM(RTRIM(bom.IXMMCU))
+				                    LEFT JOIN PRODDTA.F0006 org
+				                        ON LTRIM(RTRIM(org.MCMCU)) = LTRIM(RTRIM(bom.IXMMCU))
+				                WHERE pib.IBSTKT = 'M'
+				                  AND bom.IXTBM = 'M'
+				                  AND ISNULL(LTRIM(RTRIM(org.MCSTYL)), '') <> 'LAB'
+				                  AND LTRIM(RTRIM(bom.IXMMCU)) NOT LIKE 'LAB%'
+				                GROUP BY
+				                    LTRIM(RTRIM(pib.IBLITM)),
+				                    LTRIM(RTRIM(bom.IXLITM)),
+				                    LTRIM(RTRIM(bom.IXMMCU))
+				            ) j
+				            LEFT JOIN (
+				                SELECT
+				                    ROUND(SUM(werc.F_PERCENT), 4)      AS WercsPercent,
+				                    LTRIM(RTRIM(werc.F_COMPONENT_ID))  AS Component_2nd_item_Number,
+				                    LTRIM(RTRIM(werc.F_PRODUCT))       AS Parent_2nd_Item_Number
+				                FROM PRODDTA.T_PROD_COMP werc
+				                GROUP BY
+				                    LTRIM(RTRIM(werc.F_COMPONENT_ID)),
+				                    LTRIM(RTRIM(werc.F_PRODUCT))
+				            ) w
+				                ON j.Parent_Second_Item_Number = w.Parent_2nd_Item_Number
+				               AND j.Component_2nd_Item_Number = w.Component_2nd_item_Number
+				        ) z
+				        WHERE z.ParentDiffTotal <> 0
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"JDE Parent", type text},
+				            {"Branch Plant", type text},
+				            {"JDE Raw", type text},
+				            {"JDE Percent", type number},
+				            {"WERCS Percent", type number},
+				            {"WERCS Raw", type text},
+				            {"WERCS Parent", type text},
+				            {"Difference", type number}
+				        }
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

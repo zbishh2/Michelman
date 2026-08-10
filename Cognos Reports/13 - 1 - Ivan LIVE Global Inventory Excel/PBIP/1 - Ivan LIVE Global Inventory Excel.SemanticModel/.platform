@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "1 - Ivan LIVE Global Inventory Excel"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "646ba1b7-ef25-4cdc-858a-79e8da4bd60c"
+  }
+}

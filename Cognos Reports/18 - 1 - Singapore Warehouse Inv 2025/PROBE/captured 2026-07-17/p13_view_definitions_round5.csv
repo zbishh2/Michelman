@@ -1,0 +1,554 @@
+P13 View Definitions[obj],P13 View Definitions[chunk_no],P13 View Definitions[chunk]
+DimCurrencyExchangeRatesUSDDaily,1,"
+
+CREATE VIEW [BIQL].[DimCurrencyExchangeRatesUSDDaily]
+AS
+WITH 
+
+--Revised PS, T. Sampson 12/9/21 to eliminate duplicate calendar date and 2 exchange rates on the first of each month
+/* Get Rates from Exchange Rates File for USD only */
+CTE AS
+(
+select 
+ CE.CurrencyCodeFrom AS ""CurrencyCodeFrom""
+,CF.CurrencyCodeSKey AS ""CurrencyCodeFromSKey""
+,CT.CurrencyCodeSKey AS ""CurrencyCodeToSKey""
+,CE.EffectiveDate AS ""Effective Date""
+,CE.CurrencyConversionSpotRate AS ""Exchange Rate""
+,LEAD(CE.EffectiveDate) over (PARTITION BY CurrencyCodeFrom, CurrencyCodeTo ORDER BY CE.EffectiveDate) as NextDate  --Identifies the next date where there is an exchange rate
+FROM BIQL.DimCurrencyExchangeRates CE
+INNER JOIN BIQL.DimCurrencyCode CF ON CE.CurrencyCodeFrom=CF.CurrencyCode
+INNER JOIN BIQL.DimCurrencyCode CT ON CE.CurrencyCodeTo=CT.CurrencyCode
+where CurrencyCodeTo in (SELECT DISTINCT CurrencyCode from BIQL.DimCompany)
+and CurrencyCodeTo = 'USD'  --12/10/21 - note this is filtering out all non-USD conversions
+and CE.EffectiveDateID != 0
+and CE.CurrencyRateType=''
+)
+
+/* Explode Exchange Rates file to make sure one record per calendar date, uses the previous days rate if no rate exists */ 
+
+select DC.CalendarDate, CTE.CurrencyCodeFrom, CTE.CurrencyCodeFromSKey, CTE.CurrencyCodeToSKey, CTE.[Effective Date], CTE.[Exchange Rate]
+FROM BIQL.DimCalendar DC
+JOIN CTE ON DC.CalendarPatternSKey = 1 AND DC.CalendarDate BETWEEN CTE.[Effective Date] AND ISNULL(DATEADD(day, -1, CTE.NextDate),CTE.""Effective Date"")"
+FactInventorySnapshot,1,"
+
+
+
+
+CREATE   VIEW [BIQL].[FactInventorySnapshot] AS
+
+SELECT 
+
+/* Copyright @ 2019 Preferred Strategies,LLC - All Rights Reserved */
+
+	 TZ.CalendarDate AS CalendarDate --CAST(GETDATE() AS DATE)
+	,ISC.DateSKey AS DateSKey
+	,FIS.ItemSKey AS ItemSKey
+	,FIS.ItemBranchSKey AS ItemBranchSKey
+	,FIS.BusinessUnitSKey AS BusinessUnitSKey
+	,FIS.CompanySKey AS CompanySKey
+	,LocationSKey AS LocationSKey
+	,FIS.LotSKey AS LotSKey
+	,ItemCostSKey AS ItemCostSKey
+	,FIS.UOMSKey AS UOMSKey
+	,FIS.ItemNumShort AS ItemNumShort
+	,FIS.BusinessUnit AS BusinessUnit
+	,FIS.Location AS Location
+	,FIS.LotNum AS LotNum
+	--Added Michelman,Dave B 4/10/21 - Renamed Fields
+	,FIS.CategoryGLF41021 AS CategoryGLF41021
+	,FIS.CategoryGLDescF41021 AS CategoryGLDescF41021
+	--,CategoryGL AS CategoryGL
+	--,CategoryGLDesc AS CategoryGLDesc
+	,FIS.PrimaryLocation AS PrimaryLocation
+	,FIS.UOMPrimary AS UOMPrimary
+	,FIS.LastReceiptDate AS LastReceiptDate
+	,FIS.LastReceiptDateSKey AS LastReceiptDateSKey
+	,FIS.TimeofDay AS TimeofDay
+	,FIS.UpdatedDate AS UpdatedDate
+	,FIS.UpdatedDateSKey AS UpdatedDateSKey
+	,FIS.QuantityInboundWarehouse AS QuantityInboundWarehouse
+	,FIS.QuantityInInspection AS QuantityInInspection
+	,FIS.QuantityInOperation1 AS QuantityInOperation1
+	,FIS.QuantityInOperation2 AS QuantityInOperation2
+	,FIS.QuantityInTransit AS QuantityInTransit
+	,FIS.QuantityOnBackorder AS QuantityOnBackorder
+	,FIS.QuantityOnHandPrimaryUOM AS QuantityOnHandPrimaryUOM
+	,FIS.QuantityOnLoan AS QuantityOnLoan
+	,FIS.QuantityOnPurchaseOrder AS QuantityOnPurchaseOrder
+	,FIS.QuantityOnWorkOrder AS QuantityOnWorkOrder
+	,FIS.QuantityOther1PO AS QuantityOther1PO
+	,FIS.QuantityOther1SO AS QuantityOther1SO
+	,FIS.QuantityOther2SO AS QuantityOther2SO
+	,FIS.QuantityOutboundWarehouse AS QuantityOutboundWarehouse
+	,FIS.QuantityProjectHardCommit AS QuantityProjectHardCommit
+	,FIS.QuantitySOFutureCommit AS QuantitySOFutureCommit
+	,FIS.QuantitySOHardCommit AS QuantitySOHardCommit
+	,FIS.Qu"
+FactInventorySnapshot,2,"antitySOSoftCommit AS QuantitySOSoftCommit
+	,FIS.QuantityWOHardCommit AS QuantityWOHardCommit
+	,FIS.QuantityWOSoftCommit AS QuantityWOSoftCommit
+	,FIS.AmountUnitCost AS AmountUnitCost
+	,FIS.AmountValueAtCost AS AmountValueAtCost
+
+	--Added by PS: Lilly Schmidbauer 09/23/2020
+	,FIS.LotStatusCode AS LotStatusCode
+
+	--Added by PS: Lilly Schmidbauer 09/24/2020
+	,DimLot.BasedOnDate AS BasedOnDate
+
+	--Added Michelman, Dave B 11/22/22 to get disposal fee from F0005, DRRT - UC, DRSY - 55
+	,Case
+		When FIS.CompanySKey = 2 then '55UC00010'
+		When FIS.CompanySKey = 5 then '55UC00020'
+		Else '99999'
+	End as DisposalFeeSKey
+
+	,FIS.LoadDate AS DWLoadDate
+	,FIS.Source AS DWSource
+
+
+FROM dbo.FactInventorySnapshot AS FIS
+JOIN BIQL.CurrentDateByTimeZone TZ ON FIS.CompanySKey=TZ.CompanySKey
+LEFT JOIN BIQL.DimLot AS DimLot	
+	ON FIS.LotSKey = DimLot.LotSKey
+
+JOIN BIQL.DimCalendarInventorySnapshot ISC
+	--ON CAST(GETDATE() AS DATE) = CalendarDateFROM 
+	ON TZ.CalendarDate = ISC.CalendarDate
+
+;"
+FactInventorySnapshot_History_Filtered,1,"
+
+
+--Select Distinct CalendarDate from [BIQL].[FactInventorySnapshot_History_Filtered] Order By CalendarDate desc
+
+CREATE VIEW [BIQL].[FactInventorySnapshot_History_Filtered]
+AS
+
+/*
+This view returns dbo.FactInventorySnapshot_History where the Stop/Stop dates fall within the date ranges in BIQL.DimCalendarInventorySnapshot
+Currently, this is any date within the current and previous month plus last day of any prior month
+*/
+
+     --SELECT CASE
+     --           WHEN CompanySKey = 2
+     --           THEN DATEADD(DAY, -1, SNDT.CalendarDate)
+     --           ELSE SNDT.CalendarDate
+     --       END AS CalendarDate,
+     --       CASE
+     --           WHEN CompanySKey = 2
+     --           THEN CONVERT(INT, CONVERT(VARCHAR(10), DATEADD(DAY, -1, SNDT.CalendarDate), 112))
+     --           ELSE SNDT.DateSKey
+     --       END AS DateSKey,
+		WITH CDTZ AS (
+			SELECT CompanySKey, CalendarDate, Yesterday FROM BIQL.CurrentDateByTimeZone
+		)
+     SELECT SNDT.CalendarDate, 
+            SNDT.DateSKey,
+            --,CONCAT(CONCAT(CONCAT(CONCAT(FISH.ItemSKey,FISH.ItemBranchSKey),FISH.BusinessUnitSKey),FISH.CompanySKey),FISH.LocationSKey) FishSKey 
+            FISH.ItemSKey, 
+            FISH.ItemBranchSKey, 
+            FISH.BusinessUnitSKey, 
+            FISH.CompanySKey, 
+            FISH.LocationSKey, 
+            FISH.LotSKey,
+            --,FISH.ItemCostSKey
+            --,FISH.UOMSKey 
+            FISH.StartDate, 
+            ISNULL(FISH.StopDate,
+     (
+         SELECT CalendarDate
+         FROM BIQL.CurrentDate
+     )) AS StopDate, 
+            FISH.ItemNumShort, 
+            FISH.BusinessUnit, 
+            TRIM(FISH.Location) AS Location, 
+            FISH.LotNum, 
+            FISH.CategoryGLF41021, 
+            FISH.CategoryGLDescF41021, 
+            FISH.PrimaryLocation, 
+            FISH.UOMPrimary, 
+            FISH.LastReceiptDate,
+            --,FISH.LastReceiptDateSKey 
+            FISH.TimeofDay,"
+FactInventorySnapshot_History_Filtered,2,"  FISH.UpdatedDate,
+            --,FISH.UpdatedDateSKey 
+            FISH.QuantityInboundWarehouse, 
+            FISH.QuantityInInspection, 
+            FISH.QuantityInOperation1, 
+            FISH.QuantityInOperation2, 
+            FISH.QuantityInTransit, 
+            FISH.QuantityOnBackorder, 
+            FISH.QuantityOnHandPrimaryUOM, 
+            FISH.QuantityOnLoan, 
+            FISH.QuantityOnPurchaseOrder, 
+            FISH.QuantityOnWorkOrder, 
+            FISH.QuantityOther1PO, 
+            FISH.QuantityOther1SO, 
+            FISH.QuantityOther2SO, 
+            FISH.QuantityOutboundWarehouse, 
+            FISH.QuantityProjectHardCommit, 
+            FISH.QuantitySOFutureCommit, 
+            FISH.QuantitySOHardCommit, 
+            FISH.QuantitySOSoftCommit, 
+            FISH.QuantityWOHardCommit, 
+            FISH.QuantityWOSoftCommit, 
+            FISH.AmountUnitCost, 
+            FISH.AmountValueAtCost,
+            --,FISH.LoadDate
+            --,FISH.Source 
+            FISH.LotStatusCode
+     --,ROW_NUMBER() OVER(PARTITION BY SNDT.CalendarDate, FISH.ItemNumShort, FISH.BusinessUnit, FISH.LocationSKey, FISH.LotSKey ORDER BY FISH.UpdatedDateSKey DESC) AS RN
+
+     FROM BIQL.DimCalendarInventorySnapshot SNDT
+          LEFT OUTER JOIN
+     (
+         SELECT ItemSKey, 
+                ItemBranchSKey, 
+                BusinessUnitSKey, 
+                CompanySKey, 
+                LocationSKey, 
+                LotSKey,
+                -- ,ItemCostSKey
+                -- ,UOMSKey 
+                StartDate, 
+                StopDate, 
+                ItemNumShort, 
+                BusinessUnit, 
+                Location, 
+                LotNum, 
+                CategoryGLF41021, 
+                CategoryGLDescF41021, 
+                PrimaryLocation, 
+                UOMPrimary, 
+                LastReceiptDate,
+                --,LastReceiptDateSKey 
+                TimeofDay, 
+                UpdatedDate,"
+FactInventorySnapshot_History_Filtered,3,"
+                -- ,UpdatedDateSKey 
+                QuantityInboundWarehouse, 
+                QuantityInInspection, 
+                QuantityInOperation1, 
+                QuantityInOperation2, 
+                QuantityInTransit, 
+                QuantityOnBackorder, 
+                QuantityOnHandPrimaryUOM, 
+                QuantityOnLoan, 
+                QuantityOnPurchaseOrder, 
+                QuantityOnWorkOrder, 
+                QuantityOther1PO, 
+                QuantityOther1SO, 
+                QuantityOther2SO, 
+                QuantityOutboundWarehouse, 
+                QuantityProjectHardCommit, 
+                QuantitySOFutureCommit, 
+                QuantitySOHardCommit, 
+                QuantitySOSoftCommit, 
+                QuantityWOHardCommit, 
+                QuantityWOSoftCommit, 
+                AmountUnitCost, 
+                AmountValueAtCost,
+                --,LoadDate
+                --,Source 
+                LotStatusCode
+         FROM dbo.FactInventorySnapshot_History
+     ) FISH ON CASE WHEN CompanySKey = 2 THEN DATEADD(DAY,1,SNDT.CalendarDate) ELSE SNDT.CalendarDate END BETWEEN FISH.StartDate AND ISNULL(FISH.StopDate,
+     (
+         SELECT MAX(CalendarDate)
+         FROM CDTZ
+         --WHERE CDTZ.CompanySKey = FISH.CompanySKey
+     ))
+     WHERE SNDT.CalendarDate BETWEEN CAST('2021-06-01' AS DATE) AND
+     (
+         SELECT Yesterday
+         FROM CDTZ
+         WHERE CDTZ.CompanySKey = FISH.CompanySKey
+     );"
+TbInventorySnapshot_History,1,"
+CREATE   VIEW [BIQL].[TbInventorySnapshot_History] AS
+-- Added 4/2/2021 selection for optional currency types
+WITH    CTE4 AS (SELECT 'LB' AS UMA)
+	   ,CTE5 AS (SELECT 'KG' AS UMB)
+	   ,CTE6 AS (SELECT 'TM' AS UMC)
+SELECT
+	/* Copyright © 2021 Preferred Strategies, LLC - All Rights Reserved */
+	-- updated 9/13/2021 Tom S PS - added lot num (must replace LotSKey for join to Lot because lot numbers are recycled), also removed depreciated AS-OF date
+	-- 10/21/2021 PS TS added BranchISKey and ItemBranchISKey for same reason (recycled keys  - out of sync with dim tables)
+	-- 7/6/2023 PS TS added OffSpecFlag
+	 FISH.CalendarDate AS ""Calendar Date"" -- CAST(NULL AS DATE) AS ""Calendar Date""
+	,FISH.DateSKey
+	,FISH.BusinessUnitSKey AS BranchSKey
+	,CONCAT (
+		 FISH.ItemNumShort
+		,TRIM(FISH.BusinessUnit)
+		,FISH.DateSKey
+		,TRIM(FISH.Location)
+		,RTRIM(FISH.LotNum)
+		) AS MasterISKey
+	--,CONCAT(FISH.ItemNumShort,TRIM(FISH.BusinessUnit),FISH.DateSKey) AS ICCKey
+	-- ,FishSKey
+	-- ,ItemSKey
+	,FISH.ItemBranchSKey AS ItemBranchSKey
+	,FISH.BusinessUnit AS BranchISKey
+	,FISH.LotSKey AS LotSKey
+	,FISH.LotNum AS ""Lot Num""
+	,CONCAT (
+		 FISH.LotNum
+		,FISH.BusinessUnit
+		,TRY_CAST(FISH.ItemNumShort AS INT)
+		) AS LotISKey
+	,CONCAT (
+		 FISH.BusinessUnitSKey
+		,TRY_CAST(FISH.ItemNumShort AS INT)
+		) AS ItemBranchISKey
+	-- ,CompanySKey
+	,FISH.Location
+	,FISH.LocationSKey AS LocationSKey
+	,CategoryGLF41021 AS ""Category GL F41021""
+	,CategoryGLDescF41021 AS ""Category GL Desc F41021""
+	,PrimaryLocation AS ""Primary Location""
+	,LastReceiptDate AS ""Last Receipt Date""
+	,FISH.UpdatedDate AS ""Updated Date""
+	,NULLIF(QuantityInboundWarehouse, 0) AS QuantityInboundWarehouse
+	,NULLIF(QuantityInInspection, 0) AS QuantityInInspection
+	,NULLIF(QuantityInOperation1, 0) AS QuantityInOperation1
+	,NULLIF(QuantityInOperation2, 0) AS QuantityInOperation2
+	,NULLIF(QuantityInTransit, 0) AS QuantityInTransit
+	,NULLIF(QuantityOnBackorder, 0) AS QuantityOnBackorder
+	,N"
+TbInventorySnapshot_History,2,"ULLIF(QuantityOnHandPrimaryUOM, 0) AS QuantityOnHandPrimaryUOM
+	,NULLIF(QuantityOnLoan, 0) AS QuantityOnLoan
+	,NULLIF(QuantityOnPurchaseOrder, 0) AS QuantityOnPurchaseOrder
+	,NULLIF(QuantityOnWorkOrder, 0) AS QuantityOnWorkOrder
+	,NULLIF(QuantityOther1PO, 0) AS QuantityOther1PO
+	,NULLIF(QuantityOther1SO, 0) AS QuantityOther1SO
+	,NULLIF(QuantityOther2SO, 0) AS QuantityOther2SO
+	,NULLIF(QuantityOutboundWarehouse, 0) AS QuantityOutboundWarehouse
+	,NULLIF(QuantityProjectHardCommit, 0) AS QuantityProjectHardCommit
+	,NULLIF(QuantitySOFutureCommit, 0) AS QuantitySOFutureCommit
+	,NULLIF(QuantitySOHardCommit, 0) AS QuantitySOHardCommit
+	,NULLIF(QuantitySOSoftCommit, 0) AS QuantitySOSoftCommit
+	,NULLIF(QuantityWOHardCommit, 0) AS QuantityWOHardCommit
+	,NULLIF(QuantityWOSoftCommit, 0) AS QuantityWOSoftCommit
+	,NULLIF(QuantityOnHandPrimaryUOM - (QuantityOnBackorder + QuantitySOHardCommit + QuantityWOHardCommit), 0) AS QuantityAvailable
+	,NULLIF(QuantityOnPurchaseOrder + QuantityOnWorkOrder, 0) AS QuantityOnReceipt
+	,NULLIF(FISH.AmountUnitCost, 0) AS AmountUnitCost
+	-- ,ISNULL(IC.AmountUnitCost,0) AS AmountUnitCost07
+	,NULLIF(FISH.AmountValueAtCost, 0) AS AmountValueAtCost
+	,0 AS ReorderPoint
+	,0 AS ReorderQuantity
+	,0 AS ReorderQuantityMaximum
+	,0 AS ReorderQuantityMinimum
+	,0 AS SafetyStock
+	-- Added Currency Conversion to CXA - 4/2/2022 - Tom S PS
+	,CO.CurrencyCode AS ""LocalCurrency""
+	--,CRTA.ToRateDaily AS ""ToRateDefaultA"" -- Note: customer may want Daily, A, or M
+	--,CRTB.ToRateDaily AS ""ToRateDefaultB"" -- Note: customer may want Daily, A, or M
+	--,(
+	--	SELECT CXA
+	--	FROM CTE1
+	--	) AS ""CXACurrency""
+	--,(
+	--	SELECT CXB
+	--	FROM CTE2
+	--	) AS ""CXBCurrency""
+	-- Added UOM Conversion 4/2/2022 - Tom S PS
+	-- Added UOM Conversion 4/2/2022 - Tom S PS
+	-- ,ISNULL(FISH.UOMPrimary,'EA') AS ""UOM Primary""
+	,CASE 
+		WHEN FISH.UOMPrimary IS NULL
+			THEN 1
+		WHEN FISH.UOMPrimary = 'LB'
+			AND UOMA.ConversionFactor IS NULL
+			THEN 1
+		WHEN FI"
+TbInventorySnapshot_History,3,"SH.UOMPrimary = 'KG'
+			AND UOMA.ConversionFactor IS NULL
+			THEN 2.204623
+		WHEN FISH.UOMPrimary = 'EA'
+			AND UOMA.ConversionFactor IS NULL
+			AND UOMB.ConversionFactor IS NOT NULL
+			THEN UOMB.ConversionFactor * 0.453592
+		WHEN FISH.UOMPrimary = 'EA'
+			AND UOMA.ConversionFactor IS NULL
+			AND UOMB.ConversionFactor IS NULL
+			THEN 1
+		ELSE UOMA.ConversionFactor
+		END AS ""ToRateUMA""
+	,CASE 
+		WHEN FISH.UOMPrimary IS NULL
+			THEN 1
+		WHEN FISH.UOMPrimary = 'LB'
+			AND UOMB.ConversionFactor IS NULL
+			THEN 0.453592
+		WHEN FISH.UOMPrimary = 'KG'
+			AND UOMB.ConversionFactor IS NULL
+			THEN 1
+		WHEN FISH.UOMPrimary = 'EA'
+			AND UOMB.ConversionFactor IS NULL
+			AND UOMA.ConversionFactor IS NOT NULL
+			THEN UOMA.ConversionFactor * 0.453592
+		WHEN FISH.UOMPrimary = 'EA'
+			AND UOMB.ConversionFactor IS NULL
+			AND UOMA.ConversionFactor IS NULL
+			THEN 1
+		ELSE UOMB.ConversionFactor
+		END AS ""ToRateUMB""
+	,CASE 
+		WHEN FISH.UOMPrimary IS NULL
+			THEN 1
+		WHEN FISH.UOMPrimary = 'LB'
+			AND UOMB.ConversionFactor IS NULL
+			THEN 0.00045359237
+		WHEN FISH.UOMPrimary = 'KG'
+			AND UOMB.ConversionFactor IS NULL
+			THEN 0.001
+		WHEN FISH.UOMPrimary IN (
+				'EA'
+				,'LB'
+				)
+			AND UOMB.ConversionFactor IS NULL
+			AND UOMA.ConversionFactor IS NOT NULL
+			THEN UOMA.ConversionFactor * 0.00045359237
+		WHEN FISH.UOMPrimary IN (
+				'EA'
+				,'KG'
+				)
+			AND UOMA.ConversionFactor IS NULL
+			AND UOMB.ConversionFactor IS NOT NULL
+			THEN UOMB.ConversionFactor * 0.001
+		WHEN FISH.UOMPrimary = 'LB'
+			AND UOMA.ConversionFactor IS NULL
+			AND UOMB.ConversionFactor IS NULL
+			THEN 0.00045359237
+		WHEN FISH.UOMPrimary = 'KG'
+			AND UOMA.ConversionFactor IS NULL
+			AND UOMB.ConversionFactor IS NULL
+			THEN 0.001
+		WHEN UOMA.ConversionFactor IS NOT NULL
+			AND UOMB.ConversionFactor IS NOT NULL
+			THEN UOMB.ConversionFactor * 0.001
+		ELSE 1 -- it's EA and has no conversion
+		END AS ""ToRateUMC""
+	,LOT.LotStatusCode AS ""Lot S"
+TbInventorySnapshot_History,4,"tatus Code""
+	,TRY_CAST(0 AS DECIMAL(3, 2)) AS LotStatusMultiplier
+	,TRY_CAST(1 AS DECIMAL(4, 3)) AS DisposalMultiplier
+	,CASE 
+		WHEN FISH.CalendarDate >= GETDATE() - 365
+			AND TRIM(LOT.LotStatusCode) NOT IN (
+				'B'
+				,'E'
+				,'P'
+				,'H'
+				,'Q'
+				,'Z'
+				)
+			AND TRIM(FISH.CategoryGLF41021) NOT IN (
+				'PKG'
+				,'H2O'
+				)
+			THEN 1
+		ELSE 0
+		END AS AgingFlag
+	,CASE 
+		WHEN TRIM(FISH.CategoryGLF41021) = 'IN30'
+			THEN .4
+		WHEN TRIM(FISH.CategoryGLF41021) = 'IN32'
+			THEN 1
+		ELSE 0
+		END AS AgingMultiplier
+	,TRY_CAST('1900-01-01' AS DATE) AS ""Based On Date""
+--      ,LocationSKey
+--      ,ItemCostSKey
+--      ,UOMSKey
+--      ,StartDate AS ""Status Start Date""
+--      ,StopDate AS ""Status End Date""
+--      ,ItemNumShort AS ""Item Num Short""
+--      ,BusinessUnit AS ""Business Unit""
+--      ,LotNum AS ""Lot Num""
+--      ,UOMPrimary AS ""Primary UOM""
+--      ,LastReceiptDateSKey
+--      ,TimeofDay AS ""Time of Day""
+--      ,UpdatedDateSKey
+--      ,LoadDate AS ""Load Date""
+--      ,Source
+--      ,LotStatusCode AS ""Lot Status Code""
+	,CASE 
+		WHEN udc.UDC IS NOT NULL
+			AND TRIM(udc.UDC) != ''
+			THEN 1
+		ELSE NULL
+		END AS 'Off Spec'
+
+FROM BIQL.FactInventorySnapshot_History_Filtered FISH
+-- added 4/1/2022 TS Pref Strat for Off Spec and Aging Measures
+/*
+          LEFT OUTER JOIN dbo.DimItemCost_History AS IC
+          ON FISH.ItemNumShort = IC.ItemNumShort
+          AND FISH.BusinessUnit = IC.BusinessUnit
+          AND FISH.Location = IC.Location
+          AND FISH.LotNum = IC.LotNum
+          AND IC.CostMethod = '07'
+          AND IC.StartDate IS NOT NULL
+          AND TRY_CAST(FISH.CalendarDate AS DATE) BETWEEN TRY_CAST(IC.StartDate AS DATE) AND ISNULL(IC.StopDate,TRY_CAST(GETDATE() AS DATE))
+          */
+-- added 4/2/2022 UOM and Currency Conversion
+LEFT OUTER JOIN BIQL.DimCompany CO ON FISH.CompanySKey = CO.CompanySKey
+--LEFT OUTER JOIN BIQL.CurrencyRatesTo CRTA -- Conversion rates A
+--	ON"
+TbInventorySnapshot_History,5,"CRTA.CurrencyCodeFrom = CO.CurrencyCode -- Company Currency Code - From (local currency)
+--	AND CRTA.CurrencyCodeTo = (
+--		SELECT CXA
+--		FROM CTE1
+--		)
+--	AND TRY_CAST(CRTA.CalendarDate AS DATE) = TRY_CAST(GETDATE() AS DATE) -- order date for sales_detail, GL Date for Hist-- 
+--LEFT OUTER JOIN BIQL.CurrencyRatesTo CRTB -- Conversion rates B
+--	ON CRTB.CurrencyCodeFrom = CO.CurrencyCode -- Company Currency Code - From (local currency)
+--	AND CRTB.CurrencyCodeTo = (
+--		SELECT CXB
+--		FROM CTE2
+--		)
+--	AND TRY_CAST(CRTB.CalendarDate AS DATE) = TRY_CAST(GETDATE() AS DATE) -- order date for sales_detail, GL Date for Hist-- 
+LEFT OUTER JOIN BIQL.DimItem IT ON FISH.ItemSKey = IT.ItemSKey
+LEFT OUTER JOIN BIQL.UOMConversionMaster UOMA ON CONCAT (
+		FISH.BusinessUnit
+		,FISH.ItemNumShort
+		) = UOMA.ItemBranchSKey
+	AND IT.UOMPrimary = UOMA.[From]
+	AND (
+		SELECT UMA
+		FROM CTE4
+		) = UOMA.[To]
+LEFT OUTER JOIN BIQL.UOMConversionMaster UOMB ON CONCAT (
+		FISH.BusinessUnit
+		,FISH.ItemNumShort
+		) = UOMB.ItemBranchSKey
+	AND IT.UOMPrimary = UOMB.[From]
+	AND (
+		SELECT UMB
+		FROM CTE5
+		) = UOMB.[To]
+LEFT OUTER JOIN BIQL.UOMConversionMaster UOMC ON CONCAT (
+		FISH.BusinessUnit
+		,FISH.ItemNumShort
+		) = UOMC.ItemBranchSKey
+	AND IT.UOMPrimary = UOMC.[From]
+	AND (
+		SELECT UMC
+		FROM CTE6
+		) = UOMC.[To]
+LEFT OUTER JOIN BIQL.DimLot LOT ON FISH.LotSKey = LOT.LotSKey
+
+LEFT OUTER JOIN BIQL.DimUDC udc ON LOT.LotStatusCode = trim(udc.UDC)
+	AND udc.ProductCode = '41'
+	AND udc.SystemCode = 'L'
+	AND udc.UDCDesc02 = 'Y'
+
+
+WHERE FISH.CalendarDate BETWEEN CAST('2021-06-02' AS DATE)
+		AND (SELECT DATEADD(DAY,-1,CalendarDate) FROM BIQL.CurrentDate) -- between start of data and yesterday
+			-- AND LEFT(FISH.LotNum, 1) != ' ' -- duplicate rows
+	-- AND 1 = 0"

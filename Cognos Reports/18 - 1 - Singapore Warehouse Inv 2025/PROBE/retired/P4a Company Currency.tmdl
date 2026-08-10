@@ -1,0 +1,44 @@
+table 'P4a Company Currency'
+	lineageTag: 18000400-0000-4000-8000-000000000001
+
+	column Branch
+		dataType: string
+		lineageTag: 18000401-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Branch
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrencyCode
+		dataType: string
+		lineageTag: 18000401-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: CurrencyCode
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P4a Company Currency' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT DISTINCT LTRIM(RTRIM(snap.BusinessUnit)) AS Branch, co.CurrencyCode
+				        FROM BIQL.FactInventorySnapshot_History_Filtered snap
+				        JOIN BIQL.DimCompany co ON co.CompanySKey = snap.CompanySKey
+				        WHERE LTRIM(RTRIM(snap.BusinessUnit)) IN ('SING','SNG4','AUBA','AUB2','CINC','CIN2','CIN4')
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"Branch", type text},
+							{"CurrencyCode", type text}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

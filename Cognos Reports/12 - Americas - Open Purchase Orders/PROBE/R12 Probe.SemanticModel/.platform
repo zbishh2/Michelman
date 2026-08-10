@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "R12 Probe"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "9e2c5b74-1d3f-4a86-b027-6c9184f3e5a0"
+  }
+}

@@ -1,0 +1,1020 @@
+table Snapshot
+	lineageTag: 14a1a000-0000-4000-8000-000000000016
+
+	measure 'QOH (DAX)' = [On Hand]
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000051
+
+	measure 'KGs (DAX)' = [OH KGs]
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000052
+
+	measure 'LBs (DAX)' = [OH LBs]
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000053
+
+	measure 'USD (DAX)' = [OH USD]
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000054
+
+	measure 'EUR (DAX)' = [OH EUR]
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000055
+
+	measure 'Rows (DAX)' = [Output Rows]
+		formatString: #,0
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000056
+
+	measure 'QOH (SQL)' =
+			CALCULATE(
+			    SUM(Inventory[Quantity on Hand]),
+			    TREATAS(VALUES('Snapshot'[Region]), Inventory[REGION]),
+			    TREATAS(VALUES('Snapshot'[Branch Plant]), Inventory[Branch Plant]),
+			    TREATAS(VALUES('Snapshot'[Location]), Inventory[Location]),
+			    TREATAS(VALUES('Snapshot'[Lot Number]), Inventory[Lot Number]),
+			    TREATAS(VALUES('Snapshot'[2nd Item Number]), Inventory[2nd Item Number])
+			)
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000057
+
+	measure 'KGs (SQL)' =
+			CALCULATE(
+			    SUM(Inventory[Quantity on Hand KGs]),
+			    TREATAS(VALUES('Snapshot'[Region]), Inventory[REGION]),
+			    TREATAS(VALUES('Snapshot'[Branch Plant]), Inventory[Branch Plant]),
+			    TREATAS(VALUES('Snapshot'[Location]), Inventory[Location]),
+			    TREATAS(VALUES('Snapshot'[Lot Number]), Inventory[Lot Number]),
+			    TREATAS(VALUES('Snapshot'[2nd Item Number]), Inventory[2nd Item Number])
+			)
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000058
+
+	measure 'LBs (SQL)' =
+			CALCULATE(
+			    SUM(Inventory[Quantity on Hand LBs]),
+			    TREATAS(VALUES('Snapshot'[Region]), Inventory[REGION]),
+			    TREATAS(VALUES('Snapshot'[Branch Plant]), Inventory[Branch Plant]),
+			    TREATAS(VALUES('Snapshot'[Location]), Inventory[Location]),
+			    TREATAS(VALUES('Snapshot'[Lot Number]), Inventory[Lot Number]),
+			    TREATAS(VALUES('Snapshot'[2nd Item Number]), Inventory[2nd Item Number])
+			)
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000059
+
+	measure 'USD (SQL)' =
+			CALCULATE(
+			    SUM(Inventory[Extended Cost for Quantity On Hand USD]),
+			    TREATAS(VALUES('Snapshot'[Region]), Inventory[REGION]),
+			    TREATAS(VALUES('Snapshot'[Branch Plant]), Inventory[Branch Plant]),
+			    TREATAS(VALUES('Snapshot'[Location]), Inventory[Location]),
+			    TREATAS(VALUES('Snapshot'[Lot Number]), Inventory[Lot Number]),
+			    TREATAS(VALUES('Snapshot'[2nd Item Number]), Inventory[2nd Item Number])
+			)
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-00000000005a
+
+	measure 'EUR (SQL)' =
+			CALCULATE(
+			    SUM(Inventory[Extended Cost for Quantity On Hand EUR]),
+			    TREATAS(VALUES('Snapshot'[Region]), Inventory[REGION]),
+			    TREATAS(VALUES('Snapshot'[Branch Plant]), Inventory[Branch Plant]),
+			    TREATAS(VALUES('Snapshot'[Location]), Inventory[Location]),
+			    TREATAS(VALUES('Snapshot'[Lot Number]), Inventory[Lot Number]),
+			    TREATAS(VALUES('Snapshot'[2nd Item Number]), Inventory[2nd Item Number])
+			)
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-00000000005b
+
+	measure 'Rows (SQL)' =
+			CALCULATE(
+			    COUNTROWS(Inventory),
+			    TREATAS(VALUES('Snapshot'[Region]), Inventory[REGION]),
+			    TREATAS(VALUES('Snapshot'[Branch Plant]), Inventory[Branch Plant]),
+			    TREATAS(VALUES('Snapshot'[Location]), Inventory[Location]),
+			    TREATAS(VALUES('Snapshot'[Lot Number]), Inventory[Lot Number]),
+			    TREATAS(VALUES('Snapshot'[2nd Item Number]), Inventory[2nd Item Number])
+			)
+		formatString: #,0
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-00000000005c
+
+	measure 'QOH Delta' = [QOH (DAX)] - [QOH (SQL)]
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-00000000005d
+
+	measure 'KGs Delta' = [KGs (DAX)] - [KGs (SQL)]
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-00000000005e
+
+	measure 'LBs Delta' = [LBs (DAX)] - [LBs (SQL)]
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-00000000005f
+
+	measure 'USD Delta' = [USD (DAX)] - [USD (SQL)]
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000060
+
+	measure 'EUR Delta' = [EUR (DAX)] - [EUR (SQL)]
+		formatString: #,0.00
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000061
+
+	measure 'Rows Delta' = [Rows (DAX)] - [Rows (SQL)]
+		formatString: #,0
+		displayFolder: Tie-Out Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000062
+
+	measure 'Escor QOH (DAX)' = [Escor On Hand]
+		formatString: #,0.00
+		displayFolder: Tie-Out Escor Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000063
+
+	measure 'Escor KGs (DAX)' = [Escor OH KGs]
+		formatString: #,0.00
+		displayFolder: Tie-Out Escor Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000064
+
+	measure 'Escor LBs (DAX)' = [Escor OH LBs]
+		formatString: #,0.00
+		displayFolder: Tie-Out Escor Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000065
+
+	measure 'Escor QOH (SQL)' =
+			CALCULATE(
+			    SUM('Escor Inventory'[Quantity on Hand]),
+			    TREATAS(VALUES('Snapshot'[Branch Plant]), 'Escor Inventory'[Branch Plant]),
+			    TREATAS(VALUES('Snapshot'[Location]), 'Escor Inventory'[Location]),
+			    TREATAS(VALUES('Snapshot'[Lot Number]), 'Escor Inventory'[Lot Number])
+			)
+		formatString: #,0.00
+		displayFolder: Tie-Out Escor Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000066
+
+	measure 'Escor KGs (SQL)' =
+			CALCULATE(
+			    SUM('Escor Inventory'[Quantity on Hand KGs]),
+			    TREATAS(VALUES('Snapshot'[Branch Plant]), 'Escor Inventory'[Branch Plant]),
+			    TREATAS(VALUES('Snapshot'[Location]), 'Escor Inventory'[Location]),
+			    TREATAS(VALUES('Snapshot'[Lot Number]), 'Escor Inventory'[Lot Number])
+			)
+		formatString: #,0.00
+		displayFolder: Tie-Out Escor Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000067
+
+	measure 'Escor LBs (SQL)' =
+			CALCULATE(
+			    SUM('Escor Inventory'[Quantity on Hand LBs]),
+			    TREATAS(VALUES('Snapshot'[Branch Plant]), 'Escor Inventory'[Branch Plant]),
+			    TREATAS(VALUES('Snapshot'[Location]), 'Escor Inventory'[Location]),
+			    TREATAS(VALUES('Snapshot'[Lot Number]), 'Escor Inventory'[Lot Number])
+			)
+		formatString: #,0.00
+		displayFolder: Tie-Out Escor Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000068
+
+	measure 'Escor QOH Delta' = [Escor QOH (DAX)] - [Escor QOH (SQL)]
+		formatString: #,0.00
+		displayFolder: Tie-Out Escor Inventory
+		lineageTag: 14a1da07-0000-4000-8000-000000000069
+
+	measure 'Escor KGs Delta' = [Escor KGs (DAX)] - [Escor KGs (SQL)]
+		formatString: #,0.00
+		displayFolder: Tie-Out Escor Inventory
+		lineageTag: 14a1da07-0000-4000-8000-00000000006a
+
+	measure 'Escor LBs Delta' = [Escor LBs (DAX)] - [Escor LBs (SQL)]
+		formatString: #,0.00
+		displayFolder: Tie-Out Escor Inventory
+		lineageTag: 14a1da07-0000-4000-8000-00000000006b
+
+	measure 'Lot Info Rows (DAX)' =
+			COUNTROWS(
+			    SUMMARIZE(
+			        FILTER('Lot', 'Lot'[Is ESC Family]),
+			        'Lot'[Branch Plant],
+			        'Lot'[Item Bulk],
+			        'Lot'[Item 2nd Number],
+			        'Lot'[Item Short ID],
+			        'Lot'[Lot Number],
+			        'Lot'[Supplier Lot Number],
+			        'Lot'[Memo Lot 1],
+			        'Lot'[Memo Lot 2],
+			        'Lot'[On Hand Date]
+			    )
+			)
+		formatString: #,0
+		displayFolder: Tie-Out Escor Lot Info
+		lineageTag: 14a1da07-0000-4000-8000-00000000006c
+
+	measure 'Lot Info Rows (SQL)' = COUNTROWS('Escor Lot Info')
+		formatString: #,0
+		displayFolder: Tie-Out Escor Lot Info
+		lineageTag: 14a1da07-0000-4000-8000-00000000006d
+
+	measure 'Lot Info Rows (Cognos)' = 1663
+		formatString: #,0
+		displayFolder: Tie-Out Escor Lot Info
+		lineageTag: 14a1da07-0000-4000-8000-00000000006e
+
+	measure 'Missing Lots Total' = COUNTROWS('Missing Lots')
+		formatString: #,0
+		displayFolder: Tie-Out Escor Lot Info
+		lineageTag: 14a1da07-0000-4000-8000-00000000006f
+
+	measure 'Missing Lots Found in DimLot' = CALCULATE(COUNTROWS('Missing Lots'), 'Missing Lots'[In Lot Master] = TRUE)
+		formatString: #,0
+		displayFolder: Tie-Out Escor Lot Info
+		lineageTag: 14a1da07-0000-4000-8000-000000000070
+
+	measure 'Inventory Date' =
+			VAR q = [On Hand]
+			RETURN
+			    IF(NOT ISBLANK(q), MAX('Select Date'[Date]))
+		formatString: d MMM, yyyy
+		displayFolder: Report Engine
+		lineageTag: 14a1da07-0000-4000-8000-000000000080
+
+	measure 'On Hand' =
+			VAR d = MAX('Select Date'[Date])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            'Snapshot',
+			            VAR md = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			            RETURN 'Snapshot'[Quantity on Hand] > 0
+			                && md >= 'Snapshot'[Interval Start]
+			                && md <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			                && 'Snapshot'[Has Item Match]
+			                && 'Snapshot'[Has Lot Match]
+			                && 'Snapshot'[Has Company Match]
+			                && 'Snapshot'[In Family Scope]
+			        ),
+			        'Snapshot'[Quantity on Hand]
+			    )
+		formatString: #,0.00
+		displayFolder: Report Engine
+		lineageTag: 14a1da07-0000-4000-8000-000000000081
+
+	measure 'OH KGs' =
+			VAR d = MAX('Select Date'[Date])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            'Snapshot',
+			            VAR md = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			            RETURN 'Snapshot'[Quantity on Hand] > 0
+			                && md >= 'Snapshot'[Interval Start]
+			                && md <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			                && 'Snapshot'[Has Item Match]
+			                && 'Snapshot'[Has Lot Match]
+			                && 'Snapshot'[Has Company Match]
+			                && 'Snapshot'[In Family Scope]
+			        ),
+			        'Snapshot'[Quantity KGs]
+			    )
+		formatString: #,0.00
+		displayFolder: Report Engine
+		lineageTag: 14a1da07-0000-4000-8000-000000000082
+
+	measure 'OH LBs' =
+			VAR d = MAX('Select Date'[Date])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            'Snapshot',
+			            VAR md = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			            RETURN 'Snapshot'[Quantity on Hand] > 0
+			                && md >= 'Snapshot'[Interval Start]
+			                && md <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			                && 'Snapshot'[Has Item Match]
+			                && 'Snapshot'[Has Lot Match]
+			                && 'Snapshot'[Has Company Match]
+			                && 'Snapshot'[In Family Scope]
+			        ),
+			        'Snapshot'[Quantity LBs]
+			    )
+		formatString: #,0.00
+		displayFolder: Report Engine
+		lineageTag: 14a1da07-0000-4000-8000-000000000083
+
+	measure 'OH USD' =
+			VAR d = MAX('Select Date'[Date])
+			VAR borrowPool =
+			    FILTER(
+			        ALL('Snapshot'),
+			        VAR md2 = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			        RETURN 'Snapshot'[ItemCostSKey] <> -1
+			            && md2 >= 'Snapshot'[Interval Start]
+			            && md2 <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			            && 'Snapshot'[Has Item Match]
+			            && 'Snapshot'[Has Lot Match]
+			            && 'Snapshot'[Has Company Match]
+			            && 'Snapshot'[In Family Scope]
+			    )
+			RETURN
+			    SUMX(
+			        FILTER(
+			            'Snapshot',
+			            VAR md = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			            RETURN 'Snapshot'[Quantity on Hand] > 0
+			                && md >= 'Snapshot'[Interval Start]
+			                && md <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			                && 'Snapshot'[Has Item Match]
+			                && 'Snapshot'[Has Lot Match]
+			                && 'Snapshot'[Has Company Match]
+			                && 'Snapshot'[In Family Scope]
+			        ),
+			        VAR itm = 'Snapshot'[ItemSKey]
+			        VAR bu = 'Snapshot'[Branch Plant]
+			        VAR own = 'Snapshot'[Unit Cost (Lot)]
+			        VAR cost =
+			            IF(
+			                own <> 0,
+			                own,
+			                MAXX(
+			                    FILTER(borrowPool, 'Snapshot'[ItemSKey] = itm && 'Snapshot'[Branch Plant] = bu),
+			                    'Snapshot'[Unit Cost (Lot)]
+			                )
+			            )
+			        VAR cur = RELATED('Company'[Currency Code])
+			        VAR fx =
+			            IF(
+			                cur = "USD",
+			                1.0,
+			                LOOKUPVALUE('FX Rate'[Exchange Rate (to USD)], 'FX Rate'[Currency], cur, 'FX Rate'[Rate Date], d)
+			            )
+			        RETURN 'Snapshot'[Quantity on Hand] * cost * fx
+			    )
+		formatString: #,0.00
+		displayFolder: Report Engine
+		lineageTag: 14a1da07-0000-4000-8000-000000000084
+
+	measure 'OH EUR' =
+			VAR d = MAX('Select Date'[Date])
+			VAR fxE = LOOKUPVALUE('FX Rate'[Exchange Rate (to USD)], 'FX Rate'[Currency], "EUR", 'FX Rate'[Rate Date], d)
+			VAR borrowPool =
+			    FILTER(
+			        ALL('Snapshot'),
+			        VAR md2 = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			        RETURN 'Snapshot'[ItemCostSKey] <> -1
+			            && md2 >= 'Snapshot'[Interval Start]
+			            && md2 <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			            && 'Snapshot'[Has Item Match]
+			            && 'Snapshot'[Has Lot Match]
+			            && 'Snapshot'[Has Company Match]
+			            && 'Snapshot'[In Family Scope]
+			    )
+			RETURN
+			    SUMX(
+			        FILTER(
+			            'Snapshot',
+			            VAR md = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			            RETURN 'Snapshot'[Quantity on Hand] > 0
+			                && md >= 'Snapshot'[Interval Start]
+			                && md <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			                && 'Snapshot'[Has Item Match]
+			                && 'Snapshot'[Has Lot Match]
+			                && 'Snapshot'[Has Company Match]
+			                && 'Snapshot'[In Family Scope]
+			        ),
+			        VAR itm = 'Snapshot'[ItemSKey]
+			        VAR bu = 'Snapshot'[Branch Plant]
+			        VAR own = 'Snapshot'[Unit Cost (Lot)]
+			        VAR cost =
+			            IF(
+			                own <> 0,
+			                own,
+			                MAXX(
+			                    FILTER(borrowPool, 'Snapshot'[ItemSKey] = itm && 'Snapshot'[Branch Plant] = bu),
+			                    'Snapshot'[Unit Cost (Lot)]
+			                )
+			            )
+			        VAR cur = RELATED('Company'[Currency Code])
+			        VAR fxeur =
+			            SWITCH(
+			                TRUE(),
+			                cur = "EUR", 1.0,
+			                cur = "USD", DIVIDE(1.0, fxE),
+			                DIVIDE(LOOKUPVALUE('FX Rate'[Exchange Rate (to USD)], 'FX Rate'[Currency], cur, 'FX Rate'[Rate Date], d), fxE)
+			            )
+			        RETURN 'Snapshot'[Quantity on Hand] * cost * fxeur
+			    )
+		formatString: #,0.00
+		displayFolder: Report Engine
+		lineageTag: 14a1da07-0000-4000-8000-000000000085
+
+	measure 'Cost Source' =
+			VAR d = MAX('Select Date'[Date])
+			VAR pop =
+			    FILTER(
+			        'Snapshot',
+			        VAR md = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			        RETURN 'Snapshot'[Quantity on Hand] > 0
+			            && md >= 'Snapshot'[Interval Start]
+			            && md <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			            && 'Snapshot'[Has Item Match]
+			            && 'Snapshot'[Has Lot Match]
+			            && 'Snapshot'[Has Company Match]
+			            && 'Snapshot'[In Family Scope]
+			    )
+			VAR own = MAXX(pop, 'Snapshot'[Unit Cost (Lot)])
+			VAR itm = MAXX(pop, 'Snapshot'[ItemSKey])
+			VAR bu = MAXX(pop, 'Snapshot'[Branch Plant])
+			VAR borrowed =
+			    MAXX(
+			        FILTER(
+			            ALL('Snapshot'),
+			            VAR md2 = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			            RETURN 'Snapshot'[ItemSKey] = itm
+			                && 'Snapshot'[Branch Plant] = bu
+			                && 'Snapshot'[ItemCostSKey] <> -1
+			                && md2 >= 'Snapshot'[Interval Start]
+			                && md2 <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			        ),
+			        'Snapshot'[Unit Cost (Lot)]
+			    )
+			RETURN
+			    IF(
+			        COUNTROWS(pop) = 0,
+			        BLANK(),
+			        SWITCH(
+			            TRUE(),
+			            own <> 0, "Own lot cost",
+			            NOT ISBLANK(borrowed), "Borrowed from item/branch cost carrier",
+			            "No cost available"
+			        )
+			    )
+		displayFolder: Report Engine
+		lineageTag: 14a1da07-0000-4000-8000-000000000086
+
+	measure 'Output Rows' =
+			VAR d = MAX('Select Date'[Date])
+			RETURN
+			    COUNTROWS(
+			        SUMMARIZE(
+			            FILTER(
+			                'Snapshot',
+			                VAR md = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			                RETURN 'Snapshot'[Quantity on Hand] > 0
+			                    && md >= 'Snapshot'[Interval Start]
+			                    && md <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			                    && 'Snapshot'[Has Item Match]
+			                    && 'Snapshot'[Has Lot Match]
+			                    && 'Snapshot'[Has Company Match]
+			                    && 'Snapshot'[In Family Scope]
+			            ),
+			            'Snapshot'[Region],
+			            'Snapshot'[Branch Plant],
+			            'Snapshot'[Global Bulk Item],
+			            'Snapshot'[Bulk Item],
+			            'Snapshot'[2nd Item Number],
+			            'Snapshot'[Stock Type Code],
+			            'Snapshot'[GL Class Code],
+			            'Snapshot'[Location],
+			            'Snapshot'[Lot Number],
+			            'Snapshot'[Supplier Lot Number],
+			            'Snapshot'[Lot Status (Position)],
+			            'Snapshot'[Master Planning Family],
+			            'Snapshot'[Primary Unit of Measure],
+			            'Snapshot'[On Hand Date],
+			            'Snapshot'[Lot Expiry Date],
+			            'Snapshot'[Memo Lot 1],
+			            'Snapshot'[Memo Lot 2],
+			            'Snapshot'[Commodity Class Description],
+			            'Snapshot'[Commodity Sub Class Description]
+			        )
+			    )
+		formatString: #,0
+		displayFolder: Report Engine
+		lineageTag: 14a1da07-0000-4000-8000-000000000087
+
+	measure 'Escor On Hand' =
+			VAR d = MAX('Select Date'[Date])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            'Snapshot',
+			            VAR md = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			            RETURN 'Snapshot'[Quantity on Hand] > 0
+			                && md >= 'Snapshot'[Interval Start]
+			                && md <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			                && 'Snapshot'[Has Item Match]
+			                && 'Snapshot'[Has Lot Match]
+			                && 'Snapshot'[Global Bulk Item] = "ESC5200"
+			        ),
+			        'Snapshot'[Quantity on Hand]
+			    )
+		formatString: #,0.00
+		displayFolder: Report Engine
+		lineageTag: 14a1da07-0000-4000-8000-000000000088
+
+	measure 'Escor OH KGs' =
+			VAR d = MAX('Select Date'[Date])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            'Snapshot',
+			            VAR md = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			            RETURN 'Snapshot'[Quantity on Hand] > 0
+			                && md >= 'Snapshot'[Interval Start]
+			                && md <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			                && 'Snapshot'[Has Item Match]
+			                && 'Snapshot'[Has Lot Match]
+			                && 'Snapshot'[Global Bulk Item] = "ESC5200"
+			        ),
+			        'Snapshot'[Quantity KGs (No Guard)]
+			    )
+		formatString: #,0.00
+		displayFolder: Report Engine
+		lineageTag: 14a1da07-0000-4000-8000-000000000089
+
+	measure 'Escor OH LBs' =
+			VAR d = MAX('Select Date'[Date])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            'Snapshot',
+			            VAR md = IF('Snapshot'[CompanySKey] = 2, d + 1, d)
+			            RETURN 'Snapshot'[Quantity on Hand] > 0
+			                && md >= 'Snapshot'[Interval Start]
+			                && md <= COALESCE('Snapshot'[Interval Stop], DATE(9999, 12, 31))
+			                && 'Snapshot'[Has Item Match]
+			                && 'Snapshot'[Has Lot Match]
+			                && 'Snapshot'[Global Bulk Item] = "ESC5200"
+			        ),
+			        'Snapshot'[Quantity LBs (No Guard)]
+			    )
+		formatString: #,0.00
+		displayFolder: Report Engine
+		lineageTag: 14a1da07-0000-4000-8000-00000000008a
+
+	measure 'Escor Inventory Date' =
+			VAR q = [Escor On Hand]
+			RETURN
+			    IF(NOT ISBLANK(q), MAX('Select Date'[Date]))
+		formatString: d MMM, yyyy
+		displayFolder: Report Engine
+		lineageTag: 14a1da07-0000-4000-8000-00000000008b
+
+	column ItemSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 14a1da07-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: ItemSKey
+
+		annotation SummarizationSetBy = User
+
+	column LotSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 14a1da07-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: LotSKey
+
+		annotation SummarizationSetBy = User
+
+	column CompanySKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 14a1da07-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: CompanySKey
+
+		annotation SummarizationSetBy = User
+
+	column ItemCostSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 14a1da07-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: ItemCostSKey
+
+		annotation SummarizationSetBy = User
+
+	column 'Item Short ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 14a1da07-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Item Short ID
+
+		annotation SummarizationSetBy = User
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 14a1da07-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: 14a1da07-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Number'
+		dataType: string
+		lineageTag: 14a1da07-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Lot Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Status (Position)'
+		dataType: string
+		lineageTag: 14a1da07-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Lot Status (Position)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GL Class Code'
+		dataType: string
+		lineageTag: 14a1da07-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: GL Class Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Primary Unit of Measure'
+		dataType: string
+		lineageTag: 14a1da07-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Primary Unit of Measure
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quantity on Hand'
+		dataType: double
+		lineageTag: 14a1da07-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Quantity on Hand
+
+		annotation SummarizationSetBy = User
+
+	column 'Unit Cost (Lot)'
+		dataType: double
+		lineageTag: 14a1da07-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: Unit Cost (Lot)
+
+		annotation SummarizationSetBy = User
+
+	column 'Last Receipt Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 14a1da07-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: Last Receipt Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Interval Start'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 14a1da07-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: Interval Start
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Interval Stop'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 14a1da07-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: Interval Stop
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region = SWITCH('Snapshot'[Branch Plant], "CINC", "Americas", "CIN2", "Americas", "CIN4", "Americas", "AUBA", "Aubange", "AUB2", "Aubange", "SING", "Singapore", "SNG4", "Singapore", "MUM3", "India", "SHAN", "China", "ERROR")
+		displayFolder: Joined via RELATED
+		lineageTag: 14a1da07-0000-4000-8000-000000000020
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk Item' = RELATED('Item'[Global Bulk Item])
+		displayFolder: Joined via RELATED
+		lineageTag: 14a1da07-0000-4000-8000-000000000021
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item' = RELATED('Item'[Bulk Item])
+		displayFolder: Joined via RELATED
+		lineageTag: 14a1da07-0000-4000-8000-000000000022
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number' = RELATED('Item'[2nd Item Number])
+		displayFolder: Joined via RELATED
+		lineageTag: 14a1da07-0000-4000-8000-000000000023
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supplier Lot Number' = RELATED('Lot'[Supplier Lot Number])
+		displayFolder: Joined via RELATED
+		lineageTag: 14a1da07-0000-4000-8000-000000000028
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'On Hand Date' = RELATED('Lot'[On Hand Date])
+		formatString: d MMM, yyyy
+		displayFolder: Joined via RELATED
+		lineageTag: 14a1da07-0000-4000-8000-000000000029
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Expiry Date' = RELATED('Lot'[Lot Expiry Date])
+		formatString: d MMM, yyyy
+		displayFolder: Joined via RELATED
+		lineageTag: 14a1da07-0000-4000-8000-00000000002a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sell by Date' = RELATED('Lot'[Sell by Date])
+		formatString: d MMM, yyyy
+		displayFolder: Joined via RELATED
+		lineageTag: 14a1da07-0000-4000-8000-00000000002b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Memo Lot 1' = RELATED('Lot'[Memo Lot 1])
+		displayFolder: Joined via RELATED
+		lineageTag: 14a1da07-0000-4000-8000-00000000002c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Memo Lot 2' = RELATED('Lot'[Memo Lot 2])
+		displayFolder: Joined via RELATED
+		lineageTag: 14a1da07-0000-4000-8000-00000000002d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Status (Master)' = RELATED('Lot'[Lot Status (Master)])
+		displayFolder: Joined via RELATED
+		lineageTag: 14a1da07-0000-4000-8000-00000000002e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Currency Code' = RELATED('Company'[Currency Code])
+		displayFolder: Joined via RELATED
+		lineageTag: 14a1da07-0000-4000-8000-00000000002f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Has Item Match' = NOT ISBLANK(RELATED('Item'[ItemSKey]))
+		displayFolder: Scope (WHERE clause)
+		lineageTag: 14a1da07-0000-4000-8000-000000000034
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Has Lot Match' = NOT ISBLANK(RELATED('Lot'[LotSKey]))
+		displayFolder: Scope (WHERE clause)
+		lineageTag: 14a1da07-0000-4000-8000-000000000035
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Has Company Match' = NOT ISBLANK(RELATED('Company'[CompanySKey]))
+		displayFolder: Scope (WHERE clause)
+		lineageTag: 14a1da07-0000-4000-8000-000000000036
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'In Family Scope' = 'Snapshot'[Master Planning Family] IN {"ATP", "ETP", "FBW", "FCB", "FEC", "FRC", "RAW", "RBW", "RCB", "REC", "RRC", "RWW", "TOL", "WAG"}
+		displayFolder: Scope (WHERE clause)
+		lineageTag: 14a1da07-0000-4000-8000-000000000037
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'KG per Primary Unit (Dim)' =
+			VAR itm = 'Snapshot'[Item Short ID]
+			VAR bu = 'Snapshot'[Branch Plant]
+			VAR exact = FILTER('UOM Conversion', 'UOM Conversion'[Item Short ID] = itm && 'UOM Conversion'[Branch Plant] = bu)
+			VAR fallback = FILTER('UOM Conversion', 'UOM Conversion'[Item Short ID] = itm && 'UOM Conversion'[Branch Plant] = "")
+			VAR bestExact = TOPN(1, exact, 'UOM Conversion'[Primary Preference], ASC, 'UOM Conversion'[From UOM], ASC)
+			VAR bestFallback = TOPN(1, fallback, 'UOM Conversion'[Primary Preference], ASC, 'UOM Conversion'[From UOM], ASC)
+			RETURN
+			    IF(COUNTROWS(exact) > 0, MINX(bestExact, 'UOM Conversion'[KG per Primary Unit]), MINX(bestFallback, 'UOM Conversion'[KG per Primary Unit]))
+		dataType: double
+		displayFolder: Weights (KG-LB)
+		lineageTag: 14a1da07-0000-4000-8000-000000000040
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+	column 'LB per Primary Unit (Dim)' =
+			VAR itm = 'Snapshot'[Item Short ID]
+			VAR bu = 'Snapshot'[Branch Plant]
+			VAR exact = FILTER('UOM Conversion', 'UOM Conversion'[Item Short ID] = itm && 'UOM Conversion'[Branch Plant] = bu)
+			VAR fallback = FILTER('UOM Conversion', 'UOM Conversion'[Item Short ID] = itm && 'UOM Conversion'[Branch Plant] = "")
+			VAR bestExact = TOPN(1, exact, 'UOM Conversion'[Primary Preference], ASC, 'UOM Conversion'[From UOM], ASC)
+			VAR bestFallback = TOPN(1, fallback, 'UOM Conversion'[Primary Preference], ASC, 'UOM Conversion'[From UOM], ASC)
+			RETURN
+			    IF(COUNTROWS(exact) > 0, MINX(bestExact, 'UOM Conversion'[LB per Primary Unit]), MINX(bestFallback, 'UOM Conversion'[LB per Primary Unit]))
+		dataType: double
+		displayFolder: Weights (KG-LB)
+		lineageTag: 14a1da07-0000-4000-8000-000000000041
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+	column 'Weight Source' = SWITCH(TRUE(), 'Snapshot'[Primary Unit of Measure] = "KG" || 'Snapshot'[Primary Unit of Measure] = "LB", "Constant (KG/LB primary)", 'Snapshot'[KG per Primary Unit (Dim)] < 0, "DW sentinel -1: x20 KG / x44 LB", ISBLANK('Snapshot'[KG per Primary Unit (Dim)]), "No conversion row", "Dim factor per primary unit")
+		displayFolder: Weights (KG-LB)
+		lineageTag: 14a1da07-0000-4000-8000-000000000042
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quantity KGs' =
+			VAR raw = 'Snapshot'[Quantity on Hand] * 'Snapshot'[KG per Primary Unit (Dim)]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        'Snapshot'[Primary Unit of Measure] = "KG", 'Snapshot'[Quantity on Hand],
+			        'Snapshot'[Primary Unit of Measure] = "LB", 'Snapshot'[Quantity on Hand] * 0.45359237,
+			        raw < 0, -raw * 20,
+			        raw
+			    )
+		displayFolder: Weights (KG-LB)
+		lineageTag: 14a1da07-0000-4000-8000-000000000043
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+	column 'Quantity LBs' =
+			VAR raw = 'Snapshot'[Quantity on Hand] * 'Snapshot'[LB per Primary Unit (Dim)]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        'Snapshot'[Primary Unit of Measure] = "LB", 'Snapshot'[Quantity on Hand],
+			        'Snapshot'[Primary Unit of Measure] = "KG", 'Snapshot'[Quantity on Hand] * 2.20462262,
+			        raw < 0, -raw * 44,
+			        raw
+			    )
+		displayFolder: Weights (KG-LB)
+		lineageTag: 14a1da07-0000-4000-8000-000000000044
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+	column 'Quantity KGs (No Guard)' =
+			SWITCH(
+			    TRUE(),
+			    'Snapshot'[Primary Unit of Measure] = "KG", 'Snapshot'[Quantity on Hand],
+			    'Snapshot'[Primary Unit of Measure] = "LB", 'Snapshot'[Quantity on Hand] * 0.45359237,
+			    'Snapshot'[Quantity on Hand] * 'Snapshot'[KG per Primary Unit (Dim)]
+			)
+		displayFolder: Weights (KG-LB)
+		lineageTag: 14a1da07-0000-4000-8000-000000000045
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+	column 'Quantity LBs (No Guard)' =
+			SWITCH(
+			    TRUE(),
+			    'Snapshot'[Primary Unit of Measure] = "LB", 'Snapshot'[Quantity on Hand],
+			    'Snapshot'[Primary Unit of Measure] = "KG", 'Snapshot'[Quantity on Hand] * 2.20462262,
+			    'Snapshot'[Quantity on Hand] * 'Snapshot'[LB per Primary Unit (Dim)]
+			)
+		displayFolder: Weights (KG-LB)
+		lineageTag: 14a1da07-0000-4000-8000-000000000046
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+	column 'Stock Type Code'
+		dataType: string
+		displayFolder: Joined in SQL (Item Branch)
+		lineageTag: 14a1da07-0000-4000-8000-0000000000a1
+		summarizeBy: none
+		sourceColumn: Stock Type Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Master Planning Family'
+		dataType: string
+		displayFolder: Joined in SQL (Item Branch)
+		lineageTag: 14a1da07-0000-4000-8000-0000000000a2
+		summarizeBy: none
+		sourceColumn: Master Planning Family
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Commodity Class Description'
+		dataType: string
+		displayFolder: Joined in SQL (Item Branch)
+		lineageTag: 14a1da07-0000-4000-8000-0000000000a3
+		summarizeBy: none
+		sourceColumn: Commodity Class Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Commodity Sub Class Description'
+		dataType: string
+		displayFolder: Joined in SQL (Item Branch)
+		lineageTag: 14a1da07-0000-4000-8000-0000000000a4
+		summarizeBy: none
+		sourceColumn: Commodity Sub Class Description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Snapshot = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    WinStart = Date.ToText(Date.AddMonths(Date.From(DateTime.LocalNow()), -13), "yyyy-MM-dd"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				
+				        SELECT z.ItemSKey, z.BU, z.StockType, z.MPF, z.CommodityClassDesc, z.CommoditySubClassDesc
+				        INTO #ib
+				        FROM (
+				            SELECT ib.ItemSKey,
+				                   ISNULL(LTRIM(RTRIM(ib.[Business Unit])), '') AS BU,
+				                   ib.[Stocking Type]                  AS StockType,
+				                   ib.[Master Planning Family]         AS MPF,
+				                   ib.[Commodity Class Codes Desc]     AS CommodityClassDesc,
+				                   ib.[Commodity Sub Class Codes Desc] AS CommoditySubClassDesc,
+				                   ROW_NUMBER() OVER (PARTITION BY ib.ItemSKey, ISNULL(LTRIM(RTRIM(ib.[Business Unit])), '')
+				                                      ORDER BY ib.ItemBranchSKey) AS rn
+				            FROM BIQL.TbItemBranch ib
+				        ) z
+				        WHERE z.rn = 1;
+				
+				        CREATE UNIQUE CLUSTERED INDEX ix_ib ON #ib (ItemSKey, BU);
+				
+				        SELECT
+				            snap.ItemSKey                             AS [ItemSKey],
+				            snap.LotSKey                              AS [LotSKey],
+				            snap.CompanySKey                          AS [CompanySKey],
+				            snap.ItemCostSKey                         AS [ItemCostSKey],
+				            snap.ItemNumShort                         AS [Item Short ID],
+				            LTRIM(RTRIM(snap.BusinessUnit))           AS [Branch Plant],
+				            LTRIM(RTRIM(snap.Location))               AS [Location],
+				            LTRIM(RTRIM(snap.LotNum))                 AS [Lot Number],
+				            snap.LotStatusCode                        AS [Lot Status (Position)],
+				            snap.CategoryGLF41021                     AS [GL Class Code],
+				            LTRIM(RTRIM(snap.UOMPrimary))             AS [Primary Unit of Measure],
+				            snap.QuantityOnHandPrimaryUOM             AS [Quantity on Hand],
+				            snap.AmountUnitCost                       AS [Unit Cost (Lot)],
+				            snap.LastReceiptDate                      AS [Last Receipt Date],
+				            snap.StartDate                            AS [Interval Start],
+				            snap.StopDate                             AS [Interval Stop],
+				            ib.StockType                              AS [Stock Type Code],
+				            ib.MPF                                    AS [Master Planning Family],
+				            ib.CommodityClassDesc                     AS [Commodity Class Description],
+				            ib.CommoditySubClassDesc                  AS [Commodity Sub Class Description]
+				        FROM dbo.FactInventorySnapshot_History snap
+				            LEFT JOIN #ib ib ON ib.ItemSKey = snap.ItemSKey
+				                            AND ib.BU = LTRIM(RTRIM(snap.BusinessUnit))
+				        WHERE (snap.StopDate IS NULL OR snap.StopDate >= CAST('" & WinStart & "' AS date))
+				          AND LTRIM(RTRIM(snap.BusinessUnit)) IN ('CINC','CIN2','CIN4','AUBA','AUB2','SING','SNG4','MUM3','SHAN')
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

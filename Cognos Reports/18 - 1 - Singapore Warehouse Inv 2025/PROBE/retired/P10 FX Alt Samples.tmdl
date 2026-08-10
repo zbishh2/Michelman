@@ -1,0 +1,55 @@
+table 'P10 FX Alt Samples'
+	lineageTag: 18000b00-0000-4000-8000-000000000001
+
+	column Src
+		dataType: string
+		lineageTag: 18000b01-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Src
+
+		annotation SummarizationSetBy = Automatic
+
+	column RowJson
+		dataType: string
+		lineageTag: 18000b01-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: RowJson
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P10 FX Alt Samples' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT 'DimCurrencyExchangeRatesUSDDaily' AS Src, x.RowJson
+				        FROM (SELECT TOP 25 (SELECT t.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER) AS RowJson
+				              FROM BIQL.DimCurrencyExchangeRatesUSDDaily t) x
+				        UNION ALL
+				        SELECT 'DimCurrencyCrossRatesCalc', x.RowJson
+				        FROM (SELECT TOP 25 (SELECT t.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER) AS RowJson
+				              FROM BIQL.DimCurrencyCrossRatesCalc t) x
+				        UNION ALL
+				        SELECT 'TbCurrencyRates', x.RowJson
+				        FROM (SELECT TOP 25 (SELECT t.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER) AS RowJson
+				              FROM BIQL.TbCurrencyRates t) x
+				        UNION ALL
+				        SELECT 'CurrencyRatesTo', x.RowJson
+				        FROM (SELECT TOP 25 (SELECT t.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER) AS RowJson
+				              FROM BIQL.CurrencyRatesTo t) x
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"Src", type text},
+							{"RowJson", type text}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

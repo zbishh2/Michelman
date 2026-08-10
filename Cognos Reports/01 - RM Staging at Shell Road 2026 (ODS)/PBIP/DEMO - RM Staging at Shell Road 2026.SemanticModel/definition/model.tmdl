@@ -1,0 +1,25 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["RM Requirements","WorkOrder_Detail","Shortage_Detail","Last Refreshed"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.144.1378.0 (25.06)+cba1e61f16ea36d44901f06fa446299040122394
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 'RM Requirements'
+ref table WorkOrder_Detail
+ref table DateTableTemplate_13e223e7-872e-4324-a83f-c056e37bd3a0
+ref table LocalDateTable_b0ce310d-f69f-4679-b646-c317e1e587fd
+ref table Shortage_Detail
+ref table 'Last Refreshed'
+
+ref cultureInfo en-US
+

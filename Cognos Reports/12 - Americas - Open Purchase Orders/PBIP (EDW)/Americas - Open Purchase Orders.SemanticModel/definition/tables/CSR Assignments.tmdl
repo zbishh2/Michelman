@@ -1,0 +1,72 @@
+table 'CSR Assignments'
+	lineageTag: 619a1bf2-3442-4742-bde2-188031e9c4a4
+
+	column 'Ship To'
+		dataType: int64
+		formatString: 0
+		lineageTag: 9df8a542-3b00-43e0-8121-5ea11acf1961
+		summarizeBy: none
+		sourceColumn: Ship To
+
+		annotation SummarizationSetBy = Automatic
+
+	column Company
+		dataType: string
+		lineageTag: e015da38-6224-47e5-b080-e2c88fa57491
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Rep AN8'
+		dataType: int64
+		formatString: 0
+		lineageTag: 82443a11-163c-46a6-8085-5fb29b16f317
+		summarizeBy: none
+		sourceColumn: Rep AN8
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CSR Name'
+		dataType: string
+		lineageTag: 8e5a7469-52c2-4aed-ac2b-2739f12cbbbe
+		summarizeBy: none
+		sourceColumn: CSR Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'CSR Assignments' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            c.CMAN8                     AS [Ship To],
+				            LTRIM(RTRIM(c.CMCO))        AS [Company],
+				            c.CMSLSM                    AS [Rep AN8],
+				            LTRIM(RTRIM(w.WWMLNM))      AS [CSR Name]
+				        FROM PRODDTA.F42140 c
+				        LEFT JOIN PRODDTA.F0111 w ON w.WWAN8 = c.CMSLSM AND w.WWIDLN = 0
+				        WHERE LTRIM(RTRIM(c.CMRTYPE)) = 'CSR'
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Ship To", Int64.Type},
+				            {"Company", type text},
+				            {"Rep AN8", Int64.Type},
+				            {"CSR Name", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

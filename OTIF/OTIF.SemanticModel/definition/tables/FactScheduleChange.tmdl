@@ -1,0 +1,412 @@
+table FactScheduleChange
+	lineageTag: 7a3ac822-1e32-4e20-9ba7-3623ed8d29a6
+
+	/// [OTIF Episodes (latest line/reason only)] multiplied by [Avg Days Moved], scaled by one tenth. Bubble-size input, combining how often a reason occurs with how far it moves the date.
+	measure Size = ([OTIF Episodes (latest line/reason only)]*[Avg Days Moved])/10
+		formatString: 0
+		lineageTag: acbf6d47-9791-48b8-8aaf-53066ab71525
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column OrderCompany
+		dataType: string
+		lineageTag: 0933d816-61bf-4225-83a4-25a24526280b
+		summarizeBy: none
+		sourceColumn: OrderCompany
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderNumber
+		dataType: string
+		lineageTag: 45460c98-9e17-4b99-8313-a72a57d32ba9
+		summarizeBy: none
+		sourceColumn: OrderNumber
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderType
+		dataType: string
+		lineageTag: 7481bbde-c602-479f-a360-f434937631c1
+		summarizeBy: none
+		sourceColumn: OrderType
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderSuffix
+		dataType: string
+		lineageTag: b137ebd0-2a9e-40d9-98d0-f27d80c66e29
+		summarizeBy: none
+		sourceColumn: OrderSuffix
+
+		annotation SummarizationSetBy = Automatic
+
+	column LineNumber
+		dataType: double
+		formatString: 0
+		lineageTag: 98717529-8632-42ce-894a-9c9258486f94
+		summarizeBy: sum
+		sourceColumn: LineNumber
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column BusinessUnit
+		dataType: string
+		lineageTag: 7c403322-9054-4775-9d8b-e7440cac6140
+		summarizeBy: none
+		sourceColumn: BusinessUnit
+
+		annotation SummarizationSetBy = Automatic
+
+	column Item
+		dataType: string
+		lineageTag: 19e8b637-5ebc-4929-9e2a-e4019a7b8a68
+		summarizeBy: none
+		sourceColumn: Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChangeDate
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: fbf9a825-5657-4c27-8a27-9930b7bf7619
+		summarizeBy: none
+		sourceColumn: ChangeDate
+
+		variation Variation
+			isDefault
+			relationship: ebc6de70-2c95-43aa-a904-ba36876b539a
+			defaultHierarchy: LocalDateTable_d7c46811-2d3d-4b3c-8877-e021009cb7f0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column ChangeTime
+		dataType: int64
+		formatString: 0
+		lineageTag: 0fe19ddf-2db0-4193-a20c-f5f138822c50
+		summarizeBy: sum
+		sourceColumn: ChangeTime
+
+		annotation SummarizationSetBy = Automatic
+
+	column FromPromisedDate
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: df025fe2-6fe0-4058-9689-1a96f38b6886
+		summarizeBy: none
+		sourceColumn: FromPromisedDate
+
+		variation Variation
+			isDefault
+			relationship: 51eff012-ce28-430f-9fd9-19e7be91248e
+			defaultHierarchy: LocalDateTable_80ff6d6a-2ee6-41a8-bc28-633b6127c93f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column ToPromisedDate
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: bc5f16a2-5124-4b90-89df-63fdbb7286d6
+		summarizeBy: none
+		sourceColumn: ToPromisedDate
+
+		variation Variation
+			isDefault
+			relationship: 1c68a5d3-a513-4951-b110-f61ad1d0d97f
+			defaultHierarchy: LocalDateTable_c1a2bcc3-4a2c-4112-9d48-e414710678dc.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column DaysMoved
+		dataType: int64
+		formatString: 0
+		lineageTag: 99b8bade-8173-4e6a-a141-ac16aeed3bb3
+		summarizeBy: sum
+		sourceColumn: DaysMoved
+
+		annotation SummarizationSetBy = Automatic
+
+	column RevisionReason
+		dataType: string
+		lineageTag: 29ab6805-dba1-4450-a0dd-adc707531161
+		summarizeBy: none
+		sourceColumn: RevisionReason
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChangedByUser
+		dataType: string
+		lineageTag: 84915f7e-100d-49d3-98f2-073dc0ec94fc
+		summarizeBy: none
+		sourceColumn: ChangedByUser
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProgramID
+		dataType: string
+		lineageTag: b3c025a4-6910-45a5-8077-fc131702c3c1
+		summarizeBy: none
+		sourceColumn: ProgramID
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsAutomatedBatch
+		dataType: int64
+		formatString: 0
+		lineageTag: 83dab626-4c2b-4bab-867b-7be6b5e8cb0c
+		summarizeBy: sum
+		sourceColumn: IsAutomatedBatch
+
+		annotation SummarizationSetBy = Automatic
+
+	column NextStatus
+		dataType: string
+		lineageTag: b61dcea6-68df-428d-82d3-fb2ae5d3ce73
+		summarizeBy: none
+		sourceColumn: NextStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastStatus
+		dataType: string
+		lineageTag: c1f6a55f-9937-4be6-a53c-581fcd3c04bd
+		summarizeBy: none
+		sourceColumn: LastStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Line-grain key: OrderCompany, OrderNumber, OrderType and LineNumber joined by commas, with the line number divided by 1000 and formatted to three decimals. Joins the revision ledger to FactSalesDetail.
+	column OrderLineID = ```
+			
+			    FactScheduleChange[OrderCompany] & ","
+			    & FORMAT(FactScheduleChange[OrderNumber],"0") & ","
+			    & FactScheduleChange[OrderType] & ","
+			    & FORMAT(FactScheduleChange[LineNumber] / 1000, "0.000")
+			```
+		lineageTag: 0f3c8ec4-4eac-48d9-8474-8364c665738d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// TRUE when the revision's effective reason code is flagged OTIF in Reason Codes and the revision has not been excluded in the Revision Log Editor. This is the predicate behind every late count.
+	column 'Is OTIF Relevant' =
+			INT(
+			    UPPER(TRIM(RELATED('Reason Codes'[OTIF]))) = "X"
+			        && NOT FactScheduleChange[Excluded]
+			)
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 0567255e-7c1a-43b8-ac44-6d1fee247061
+		summarizeBy: none
+
+	/// Numeric 1/0 form of [Is OTIF Relevant], for expressions that need to compare or sum it rather than filter on a boolean.
+	column 'OTIF Relevant' = IF(FactScheduleChange[Is OTIF Relevant]=FALSE(),0,1)
+		formatString: 0
+		lineageTag: 9fd3a1ce-7740-4edb-890b-f4bdea9ef048
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Actual Ship Date pulled from the related order line, so revisions can be placed on a ship-date axis instead of ChangeDate.
+	column 'Ship Date' = RELATED('FactSalesDetail'[Actual Ship Date])
+		formatString: General Date
+		lineageTag: fb1476f3-b05d-4721-ae91-63f2b163c979
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: 1a341cfb-4354-4b34-bbc1-f2397758a159
+			defaultHierarchy: LocalDateTable_9f1c37b3-6910-4f50-a92c-1ea14253a6b7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	/// 1 on the revision with the most recent ChangeDate within each (OrderLineID, RevisionReason) group, else 0. Deduplicates repeated revisions carrying the same reason.
+	column 'Is Latest Line-Reason Change' =
+			VAR LatestForGroup =
+			    CALCULATE (
+			        MAX ( FactScheduleChange[ChangeDate] ),
+			        ALLEXCEPT (
+			            FactScheduleChange,
+			            FactScheduleChange[OrderLineID],
+			            FactScheduleChange[RevisionReason]
+			        )
+			    )
+			RETURN
+			    IF ( FactScheduleChange[ChangeDate] = LatestForGroup, 1, 0 )
+		dataType: int64
+		formatString: 0
+		lineageTag: 8f62f79e-f75d-41d5-a2ce-11bc337bbdcb
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Forward movement of the promised date on this revision: ToPromisedDate minus FromPromisedDate, floored at 0 so pull-ins count as no movement.
+	column 'Days Moved' = IF(FactScheduleChange[ToPromisedDate]-FactScheduleChange[FromPromisedDate]>=0,FactScheduleChange[ToPromisedDate]-FactScheduleChange[FromPromisedDate],0)
+		dataType: int64
+		formatString: 0.0
+		lineageTag: eef60c4a-fe5b-4ade-9cfc-6fc0873b4a2b
+		summarizeBy: sum
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Opaque writeback key: Order Line ID | ChangeDate yyyy-MM-dd | ChangeTime. Bind to the Revision Log Editor visual's revisionKey field well. Defined ONLY in the M query.
+	column RevisionKey
+		dataType: string
+		lineageTag: 7253cea6-88d4-46a4-b91b-c2bdbe12a804
+		summarizeBy: none
+		sourceColumn: RevisionKey
+
+	/// As-reported JDE reason code (SLRFRV) before any user overwrite. RevisionReason holds the effective (overridden) code.
+	column RevisionReasonOriginal
+		dataType: string
+		lineageTag: 182dcacd-de49-423d-8180-c21b29105b2d
+		summarizeBy: none
+		sourceColumn: RevisionReasonOriginal
+
+	/// User overwrite from the Revision Log Editor visual (D1 revision_overrides), null if none.
+	column RevisionReasonOverride
+		dataType: string
+		lineageTag: eee24b2a-2d6e-4aad-bc10-4085a3734132
+		summarizeBy: none
+		sourceColumn: RevisionReasonOverride
+
+	/// User note attached to the revision override (D1 revision_overrides).
+	column OverrideNote
+		dataType: string
+		lineageTag: 9c555b04-c76c-4118-9e31-4ee87fb4277a
+		summarizeBy: none
+		sourceColumn: OverrideNote
+
+	/// User voided this revision event in the Revision Log Editor; excluded from [Is OTIF Relevant].
+	column Excluded
+		dataType: boolean
+		lineageTag: 19f2088f-5a53-41e1-9713-ed26a3e4cfd7
+		summarizeBy: none
+		sourceColumn: Excluded
+
+	/// OTIF relevance scored on the original JDE reason code, ignoring Revision Log Editor overrides and exclusions.
+	column 'Is OTIF Relevant (As Reported)' =
+			INT(
+			    UPPER(TRIM(
+			        LOOKUPVALUE(
+			            'Reason Codes'[OTIF],
+			            'Reason Codes'[Code], FactScheduleChange[RevisionReasonOriginal]
+			        )
+			    )) = "X"
+			)
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e49e7702-664c-4237-93ae-28d1c54c36cb
+		summarizeBy: none
+
+	/// Reason code and its description, pulled from the related Reason Codes row for display in revision grids and slicers.
+	column 'Revision Reason & Description' = RELATED('Reason Codes'[Revision Reason & Description])
+		lineageTag: f7e5fec7-0481-4c27-9f10-5392ab337817
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactScheduleChange = m
+		mode: import
+		source =
+				// Source of truth: edw_model/FactScheduleChange.m (incl. writeback fold — see writeback/ARCHITECTURE.md)
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Fact = Value.NativeQuery(
+				        Source,
+				        "SELECT
+				            base.SLKCOO AS OrderCompany,
+				            base.SLDOCO AS OrderNumber,
+				            base.SLDCTO AS OrderType,
+				            base.SLSFXO AS OrderSuffix,
+				            base.SLLNID AS LineNumber,
+				            base.SLMCU  AS BusinessUnit,
+				            base.SLLITM AS Item,
+				            DATEADD(DAY,(base.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(base.SLUPMJ/1000),1,1)) AS ChangeDate,
+				            base.SLTDAY AS ChangeTime,
+				            CASE WHEN base.PromisedBefore IS NULL OR base.PromisedBefore=0 THEN NULL ELSE DATEADD(DAY,(base.PromisedBefore%1000)-1,DATEFROMPARTS(1900+(base.PromisedBefore/1000),1,1)) END AS FromPromisedDate,
+				            CASE WHEN base.SLPDDJ =0 THEN NULL ELSE DATEADD(DAY,(base.SLPDDJ %1000)-1,DATEFROMPARTS(1900+(base.SLPDDJ /1000),1,1)) END AS ToPromisedDate,
+				            CASE WHEN base.PromisedBefore>0 AND base.SLPDDJ>0
+				                 THEN DATEDIFF(DAY,
+				                        DATEADD(DAY,(base.PromisedBefore%1000)-1,DATEFROMPARTS(1900+(base.PromisedBefore/1000),1,1)),
+				                        DATEADD(DAY,(base.SLPDDJ %1000)-1,DATEFROMPARTS(1900+(base.SLPDDJ /1000),1,1)))
+				            END AS DaysMoved,
+				            LTRIM(RTRIM(base.SLRFRV)) AS RevisionReason,
+				            base.SLUSER AS ChangedByUser,
+				            base.SLPID  AS ProgramID,
+				            CASE WHEN base.SLPID = 'ER42950' OR base.SLUSER = 'SCHED' THEN 1 ELSE 0 END AS IsAutomatedBatch,
+				            base.SLNXTR AS NextStatus,
+				            base.SLLTTR AS LastStatus
+				        FROM (
+				            SELECT
+				                w.SLKCOO, w.SLDOCO, w.SLDCTO, w.SLSFXO, w.SLLNID, w.SLMCU, w.SLLITM,
+				                w.SLPDDJ, w.SLOPDJ, w.SLRFRV, w.SLUSER, w.SLPID, w.SLUPMJ, w.SLTDAY, w.SLNXTR, w.SLLTTR,
+				                w.PrevPDDJ, w.PrevRFRV,
+				                CASE WHEN w.PrevPDDJ IS NOT NULL AND w.PrevPDDJ>0 THEN w.PrevPDDJ
+				                     WHEN w.SLOPDJ>0 THEN w.SLOPDJ ELSE NULL END AS PromisedBefore
+				            FROM (
+				                SELECT
+				                    SLKCOO, SLDOCO, SLDCTO, SLSFXO, SLLNID, SLMCU, SLLITM,
+				                    SLPDDJ, SLOPDJ, SLRFRV, SLUSER, SLPID, SLUPMJ, SLTDAY, SLNXTR, SLLTTR,
+				                    LAG(SLPDDJ) OVER (
+				                        PARTITION BY SLKCOO, SLDOCO, SLDCTO, SLSFXO, SLLNID
+				                        ORDER BY SLUPMJ, SLTDAY
+				                    ) AS PrevPDDJ,
+				                    LAG(SLRFRV) OVER (
+				                        PARTITION BY SLKCOO, SLDOCO, SLDCTO, SLSFXO, SLLNID
+				                        ORDER BY SLUPMJ, SLTDAY
+				                    ) AS PrevRFRV
+				                FROM PRODDTA.F42199
+				                WHERE SLDCTO NOT IN ('CM','CO')
+				                  AND SLUPMJ >= 124001
+				            ) AS w
+				        ) AS base
+				        WHERE
+				            ( LTRIM(RTRIM(base.SLRFRV)) <> ''
+				              AND ( base.PrevRFRV IS NULL OR LTRIM(RTRIM(base.PrevRFRV)) <> LTRIM(RTRIM(base.SLRFRV)) ) )
+				            OR ( base.PrevPDDJ IS NOT NULL AND base.SLPDDJ <> base.PrevPDDJ )",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				
+				    // Writeback fold: RevisionOverrides (connection-only query -> Worker/D1)
+				    Overrides = Table.Buffer(RevisionOverrides),
+				    AddKey = Table.AddColumn(
+				        Fact,
+				        "RevisionKey",
+				        each [OrderCompany] & "," & Number.ToText([OrderNumber], "0", "en-US") & "," & [OrderType] & ","
+				            & Number.ToText([LineNumber] / 1000, "0.000", "en-US")
+				            & "|" & Date.ToText(DateTime.Date([ChangeDate]), "yyyy-MM-dd")
+				            & "|" & Number.ToText([ChangeTime], "0", "en-US"),
+				        type text
+				    ),
+				    JoinedOvr = Table.NestedJoin(AddKey, {"RevisionKey"}, Overrides, {"RevisionKey"}, "_ovr", JoinKind.LeftOuter),
+				    ExpandedOvr = Table.ExpandTableColumn(JoinedOvr, "_ovr", {"RevisionReasonOverride", "OverrideNote", "Excluded"}),
+				    KeepOriginal = Table.RenameColumns(ExpandedOvr, {{"RevisionReason", "RevisionReasonOriginal"}}),
+				    EffectiveReason = Table.AddColumn(
+				        KeepOriginal,
+				        "RevisionReason",
+				        each if [RevisionReasonOverride] <> null and Text.Trim([RevisionReasonOverride]) <> ""
+				             then Text.Trim([RevisionReasonOverride])
+				             else [RevisionReasonOriginal],
+				        type text
+				    ),
+				    ExcludedFlagged = Table.ReplaceValue(EffectiveReason, null, false, Replacer.ReplaceValue, {"Excluded"})
+				in
+				    ExcludedFlagged
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

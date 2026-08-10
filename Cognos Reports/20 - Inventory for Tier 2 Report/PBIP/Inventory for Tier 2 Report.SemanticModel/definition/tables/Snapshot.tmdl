@@ -1,0 +1,233 @@
+table Snapshot
+	lineageTag: 20a1a000-0000-4000-8000-000000000001
+
+	measure K_KG_TO_LB = 2.2045992
+		lineageTag: 20a1b000-0000-4000-8000-0000000000b0
+
+	measure 'Quantity on Hand LBs' = VAR DatesInContext = DISTINCTCOUNT('Snapshot'[Inventory Date]) RETURN IF(DatesInContext > 1, BLANK(), SUM('Snapshot'[Quantity on Hand LBs (Row)]))
+		formatString: #,0.00
+		lineageTag: 20a1b000-0000-4000-8000-0000000000b1
+
+	measure 'Quantity on Hand LBs (Latest in Range)' = VAR LastDate = MAX('Snapshot Date'[Date]) RETURN CALCULATE(SUM('Snapshot'[Quantity on Hand LBs (Row)]), 'Snapshot Date'[Date] = LastDate)
+		formatString: #,0.00
+		isHidden
+		lineageTag: 20a1b000-0000-4000-8000-0000000000b2
+
+	column 'Inventory Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 20a10000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Inventory Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 20a10000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 20a10000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 20a10000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 20a10000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Master Planning Family'
+		dataType: string
+		lineageTag: 20a10000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Master Planning Family
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quantity on Hand'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 20a10000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Quantity on Hand
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Primary UOM'
+		dataType: string
+		lineageTag: 20a10000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Primary UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'KG per Primary Unit'
+		dataType: double
+		isHidden
+		lineageTag: 20a10000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: KG per Primary Unit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column Location
+		dataType: string
+		lineageTag: 20a10000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Number'
+		dataType: string
+		lineageTag: 20a10000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Lot Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Status'
+		dataType: string
+		lineageTag: 20a10000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Lot Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemBranchSKey
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 20a10000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: ItemBranchSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'LB Factor Source' = SWITCH(TRUE(), 'Snapshot'[Primary UOM] = "LB", "LB primary (identity)", NOT ISBLANK('Snapshot'[KG per Primary Unit]), "Item KG factor x K", "NO FACTOR - not convertible")
+		dataType: string
+		lineageTag: 20a10000-0000-4000-8000-000000000014
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quantity on Hand LBs (Row)' = SWITCH(TRUE(), 'Snapshot'[Primary UOM] = "LB", 'Snapshot'[Quantity on Hand], NOT ISBLANK('Snapshot'[KG per Primary Unit]), 'Snapshot'[Quantity on Hand] * 'Snapshot'[KG per Primary Unit] * [K_KG_TO_LB], BLANK())
+		dataType: double
+		formatString: #,0.00
+		isHidden
+		lineageTag: 20a10000-0000-4000-8000-000000000015
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Bulk Item (Display)' = COALESCE('Snapshot'[Bulk Item], "-")
+		dataType: string
+		lineageTag: 20a10000-0000-4000-8000-000000000016
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk Item (Display)' = COALESCE('Snapshot'[Global Bulk Item], "-")
+		dataType: string
+		lineageTag: 20a10000-0000-4000-8000-000000000017
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Snapshot = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+
+				        DECLARE @lo date, @hi date;
+
+				        SELECT @lo = MIN(CASE WHEN CompanySKey = 2 THEN DATEADD(DAY, -1, StartDate) ELSE StartDate END),
+				               @hi = MAX(CASE WHEN CompanySKey = 2 THEN DATEADD(DAY, -1, StartDate) ELSE StartDate END)
+				        FROM dbo.FactInventorySnapshot_History WITH (NOLOCK)
+				        WHERE LTRIM(RTRIM(BusinessUnit)) IN ('CINC', 'CIN2');
+
+				        SELECT CAST(DATEADD(DAY, v.n, @lo) AS date) AS CalendarDate
+				        INTO #dates
+				        FROM (SELECT TOP (DATEDIFF(DAY, @lo, @hi) + 1)
+				                     ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS n
+				              FROM sys.all_objects a WITH (NOLOCK)
+				                   CROSS JOIN sys.all_objects b WITH (NOLOCK)) v;
+				        CREATE UNIQUE CLUSTERED INDEX ix_dates ON #dates (CalendarDate);
+
+				        SELECT z.ItemNumShort, z.BU, z.KGperPrim
+				        INTO #kgf
+				        FROM (SELECT k.ItemNumShort,
+				                     ISNULL(LTRIM(RTRIM(k.BusinessUnit)), '') AS BU,
+				                     k.KG / CASE WHEN LTRIM(RTRIM(k.UOM)) = LTRIM(RTRIM(k.UOMPrimary)) THEN 1.0
+				                                 ELSE NULLIF(k.ConversionFactorSecToPrim, 0) END AS KGperPrim,
+				                     ROW_NUMBER() OVER (PARTITION BY k.ItemNumShort, ISNULL(LTRIM(RTRIM(k.BusinessUnit)), '')
+				                                        ORDER BY CASE WHEN LTRIM(RTRIM(k.UOM)) = LTRIM(RTRIM(k.UOMPrimary))
+				                                                      THEN 0 ELSE 1 END, k.UOM) AS rn
+				              FROM BIQL.DimItemUOMConversionLBKG k WITH (NOLOCK)) z
+				        WHERE z.rn = 1;
+				        CREATE UNIQUE CLUSTERED INDEX ix_kgf ON #kgf (ItemNumShort, BU);
+
+				        SELECT
+				            CAST(c.CalendarDate AS date)                AS [Inventory Date],
+				            LTRIM(RTRIM(snap.BusinessUnit))             AS [Branch Plant],
+				            ib.[Item Num 2nd]                           AS [2nd Item Number],
+				            ib.[Item Bulk]                              AS [Bulk Item],
+				            ib.[Item Global Bulk]                       AS [Global Bulk Item],
+				            LTRIM(RTRIM(ib.[Master Planning Family]))   AS [Master Planning Family],
+				            snap.QuantityOnHandPrimaryUOM               AS [Quantity on Hand],
+				            LTRIM(RTRIM(snap.UOMPrimary))               AS [Primary UOM],
+				            COALESCE(kx.KGperPrim, kb.KGperPrim)        AS [KG per Primary Unit],
+				            LTRIM(RTRIM(snap.Location))                 AS [Location],
+				            LTRIM(RTRIM(snap.LotNum))                   AS [Lot Number],
+				            snap.LotStatusCode                          AS [Lot Status],
+				            snap.ItemBranchSKey                         AS [ItemBranchSKey]
+				        FROM #dates c
+				            INNER JOIN dbo.FactInventorySnapshot_History snap WITH (NOLOCK)
+				                    ON (CASE WHEN snap.CompanySKey = 2 THEN DATEADD(DAY, 1, c.CalendarDate)
+				                             ELSE c.CalendarDate END)
+				                       BETWEEN snap.StartDate AND ISNULL(snap.StopDate, '9999-12-31')
+				            INNER JOIN BIQL.TbItemBranch ib WITH (NOLOCK)
+				                    ON ib.ItemBranchSKey = snap.ItemBranchSKey
+				            LEFT  JOIN #kgf kx ON kx.ItemNumShort = snap.ItemNumShort
+				                              AND kx.BU = LTRIM(RTRIM(snap.BusinessUnit))
+				            LEFT  JOIN #kgf kb ON kb.ItemNumShort = snap.ItemNumShort
+				                              AND kb.BU = ''
+				        WHERE LTRIM(RTRIM(snap.BusinessUnit)) IN ('CINC', 'CIN2')
+				          AND snap.QuantityOnHandPrimaryUOM <> 0
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table

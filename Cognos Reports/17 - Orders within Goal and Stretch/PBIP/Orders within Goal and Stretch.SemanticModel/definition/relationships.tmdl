@@ -1,0 +1,6 @@
+relationship 17f20000-0000-4000-8000-000000000001
+	fromColumn: 'Revision History'.'Order Key'
+	fromCardinality: many
+	toColumn: Orders_GS.'Order Key'
+	toCardinality: many
+

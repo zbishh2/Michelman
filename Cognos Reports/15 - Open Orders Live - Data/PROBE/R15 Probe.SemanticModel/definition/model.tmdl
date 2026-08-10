@@ -1,0 +1,23 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Column Existence", "CSR Fan-Out", "Live CSR List", "CSR-Less Dropped Lines", "Count Parity", "Scaling Spot Check"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 'Column Existence'
+ref table 'CSR Fan-Out'
+ref table 'Live CSR List'
+ref table 'CSR-Less Dropped Lines'
+ref table 'Count Parity'
+ref table 'Scaling Spot Check'
+
+ref cultureInfo en-US
+

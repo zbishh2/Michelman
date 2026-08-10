@@ -1,0 +1,325 @@
+table Work_Orders
+	lineageTag: 515c78c2-4992-473b-90b0-ee3e83574dbf
+
+	column REGION
+		dataType: string
+		lineageTag: 65d43bc7-c6a5-4578-b53a-5b1240bc901f
+		summarizeBy: none
+		sourceColumn: REGION
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATE
+		dataType: string
+		lineageTag: 13ef6829-a91b-4936-b9e4-e7074849093f
+		summarizeBy: none
+		sourceColumn: STATE
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 14c32ad4-53d5-4019-80dc-e363a9231cc5
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'WO Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 30543f5f-d9e8-4a97-b2fb-ebc529fd2154
+		summarizeBy: none
+		sourceColumn: WO Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 0729a3f0-fdd9-4300-b7c6-c53f9f184f81
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 88e9e8d2-cf60-47bb-a008-8eb11eaee10c
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: a08718d7-a852-4752-9977-9a086fddd425
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'WO Status'
+		dataType: string
+		lineageTag: b2a4f675-4e5b-4a2a-9422-bebdea484469
+		summarizeBy: none
+		sourceColumn: WO Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 9c325208-a123-41d7-b323-077097fea82e
+		summarizeBy: none
+		sourceColumn: Start Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Completed Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: f48e8381-e50c-4d32-a3db-235034c643f9
+		summarizeBy: none
+		sourceColumn: Completed Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Quantity Requested'
+		dataType: double
+		formatString: #,0
+		lineageTag: 991d893a-2195-4d06-9520-407e0a5c8b89
+		summarizeBy: none
+		sourceColumn: Quantity Requested
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Quantity Completed'
+		dataType: double
+		formatString: #,0
+		lineageTag: ff06de36-a557-4b17-9db1-e07b0c3c5998
+		summarizeBy: none
+		sourceColumn: Quantity Completed
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Component 2nd Item Number'
+		dataType: string
+		lineageTag: 02c662df-9d78-404f-90e0-0e3b7836f2ac
+		summarizeBy: none
+		sourceColumn: Component 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Component UOM'
+		dataType: string
+		lineageTag: 9e0d168b-fa7d-4019-b539-e235f0309396
+		summarizeBy: none
+		sourceColumn: Component UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'REQUEST KG'
+		dataType: double
+		formatString: #,0
+		lineageTag: f4c29b0d-8722-42c6-ad93-c3723e5bf744
+		summarizeBy: none
+		sourceColumn: REQUEST KG
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'COMPLETE KG'
+		dataType: double
+		formatString: #,0
+		lineageTag: 0a8c39bd-ca81-43b3-a6bb-1fae12eaa62b
+		summarizeBy: none
+		sourceColumn: COMPLETE KG
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'P7 ISSUED KG'
+		dataType: double
+		formatString: #,0
+		lineageTag: c4686674-24c5-4c13-9158-1f7ebab64140
+		summarizeBy: none
+		sourceColumn: P7 ISSUED KG
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'P7 ORDERED KG'
+		dataType: double
+		formatString: #,0
+		lineageTag: 61daf3ed-b6ee-4f11-99d9-e5d35eec71e5
+		summarizeBy: none
+		sourceColumn: P7 ORDERED KG
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'P7 ISSUED LB'
+		dataType: double
+		formatString: #,0
+		lineageTag: 03713990-97c0-4f16-82c3-26dc698bd2f2
+		summarizeBy: none
+		sourceColumn: P7 ISSUED LB
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'P7 ORDERED LB'
+		dataType: double
+		formatString: #,0
+		lineageTag: 7d8781d2-419b-4c51-a5f5-337544b7ffec
+		summarizeBy: none
+		sourceColumn: P7 ORDERED LB
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'P7 REMAINING'
+		dataType: double
+		formatString: #,0
+		lineageTag: 57ac21fe-5b08-4e6c-b380-47db3ec34c5a
+		summarizeBy: none
+		sourceColumn: P7 REMAINING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column DATE
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2c7e9fb6-fad0-4c17-b879-ec9f25aa48ad
+		summarizeBy: none
+		sourceColumn: DATE
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Work_Orders = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT DISTINCT
+				            FO.REGION                               AS [REGION],
+				            CASE WHEN FO.QtyCompleted = 0
+				                  AND FO.WO_Status IN ('20', '30', '90')
+				                  AND (CASE WHEN FO.Comp_UOM = 'LB' THEN FO.IssuedQty * 0.453593 ELSE FO.IssuedQty END) = 0
+				                 THEN 'OPEN' ELSE 'COMPLETE'
+				            END                                     AS [STATE],
+				            FO.Branch_Plant                         AS [Branch Plant],
+				            FO.WO_Number                            AS [WO Number],
+				            FO.Global_Bulk_Item                     AS [Global Bulk Item],
+				            FO.Bulk_Item                            AS [Bulk Item],
+				            FO.Item2                                AS [2nd Item Number],
+				            FO.WO_Status                            AS [WO Status],
+				            FO.Start_Date                           AS [Start Date],
+				            FO.Completed_Date                       AS [Completed Date],
+				            FO.QtyRequested                         AS [Quantity Requested],
+				            FO.QtyCompleted                         AS [Quantity Completed],
+				            FO.Comp_Item2                           AS [Component 2nd Item Number],
+				            FO.Comp_UOM                             AS [Component UOM],
+				            CASE WHEN FO.UOM = 'LB' THEN FO.QtyRequested * 0.453593 ELSE FO.QtyRequested END          AS [REQUEST KG],
+				            CASE WHEN FO.UOM = 'LB' THEN FO.QtyCompleted * 0.453593 ELSE FO.QtyCompleted END          AS [COMPLETE KG],
+				            CASE WHEN FO.Comp_UOM = 'LB' THEN FO.IssuedQty * 0.453593 ELSE FO.IssuedQty END           AS [P7 ISSUED KG],
+				            CASE WHEN FO.Comp_UOM = 'LB' THEN FO.OrderedQty * 0.453593 ELSE FO.OrderedQty END         AS [P7 ORDERED KG],
+				            CASE WHEN FO.Comp_UOM = 'KG' THEN FO.IssuedQty / 0.453593 ELSE FO.IssuedQty END           AS [P7 ISSUED LB],
+				            CASE WHEN FO.Comp_UOM = 'KG' THEN FO.OrderedQty / 0.453593 ELSE FO.OrderedQty END         AS [P7 ORDERED LB],
+				            (CASE WHEN FO.Comp_UOM = 'KG' THEN FO.OrderedQty / 0.453593 ELSE FO.OrderedQty END)
+				              - (CASE WHEN FO.Comp_UOM = 'KG' THEN FO.IssuedQty / 0.453593 ELSE FO.IssuedQty END)     AS [P7 REMAINING],
+				            GETDATE()                               AS [DATE]
+				        FROM (
+				            SELECT
+				                CASE LTRIM(RTRIM(wa.WAMMCU))
+				                     WHEN 'SING' THEN 'Singapore'
+				                     WHEN 'CINC' THEN 'Americas'
+				                     WHEN 'AUBA' THEN 'Aubange'
+				                     WHEN 'CIN2' THEN 'Americas'
+				                     ELSE 'ERROR'
+				                END                                                 AS REGION,
+				                LTRIM(RTRIM(wa.WAMMCU))                             AS Branch_Plant,
+				                wa.WADOCO                                           AS WO_Number,
+				                LTRIM(RTRIM(tag.IMGBLK))                            AS Global_Bulk_Item,
+				                tag.IMBULK                                          AS Bulk_Item,
+				                LTRIM(RTRIM(wa.WALITM))                             AS Item2,
+				                wa.WASRST                                           AS WO_Status,
+				                CASE WHEN wa.WASTRT > 0 THEN DATEADD(DAY,(wa.WASTRT%1000)-1,DATEFROMPARTS(1900+(wa.WASTRT/1000),1,1)) END AS Start_Date,
+				                CASE WHEN wa.WASTRX > 0 THEN DATEADD(DAY,(wa.WASTRX%1000)-1,DATEFROMPARTS(1900+(wa.WASTRX/1000),1,1)) END AS Completed_Date,
+				                wa.WAUOM                                            AS UOM,
+				                LTRIM(RTRIM(wp.WMCPIL))                             AS Comp_Item2,
+				                wp.WMUM                                             AS Comp_UOM,
+				                AVG(wa.WAUORG/10000.0) OVER (PARTITION BY LTRIM(RTRIM(wa.WAMMCU)), wa.WADOCO, LTRIM(RTRIM(tag.IMGBLK)), tag.IMBULK, LTRIM(RTRIM(wa.WALITM)), wa.WASRST, CASE WHEN wa.WATRDJ>0 THEN DATEADD(DAY,(wa.WATRDJ%1000)-1,DATEFROMPARTS(1900+(wa.WATRDJ/1000),1,1)) END, CASE WHEN wa.WASTRT>0 THEN DATEADD(DAY,(wa.WASTRT%1000)-1,DATEFROMPARTS(1900+(wa.WASTRT/1000),1,1)) END, CASE WHEN wa.WADRQJ>0 THEN DATEADD(DAY,(wa.WADRQJ%1000)-1,DATEFROMPARTS(1900+(wa.WADRQJ/1000),1,1)) END, CASE WHEN wa.WASTRX>0 THEN DATEADD(DAY,(wa.WASTRX%1000)-1,DATEFROMPARTS(1900+(wa.WASTRX/1000),1,1)) END, wa.WAUOM, LTRIM(RTRIM(wp.WMCPIL)), wp.WMUM) AS QtyRequested,
+				                AVG(wa.WASOQS/10000.0) OVER (PARTITION BY LTRIM(RTRIM(wa.WAMMCU)), wa.WADOCO, LTRIM(RTRIM(tag.IMGBLK)), tag.IMBULK, LTRIM(RTRIM(wa.WALITM)), wa.WASRST, CASE WHEN wa.WATRDJ>0 THEN DATEADD(DAY,(wa.WATRDJ%1000)-1,DATEFROMPARTS(1900+(wa.WATRDJ/1000),1,1)) END, CASE WHEN wa.WASTRT>0 THEN DATEADD(DAY,(wa.WASTRT%1000)-1,DATEFROMPARTS(1900+(wa.WASTRT/1000),1,1)) END, CASE WHEN wa.WADRQJ>0 THEN DATEADD(DAY,(wa.WADRQJ%1000)-1,DATEFROMPARTS(1900+(wa.WADRQJ/1000),1,1)) END, CASE WHEN wa.WASTRX>0 THEN DATEADD(DAY,(wa.WASTRX%1000)-1,DATEFROMPARTS(1900+(wa.WASTRX/1000),1,1)) END, wa.WAUOM, LTRIM(RTRIM(wp.WMCPIL)), wp.WMUM) AS QtyCompleted,
+				                SUM(wp.WMTRQT/10000.0) OVER (PARTITION BY LTRIM(RTRIM(wa.WAMMCU)), wa.WADOCO, LTRIM(RTRIM(tag.IMGBLK)), tag.IMBULK, LTRIM(RTRIM(wa.WALITM)), wa.WASRST, CASE WHEN wa.WATRDJ>0 THEN DATEADD(DAY,(wa.WATRDJ%1000)-1,DATEFROMPARTS(1900+(wa.WATRDJ/1000),1,1)) END, CASE WHEN wa.WASTRT>0 THEN DATEADD(DAY,(wa.WASTRT%1000)-1,DATEFROMPARTS(1900+(wa.WASTRT/1000),1,1)) END, CASE WHEN wa.WADRQJ>0 THEN DATEADD(DAY,(wa.WADRQJ%1000)-1,DATEFROMPARTS(1900+(wa.WADRQJ/1000),1,1)) END, CASE WHEN wa.WASTRX>0 THEN DATEADD(DAY,(wa.WASTRX%1000)-1,DATEFROMPARTS(1900+(wa.WASTRX/1000),1,1)) END, wa.WAUOM, LTRIM(RTRIM(wp.WMCPIL)), wp.WMUM) AS IssuedQty,
+				                SUM(wp.WMUORG/10000.0) OVER (PARTITION BY LTRIM(RTRIM(wa.WAMMCU)), wa.WADOCO, LTRIM(RTRIM(tag.IMGBLK)), tag.IMBULK, LTRIM(RTRIM(wa.WALITM)), wa.WASRST, CASE WHEN wa.WATRDJ>0 THEN DATEADD(DAY,(wa.WATRDJ%1000)-1,DATEFROMPARTS(1900+(wa.WATRDJ/1000),1,1)) END, CASE WHEN wa.WASTRT>0 THEN DATEADD(DAY,(wa.WASTRT%1000)-1,DATEFROMPARTS(1900+(wa.WASTRT/1000),1,1)) END, CASE WHEN wa.WADRQJ>0 THEN DATEADD(DAY,(wa.WADRQJ%1000)-1,DATEFROMPARTS(1900+(wa.WADRQJ/1000),1,1)) END, CASE WHEN wa.WASTRX>0 THEN DATEADD(DAY,(wa.WASTRX%1000)-1,DATEFROMPARTS(1900+(wa.WASTRX/1000),1,1)) END, wa.WAUOM, LTRIM(RTRIM(wp.WMCPIL)), wp.WMUM) AS OrderedQty
+				            FROM PRODDTA.F4801 wa, PRODDTA.F554101 tag, PRODDTA.F3111 wp, PRODDTA.F4101 im, PRODDTA.F4102 ib
+				            WHERE LTRIM(RTRIM(wp.WMCPIL)) IN ('BRIJS2.E', 'BRIJS20.E', 'BRIJS2.S', 'BRIJS20.S')
+				              AND wp.WMTRQT/10000.0 + wp.WMUORG/10000.0 > 0
+				              AND CASE WHEN wa.WASTRT > 0 THEN DATEADD(DAY,(wa.WASTRT%1000)-1,DATEFROMPARTS(1900+(wa.WASTRT/1000),1,1)) END >= '2025-11-01'
+				              AND LTRIM(RTRIM(wa.WALITM)) NOT LIKE '%-%'
+				              AND wa.WAUOM IN ('LB', 'KG')
+				              AND wa.WASRST NOT IN ('MM')
+				              AND wa.WADOCO = wp.WMDOCO
+				              AND wa.WAITM = ib.IBITM
+				              AND wa.WAMMCU = ib.IBMCU
+				              AND ib.IBITM = im.IMITM
+				              AND im.IMITM = tag.IMITM
+				        ) FO
+				        WHERE FO.QtyRequested > 0
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"REGION", type text},
+				            {"STATE", type text},
+				            {"Branch Plant", type text},
+				            {"WO Number", Int64.Type},
+				            {"Global Bulk Item", type text},
+				            {"Bulk Item", type text},
+				            {"2nd Item Number", type text},
+				            {"WO Status", type text},
+				            {"Start Date", type date},
+				            {"Completed Date", type date},
+				            {"Quantity Requested", type number},
+				            {"Quantity Completed", type number},
+				            {"Component 2nd Item Number", type text},
+				            {"Component UOM", type text},
+				            {"REQUEST KG", type number},
+				            {"COMPLETE KG", type number},
+				            {"P7 ISSUED KG", type number},
+				            {"P7 ORDERED KG", type number},
+				            {"P7 ISSUED LB", type number},
+				            {"P7 ORDERED LB", type number},
+				            {"P7 REMAINING", type number},
+				            {"DATE", type datetime}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

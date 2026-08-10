@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "R16 Probe"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d52e8f94-ac36-4017-b429-38f7e0d6c152"
+  }
+}

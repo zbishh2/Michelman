@@ -1,0 +1,82 @@
+table 'TM Assignments'
+	lineageTag: 6114c16e-d1f3-439b-88df-91f960488b47
+
+	column 'Ship To'
+		dataType: int64
+		formatString: 0
+		lineageTag: b70f6ec2-783a-477b-9303-d9410e129f36
+		summarizeBy: none
+		sourceColumn: Ship To
+
+		annotation SummarizationSetBy = Automatic
+
+	column Company
+		dataType: string
+		lineageTag: 48d8e882-4af2-45be-8488-b9d498aec4f7
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Rep Type'
+		dataType: string
+		lineageTag: 19aea572-73b3-4220-abc3-4ad375d48053
+		summarizeBy: none
+		sourceColumn: Rep Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Rep AN8'
+		dataType: int64
+		formatString: 0
+		lineageTag: d8b5e453-2b3e-4133-835c-b9b249edba9e
+		summarizeBy: none
+		sourceColumn: Rep AN8
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TM Name'
+		dataType: string
+		lineageTag: e8370e40-5fb1-4f65-85e1-cdaf5cf432b1
+		summarizeBy: none
+		sourceColumn: TM Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'TM Assignments' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            c.CMAN8                     AS [Ship To],
+				            LTRIM(RTRIM(c.CMCO))        AS [Company],
+				            LTRIM(RTRIM(c.CMRTYPE))     AS [Rep Type],
+				            c.CMSLSM                    AS [Rep AN8],
+				            LTRIM(RTRIM(w.WWMLNM))      AS [TM Name]
+				        FROM PRODDTA.F42140 c
+				        LEFT JOIN PRODDTA.F0111 w ON w.WWAN8 = c.CMSLSM AND w.WWIDLN = 0
+				        WHERE LTRIM(RTRIM(c.CMRTYPE)) LIKE '%TM'
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Ship To", Int64.Type},
+				            {"Company", type text},
+				            {"Rep Type", type text},
+				            {"Rep AN8", Int64.Type},
+				            {"TM Name", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

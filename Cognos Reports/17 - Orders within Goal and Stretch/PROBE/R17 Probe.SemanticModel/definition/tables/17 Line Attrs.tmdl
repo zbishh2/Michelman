@@ -1,0 +1,261 @@
+table '17 Line Attrs'
+	lineageTag: 17110000-0000-4000-8000-000000000001
+
+	column order_number
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: order_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_number
+		dataType: double
+		lineageTag: 17110001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: line_number
+
+		annotation SummarizationSetBy = User
+
+	column cohort
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: cohort
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_type
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: order_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column src
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: src
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_type
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: line_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column next_status
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: next_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_status
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: last_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column qty
+		dataType: double
+		lineageTag: 17110001-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: qty
+
+		annotation SummarizationSetBy = User
+
+	column ext_amt
+		dataType: double
+		lineageTag: 17110001-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: ext_amt
+
+		annotation SummarizationSetBy = User
+
+	column item2nd
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: item2nd
+
+		annotation SummarizationSetBy = Automatic
+
+	column gblk
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: gblk
+
+		annotation SummarizationSetBy = Automatic
+
+	column hold_code
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: hold_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column branch
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: branch
+
+		annotation SummarizationSetBy = Automatic
+
+	column sold_an8
+		dataType: int64
+		lineageTag: 17110001-0000-4000-8000-000000000015
+		summarizeBy: none
+		sourceColumn: sold_an8
+
+		annotation SummarizationSetBy = User
+
+	column sold_ac01
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000016
+		summarizeBy: none
+		sourceColumn: sold_ac01
+
+		annotation SummarizationSetBy = Automatic
+
+	column sold_at1
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000017
+		summarizeBy: none
+		sourceColumn: sold_at1
+
+		annotation SummarizationSetBy = Automatic
+
+	column ship_an8
+		dataType: int64
+		lineageTag: 17110001-0000-4000-8000-000000000018
+		summarizeBy: none
+		sourceColumn: ship_an8
+
+		annotation SummarizationSetBy = User
+
+	column ship_ac01
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000019
+		summarizeBy: none
+		sourceColumn: ship_ac01
+
+		annotation SummarizationSetBy = Automatic
+
+	column ship_at1
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000020
+		summarizeBy: none
+		sourceColumn: ship_at1
+
+		annotation SummarizationSetBy = Automatic
+
+	column ship_ac06
+		dataType: string
+		lineageTag: 17110001-0000-4000-8000-000000000021
+		summarizeBy: none
+		sourceColumn: ship_ac06
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '17 Line Attrs' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        SELECT
+				          CAST(o.SDDOCO AS varchar(20)) AS order_number,
+				          o.SDLNID/1000.0 AS line_number,
+				          x.cohort AS cohort,
+				          LTRIM(RTRIM(o.SDDCTO)) AS order_type,
+				          o.src AS src,
+				          LTRIM(RTRIM(o.SDLNTY)) AS line_type,
+				          LTRIM(RTRIM(o.SDNXTR)) AS next_status,
+				          LTRIM(RTRIM(o.SDLTTR)) AS last_status,
+				          o.SDUORG/10000.0 AS qty,
+				          o.SDAEXP/100.0 AS ext_amt,
+				          LTRIM(RTRIM(o.SDLITM)) AS item2nd,
+				          ISNULL(LTRIM(RTRIM(tag.IMGBLK)),'') AS gblk,
+				          ISNULL(LTRIM(RTRIM(hdr.SHHOLD)),'') AS hold_code,
+				          LTRIM(RTRIM(o.SDMCU)) AS branch,
+				          o.SDAN8 AS sold_an8,
+				          ISNULL(LTRIM(RTRIM(sold.ABAC01)),'') AS sold_ac01,
+				          ISNULL(LTRIM(RTRIM(sold.ABAT1)),'') AS sold_at1,
+				          o.SDSHAN AS ship_an8,
+				          ISNULL(LTRIM(RTRIM(ship.ABAC01)),'') AS ship_ac01,
+				          ISNULL(LTRIM(RTRIM(ship.ABAT1)),'') AS ship_at1,
+				          ISNULL(LTRIM(RTRIM(ship.ABAC06)),'') AS ship_ac06
+				        FROM (
+				            SELECT SDKCOO,SDDOCO,SDDCTO,SDLNID,SDMCU,SDAN8,SDSHAN,SDLITM,SDITM,SDLNTY,SDNXTR,SDLTTR,SDUORG,SDAEXP, 'F4211' AS src FROM PRODDTA.F4211
+				            WHERE SDDOCO IN (2718961,2724200,2726799,2726816,2726848,2726864,2726896,2726913,2726931,2726932,2726948,2726950,2726982,2726998,2727144,2727160,2727910,2727911,2727930,2727932,2727933,2726914,2726915,2726949,2726897,26001037)
+				            UNION ALL
+				            SELECT h.SDKCOO,h.SDDOCO,h.SDDCTO,h.SDLNID,h.SDMCU,h.SDAN8,h.SDSHAN,h.SDLITM,h.SDITM,h.SDLNTY,h.SDNXTR,h.SDLTTR,h.SDUORG,h.SDAEXP, 'F42119' AS src FROM PRODDTA.F42119 h
+				            WHERE h.SDDOCO IN (2718961,2724200,2726799,2726816,2726848,2726864,2726896,2726913,2726931,2726932,2726948,2726950,2726982,2726998,2727144,2727160,2727910,2727911,2727930,2727932,2727933,2726914,2726915,2726949,2726897,26001037)
+				              AND NOT EXISTS (SELECT 1 FROM PRODDTA.F4211 c WHERE c.SDKCOO=h.SDKCOO AND c.SDDOCO=h.SDDOCO AND c.SDDCTO=h.SDDCTO AND c.SDLNID=h.SDLNID)
+				        ) o
+				        JOIN (VALUES
+				          (2718961, 'ABSENT'),(2724200, 'ABSENT'),(2726799, 'ABSENT'),(2726816, 'ABSENT'),
+				          (2726848, 'ABSENT'),(2726864, 'ABSENT'),(2726896, 'ABSENT'),(2726913, 'ABSENT'),
+				          (2726931, 'ABSENT'),(2726932, 'ABSENT'),(2726948, 'ABSENT'),(2726950, 'ABSENT'),
+				          (2726982, 'ABSENT'),(2726998, 'ABSENT'),(2727144, 'ABSENT'),(2727160, 'ABSENT'),
+				          (2727910, 'ABSENT'),(2727911, 'ABSENT'),(2727930, 'ABSENT'),(2727932, 'ABSENT'),
+				          (2727933, 'ABSENT'),
+				          (2726914, 'CTRL in Cognos'),(2726915, 'CTRL in Cognos'),(2726949, 'CTRL partial'),
+				          (2726897, 'CTRL partial'),(26001037, 'CTRL clean')
+				        ) x(doco, cohort) ON o.SDDOCO = x.doco
+				        LEFT JOIN PRODDTA.F4201 hdr ON hdr.SHKCOO=o.SDKCOO AND hdr.SHDOCO=o.SDDOCO AND hdr.SHDCTO=o.SDDCTO
+				        LEFT JOIN PRODDTA.F0101 sold ON sold.ABAN8=o.SDAN8
+				        LEFT JOIN PRODDTA.F0101 ship ON ship.ABAN8=o.SDSHAN
+				        LEFT JOIN PRODDTA.F554101 tag ON tag.IMITM=o.SDITM
+				        ORDER BY x.cohort, CAST(o.SDDOCO AS varchar(20)), o.SDLNID;
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"order_number", type text},
+				            {"line_number", type number},
+				            {"cohort", type text},
+				            {"order_type", type text},
+				            {"src", type text},
+				            {"line_type", type text},
+				            {"next_status", type text},
+				            {"last_status", type text},
+				            {"qty", type number},
+				            {"ext_amt", type number},
+				            {"item2nd", type text},
+				            {"gblk", type text},
+				            {"hold_code", type text},
+				            {"branch", type text},
+				            {"sold_an8", Int64.Type},
+				            {"sold_ac01", type text},
+				            {"sold_at1", type text},
+				            {"ship_an8", Int64.Type},
+				            {"ship_ac01", type text},
+				            {"ship_at1", type text},
+				            {"ship_ac06", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

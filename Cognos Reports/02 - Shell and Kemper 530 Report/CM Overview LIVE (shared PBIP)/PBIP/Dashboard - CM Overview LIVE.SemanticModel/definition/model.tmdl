@@ -1,0 +1,32 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Shell_Kemper_530","Shell_Kemper_All","Planner_Responsibilities","CM_PO_Live","CM_Open_Sales_Orders","CM_Inventory_on_Hand","SO_Not_Shipping","Inventory_Availability","WorkOrder_Detail","Item","Last Refreshed","SO560_Grouped"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation PBIDesktopVersion = 2.144.1378.0 (25.06)+cba1e61f16ea36d44901f06fa446299040122394
+
+ref table Shell_Kemper_530
+ref table Shell_Kemper_All
+ref table Planner_Responsibilities
+ref table CM_PO_Live
+ref table CM_Open_Sales_Orders
+ref table CM_Inventory_on_Hand
+ref table SO_Not_Shipping
+ref table Inventory_Availability
+ref table WorkOrder_Detail
+ref table Item
+ref table 'Last Refreshed'
+ref table DateTableTemplate_13e223e7-872e-4324-a83f-c056e37bd3a0
+ref table SO560_Grouped
+
+ref cultureInfo en-US
+

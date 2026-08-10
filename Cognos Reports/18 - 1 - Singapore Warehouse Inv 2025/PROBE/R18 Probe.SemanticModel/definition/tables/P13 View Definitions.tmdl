@@ -1,0 +1,65 @@
+table 'P13 View Definitions'
+	lineageTag: 18000e00-0000-4000-8000-000000000001
+
+	column obj
+		dataType: string
+		lineageTag: 18000e01-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: obj
+
+		annotation SummarizationSetBy = Automatic
+
+	column chunk_no
+		dataType: int64
+		formatString: 0
+		lineageTag: 18000e01-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: chunk_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column chunk
+		dataType: string
+		lineageTag: 18000e01-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: chunk
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P13 View Definitions' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        WITH defs AS (
+				            SELECT 'FactInventorySnapshot_History_Filtered' AS obj,
+				                   OBJECT_DEFINITION(OBJECT_ID('BIQL.FactInventorySnapshot_History_Filtered')) AS def
+				            UNION ALL SELECT 'TbInventorySnapshot_History', OBJECT_DEFINITION(OBJECT_ID('BIQL.TbInventorySnapshot_History'))
+				            UNION ALL SELECT 'FactInventorySnapshot', OBJECT_DEFINITION(OBJECT_ID('BIQL.FactInventorySnapshot'))
+				            UNION ALL SELECT 'DimCurrencyExchangeRatesUSDDaily', OBJECT_DEFINITION(OBJECT_ID('BIQL.DimCurrencyExchangeRatesUSDDaily'))
+				        ), nums AS (
+				            SELECT TOP 60 ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS n FROM sys.objects
+				        )
+				        SELECT d.obj, n.n AS chunk_no, SUBSTRING(d.def, (n.n-1)*2000+1, 2000) AS chunk
+				        FROM defs d JOIN nums n ON LEN(ISNULL(d.def,'')) > (n.n-1)*2000
+				        UNION ALL
+				        SELECT d.obj, 0, 'NULL definition (no VIEW_DEFINITION permission or not a view)'
+				        FROM defs d WHERE d.def IS NULL
+				        ORDER BY obj, chunk_no
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"obj", type text},
+							{"chunk_no", Int64.Type},
+							{"chunk", type text}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

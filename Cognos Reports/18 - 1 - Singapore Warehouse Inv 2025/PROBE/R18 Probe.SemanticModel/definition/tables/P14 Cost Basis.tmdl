@@ -1,0 +1,160 @@
+table 'P14 Cost Basis'
+	lineageTag: 18000f00-0000-4000-8000-000000000001
+
+	column k_date
+		dataType: string
+		lineageTag: 18000f01-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: k_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column bu
+		dataType: string
+		lineageTag: 18000f01-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: bu
+
+		annotation SummarizationSetBy = Automatic
+
+	column item2
+		dataType: string
+		lineageTag: 18000f01-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: item2
+
+		annotation SummarizationSetBy = Automatic
+
+	column lot
+		dataType: string
+		lineageTag: 18000f01-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: lot
+
+		annotation SummarizationSetBy = Automatic
+
+	column loc
+		dataType: string
+		lineageTag: 18000f01-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: loc
+
+		annotation SummarizationSetBy = Automatic
+
+	column cur
+		dataType: string
+		lineageTag: 18000f01-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: cur
+
+		annotation SummarizationSetBy = Automatic
+
+	column qoh
+		dataType: double
+		lineageTag: 18000f01-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: qoh
+
+		annotation SummarizationSetBy = User
+
+	column unit_cost
+		dataType: double
+		lineageTag: 18000f01-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: unit_cost
+
+		annotation SummarizationSetBy = User
+
+	column value_at_cost
+		dataType: double
+		lineageTag: 18000f01-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: value_at_cost
+
+		annotation SummarizationSetBy = User
+
+	column fx_rate
+		dataType: double
+		lineageTag: 18000f01-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: fx_rate
+
+		annotation SummarizationSetBy = User
+
+	column ours_qoh_x_unit_x_fx
+		dataType: double
+		lineageTag: 18000f01-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: ours_qoh_x_unit_x_fx
+
+		annotation SummarizationSetBy = User
+
+	column alt_valueatcost_x_fx
+		dataType: double
+		lineageTag: 18000f01-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: alt_valueatcost_x_fx
+
+		annotation SummarizationSetBy = User
+
+	column cognos_usd
+		dataType: double
+		lineageTag: 18000f01-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: cognos_usd
+
+		annotation SummarizationSetBy = User
+
+	partition 'P14 Cost Basis' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        SELECT k.d AS k_date, k.bu, k.item2, k.lot, k.loc,
+				               co.CurrencyCode AS cur,
+				               snap.QuantityOnHandPrimaryUOM AS qoh,
+				               snap.AmountUnitCost AS unit_cost,
+				               snap.AmountValueAtCost AS value_at_cost,
+				               CASE WHEN co.CurrencyCode = 'USD' THEN 1.0 ELSE fx.[Exchange Rate] END AS fx_rate,
+				               snap.QuantityOnHandPrimaryUOM * snap.AmountUnitCost
+				                   * CASE WHEN co.CurrencyCode = 'USD' THEN 1.0 ELSE fx.[Exchange Rate] END AS ours_qoh_x_unit_x_fx,
+				               snap.AmountValueAtCost
+				                   * CASE WHEN co.CurrencyCode = 'USD' THEN 1.0 ELSE fx.[Exchange Rate] END AS alt_valueatcost_x_fx,
+				               k.cognos AS cognos_usd
+				        FROM (VALUES
+				            ('2026-03-18','SING','104DPM.S','617059','B01', 16.2),
+				            ('2026-03-18','SING','104PA.S','611047','RM1', 1371.709728),
+				            ('2026-03-18','CIN2','100FGK','617238','F43', 23919.18),
+				            ('2026-03-18','AUB2','127PAR.E','618031','JOST', 17134.383984),
+				            ('2026-03-18','AUBA','104DPM.E','603660','ACD0208', 3224.534461204)
+				        ) k(d, bu, item2, lot, loc, cognos)
+				        JOIN BIQL.DimItem it ON it.ItemNum2nd = k.item2
+				        JOIN dbo.FactInventorySnapshot_History snap
+				             ON snap.ItemSKey = it.ItemSKey
+				            AND LTRIM(RTRIM(snap.BusinessUnit)) = k.bu
+				            AND LTRIM(RTRIM(snap.LotNum)) = k.lot
+				            AND LTRIM(RTRIM(snap.Location)) = k.loc
+				            AND (CASE WHEN snap.CompanySKey = 2 THEN DATEADD(DAY,1,CAST(k.d AS date)) ELSE CAST(k.d AS date) END)
+				                BETWEEN snap.StartDate AND ISNULL(snap.StopDate,'9999-12-31')
+				        JOIN BIQL.DimCompany co ON co.CompanySKey = snap.CompanySKey
+				        LEFT JOIN BIQL.DimCurrencyExchangeRatesUSDDaily fx
+				               ON fx.CurrencyCodeFrom = co.CurrencyCode AND fx.CalendarDate = CAST(k.d AS date)
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"k_date", type text}, {"bu", type text}, {"item2", type text},
+							{"lot", type text}, {"loc", type text}, {"cur", type text},
+							{"qoh", type number}, {"unit_cost", type number}, {"value_at_cost", type number},
+							{"fx_rate", type number}, {"ours_qoh_x_unit_x_fx", type number},
+							{"alt_valueatcost_x_fx", type number}, {"cognos_usd", type number}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

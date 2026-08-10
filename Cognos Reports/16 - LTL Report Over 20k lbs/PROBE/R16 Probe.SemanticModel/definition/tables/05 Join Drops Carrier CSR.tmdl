@@ -1,0 +1,54 @@
+table '05 Join Drops Carrier CSR'
+	lineageTag: dd4d802f-54f1-4781-9480-634f515bdf6a
+
+	column lines_no_carrier_name
+		dataType: int64
+		lineageTag: 86b34f7c-8983-4193-bdcc-f7fba32ee4d8
+		summarizeBy: none
+		sourceColumn: lines_no_carrier_name
+
+		annotation SummarizationSetBy = User
+
+	column lines_no_csr
+		dataType: int64
+		lineageTag: 287a1f30-f7a5-44bf-9892-e3863500c48e
+		summarizeBy: none
+		sourceColumn: lines_no_csr
+
+		annotation SummarizationSetBy = User
+
+	partition '05 Join Drops Carrier CSR' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            SUM(CASE WHEN carr.ABAN8 IS NULL THEN 1 ELSE 0 END)   AS lines_no_carrier_name,
+				            SUM(CASE WHEN csr.CMAN8  IS NULL THEN 1 ELSE 0 END)   AS lines_no_csr
+				        FROM PRODDTA.F4211 o
+				        LEFT JOIN PRODDTA.F0101 carr ON o.SDCARS = carr.ABAN8
+				        LEFT JOIN (SELECT DISTINCT CMAN8 FROM PRODDTA.F42140 WHERE CMRTYPE='CSR') csr ON o.SDSHAN = csr.CMAN8
+				        WHERE o.SDKCOO='00010' AND o.SDDCTO IN ('S4','S5','SZ','SC','ST')
+				          AND o.SDNXTR IN ('560','550','545','540','535','530','525')
+				          AND o.SDPQOR/10000.0 > 20000 AND o.SDCARS <> 308636
+				          AND o.SDCARS NOT IN (293371,29671,288676,26185,293492,98725,301322,195487,136656,293919,304977,309791,301333,309741,27710,26171,283919,26175,301761,292099,309757,316502)
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"lines_no_carrier_name", Int64.Type},
+				            {"lines_no_csr", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,81 @@
+table '06 SLTDAY Check'
+	lineageTag: 17060000-0000-4000-8000-000000000001
+
+	column rows_525_540
+		dataType: int64
+		lineageTag: 17060001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: rows_525_540
+
+		annotation SummarizationSetBy = User
+
+	column rows_sltday_gt0
+		dataType: int64
+		lineageTag: 17060001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: rows_sltday_gt0
+
+		annotation SummarizationSetBy = User
+
+	column min_sltday
+		dataType: int64
+		lineageTag: 17060001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: min_sltday
+
+		annotation SummarizationSetBy = User
+
+	column max_sltday
+		dataType: int64
+		lineageTag: 17060001-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: max_sltday
+
+		annotation SummarizationSetBy = User
+
+	column rows_not_valid_hhmmss
+		dataType: int64
+		lineageTag: 17060001-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: rows_not_valid_hhmmss
+
+		annotation SummarizationSetBy = User
+
+	partition '06 SLTDAY Check' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				          COUNT(*) AS rows_525_540,
+				          SUM(CASE WHEN SLTDAY > 0 THEN 1 ELSE 0 END) AS rows_sltday_gt0,
+				          MIN(SLTDAY) AS min_sltday,
+				          MAX(SLTDAY) AS max_sltday,
+				          SUM(CASE WHEN (SLTDAY/10000) BETWEEN 0 AND 23
+				                    AND ((SLTDAY/100)%100) BETWEEN 0 AND 59
+				                    AND (SLTDAY%100) BETWEEN 0 AND 59 THEN 0 ELSE 1 END) AS rows_not_valid_hhmmss
+				        FROM PRODDTA.F42199
+				        WHERE SLNXTR IN ('525','540') AND SLUPMJ > 0
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"rows_525_540", Int64.Type},
+				            {"rows_sltday_gt0", Int64.Type},
+				            {"min_sltday", Int64.Type},
+				            {"max_sltday", Int64.Type},
+				            {"rows_not_valid_hhmmss", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,315 @@
+table PO
+	lineageTag: d0ab7505-9bdf-477c-9199-310307d7011b
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 3e0cbca7-713c-47b1-9f3e-9abd7e6c87de
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PO Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: bc964d18-5c85-4357-8822-0956553c888d
+		summarizeBy: none
+		sourceColumn: PO Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Line Number'
+		dataType: double
+		lineageTag: c5aa6b7a-6360-4ef9-9cd6-a356dc7358e6
+		summarizeBy: none
+		sourceColumn: Line Number
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 9ba05de9-9737-479f-8f37-ac535e83132d
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PO Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 48bd4c57-1c0f-4723-93ef-3dbdbf01528d
+		summarizeBy: none
+		sourceColumn: PO Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Requested Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 5aa3a4af-29b0-4f67-802b-5bce12232917
+		summarizeBy: none
+		sourceColumn: Requested Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Promised Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 5af0b4b6-6928-42dd-a193-267845cab2ec
+		summarizeBy: none
+		sourceColumn: Promised Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Vendor ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8e1cb9ec-1557-48dd-bca5-21f6af2ae399
+		summarizeBy: none
+		sourceColumn: Vendor ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Vendor Name'
+		dataType: string
+		lineageTag: 705a9cd8-6d45-451c-a582-731a5daf2035
+		summarizeBy: none
+		sourceColumn: Vendor Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lead Time Level'
+		dataType: int64
+		formatString: #0
+		lineageTag: aa383d40-702f-4eaa-9f61-60372188164b
+		summarizeBy: none
+		sourceColumn: Lead Time Level
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Open Quantity'
+		dataType: double
+		formatString: #,##0
+		lineageTag: ad5caff2-b0e2-4dcb-a728-f8f457c19288
+		summarizeBy: sum
+		sourceColumn: Open Quantity
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Spend Amount USD'
+		dataType: double
+		formatString: $#,##0;($#,##0)
+		lineageTag: 0cfa775b-8498-4709-b555-ae9509135740
+		summarizeBy: sum
+		sourceColumn: Spend Amount USD
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Purchase Amount USD'
+		dataType: double
+		formatString: $#,##0;($#,##0)
+		lineageTag: 672150f1-d4c5-4f2d-887c-351d4afddb4d
+		summarizeBy: sum
+		sourceColumn: Purchase Amount USD
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Receipt Date' = RELATED('PO Receipts'[Receipt Date])
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 4522341f-871e-4c4e-93af-ccc178a1c526
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PO Quantity Ordered'
+		dataType: double
+		formatString: #,##0
+		lineageTag: d6707362-6be4-4266-8b4b-9b6dff31c642
+		summarizeBy: none
+		sourceColumn: PO Quantity Ordered
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Quantity Received'
+		dataType: double
+		formatString: #,##0
+		lineageTag: cff922e0-e4fc-4a05-830c-119da4f2d1e1
+		summarizeBy: none
+		sourceColumn: Quantity Received
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Quantity Cancelled' = 'PO'[PO Quantity Ordered] - 'PO'[Open Quantity] - 'PO'[Quantity Received]
+		dataType: double
+		formatString: #,##0
+		lineageTag: 20620b69-f130-4799-a125-4a4cdd34a2b0
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'LB Factor' = IF('PO'[Primary UOM] = "LB", 1, COALESCE(RELATED('UOM To LB'[Factor]), 1))
+		dataType: double
+		lineageTag: f29499ce-3ec6-44c2-aabd-3f216a685324
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PO Quantity Ordered LBs' = 'PO'[PO Quantity Ordered] * 'PO'[LB Factor]
+		dataType: double
+		formatString: #,##0
+		lineageTag: b22248d5-ae68-43aa-a833-b8815df9a223
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Open Quantity LBs' = 'PO'[Open Quantity] * 'PO'[LB Factor]
+		dataType: double
+		formatString: #,##0
+		lineageTag: 4d6bc9f9-3c24-413c-b4a9-843c2083605d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Primary UOM'
+		dataType: string
+		lineageTag: 84b49aec-74e6-4349-a93c-cd7dfcf4e648
+		summarizeBy: none
+		sourceColumn: Primary UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ca80e91d-fc69-492e-90c1-b32a5ff6dcc9
+		summarizeBy: none
+		sourceColumn: Item Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'LB Key'
+		dataType: string
+		isHidden
+		lineageTag: 023b1a26-7d42-4740-9c81-a37f866da5d8
+		summarizeBy: none
+		sourceColumn: LB Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Line Key'
+		dataType: string
+		isHidden
+		lineageTag: 2362c3e8-455f-4f2b-b7b6-8d329302d5f9
+		summarizeBy: none
+		sourceColumn: Line Key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition PO = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            LTRIM(RTRIM(d.PDMCU))              AS [Branch Plant],
+				            d.PDDOCO                           AS [PO Number],
+				            d.PDLNID / 1000.0                  AS [Line Number],
+				            LTRIM(RTRIM(d.PDLITM))             AS [2nd Item Number],
+				            d.PO_Date                          AS [PO Date],
+				            d.Requested_Date                   AS [Requested Date],
+				            d.Promised_Date                    AS [Promised Date],
+				            d.PDAN8                            AS [Vendor ID],
+				            LTRIM(RTRIM(v.ABALPH))             AS [Vendor Name],
+				            ib.IBLTLV                          AS [Lead Time Level],
+				            d.Qty_Ordered                      AS [PO Quantity Ordered],
+				            d.Qty_Open                         AS [Open Quantity],
+				            d.Qty_Received                     AS [Quantity Received],
+				            d.Amt_Spend                        AS [Spend Amount USD],
+				            d.Amt_Purchase                     AS [Purchase Amount USD],
+				            d.PDITM                            AS [Item Key],
+				            LTRIM(RTRIM(im.IMUOM1))            AS [Primary UOM],
+				            CAST(d.PDITM AS varchar(20)) + '|' + LTRIM(RTRIM(im.IMUOM1)) AS [LB Key],
+				            LTRIM(RTRIM(d.PDKCOO)) + '|' + CAST(d.PDDOCO AS varchar(20)) + '|' + LTRIM(RTRIM(d.PDDCTO)) + '|' + CAST(d.PDLNID AS varchar(20)) AS [Line Key]
+				        FROM (
+				            SELECT
+				                PDKCOO, PDMCU, PDDOCO, PDLNID, PDLITM, PDITM, PDAN8, PDDCTO,
+				                CASE WHEN PDTRDJ>0 THEN DATEADD(DAY,(PDTRDJ%1000)-1,DATEFROMPARTS(1900+(PDTRDJ/1000),1,1)) END AS PO_Date,
+				                CASE WHEN PDDRQJ>0 THEN DATEADD(DAY,(PDDRQJ%1000)-1,DATEFROMPARTS(1900+(PDDRQJ/1000),1,1)) END AS Requested_Date,
+				                CASE WHEN PDPDDJ>0 THEN DATEADD(DAY,(PDPDDJ%1000)-1,DATEFROMPARTS(1900+(PDPDDJ/1000),1,1)) END AS Promised_Date,
+				                PDPQOR / 10000.0                     AS Qty_Ordered,
+				                PDUOPN / 10000.0                     AS Qty_Open,
+				                PDUREC / 10000.0                     AS Qty_Received,
+				                PDAEXP                               AS Amt_Spend,
+				                PDAOPN                               AS Amt_Purchase
+				            FROM PRODDTA.F4311
+				        ) d
+				        JOIN PRODDTA.F0101 v  ON d.PDAN8 = v.ABAN8
+				        LEFT JOIN PRODDTA.F4102 ib ON LTRIM(RTRIM(d.PDMCU)) = LTRIM(RTRIM(ib.IBMCU))
+				                                  AND LTRIM(RTRIM(d.PDLITM)) = LTRIM(RTRIM(ib.IBLITM))
+				        LEFT JOIN PRODDTA.F4101 im ON im.IMITM = d.PDITM
+				        WHERE d.Promised_Date >= DATEADD(DAY,-365, CAST(GETDATE() AS date))
+				          AND LTRIM(RTRIM(d.PDMCU)) IN ('CINC','CIN2','CIN4')
+				          AND LTRIM(RTRIM(d.PDDCTO)) IN ('OP','OD')
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Branch Plant", type text},
+				            {"PO Number", Int64.Type},
+				            {"Line Number", type number},
+				            {"2nd Item Number", type text},
+				            {"PO Date", type date},
+				            {"Requested Date", type date},
+				            {"Promised Date", type date},
+				            {"Vendor ID", Int64.Type},
+				            {"Vendor Name", type text},
+				            {"Lead Time Level", Int64.Type},
+				            {"PO Quantity Ordered", type number},
+				            {"Open Quantity", type number},
+				            {"Quantity Received", type number},
+				            {"Spend Amount USD", type number},
+				            {"Purchase Amount USD", type number},
+				            {"Item Key", Int64.Type},
+				            {"Primary UOM", type text},
+				            {"LB Key", type text},
+				            {"Line Key", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

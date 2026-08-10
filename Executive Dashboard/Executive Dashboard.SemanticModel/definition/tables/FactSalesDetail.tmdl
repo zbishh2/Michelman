@@ -1,0 +1,1117 @@
+table FactSalesDetail
+	lineageTag: b8b0720f-9250-48fc-8769-ecf8dd16b18c
+
+	column Region =
+			SWITCH (
+			    VALUE ( 'FactSalesDetail'[Order Company] ),
+			    10, "Americas",
+			    20, "EMEA",
+			    30, "Asia",
+			    34, "Asia",
+			    35, "Asia",
+			    "Unmapped"
+			)
+		lineageTag: 65933f8c-5840-4383-951c-c620f0b06ee3
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Num'
+		dataType: string
+		lineageTag: 001028e4-4f79-488c-a402-df95c4126894
+		summarizeBy: none
+		sourceColumn: Order Num
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Company'
+		dataType: string
+		lineageTag: 95b25c2b-5851-4182-9cd0-350357fcebe5
+		summarizeBy: none
+		sourceColumn: Order Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Type'
+		dataType: string
+		lineageTag: 7706d233-0aae-49bf-b641-c4acabde71fa
+		summarizeBy: none
+		sourceColumn: Order Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Suffix'
+		dataType: string
+		lineageTag: db598c56-78bc-4e30-92a1-7fc23c088b95
+		summarizeBy: none
+		sourceColumn: Order Suffix
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Line Num'
+		dataType: double
+		formatString: 0
+		lineageTag: bf3e53a8-94b8-46a6-8562-54c6bd779368
+		summarizeBy: sum
+		sourceColumn: Line Num
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Line Type'
+		dataType: string
+		lineageTag: 5ca5d608-5f12-4af8-a297-b7c1f4a3af4d
+		summarizeBy: none
+		sourceColumn: Line Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Actual Ship Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 03b86d24-d828-4dbf-9153-c32f4f552d7e
+		summarizeBy: none
+		sourceColumn: Actual Ship Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Qty Ordered'
+		dataType: double
+		formatString: 0
+		lineageTag: 7d14e818-ab01-48f0-86e4-00e5ec024164
+		summarizeBy: sum
+		sourceColumn: Qty Ordered
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Qty Shipped'
+		dataType: double
+		formatString: 0
+		lineageTag: aad01150-f435-4348-8a46-88a31d45bae1
+		summarizeBy: sum
+		sourceColumn: Qty Shipped
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Qty Cancelled'
+		dataType: double
+		lineageTag: b3f1b91c-f338-4d23-9f6c-d8f0f1bf8b1e
+		summarizeBy: sum
+		sourceColumn: Qty Cancelled
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Promised Delivery Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 43d4073b-16af-4c67-8ead-70fec20cdae8
+		summarizeBy: none
+		sourceColumn: Promised Delivery Date
+
+		variation Variation
+			isDefault
+			relationship: db565d02-fba9-44f6-9af8-dd9bf39a7858
+			defaultHierarchy: LocalDateTable_d88802b0-b5e3-4797-8662-ad27309d85f5.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Requested Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 7c5d2c5a-2573-4c35-8f9a-d07c63c67875
+		summarizeBy: none
+		sourceColumn: Requested Date
+
+		variation Variation
+			isDefault
+			relationship: 9a97c9a8-757b-4f83-8145-bf208c37649d
+			defaultHierarchy: LocalDateTable_4bf7e9d2-8adb-466d-8ac2-fd9f503cf7ac.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Promised Shipment Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: fcd59819-4e00-459e-8a5c-b5076756d0cf
+		summarizeBy: none
+		sourceColumn: Promised Shipment Date
+
+		variation Variation
+			isDefault
+			relationship: 68476c34-2555-412e-82da-89df2c38cd2a
+			defaultHierarchy: LocalDateTable_d4236cc6-26db-4ccf-aa36-b8f9b45bcdcf.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Original Promised Delivery Date'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: d514da0b-d5f0-4013-b3b6-7d9634d6af23
+		summarizeBy: none
+		sourceColumn: Original Promised Delivery Date
+
+		variation Variation
+			isDefault
+			relationship: 47bd4713-117a-402e-9f98-90829cceddd8
+			defaultHierarchy: LocalDateTable_0eeb6476-51d6-40d1-a1b7-d3b41e9a0cbe.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Remaining Qty' = 'FactSalesDetail'[Qty Ordered] - 'FactSalesDetail'[Qty Shipped]
+		lineageTag: 66b47a55-6cee-4180-988b-cbb1dfd5317a
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Product Description'
+		dataType: string
+		lineageTag: 569e48d6-55a3-4f95-b952-cd41842c2acc
+		summarizeBy: none
+		sourceColumn: Product Description
+
+	column 'Product Description 2'
+		dataType: string
+		lineageTag: 24a7af13-2809-4c5d-8911-437baf4df69d
+		summarizeBy: none
+		sourceColumn: Product Description 2
+
+	column 'Item Num 2nd'
+		dataType: string
+		lineageTag: bd2ac56f-b454-46c0-bddc-3d4109a9d3bd
+		summarizeBy: none
+		sourceColumn: Item Num 2nd
+
+	column 'Ext Price'
+		dataType: double
+		lineageTag: 2e700c68-c6e1-4a1f-b6be-c2a9ddfc57d2
+		summarizeBy: sum
+		sourceColumn: Ext Price
+
+	column OrderKey = ```
+			
+			    'FactSalesDetail'[Order Company] & "|"
+			    & FORMAT('FactSalesDetail'[Order Num],"0") & "|"
+			    & 'FactSalesDetail'[Order Type] & "|"
+			    & 'FactSalesDetail'[Order Suffix] & "|"
+			    & FORMAT('FactSalesDetail'[Line Num],"0")
+			```
+		lineageTag: 0da1872a-abce-4605-a10e-5966c5b075bf
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Count of all promised-date revisions (FactScheduleChange rows) for this order line, any reason code. Relevant-reason filtering still TODO pending Ivan's mapping.
+	column 'Revision Count' = VAR c = COUNTROWS ( RELATEDTABLE ( FactScheduleChange ) ) RETURN IF ( ISBLANK ( c ), 0, c )
+		dataType: int64
+		formatString: 0
+		lineageTag: 8c7b0fb3-a328-4648-bb49-f895388eddfd
+		summarizeBy: sum
+
+	/// Net signed days the promised date moved across all revisions for this line (negative = pulled earlier).
+	column 'Net Days Moved' = VAR s = SUMX ( RELATEDTABLE ( FactScheduleChange ), FactScheduleChange[DaysMoved] ) RETURN IF ( ISBLANK ( s ), 0, s )
+		dataType: int64
+		formatString: 0
+		lineageTag: 92d40e6f-50e3-470f-8137-84c522f26beb
+		summarizeBy: sum
+
+	/// Count of OTIF-relevant promised-date revisions for this line. >0 => OTIF miss (late). Drives the new OTIF measures.
+	column 'Relevant Revision Count' = VAR c = COUNTROWS ( FILTER ( RELATEDTABLE ( FactScheduleChange ), FactScheduleChange[Is OTIF Relevant] = TRUE() ) ) RETURN IF ( ISBLANK ( c ), 0, c )
+		dataType: int64
+		formatString: 0
+		lineageTag: 0c81a0de-098d-49ba-84ba-3d1deb3d7bf0
+		summarizeBy: sum
+
+	/// Net signed days the promised date moved across OTIF-relevant revisions only. Used for days-late buckets.
+	column 'Relevant Net Days Moved' = VAR s = SUMX ( FILTER ( RELATEDTABLE ( FactScheduleChange ), FactScheduleChange[Is OTIF Relevant] = TRUE() ), FactScheduleChange[DaysMoved] ) RETURN IF ( ISBLANK ( s ), 0, s )
+		dataType: int64
+		formatString: 0.0
+		lineageTag: 5fb12988-932b-4b64-a1fe-b35770086e36
+		summarizeBy: sum
+
+	column 'Target Line' = .99
+		formatString: 0%;-0%;0%
+		lineageTag: d4a25b86-bf5a-4977-8c73-201cebdac45c
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'month year' = MONTH('FactSalesDetail'[Actual Ship Date]) & YEAR('FactSalesDetail'[Actual Ship Date])
+		lineageTag: 0ceb30f2-d8a3-49fb-9bfe-b9e201c33fc9
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'On Time' = IF(CALCULATE(COUNTROWS(FactScheduleChange),FactScheduleChange[Is OTIF Relevant]=true)>0,0,1)
+		formatString: 0
+		lineageTag: feb97855-2598-4903-9344-1c99dbf43398
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Late = IF(CALCULATE(COUNTROWS(FactScheduleChange),FactScheduleChange[Is OTIF Relevant]=true)>0,1,0)
+		formatString: 0
+		lineageTag: cc97c313-5230-4aa9-b666-310ef2b0515d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GL Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 542aae0e-c11a-4bc3-94cf-d5b25b771b38
+		summarizeBy: none
+		sourceColumn: GL Date
+
+		variation Variation
+			isDefault
+			relationship: 24abf97a-c702-42a8-b409-e4e6d7b09a8a
+			defaultHierarchy: LocalDateTable_72f5362f-44d4-4aee-9670-ad25b3d08d31.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Business Unit'
+		dataType: string
+		lineageTag: 6616ef33-afaa-4cb1-ac5d-cc9763737204
+		summarizeBy: none
+		sourceColumn: Business Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Status Code Last'
+		dataType: string
+		lineageTag: 4150e44e-6578-4b64-9e83-122687d0e67a
+		summarizeBy: none
+		sourceColumn: Status Code Last
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Invoice Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a5ce6376-9873-4228-b479-d1db768182d7
+		summarizeBy: none
+		sourceColumn: Invoice Date
+
+		variation Variation
+			isDefault
+			relationship: ddb0eb11-18e6-4049-a18d-4cc9b258911a
+			defaultHierarchy: LocalDateTable_e5c26f2e-4779-47cd-b30c-024ab4d9444e.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 529def87-2f7e-4681-9285-4169f8fd829d
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		variation Variation
+			isDefault
+			relationship: fd35a0cc-6e13-4387-8635-517cb7955585
+			defaultHierarchy: LocalDateTable_e6eec35d-782d-4c61-a7fb-60d04ee0ebaf.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column 'Revision Reason'
+		dataType: string
+		lineageTag: 896bc289-9603-41e1-a913-68b7e9d6f0de
+		summarizeBy: none
+		sourceColumn: Revision Reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Flag Positive Volume'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8220fbe9-786d-410b-9074-c55c21bce4ca
+		summarizeBy: sum
+		sourceColumn: Flag Positive Volume
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Flag Line Type S'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8b0042bf-a11b-41b5-ae0a-ca40b0d04899
+		summarizeBy: sum
+		sourceColumn: Flag Line Type S
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Flag Not Sched'
+		dataType: int64
+		formatString: 0
+		lineageTag: 6f98e8a2-ad07-44b2-b529-14c6d71ce613
+		summarizeBy: sum
+		sourceColumn: Flag Not Sched
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Flag Updated In Cognos Window'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4cd7aa54-7583-4650-92fd-41dcb05d9b3b
+		summarizeBy: sum
+		sourceColumn: Flag Updated In Cognos Window
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Flag Not India Tax'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4f4f30c0-a11f-40fd-9ef5-3dfc6c3d2f68
+		summarizeBy: sum
+		sourceColumn: Flag Not India Tax
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Line Type Desc'
+		dataType: string
+		lineageTag: 4293479b-b0ce-4fad-b110-f99c8d66269f
+		summarizeBy: none
+		sourceColumn: Line Type Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Record Type'
+		dataType: string
+		lineageTag: f7cb2b34-18c5-407d-9a5a-6ff0f106420a
+		summarizeBy: none
+		sourceColumn: Record Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cancelled_Flag
+		dataType: int64
+		formatString: 0
+		lineageTag: ee0ed31a-d4bc-4b2a-b7b4-84ae0a18bae7
+		summarizeBy: sum
+		sourceColumn: Cancelled_Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column LotSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 7bebd26c-6152-43dc-9a23-5f31824e101b
+		summarizeBy: count
+		sourceColumn: LotSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Num'
+		dataType: string
+		lineageTag: bfb4ad8d-4847-4b6f-81ff-231cad354c2a
+		summarizeBy: none
+		sourceColumn: Lot Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShipToCustomerSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: d2e65973-9a32-4134-ae8b-ed1935e10a09
+		summarizeBy: count
+		sourceColumn: ShipToCustomerSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Scheduled Pick Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6ef748c7-8855-4457-b315-21c7425e1d46
+		summarizeBy: none
+		sourceColumn: Scheduled Pick Date
+
+		variation Variation
+			isDefault
+			relationship: 2b54426c-0702-4c0f-9ae6-8d60f4d42b48
+			defaultHierarchy: LocalDateTable_312c60d9-476c-4691-b62c-7ef5ea247995.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Item Num'
+		dataType: int64
+		formatString: 0
+		lineageTag: c7393103-55c2-47d5-a12d-9b223593309b
+		summarizeBy: sum
+		sourceColumn: Item Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: 22d9942b-da1f-4e06-832e-652e6bdcdf00
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit Revenue'
+		dataType: string
+		lineageTag: bdcd8469-ff4f-4d92-83c2-6e3eb2742630
+		summarizeBy: none
+		sourceColumn: Business Unit Revenue
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Taken By'
+		dataType: string
+		lineageTag: e737351b-7d71-4a67-be1a-8f97d644155d
+		summarizeBy: none
+		sourceColumn: Order Taken By
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ordered By'
+		dataType: string
+		lineageTag: 2123c142-8e5e-47a2-b5c7-dc91fed79f67
+		summarizeBy: none
+		sourceColumn: Ordered By
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Shipment Num'
+		dataType: int64
+		formatString: 0
+		lineageTag: 446aaa94-134c-48ac-8678-6860968fa973
+		summarizeBy: sum
+		sourceColumn: Shipment Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bill Of Lading'
+		dataType: string
+		lineageTag: be7bdac3-2eac-4793-8cb2-9b97b347743f
+		summarizeBy: none
+		sourceColumn: Bill Of Lading
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Line ID'
+		dataType: string
+		lineageTag: e1e0eb7e-4c3d-4821-931d-1634b9deee6f
+		summarizeBy: none
+		sourceColumn: Order Line ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Header ID'
+		dataType: string
+		lineageTag: a245f151-4de8-4afa-8593-418ae0de70bd
+		summarizeBy: none
+		sourceColumn: Order Header ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Serial Num Lot'
+		dataType: string
+		lineageTag: fe5a1b78-cf7d-4746-8132-0234393a262c
+		summarizeBy: none
+		sourceColumn: Serial Num Lot
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Amount Open'
+		dataType: double
+		lineageTag: c9f20fac-fef7-4a5c-9a5a-81663f49fe78
+		summarizeBy: sum
+		sourceColumn: Amount Open
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Qty Backordered'
+		dataType: double
+		lineageTag: 69d539ff-261b-443a-b807-9b1bd347ff39
+		summarizeBy: sum
+		sourceColumn: Qty Backordered
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Qty Open'
+		dataType: double
+		lineageTag: abe4d1b8-a24c-49ff-9b6e-30cdd7650a69
+		summarizeBy: sum
+		sourceColumn: Qty Open
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Qty Shipped To Date'
+		dataType: double
+		lineageTag: 9d007149-9b14-483c-a9a3-b423957bb84e
+		summarizeBy: sum
+		sourceColumn: Qty Shipped To Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Gross Weight'
+		dataType: double
+		lineageTag: b9bfabe4-3cee-446d-a42c-9d3f0d5eea91
+		summarizeBy: sum
+		sourceColumn: Gross Weight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Unit Weight'
+		dataType: double
+		lineageTag: 085d1c0d-5fdb-483a-af9a-fdc0bb6415bd
+		summarizeBy: sum
+		sourceColumn: Unit Weight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Hold Code'
+		dataType: string
+		lineageTag: e749811d-e2be-4ae3-9737-1393eed4c1e8
+		summarizeBy: none
+		sourceColumn: Hold Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reason Code'
+		dataType: string
+		lineageTag: d3921d6e-2122-4589-b0a0-6223ac5021c7
+		summarizeBy: none
+		sourceColumn: Reason Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reason Code Desc'
+		dataType: string
+		lineageTag: 19de1dc5-a876-4b09-9e4a-3f4930d622cd
+		summarizeBy: none
+		sourceColumn: Reason Code Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mode Of Transport'
+		dataType: string
+		lineageTag: 3813e432-fd6b-4725-9d66-6c8095dcdf06
+		summarizeBy: none
+		sourceColumn: Mode Of Transport
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Carrier Num'
+		dataType: int64
+		formatString: 0
+		lineageTag: cc3e6dac-aad6-4ac0-b5e2-35c8782d7e03
+		summarizeBy: sum
+		sourceColumn: Carrier Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Freight Handling Code'
+		dataType: string
+		lineageTag: ada6de0c-23f3-45bb-a446-d25b0dc53ce8
+		summarizeBy: none
+		sourceColumn: Freight Handling Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Cancel Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fa7d95bb-bb0f-44ab-bd4b-4fffb310624a
+		summarizeBy: none
+		sourceColumn: Cancel Date
+
+		variation Variation
+			isDefault
+			relationship: 7d7eafbf-82fe-43b9-a1f3-2651c573acc9
+			defaultHierarchy: LocalDateTable_05ed4563-576e-401d-a78b-f21012367a09.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ShipToAddressSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: ce6eb2ed-479b-4c00-84af-910c0d21550a
+		summarizeBy: none
+		sourceColumn: ShipToAddressSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SoldToAddressSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: ecb449bd-1360-4e6b-a193-3fdb5abb984b
+		summarizeBy: none
+		sourceColumn: SoldToAddressSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SoldToCustomerSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 26b0b9b2-c875-49c4-aa65-0a0316360337
+		summarizeBy: count
+		sourceColumn: SoldToCustomerSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ParentCustomerSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 337fb18c-c032-4269-8f05-c790031a12fa
+		summarizeBy: count
+		sourceColumn: ParentCustomerSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 235e4939-0cc9-4c1b-b575-27ec977b6c61
+		summarizeBy: count
+		sourceColumn: ItemSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Updated Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3574903c-f979-482f-9edd-d702d30468bb
+		summarizeBy: none
+		sourceColumn: Updated Date
+
+		variation Variation
+			isDefault
+			relationship: ea6bc5a7-c477-44e8-afcb-a36dce4cdb48
+			defaultHierarchy: LocalDateTable_bbd50264-c981-4764-b26f-0335ae087307.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Updated By'
+		dataType: string
+		lineageTag: a9b126c0-9e59-4a93-beeb-81adcd6a4dad
+		summarizeBy: none
+		sourceColumn: Updated By
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Conversion Factor LB'
+		dataType: double
+		lineageTag: 0d342cb9-42c8-40fa-8ce6-baa92dfbb258
+		summarizeBy: sum
+		sourceColumn: Conversion Factor LB
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Sales Factor'
+		dataType: double
+		lineageTag: 3cec0312-4337-4caf-8be6-af9a53d1a4b2
+		summarizeBy: sum
+		sourceColumn: Sales Factor
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Days Moved' = CALCULATE(SUM(FactScheduleChange[Days Moved .]),FactScheduleChange[OTIF Relevant]=1)
+		formatString: 0
+		lineageTag: f6b28436-146b-447e-b5c7-9799c2074695
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Actual Order to Ship LT' = 'FactSalesDetail'[Actual Ship Date] - 'FactSalesDetail'[Order Date]
+		dataType: int64
+		formatString: 0
+		lineageTag: 7ca40ef9-22d1-40f8-a12c-0bcb5bfffa2a
+		summarizeBy: sum
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Revision Reasons' =
+			
+			VAR RelevantRows =
+			    FILTER (
+			        RELATEDTABLE ( FactScheduleChange ),
+			        FactScheduleChange[Is OTIF Relevant] = TRUE()
+			            && NOT ISBLANK ( FactScheduleChange[RevisionReason] )
+			    )
+			VAR ReasonSummary =
+			    GROUPBY (
+			        RelevantRows,
+			        FactScheduleChange[RevisionReason],
+			        "TotalDaysMoved",
+			            SUMX ( CURRENTGROUP (), FactScheduleChange[Days Moved .] )
+			    )
+			RETURN
+			    CONCATENATEX (
+			        ReasonSummary,
+			        FactScheduleChange[RevisionReason]
+			            & " ("
+			            & [TotalDaysMoved]
+			            & " Days)",
+			        ", ",
+			        FactScheduleChange[RevisionReason],
+			        ASC
+			    )
+		lineageTag: f29352e6-d5fe-4ec2-9911-c99a78eb2c14
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Shipped as Requested' = IF('FactSalesDetail'[Actual Ship Date]<='FactSalesDetail'[Requested Date],1,0)
+		formatString: 0
+		lineageTag: f331e23a-59e2-4227-93f3-8d344962ff65
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	/// As-reported twin of [Relevant Revision Count]: counts OTIF-relevant revisions using the original JDE reason codes, ignoring user overwrites/excludes from the Revision Log Editor.
+	column 'Relevant Revision Count (As Reported)' = VAR c = COUNTROWS ( FILTER ( RELATEDTABLE ( FactScheduleChange ), FactScheduleChange[Is OTIF Relevant (As Reported)] = TRUE() ) ) RETURN IF ( ISBLANK ( c ), 0, c )
+		dataType: int64
+		formatString: 0
+		lineageTag: 474232eb-f196-477f-865f-48bace89b854
+		summarizeBy: sum
+
+	/// As-reported twin of [On Time]: uses the original JDE reason codes, ignoring user overwrites/excludes from the Revision Log Editor.
+	column 'On Time (As Reported)' = IF(CALCULATE(COUNTROWS(FactScheduleChange),FactScheduleChange[Is OTIF Relevant (As Reported)]=true)>0,0,1)
+		dataType: int64
+		formatString: 0
+		lineageTag: eec51f0a-c39b-4ca4-acce-d7d0a2d315ef
+		summarizeBy: sum
+
+	column 'Customer Segmentation' = RELATED('Sold-To'[Customer Segmentation])
+		lineageTag: 63f510e7-177c-4a26-82b2-73e61b978238
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Tier' =
+			
+			SWITCH (
+			    TRUE(),
+			    FactSalesDetail[Customer Segmentation] IN { "Gold", "Platinum" }, "Strategic",
+			    "Standard"
+			)
+		lineageTag: 280c5515-a268-4384-adc3-2d198eb0faa8
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Line number with any split suffix removed: FLOOR([Line Num]), so 1.001 and 1.002 both roll up to 1.000. Descriptive only - the collapse is done by the report-level [Is Parent Row] filter.
+	column 'Parent Line Num'
+		dataType: double
+		formatString: 0.000
+		lineageTag: b31c7d40-2e69-4a15-8f77-c05e91a4d268
+		summarizeBy: none
+		sourceColumn: Parent Line Num
+
+		annotation SummarizationSetBy = Automatic
+
+	/// [Order Line ID] with the line number floored to its parent, so split children share one key. On a non-split line this is IDENTICAL to [Order Line ID]. Group by this instead of [Order Line ID] to see one row per commercial line.
+	column 'Parent Order Line ID'
+		dataType: string
+		lineageTag: 6a95e2b8-14cf-4d03-9b62-7e8140fa53c7
+		summarizeBy: none
+		sourceColumn: Parent Order Line ID
+
+		annotation SummarizationSetBy = Automatic
+
+	/// 1 = this row is a split child (line number has a non-zero fraction, e.g. 1.001). Note freight also lands here: the BILLABLE FREIGHT line sits at .010. Use [Is Parent Row] to filter, not this column.
+	column 'Is Split Child'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0f4a86d1-7b25-42ec-a930-58d1c6bf7e93
+		summarizeBy: none
+		sourceColumn: Is Split Child
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Master Planning Family code (JDE F4102.IBPRP4, UDC 41/P4), folded fact-side from BIQL.TbItemBranch at (ItemSKey, Business Unit). 3-char code, trimmed at source. Use with [Master Planning Family Desc]; e.g. exclude 'PKG' to drop packaging/quilts. Applied as a PAGE-level filter on the OTIF tab only - report-level would drop 77 orders from [Orders] on Complaints/RTFT/Safety/Scorecard, which is a scope change nobody asked for.
+	column 'Master Planning Family'
+		dataType: string
+		lineageTag: 9d27f6c3-508a-4b71-86e0-3c4b25a91df8
+		summarizeBy: none
+		sourceColumn: Master Planning Family
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Decode of [Master Planning Family] via UDC 41/P4 (F0005.DRDL01). Blank where the UDC has no entry for the code.
+	column 'Master Planning Family Desc'
+		dataType: string
+		lineageTag: 4e0b93a7-c862-4159-b70d-2fa6e8503c14
+		summarizeBy: none
+		sourceColumn: Master Planning Family Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	/// 1 = this row is the PARENT of its split family: the lowest [Line Num] within [Parent Order Line ID]. That is the .000 row where one exists, and the lowest child where none does - so no family is ever dropped. The report-level filter keeps only these rows, collapsing splits to one row per commercial line with every field already carrying the parent's own value. Freight sits at .010 and is therefore never the parent. Do NOT filter on [Is Split Child] = 0 instead: that would delete the no-.000 families entirely.
+	column 'Is Parent Row' =
+			VAR MinLine =
+			    CALCULATE (
+			        MIN ( 'FactSalesDetail'[Line Num] ),
+			        ALLEXCEPT ( 'FactSalesDetail', 'FactSalesDetail'[Parent Order Line ID] )
+			    )
+			RETURN
+			    IF ( 'FactSalesDetail'[Line Num] = MinLine, 1, 0 )
+		formatString: 0
+		lineageTag: 7c58a0e9-3f14-46d2-b8a5-91e07d34b6fa
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'RTFT Target' = .98
+		formatString: 0.00
+		lineageTag: 8dc38f28-4d13-4e99-a463-c508b1492c04
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactSalesDetail = m
+		mode: import
+		source =
+				// Orders (denominator) — EDW Fact/Dim star
+				// Source: EDWPROD.michem.com / EDW / dbo.FactSalesDetail. The orders feed is
+				// current (through 2026); only Salesforce is stale. "Orders" = distinct
+				// [Order Num] (a measure). Column aliases match Complaints.xlsx 'Sales Orders'.
+				//
+				// CONNECTION: native query (Sql.Database with [Query=...]). This matches the
+				// deployed PBIP partition (Executive Dashboard.SemanticModel ... Orders.tmdl) and
+				// binds to the shared on-prem data gateway for scheduled refresh in the Power BI
+				// Service. The SELECT is the source-of-truth column set (wider than the old
+				// navigation-pattern draft — notably it keeps [Order Line ID] and the
+				// item/customer/shipment columns). Note: a native query is a fixed passthrough,
+				// so downstream PQ steps past Typed may not fold — keep transforms in the SQL.
+				//
+				// SERVER must match the gateway's registered data source string — registered
+				// as the short name "EDWPROD" — and resolve where the PBIX refreshes in Desktop
+				// (the jump box; the short name resolves there via DNS suffix). Gateway creds:
+				// Windows auth, UPN "ZackB@michem.com" (NOT the michelman.com mail address, NOT
+				// "Zack.bishop" — the AD account is ZackB and the AD domain is michem.com).
+				//
+				// Notes:
+				//  - SSAS helper cols (Order Exclude / Filter Active Types / Exclude Freight)
+				//    don't exist in the raw fact — apply the equivalent on Order Type / Line
+				//    Type / Cancelled_Flag (kept raw, filtered in the measure; Greg to lock).
+				//  - GLDate >= 2024-01-01 aligns to dev complaint coverage. ⚠ It also DROPS the
+				//    ~42k open orders (open lines carry GLDate = 1900). That's fine for shipped-
+				//    revenue reporting, but for OTIF / Reliability we need the open lines — use
+				//    the wide FactSalesDetail.m (windows on UpdatedDate) for that work instead.
+				//  - RecordType 'GL Detail' rows (= Line Type 'AA') are dropped at source. The
+				//    "IS NULL OR" guard keeps NULL RecordType rows under SQL's three-valued logic.
+				//  - [Business Unit Revenue] = JDE revenue business unit (MCU): first 2 digits =
+				//    company (10 = Americas, 20 = EMEA); remainder = cost center / product line.
+				//
+				// COGNOS FILTERSETS AS SOFT FLAGS (added 2026-06-28): the IT-provided Cognos query
+				//   hard-filters five conditions. Per request these are NOT hard-filtered here —
+				//   each is emitted as a 1/0 [Flag ...] column so the report can reproduce the
+				//   Cognos population exactly via slicer (Flag = 1 on all five) without losing rows.
+				//   GLDate >= 2024-01-01 stays the only hard bound (analogous to keeping the floor).
+				//   FactSalesDetail carries every source column, so these are EXACT, not proxies:
+				//     [Flag Positive Volume]          (QuantityOrdered*ConversionFactorLB*SalesFactor) > 0
+				//     [Flag Line Type S]              LineType = 'S'
+				//     [Flag Not Sched]                UserID <> 'SCHED'   (UserID = JDE SDUSER, last-updated-by)
+				//     [Flag Updated In Cognos Window] UpdatedDate in 2024-01-01..2025-02-24
+				//     [Flag Not India Tax]            ItemNum2nd not in IGST/CGST/SGST/CVD/ADD
+				//   ⚠ India-tax: Cognos keys off decode(GLOBAL_BULK_ITEM,'-',ITEM_NUMBER_2ND,
+				//     GLOBAL_BULK_ITEM); FactSalesDetail has no GlobalBulkItem column, so we test
+				//     ItemNum2nd directly. Equivalent unless a bulk item overrides the 2nd item #.
+				//   Supporting raw cols [Updated Date]/[Updated By]/[Conversion Factor LB]/
+				//   [Sales Factor]/[Revision Reason] are surfaced so the flags are auditable and
+				//   [Revision Reason] is available alongside [Order Line ID] for FactScheduleChange.
+				let
+				    Source = Sql.Database(
+				        "EDWPROD",
+				        "EDW",
+				        [Query = "
+				SELECT
+				    OrderNum                 AS [Order Num],
+				    OrderCompany             AS [Order Company],
+				    OrderType                AS [Order Type],
+				    OrderSuffix              AS [Order Suffix],
+				    LineNum                  AS [Line Num],
+				    LineType                 AS [Line Type],
+				    LineTypeDesc             AS [Line Type Desc],
+				    RecordType               AS [Record Type],
+				    Cancelled_Flag,
+				    StatusCodeLast           AS [Status Code Last],
+				    GLDate                   AS [GL Date],
+				    ActualShipDate           AS [Actual Ship Date],
+				    OrderDate                AS [Order Date],
+				    QuantityOrdered          AS [Qty Ordered],
+				    QuantityShipped          AS [Qty Shipped],
+				    QuantityCanceledScrapped AS [Qty Cancelled],
+				    LotSKey,
+				    LotNum                   AS [Lot Num],
+				    ShipToCustomerSKey,
+				    PromisedDeliveryDate         AS [Promised Delivery Date],
+				    RequestedDate                AS [Requested Date],
+				    PromisedShipmentDate         AS [Promised Shipment Date],
+				    OriginalPromisedDeliveryDate AS [Original Promised Delivery Date],
+				    ScheduledPickDate            AS [Scheduled Pick Date],
+				    Description1             AS [Product Description],
+				    Description2             AS [Product Description 2],
+				    ItemNumShort             AS [Item Num],
+				    ItemNum2nd               AS [Item Num 2nd],
+				    Location                 AS [Location],
+				    BusinessUnit             AS [Business Unit],
+				    BusinessUnitRevenue      AS [Business Unit Revenue],
+				    OrderTakenBy             AS [Order Taken By],
+				    OrderedBy                AS [Ordered By],
+				    ShipmentNum              AS [Shipment Num],
+				    BillOfLading             AS [Bill Of Lading],
+				    OrderLineID              AS [Order Line ID],
+				    OrderHeaderID            AS [Order Header ID],
+				    -- Split-line roll-up helpers, ported verbatim from the OTIF PBIP 2026-08-06 so both
+				    -- reports collapse splits identically. LineNum is decimal(9,3); 1.001/1.002 are JDE split
+				    -- children of parent line 1.000. [Parent Order Line ID] is derived by string surgery on
+				    -- the REAL OrderLineID rather than reconstructed from its parts, so the prefix matches
+				    -- byte-for-byte whatever format EDW uses - and on a non-split line it comes out identical
+				    -- to [Order Line ID], which is the built-in self-check. Freight rides inside a family at
+				    -- .010 as a LineType 'FS' BILLABLE FREIGHT line; exclude it from any qty roll-up. A kit
+				    -- flag was tried in OTIF and removed 2026-08-04 - the EDW kit columns are not
+				    -- zero-defaulted, so the test returned 1 on 91% of rows and was meaningless.
+				    CAST(FLOOR(LineNum) AS decimal(9,3)) AS [Parent Line Num],
+				    LEFT(LTRIM(RTRIM(OrderLineID)),
+				         LEN(LTRIM(RTRIM(OrderLineID))) - CHARINDEX(',', REVERSE(LTRIM(RTRIM(OrderLineID)))))
+				      + ',' + CAST(CAST(FLOOR(LineNum) AS decimal(9,3)) AS varchar(12)) AS [Parent Order Line ID],
+				    CASE WHEN LineNum <> FLOOR(LineNum) THEN 1 ELSE 0 END AS [Is Split Child],
+				    SerialNumLot             AS [Serial Num Lot],
+				    AmountExtendedPrice      AS [Ext Price],
+				    AmountOpen               AS [Amount Open],
+				    QuantityBackordered      AS [Qty Backordered],
+				    QuantityOpen             AS [Qty Open],
+				    QuantityShippedtoDate    AS [Qty Shipped To Date],
+				    GrossWeight              AS [Gross Weight],
+				    UnitWeight               AS [Unit Weight],
+				    HoldOrdersCode           AS [Hold Code],
+				    ReasonCode               AS [Reason Code],
+				    ReasonCodeDesc           AS [Reason Code Desc],
+				    ModeOfTransport          AS [Mode Of Transport],
+				    CarrierNum               AS [Carrier Num],
+				    FreightHandlingCode      AS [Freight Handling Code],
+				    CancelDate               AS [Cancel Date],
+				    InvoiceDate              AS [Invoice Date],
+				    ShipToAddressSKey,
+				    SoldToAddressSKey,
+				    SoldToCustomerSKey,
+				    ParentCustomerSKey,
+				    f.ItemSKey,
+				    -- Master Planning Family (F4102.IBPRP4, UDC 41/P4) folded from BIQL.TbItemBranch at
+				    -- (ItemSKey, Business Unit) - both of which this SELECT already carries, so the fold is a
+				    -- LEFT JOIN with no new source. Fact-side by design: a 1:1 dimension hop in a wide-grid
+				    -- group-by is what caused the OOM in CLAUDE.md section 7. Only the BIQL view carries the
+				    -- enrichment columns; dbo.DimItemBranch does not.
+				    ib.MasterPlanningFamily     AS [Master Planning Family],
+				    ib.MasterPlanningFamilyDesc AS [Master Planning Family Desc],
+				    -- Supporting raw columns for the Cognos flags below (and FactScheduleChange link)
+				    UpdatedDate              AS [Updated Date],
+				    UserID                   AS [Updated By],
+				    ConversionFactorLB       AS [Conversion Factor LB],
+				    SalesFactor              AS [Sales Factor],
+				    RevisionReason           AS [Revision Reason],
+				    -- Cognos filterset flags (soft): 1 = row matches the Cognos WHERE condition.
+				    -- Slice Flag = 1 on all five to reproduce the Cognos population; none drop rows.
+				    CASE WHEN (QuantityOrdered * ConversionFactorLB * SalesFactor) > 0 THEN 1 ELSE 0 END AS [Flag Positive Volume],
+				    CASE WHEN LineType = 'S' THEN 1 ELSE 0 END AS [Flag Line Type S],
+				    CASE WHEN LTRIM(RTRIM(UserID)) <> 'SCHED' THEN 1 ELSE 0 END AS [Flag Not Sched],
+				    CASE WHEN UpdatedDate BETWEEN '2024-01-01' AND '2025-02-24' THEN 1 ELSE 0 END AS [Flag Updated In Cognos Window],
+				    CASE WHEN LTRIM(RTRIM(ItemNum2nd)) NOT IN ('IGST','CGST','SGST','CVD','ADD') THEN 1 ELSE 0 END AS [Flag Not India Tax]
+				FROM dbo.FactSalesDetail f
+				LEFT JOIN (
+				    -- FAN-OUT GUARD: a GROUP BY derived table emits at most one row per (ItemSKey, BU), so
+				    -- this join cannot change the fact row count. TbItemBranch is not documented as unique
+				    -- on that pair. It is hash-aggregated once - NOT the correlated per-row lookup
+				    -- (OUTER APPLY / ROW_NUMBER) that hung report 14 twice, per CLAUDE.md section 7. MIN() is the
+				    -- tie-break; probe9_mpf_itembranch.sql says whether duplicates disagree at all.
+				    SELECT ItemSKey,
+				           LTRIM(RTRIM([Business Unit]))                    AS BU,
+				           MIN(LTRIM(RTRIM([Master Planning Family])))      AS MasterPlanningFamily,
+				           MIN(LTRIM(RTRIM([Master Planning Family Desc]))) AS MasterPlanningFamilyDesc
+				    FROM BIQL.TbItemBranch
+				    GROUP BY ItemSKey, LTRIM(RTRIM([Business Unit]))
+				) ib ON ib.ItemSKey = f.ItemSKey
+				    AND ib.BU       = LTRIM(RTRIM(f.BusinessUnit))
+				WHERE GLDate >= '2024-01-01'
+				  AND (RecordType IS NULL OR RecordType <> 'GL Detail')
+				"]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {
+				            {"GL Date", type date},
+				            {"Actual Ship Date", type date},
+				            {"Order Date", type date},
+				            {"Promised Delivery Date", type date},
+				            {"Requested Date", type date},
+				            {"Promised Shipment Date", type date},
+				            {"Original Promised Delivery Date", type date},
+				            {"Scheduled Pick Date", type date},
+				            {"Cancel Date", type date},
+				            {"Invoice Date", type date},
+				            {"Updated Date", type date}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

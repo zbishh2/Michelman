@@ -1,0 +1,50 @@
+table '03 Cols Enrichment'
+	lineageTag: 17030000-0000-4000-8000-000000000001
+
+	column tbl
+		dataType: string
+		lineageTag: 17030001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: tbl
+
+		annotation SummarizationSetBy = Automatic
+
+	column sample
+		dataType: string
+		lineageTag: 17030001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: sample
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '03 Cols Enrichment' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT 'F0006' AS tbl, (SELECT TOP 1 CONCAT(LTRIM(RTRIM(MCMCU)),'|',LTRIM(RTRIM(MCCO)),'|',LTRIM(RTRIM(MCRP02)),'|',LTRIM(RTRIM(MCRP03))) FROM PRODDTA.F0006) AS sample
+				        UNION ALL SELECT 'F0010', (SELECT TOP 1 CONCAT(LTRIM(RTRIM(CCCO)),'|',LTRIM(RTRIM(CCNAME))) FROM PRODDTA.F0010)
+				        UNION ALL SELECT 'F0101', (SELECT TOP 1 CONCAT(CAST(ABAN8 AS varchar(20)),'|',LTRIM(RTRIM(ABALPH)),'|',LTRIM(RTRIM(ABAC01)),'|',LTRIM(RTRIM(ABAC06))) FROM PRODDTA.F0101)
+				        UNION ALL SELECT 'F0005', (SELECT TOP 1 CONCAT(LTRIM(RTRIM(DRSY)),'|',LTRIM(RTRIM(DRRT)),'|',LTRIM(RTRIM(DRKY)),'|',LTRIM(RTRIM(DRDL01))) FROM PRODCTL.F0005 WHERE LTRIM(RTRIM(DRSY))='00' AND LTRIM(RTRIM(DRRT))='06')
+				        UNION ALL SELECT 'F554101', (SELECT TOP 1 CONCAT(CAST(IMITM AS varchar(20)),'|',LTRIM(RTRIM(IMGBLK))) FROM PRODDTA.F554101)
+				        UNION ALL SELECT 'F42140', (SELECT TOP 1 CONCAT(CAST(CMAN8 AS varchar(20)),'|',LTRIM(RTRIM(CMRTYPE)),'|',CAST(CMSLSM AS varchar(20))) FROM PRODDTA.F42140 WHERE LTRIM(RTRIM(CMRTYPE))='CSR')
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"tbl", type text},
+				            {"sample", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

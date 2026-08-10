@@ -1,0 +1,48 @@
+table 'Order Rep Columns'
+	lineageTag: 5e1b7a64-4b85-4fa6-c2c7-95a6ea1c8f01
+
+	column 'Table Name'
+		dataType: string
+		lineageTag: 5e1b7a64-4b85-4fa6-c2c7-95a6ea1c8f02
+		summarizeBy: none
+		sourceColumn: Table Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Column Name'
+		dataType: string
+		lineageTag: 5e1b7a64-4b85-4fa6-c2c7-95a6ea1c8f03
+		summarizeBy: none
+		sourceColumn: Column Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Order Rep Columns' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT OBJECT_NAME(object_id) AS [Table Name], name AS [Column Name]
+				        FROM sys.columns
+				        WHERE object_id IN (OBJECT_ID('PRODDTA.F4211'), OBJECT_ID('PRODDTA.F42119'))
+				          AND (name LIKE '%SLSM%' OR name LIKE '%SLSP%' OR name LIKE '%REP%')
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Table Name", type text},
+				            {"Column Name", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

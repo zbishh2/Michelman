@@ -1,0 +1,1011 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "14b1020000000000f002",
+  "position": {
+    "x": 7.781155015197569,
+    "y": 89.48328267477204,
+    "z": 0,
+    "height": 606.9300911854103,
+    "width": 1264.437689969605
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Calendar Inventory Snapshot"
+                    }
+                  },
+                  "Property": "R14 Inventory Date"
+                }
+              },
+              "queryRef": "Calendar Inventory Snapshot.R14 Inventory Date",
+              "nativeQueryRef": "R14 Inventory Date",
+              "displayName": "Inventory Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Branch"
+                    }
+                  },
+                  "Property": "Region (Inventory)"
+                }
+              },
+              "queryRef": "Branch.Region (Inventory)",
+              "nativeQueryRef": "Region (Inventory)",
+              "displayName": "REGION"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Branch"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Branch.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Item Num Global Bulk"
+                }
+              },
+              "queryRef": "Item Branch.Item Num Global Bulk",
+              "nativeQueryRef": "Item Num Global Bulk",
+              "displayName": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Item Num Bulk"
+                }
+              },
+              "queryRef": "Item Branch.Item Num Bulk",
+              "nativeQueryRef": "Item Num Bulk",
+              "displayName": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Item Num 2nd"
+                }
+              },
+              "queryRef": "Item Branch.Item Num 2nd",
+              "nativeQueryRef": "Item Num 2nd",
+              "displayName": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Stocking Type"
+                }
+              },
+              "queryRef": "Item Branch.Stocking Type",
+              "nativeQueryRef": "Stocking Type",
+              "displayName": "Stock Type Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory Snapshot"
+                    }
+                  },
+                  "Property": "CategoryGLF41021"
+                }
+              },
+              "queryRef": "Inventory Snapshot.CategoryGLF41021",
+              "nativeQueryRef": "CategoryGLF41021",
+              "displayName": "GL Class Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory Snapshot"
+                    }
+                  },
+                  "Property": "Location"
+                }
+              },
+              "queryRef": "Inventory Snapshot.Location",
+              "nativeQueryRef": "Location"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory Snapshot"
+                    }
+                  },
+                  "Property": "LotNum"
+                }
+              },
+              "queryRef": "Inventory Snapshot.LotNum",
+              "nativeQueryRef": "LotNum",
+              "displayName": "Lot Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Lot"
+                    }
+                  },
+                  "Property": "Supplier Lot Num"
+                }
+              },
+              "queryRef": "Lot.Supplier Lot Num",
+              "nativeQueryRef": "Supplier Lot Num",
+              "displayName": "Supplier Lot Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory Snapshot"
+                    }
+                  },
+                  "Property": "Lot Status Code"
+                }
+              },
+              "queryRef": "Inventory Snapshot.Lot Status Code",
+              "nativeQueryRef": "Lot Status Code",
+              "displayName": "Lot Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Master Planning Family"
+                }
+              },
+              "queryRef": "Item Branch.Master Planning Family",
+              "nativeQueryRef": "Master Planning Family"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory Snapshot"
+                    }
+                  },
+                  "Property": "Qty On Hand"
+                }
+              },
+              "queryRef": "Inventory Snapshot.Qty On Hand",
+              "nativeQueryRef": "Qty On Hand",
+              "displayName": "On Hand"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory Snapshot"
+                    }
+                  },
+                  "Property": "UOMPrimary"
+                }
+              },
+              "queryRef": "Inventory Snapshot.UOMPrimary",
+              "nativeQueryRef": "UOMPrimary",
+              "displayName": "UOM"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory Snapshot"
+                    }
+                  },
+                  "Property": "Qty On Hand KG"
+                }
+              },
+              "queryRef": "Inventory Snapshot.Qty On Hand KG",
+              "nativeQueryRef": "Qty On Hand KG",
+              "displayName": "OH KGs"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory Snapshot"
+                    }
+                  },
+                  "Property": "Qty On Hand LB"
+                }
+              },
+              "queryRef": "Inventory Snapshot.Qty On Hand LB",
+              "nativeQueryRef": "Qty On Hand LB",
+              "displayName": "OH LBs"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory Snapshot"
+                    }
+                  },
+                  "Property": "R14 OH USD"
+                }
+              },
+              "queryRef": "Inventory Snapshot.R14 OH USD",
+              "nativeQueryRef": "R14 OH USD",
+              "displayName": "OH USD"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory Snapshot"
+                    }
+                  },
+                  "Property": "R14 OH EUR"
+                }
+              },
+              "queryRef": "Inventory Snapshot.R14 OH EUR",
+              "nativeQueryRef": "R14 OH EUR",
+              "displayName": "OH EUR"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Lot"
+                    }
+                  },
+                  "Property": "On Hand Date"
+                }
+              },
+              "queryRef": "Lot.On Hand Date",
+              "nativeQueryRef": "On Hand Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Lot"
+                    }
+                  },
+                  "Property": "Lot Expiration Date"
+                }
+              },
+              "queryRef": "Lot.Lot Expiration Date",
+              "nativeQueryRef": "Lot Expiration Date",
+              "displayName": "Lot Expiry Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Lot"
+                    }
+                  },
+                  "Property": "Memo Lot 1"
+                }
+              },
+              "queryRef": "Lot.Memo Lot 1",
+              "nativeQueryRef": "Memo Lot 1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Lot"
+                    }
+                  },
+                  "Property": "Memo Lot 2"
+                }
+              },
+              "queryRef": "Lot.Memo Lot 2",
+              "nativeQueryRef": "Memo Lot 2"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Commodity Class Codes Desc"
+                }
+              },
+              "queryRef": "Item Branch.Commodity Class Codes Desc",
+              "nativeQueryRef": "Commodity Class Codes Desc",
+              "displayName": "Commodity Class Description"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Commodity Sub Class Codes Desc"
+                }
+              },
+              "queryRef": "Item Branch.Commodity Sub Class Codes Desc",
+              "nativeQueryRef": "Commodity Sub Class Codes Desc",
+              "displayName": "Commodity Sub Class Description"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Branch"
+                  }
+                },
+                "Property": "Region (Inventory)"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Item Branch"
+                  }
+                },
+                "Property": "Item Num Global Bulk"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Item Branch"
+                  }
+                },
+                "Property": "Item Num Bulk"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Item Branch"
+                  }
+                },
+                "Property": "Item Num 2nd"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "3fdc5176af8948cab447",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Calendar Inventory Snapshot"
+              }
+            },
+            "Property": "R14 Inventory Date"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "d6a699f42dc14532ad06",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Branch"
+              }
+            },
+            "Property": "Region (Inventory)"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "5d1b8e347d0c4bcc86ca",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Branch"
+              }
+            },
+            "Property": "Branch Plant"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "05ac293a4a0347d8a446",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Branch"
+              }
+            },
+            "Property": "Item Num Global Bulk"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "8fdafdfab5cc44a4a2c0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Branch"
+              }
+            },
+            "Property": "Item Num Bulk"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "f1bb3e62f26b426eb526",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Branch"
+              }
+            },
+            "Property": "Item Num 2nd"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "b2a631ff1674408a8e67",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Branch"
+              }
+            },
+            "Property": "Stocking Type"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "800c10cad1124e20b4b4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory Snapshot"
+              }
+            },
+            "Property": "CategoryGLF41021"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "44a6f3e73d8d46cd9281",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory Snapshot"
+              }
+            },
+            "Property": "Location"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "10cec7917b45475ebb3e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory Snapshot"
+              }
+            },
+            "Property": "LotNum"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "76411824e54f4093b19d",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Lot"
+              }
+            },
+            "Property": "Supplier Lot Num"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a712a942466b40c69691",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory Snapshot"
+              }
+            },
+            "Property": "Lot Status Code"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "d7d175114c6c43dfb06f",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Branch"
+              }
+            },
+            "Property": "Master Planning Family"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "7e1ffac9e7ec48899e6f",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory Snapshot"
+              }
+            },
+            "Property": "Qty On Hand"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "2619cc4d91bf4202845d",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory Snapshot"
+              }
+            },
+            "Property": "UOMPrimary"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "7ec826b8a0cc4e50b94d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory Snapshot"
+              }
+            },
+            "Property": "Qty On Hand KG"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "0705a3ed167c4f6fb818",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory Snapshot"
+              }
+            },
+            "Property": "Qty On Hand LB"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "0e530a5e967f43159e15",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory Snapshot"
+              }
+            },
+            "Property": "R14 OH USD"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "a253c8a795264170905e",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory Snapshot"
+              }
+            },
+            "Property": "R14 OH EUR"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "5e7fe57af4ec4552b0d0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Lot"
+              }
+            },
+            "Property": "On Hand Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9f524064ffcf4552b417",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Lot"
+              }
+            },
+            "Property": "Lot Expiration Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "2cc55a595b7e40baa24f",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Lot"
+              }
+            },
+            "Property": "Memo Lot 1"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "740cb9c1b766429faa61",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Lot"
+              }
+            },
+            "Property": "Memo Lot 2"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "0ad2f49ec9e34458887a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Branch"
+              }
+            },
+            "Property": "Commodity Class Codes Desc"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "832b87264d964bf69ff8",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Branch"
+              }
+            },
+            "Property": "Commodity Sub Class Codes Desc"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "00caadd6ed5b455dabb0",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory Snapshot"
+              }
+            },
+            "Property": "Qty On Hand"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "i",
+              "Entity": "Inventory Snapshot",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Comparison": {
+                  "ComparisonKind": 1,
+                  "Left": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Source": "i"
+                        }
+                      },
+                      "Property": "Qty On Hand"
+                    }
+                  },
+                  "Right": {
+                    "Literal": {
+                      "Value": "0D"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

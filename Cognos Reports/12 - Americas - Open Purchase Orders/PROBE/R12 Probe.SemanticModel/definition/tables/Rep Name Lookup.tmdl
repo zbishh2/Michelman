@@ -1,0 +1,73 @@
+table 'Rep Name Lookup'
+	lineageTag: 2b8e4d31-1e52-4c73-8f94-62d3b7e95f01
+
+	column 'Rep Type'
+		dataType: string
+		lineageTag: 2b8e4d31-1e52-4c73-8f94-62d3b7e95f02
+		summarizeBy: none
+		sourceColumn: Rep Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Rep AN8'
+		dataType: int64
+		lineageTag: 2b8e4d31-1e52-4c73-8f94-62d3b7e95f03
+		summarizeBy: none
+		sourceColumn: Rep AN8
+
+		annotation SummarizationSetBy = User
+
+	column 'AB Name'
+		dataType: string
+		lineageTag: 2b8e4d31-1e52-4c73-8f94-62d3b7e95f04
+		summarizeBy: none
+		sourceColumn: AB Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mailing Name'
+		dataType: string
+		lineageTag: 2b8e4d31-1e52-4c73-8f94-62d3b7e95f05
+		summarizeBy: none
+		sourceColumn: Mailing Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Rep Name Lookup' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT DISTINCT
+				            LTRIM(RTRIM(f.CMRTYPE))   AS [Rep Type],
+				            CAST(f.CMSLSM AS int)     AS [Rep AN8],
+				            LTRIM(RTRIM(ab.ABALPH))   AS [AB Name],
+				            LTRIM(RTRIM(ww.WWMLNM))   AS [Mailing Name]
+				        FROM PRODDTA.F42140 f
+				        JOIN PRODDTA.F0101 ab ON ab.ABAN8 = f.CMSLSM
+				        LEFT JOIN PRODDTA.F0111 ww ON ww.WWAN8 = f.CMSLSM AND ww.WWIDLN = 0
+				        WHERE ab.ABALPH LIKE '%Fuka%' OR ab.ABALPH LIKE '%Schloerb%'
+				           OR ab.ABALPH LIKE '%Jeffers%' OR ab.ABALPH LIKE '%Sifuentes%'
+				           OR ab.ABALPH LIKE '%Corcoran%' OR ab.ABALPH LIKE '%Chatman%'
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Rep Type", type text},
+				            {"Rep AN8", Int64.Type},
+				            {"AB Name", type text},
+				            {"Mailing Name", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

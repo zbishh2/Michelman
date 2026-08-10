@@ -1,0 +1,30 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["01 Cols F4211", "02 Cols F42140", "03 Cols F0101", "04 Join Drops Shipto", "05 Join Drops Carrier CSR", "06 CSR Fan-Out", "07 Code Decodes", "08 Count Parity", "09 Multi-Row Lines", "10 Format Spot-Checks", "11 Live Row Count"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation PBIDesktopVersion = 2.146.1454.0 (25.08)+901d6c338d1dea81ac3e53073ffb10469f0f37b8
+
+ref table '01 Cols F4211'
+ref table '02 Cols F42140'
+ref table '03 Cols F0101'
+ref table '04 Join Drops Shipto'
+ref table '05 Join Drops Carrier CSR'
+ref table '06 CSR Fan-Out'
+ref table '07 Code Decodes'
+ref table '08 Count Parity'
+ref table '09 Multi-Row Lines'
+ref table '10 Format Spot-Checks'
+ref table '11 Live Row Count'
+
+ref cultureInfo en-US
+

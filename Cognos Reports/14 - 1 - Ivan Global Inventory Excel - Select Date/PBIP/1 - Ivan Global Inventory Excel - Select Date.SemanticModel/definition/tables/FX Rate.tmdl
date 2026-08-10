@@ -1,0 +1,52 @@
+table 'FX Rate'
+	lineageTag: 14a1a000-0000-4000-8000-000000000014
+
+	column Currency
+		dataType: string
+		lineageTag: 14a1da05-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Rate Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 14a1da05-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Rate Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Exchange Rate (to USD)'
+		dataType: double
+		lineageTag: 14a1da05-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Exchange Rate (to USD)
+
+		annotation SummarizationSetBy = User
+
+	partition 'FX Rate' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    WinStart = Date.ToText(Date.AddMonths(Date.From(DateTime.LocalNow()), -13), "yyyy-MM-dd"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT DISTINCT
+				            fx.CurrencyCodeFrom               AS [Currency],
+				            fx.CalendarDate                   AS [Rate Date],
+				            fx.[Exchange Rate]                AS [Exchange Rate (to USD)]
+				        FROM BIQL.DimCurrencyExchangeRatesUSDDaily fx
+				        WHERE fx.CalendarDate >= CAST('" & WinStart & "' AS date)
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

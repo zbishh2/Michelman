@@ -1,0 +1,178 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 581.74582204581282,
+            "y": 48.305267259220159
+          },
+          "nodeIndex": "Company",
+          "nodeLineageTag": "14a1a000-0000-4000-8000-000000000013",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1041.7458220458129,
+            "y": 174.81674804949944
+          },
+          "nodeIndex": "Escor Inventory",
+          "nodeLineageTag": "14a1a000-0000-4000-8000-000000000002",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1325.7458220458129,
+            "y": 176.81674804949944
+          },
+          "nodeIndex": "Escor Lot Info",
+          "nodeLineageTag": "14a1a000-0000-4000-8000-000000000003",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1609.7458220458129,
+            "y": 248.81674804949944
+          },
+          "nodeIndex": "FX Rate",
+          "nodeLineageTag": "14a1a000-0000-4000-8000-000000000014",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1893.7458220458129,
+            "y": 174.81674804949944
+          },
+          "nodeIndex": "Inventory",
+          "nodeLineageTag": "14a1a000-0000-4000-8000-000000000001",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 236.57687702645978,
+            "y": -50
+          },
+          "nodeIndex": "Item",
+          "nodeLineageTag": "14a1a000-0000-4000-8000-000000000011",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2177.7458220458129,
+            "y": 248.81674804949944
+          },
+          "nodeIndex": "Last Refreshed",
+          "nodeLineageTag": "14a1a000-0000-4000-8000-000000000004",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 299.63349609899893
+          },
+          "nodeIndex": "Lot",
+          "nodeLineageTag": "14a1a000-0000-4000-8000-000000000012",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2461.7458220458129,
+            "y": 212.81674804949944
+          },
+          "nodeIndex": "Missing Lots",
+          "nodeLineageTag": "14a1a000-0000-4000-8000-000000000017",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2745.7458220458129,
+            "y": 272.81674804949944
+          },
+          "nodeIndex": "Select Date",
+          "nodeLineageTag": "14a1a000-0000-4000-8000-000000000018",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 523.550192628168,
+            "y": 264.55731037274518
+          },
+          "nodeIndex": "Snapshot",
+          "nodeLineageTag": "14a1a000-0000-4000-8000-000000000016",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3029.7458220458129,
+            "y": 174.81674804949944
+          },
+          "nodeIndex": "UOM Conversion",
+          "nodeLineageTag": "14a1a000-0000-4000-8000-000000000015",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 50,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

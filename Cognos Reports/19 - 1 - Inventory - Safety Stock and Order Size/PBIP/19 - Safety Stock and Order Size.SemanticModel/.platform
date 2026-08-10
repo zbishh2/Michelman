@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "19 - Safety Stock and Order Size"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "19c1e2a7-1908-4c02-9d31-19a1c0de5200"
+  }
+}

@@ -1,0 +1,102 @@
+table 'PO Gap'
+	lineageTag: 6f2c8b75-5c96-4ab7-d3d8-a6b7fb2d9f01
+
+	column 'F43119 Exists'
+		dataType: int64
+		lineageTag: 6f2c8b75-5c96-4ab7-d3d8-a6b7fb2d9f02
+		summarizeBy: none
+		sourceColumn: F43119 Exists
+
+		annotation SummarizationSetBy = User
+
+	column 'F43119 Rows In Window'
+		dataType: int64
+		lineageTag: 6f2c8b75-5c96-4ab7-d3d8-a6b7fb2d9f03
+		summarizeBy: none
+		sourceColumn: F43119 Rows In Window
+
+		annotation SummarizationSetBy = User
+
+	column 'F4311 Raw In Window'
+		dataType: int64
+		lineageTag: 6f2c8b75-5c96-4ab7-d3d8-a6b7fb2d9f04
+		summarizeBy: none
+		sourceColumn: F4311 Raw In Window
+
+		annotation SummarizationSetBy = User
+
+	column 'Dropped By F4102 Join'
+		dataType: int64
+		lineageTag: 6f2c8b75-5c96-4ab7-d3d8-a6b7fb2d9f05
+		summarizeBy: none
+		sourceColumn: Dropped By F4102 Join
+
+		annotation SummarizationSetBy = User
+
+	column 'Dropped By Vendor Join'
+		dataType: int64
+		lineageTag: 6f2c8b75-5c96-4ab7-d3d8-a6b7fb2d9f06
+		summarizeBy: none
+		sourceColumn: Dropped By Vendor Join
+
+		annotation SummarizationSetBy = User
+
+	partition 'PO Gap' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        DECLARE @hist int = NULL;
+				        IF OBJECT_ID('PRODDTA.F43119') IS NOT NULL
+				            EXEC sp_executesql N'SELECT @c = COUNT(*) FROM PRODDTA.F43119
+				                WHERE PDPDDJ > 0
+				                  AND DATEADD(DAY,(PDPDDJ%1000)-1,DATEFROMPARTS(1900+(PDPDDJ/1000),1,1)) >= DATEADD(DAY,-365, CAST(GETDATE() AS date))
+				                  AND LTRIM(RTRIM(PDMCU)) IN (''CINC'',''CIN2'',''CIN4'')
+				                  AND LTRIM(RTRIM(PDDCTO)) IN (''OP'',''OD'')',
+				                N'@c int OUTPUT', @c = @hist OUTPUT;
+				        SELECT
+				            CAST(CASE WHEN OBJECT_ID('PRODDTA.F43119') IS NOT NULL THEN 1 ELSE 0 END AS int) AS [F43119 Exists],
+				            @hist AS [F43119 Rows In Window],
+				            (SELECT COUNT(*) FROM PRODDTA.F4311 d
+				              WHERE d.PDPDDJ > 0
+				                AND DATEADD(DAY,(d.PDPDDJ%1000)-1,DATEFROMPARTS(1900+(d.PDPDDJ/1000),1,1)) >= DATEADD(DAY,-365, CAST(GETDATE() AS date))
+				                AND LTRIM(RTRIM(d.PDMCU)) IN ('CINC','CIN2','CIN4')
+				                AND LTRIM(RTRIM(d.PDDCTO)) IN ('OP','OD')) AS [F4311 Raw In Window],
+				            (SELECT COUNT(*) FROM PRODDTA.F4311 d
+				              WHERE d.PDPDDJ > 0
+				                AND DATEADD(DAY,(d.PDPDDJ%1000)-1,DATEFROMPARTS(1900+(d.PDPDDJ/1000),1,1)) >= DATEADD(DAY,-365, CAST(GETDATE() AS date))
+				                AND LTRIM(RTRIM(d.PDMCU)) IN ('CINC','CIN2','CIN4')
+				                AND LTRIM(RTRIM(d.PDDCTO)) IN ('OP','OD')
+				                AND NOT EXISTS (SELECT 1 FROM PRODDTA.F4102 ib
+				                                WHERE LTRIM(RTRIM(ib.IBMCU))  = LTRIM(RTRIM(d.PDMCU))
+				                                  AND LTRIM(RTRIM(ib.IBLITM)) = LTRIM(RTRIM(d.PDLITM)))) AS [Dropped By F4102 Join],
+				            (SELECT COUNT(*) FROM PRODDTA.F4311 d
+				              WHERE d.PDPDDJ > 0
+				                AND DATEADD(DAY,(d.PDPDDJ%1000)-1,DATEFROMPARTS(1900+(d.PDPDDJ/1000),1,1)) >= DATEADD(DAY,-365, CAST(GETDATE() AS date))
+				                AND LTRIM(RTRIM(d.PDMCU)) IN ('CINC','CIN2','CIN4')
+				                AND LTRIM(RTRIM(d.PDDCTO)) IN ('OP','OD')
+				                AND NOT EXISTS (SELECT 1 FROM PRODDTA.F0101 v WHERE v.ABAN8 = d.PDAN8)) AS [Dropped By Vendor Join];
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"F43119 Exists", Int64.Type},
+				            {"F43119 Rows In Window", Int64.Type},
+				            {"F4311 Raw In Window", Int64.Type},
+				            {"Dropped By F4102 Join", Int64.Type},
+				            {"Dropped By Vendor Join", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

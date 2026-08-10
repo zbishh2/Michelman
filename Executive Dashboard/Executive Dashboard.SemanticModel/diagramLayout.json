@@ -1,0 +1,325 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1971.3619393882266,
+            "y": 0
+          },
+          "nodeIndex": ".Measures",
+          "nodeLineageTag": "ed18203f-eca1-4302-a05b-062fd66e2fa1",
+          "size": {
+            "height": 72,
+            "width": 234
+          },
+          "zIndex": 11,
+          "expandedHeight": 200
+        },
+        {
+          "location": {
+            "x": 1358.6688604222068,
+            "y": 157.83662516632873
+          },
+          "nodeIndex": "DatePeriods",
+          "nodeLineageTag": "3d6aa7ac-16e0-4642-a9bf-f926190952dc",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 13,
+          "expandedHeight": 200
+        },
+        {
+          "location": {
+            "x": 1365.8225792965829,
+            "y": 307.59373397483625
+          },
+          "nodeIndex": "DateTable",
+          "nodeLineageTag": "c6452861-5a54-4480-bbce-dab8c2e648b0",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 12,
+          "expandedHeight": 200
+        },
+        {
+          "location": {
+            "x": 740.37152013162518,
+            "y": 151.60051606031524
+          },
+          "nodeIndex": "Complaints",
+          "nodeLineageTag": "39c33b49-47f6-42be-a873-12cd6773b73f",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 22
+        },
+        {
+          "location": {
+            "x": 278.27277186496411,
+            "y": 768.64185831407053
+          },
+          "nodeIndex": "Ship-To",
+          "nodeLineageTag": "9d6edf44-95be-45da-9d44-ea70a836ae80",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 15,
+          "expandedHeight": 183.89194210254044
+        },
+        {
+          "location": {
+            "x": 280.46041292384649,
+            "y": 561.78814078449466
+          },
+          "nodeIndex": "FactScheduleChange",
+          "nodeLineageTag": "7a3ac822-1e32-4e20-9ba7-3623ed8d29a6",
+          "size": {
+            "height": 155.44261454494404,
+            "width": 234
+          },
+          "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 1967.9329235910609,
+            "y": 111.60834300000002
+          },
+          "nodeIndex": "Reason Filter",
+          "nodeLineageTag": "68030054-2dfc-4256-8800-a4514dd1b2fb",
+          "size": {
+            "height": 72,
+            "width": 234
+          },
+          "zIndex": 16,
+          "expandedHeight": 128
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 590.90242106254686
+          },
+          "nodeIndex": "Reason Codes",
+          "nodeLineageTag": "3de6b8a3-9e1d-41c1-ab59-05a7e881c7d0",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 10,
+          "expandedHeight": 272
+        },
+        {
+          "location": {
+            "x": 276.14286111963094,
+            "y": 443.4375427242519
+          },
+          "nodeIndex": "LineComments",
+          "nodeLineageTag": "f6686c08-4069-4873-bf22-8b1ba7f7bd07",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 9,
+          "expandedHeight": 200
+        },
+        {
+          "location": {
+            "x": 280.41063880689421,
+            "y": 910.48859098604589
+          },
+          "nodeIndex": "Sold-To",
+          "nodeLineageTag": "911f806b-d979-4b71-8961-c4ad0142c08c",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 17,
+          "expandedHeight": 296
+        },
+        {
+          "location": {
+            "x": 729.31743318350777,
+            "y": 510.52734069887663
+          },
+          "nodeIndex": "FactSalesDetail",
+          "nodeLineageTag": "b8b0720f-9250-48fc-8769-ecf8dd16b18c",
+          "size": {
+            "height": 242.17704581797773,
+            "width": 234
+          },
+          "zIndex": 18
+        },
+        {
+          "location": {
+            "x": 1626.3398936551253,
+            "y": 154.03067176912077
+          },
+          "nodeIndex": "Hours",
+          "nodeLineageTag": "3ad6b2e6-2e4b-46bf-998e-42029182a177",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 20,
+          "expandedHeight": 248
+        },
+        {
+          "location": {
+            "x": 993.13745003044482,
+            "y": 427.9885354147894
+          },
+          "nodeIndex": "Segmentation",
+          "nodeLineageTag": "826132b3-8567-44f5-92f6-a9d9eb6297bd",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 19,
+          "expandedHeight": 145
+        },
+        {
+          "location": {
+            "x": 1965.0241260091827,
+            "y": 333.93602437558923
+          },
+          "nodeIndex": "Scorecard",
+          "nodeLineageTag": "c6cca366-f93b-4c9b-98e1-b124aafbd72a",
+          "size": {
+            "height": 72,
+            "width": 234
+          },
+          "zIndex": 1,
+          "expandedHeight": 272
+        },
+        {
+          "location": {
+            "x": 1366.962138350616,
+            "y": 462.98895512669213
+          },
+          "nodeIndex": "Dim Region",
+          "nodeLineageTag": "874a3c87-5429-4f23-9720-1b4d0c1ab608",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 1967.6081360238773,
+            "y": 221.12490037558905
+          },
+          "nodeIndex": "OTIF Target",
+          "nodeLineageTag": "2c94e57a-b4de-4387-c70f-e6732955c432",
+          "size": {
+            "height": 72,
+            "width": 234
+          },
+          "zIndex": 3,
+          "expandedHeight": 200
+        },
+        {
+          "location": {
+            "x": 836.19759777323748,
+            "y": 1181.12000604177
+          },
+          "nodeIndex": "WorkOrderRouting",
+          "nodeLineageTag": "1c9d70a4-58e3-4b26-9f01-6a28375ed4b9",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 4,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 728.83263301807119,
+            "y": 817.90064805119141
+          },
+          "nodeIndex": "WorkOrders",
+          "nodeLineageTag": "4a78ceaf-3c5e-45a3-8228-724301ebbfd0",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1102.513960213364,
+            "y": 1175.7496111463468
+          },
+          "nodeIndex": "Quality Database WOs",
+          "nodeLineageTag": "b71f4a02-9d38-4c65-8e17-2a95c0d64831",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 6,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 1966.2660280876282,
+            "y": 457.2163102826936
+          },
+          "nodeIndex": "SOP Excluded Items",
+          "nodeLineageTag": "5d90e2c7-4a13-4b86-9f27-c30e158fa64b",
+          "size": {
+            "height": 72,
+            "width": 234
+          },
+          "zIndex": 21,
+          "expandedHeight": 200
+        },
+        {
+          "location": {
+            "x": 293.9755104704667,
+            "y": 1171.797165794703
+          },
+          "nodeIndex": "Item Ledger",
+          "nodeLineageTag": "3a7f01c6-92d4-4b58-8e13-6c0527ab94f2",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 7,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 555.6196206665893,
+            "y": 1174.8844936029998
+          },
+          "nodeIndex": "WO Parts List",
+          "nodeLineageTag": "d94f80c1-3a65-4e27-b108-5271ea08c396",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 8,
+          "expandedHeight": 300
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 55.914973320069571,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

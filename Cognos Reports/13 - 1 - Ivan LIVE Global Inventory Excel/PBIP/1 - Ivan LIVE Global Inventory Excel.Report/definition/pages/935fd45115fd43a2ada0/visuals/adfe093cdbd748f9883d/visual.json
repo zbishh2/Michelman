@@ -1,0 +1,660 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "adfe093cdbd748f9883d",
+  "position": {
+    "x": 8,
+    "y": 46,
+    "z": 0,
+    "height": 650,
+    "width": 1264
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Inv_Summary.Branch Plant",
+              "nativeQueryRef": "Branch Plant",
+              "displayName": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Global Bulk Item"
+                }
+              },
+              "queryRef": "Inv_Summary.Global Bulk Item",
+              "nativeQueryRef": "Global Bulk Item",
+              "displayName": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Bulk Item"
+                }
+              },
+              "queryRef": "Inv_Summary.Bulk Item",
+              "nativeQueryRef": "Bulk Item",
+              "displayName": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "Inv_Summary.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number",
+              "displayName": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Commodity Class"
+                }
+              },
+              "queryRef": "Inv_Summary.Commodity Class",
+              "nativeQueryRef": "Commodity Class",
+              "displayName": "Commodity Class"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Sub Class"
+                }
+              },
+              "queryRef": "Inv_Summary.Sub Class",
+              "nativeQueryRef": "Sub Class",
+              "displayName": "Sub Class"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Master Planning Family"
+                }
+              },
+              "queryRef": "Inv_Summary.Master Planning Family",
+              "nativeQueryRef": "Master Planning Family",
+              "displayName": "Master Planning Family"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Safety Stock"
+                }
+              },
+              "queryRef": "Inv_Summary.Safety Stock",
+              "nativeQueryRef": "Safety Stock",
+              "displayName": "Safety Stock"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Shelf Life"
+                }
+              },
+              "queryRef": "Inv_Summary.Shelf Life",
+              "nativeQueryRef": "Shelf Life",
+              "displayName": "Shelf Life"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Stock Type"
+                }
+              },
+              "queryRef": "Inv_Summary.Stock Type",
+              "nativeQueryRef": "Stock Type",
+              "displayName": "Stock Type"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "GL Category"
+                }
+              },
+              "queryRef": "Inv_Summary.GL Category",
+              "nativeQueryRef": "GL Category",
+              "displayName": "GL Category"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Leadtime Level"
+                }
+              },
+              "queryRef": "Inv_Summary.Leadtime Level",
+              "nativeQueryRef": "Leadtime Level",
+              "displayName": "Leadtime Level"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Leadtime MFG"
+                }
+              },
+              "queryRef": "Inv_Summary.Leadtime MFG",
+              "nativeQueryRef": "Leadtime MFG",
+              "displayName": "Leadtime MFG"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Location"
+                }
+              },
+              "queryRef": "Inv_Summary.Location",
+              "nativeQueryRef": "Location",
+              "displayName": "Location"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Lot Number"
+                }
+              },
+              "queryRef": "Inv_Summary.Lot Number",
+              "nativeQueryRef": "Lot Number",
+              "displayName": "Lot Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Status"
+                }
+              },
+              "queryRef": "Inv_Summary.Status",
+              "nativeQueryRef": "Status",
+              "displayName": "Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Quantity On Hand"
+                }
+              },
+              "queryRef": "Inv_Summary.Quantity On Hand",
+              "nativeQueryRef": "Quantity On Hand",
+              "displayName": "Quantity On Hand"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Primary UOM"
+                }
+              },
+              "queryRef": "Inv_Summary.Primary UOM",
+              "nativeQueryRef": "Primary UOM",
+              "displayName": "Primary UOM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Hard Commit"
+                }
+              },
+              "queryRef": "Inv_Summary.Hard Commit",
+              "nativeQueryRef": "Hard Commit",
+              "displayName": "Hard Commit"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "A1 Cost"
+                }
+              },
+              "queryRef": "Inv_Summary.A1 Cost",
+              "nativeQueryRef": "A1 Cost",
+              "displayName": "A1 Cost"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "B1 Cost"
+                }
+              },
+              "queryRef": "Inv_Summary.B1 Cost",
+              "nativeQueryRef": "B1 Cost",
+              "displayName": "B1 Cost"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "C1 Cost"
+                }
+              },
+              "queryRef": "Inv_Summary.C1 Cost",
+              "nativeQueryRef": "C1 Cost",
+              "displayName": "C1 Cost"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "C2 Cost"
+                }
+              },
+              "queryRef": "Inv_Summary.C2 Cost",
+              "nativeQueryRef": "C2 Cost",
+              "displayName": "C2 Cost"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Lot Number1"
+                }
+              },
+              "queryRef": "Inv_Summary.Lot Number1",
+              "nativeQueryRef": "Lot Number1",
+              "displayName": "Lot Number1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Supplier Lot Number"
+                }
+              },
+              "queryRef": "Inv_Summary.Supplier Lot Number",
+              "nativeQueryRef": "Supplier Lot Number",
+              "displayName": "Supplier Lot Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "On Hand Date"
+                }
+              },
+              "queryRef": "Inv_Summary.On Hand Date",
+              "nativeQueryRef": "On Hand Date",
+              "displayName": "On Hand Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "Expiration Date Month"
+                }
+              },
+              "queryRef": "Inv_Summary.Expiration Date Month",
+              "nativeQueryRef": "Expiration Date Month",
+              "displayName": "Expiration Date Month"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inv_Summary"
+                    }
+                  },
+                  "Property": "TIME"
+                }
+              },
+              "queryRef": "Inv_Summary.TIME",
+              "nativeQueryRef": "TIME",
+              "displayName": "TIME"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Inv_Summary"
+                  }
+                },
+                "Property": "Global Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Inv_Summary"
+                  }
+                },
+                "Property": "Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Inv_Summary"
+                  }
+                },
+                "Property": "2nd Item Number"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Inv_Summary"
+                  }
+                },
+                "Property": "Branch Plant"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

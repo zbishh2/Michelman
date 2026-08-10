@@ -1,0 +1,132 @@
+table 'P9 History Cadence'
+	lineageTag: 18000a00-0000-4000-8000-000000000001
+
+	column SchemaName
+		dataType: string
+		lineageTag: 18000a01-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: SchemaName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ObjectName
+		dataType: string
+		lineageTag: 18000a01-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: ObjectName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateCol
+		dataType: string
+		lineageTag: 18000a01-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: DateCol
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthTag
+		dataType: string
+		lineageTag: 18000a01-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: MonthTag
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateCount
+		dataType: int64
+		formatString: 0
+		lineageTag: 18000a01-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: DateCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column MinDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 18000a01-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: MinDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column MaxDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 18000a01-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: MaxDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition 'P9 History Cadence' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        CREATE TABLE #cad (SchemaName sysname, ObjectName sysname, DateCol sysname,
+				                           MonthTag varchar(7), DateCount int, MinDate date, MaxDate date);
+				        DECLARE @s sysname, @t sysname, @c sysname, @sql nvarchar(max);
+				        DECLARE cur CURSOR LOCAL FAST_FORWARD FOR
+				          SELECT x.TABLE_SCHEMA, x.TABLE_NAME, x.COLUMN_NAME FROM (
+				            SELECT c.TABLE_SCHEMA, c.TABLE_NAME, c.COLUMN_NAME,
+				                   ROW_NUMBER() OVER (PARTITION BY c.TABLE_SCHEMA, c.TABLE_NAME ORDER BY
+				                     CASE WHEN c.COLUMN_NAME = 'CalendarDate' THEN 1
+				                          WHEN c.COLUMN_NAME LIKE '%SnapshotDate%' THEN 2
+				                          WHEN c.COLUMN_NAME = 'SnapDate' THEN 3
+				                          WHEN c.COLUMN_NAME = 'AsOfDate' THEN 4
+				                          WHEN c.COLUMN_NAME = 'StartDate' THEN 5
+				                          ELSE 9 END, c.ORDINAL_POSITION) rn
+				            FROM INFORMATION_SCHEMA.COLUMNS c
+				            WHERE c.DATA_TYPE IN ('date','datetime','datetime2','smalldatetime')
+				              AND ((c.TABLE_SCHEMA = 'dbo' AND c.TABLE_NAME = 'FactInventorySnapshot_History')
+				                OR (c.TABLE_SCHEMA = 'BIQL' AND c.TABLE_NAME IN ('TbInventorySnapshot_History','HistoricalSnapshot')))
+				          ) x WHERE x.rn = 1;
+				        OPEN cur;
+				        FETCH NEXT FROM cur INTO @s, @t, @c;
+				        WHILE @@FETCH_STATUS = 0
+				        BEGIN
+				          SET @sql = N'INSERT INTO #cad SELECT ''' + @s + N''', ''' + @t + N''', ''' + @c + N''',
+				                        CONVERT(char(7), q.d, 126), COUNT(*), MIN(q.d), MAX(q.d)
+				                      FROM (SELECT DISTINCT CAST(' + QUOTENAME(@c) + N' AS date) AS d
+				                            FROM ' + QUOTENAME(@s) + N'.' + QUOTENAME(@t) + N'
+				                            WHERE ' + QUOTENAME(@c) + N' >= ''2025-12-01'') q
+				                      GROUP BY CONVERT(char(7), q.d, 126);
+				                      INSERT INTO #cad SELECT ''' + @s + N''', ''' + @t + N''', ''' + @c + N''',
+				                        ''ALL'', COUNT(DISTINCT CAST(' + QUOTENAME(@c) + N' AS date)),
+				                        MIN(CAST(' + QUOTENAME(@c) + N' AS date)), MAX(CAST(' + QUOTENAME(@c) + N' AS date))
+				                      FROM ' + QUOTENAME(@s) + N'.' + QUOTENAME(@t) + N';';
+				          EXEC (@sql);
+				          FETCH NEXT FROM cur INTO @s, @t, @c;
+				        END
+				        CLOSE cur; DEALLOCATE cur;
+				        SELECT SchemaName, ObjectName, DateCol, MonthTag, DateCount, MinDate, MaxDate
+				        FROM #cad
+				        ORDER BY SchemaName, ObjectName, MonthTag;
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"SchemaName", type text},
+							{"ObjectName", type text},
+							{"DateCol", type text},
+							{"MonthTag", type text},
+							{"DateCount", Int64.Type},
+							{"MinDate", type date},
+							{"MaxDate", type date}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

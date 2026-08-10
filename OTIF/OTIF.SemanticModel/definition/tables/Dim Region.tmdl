@@ -1,0 +1,37 @@
+table 'Dim Region'
+	lineageTag: 874a3c87-5429-4f23-9720-1b4d0c1ab608
+
+	column Region
+		lineageTag: 0e055624-f31d-4065-9aea-2e2fc5f037c6
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Region]
+		sortByColumn: SortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	column SortOrder
+		formatString: 0
+		lineageTag: 57f528e2-f5a7-4271-9272-467f55a25530
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [SortOrder]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim Region' = calculated
+		mode: import
+		source =
+				DATATABLE (
+				    "Region", STRING,
+				    "SortOrder", INTEGER,
+				    {
+				        { "Americas", 10 },
+				        { "EMEA",     20 },
+				        { "Asia",     30 },
+				        { "Unmapped", 99 }
+				    }
+				)
+
+	annotation PBI_Id = 18f154ef1abc4e99bccbfb225f9849c0
+

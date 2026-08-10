@@ -1,0 +1,287 @@
+/// JDE item ledger (F4111, the Cardex) from EDW, filtered to inventory completions. One row per completion transaction. Supplies the S&OP date on WorkOrders, and is the evidence behind it: click a work order to see the transactions that put its material into inventory. Source query: edw_model/ItemLedger.m.
+table 'Item Ledger'
+	lineageTag: 3a7f01c6-92d4-4b58-8e13-6c0527ab94f2
+
+	/// Work order this transaction belongs to. Relates many-to-one to WorkOrders.
+	column WorkOrderSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 8d24b70e-31fa-4c69-b502-7e916f38ac41
+		summarizeBy: none
+		sourceColumn: WorkOrderSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	/// The JDE work order number. Matches WorkOrders[WorkOrderNum].
+	column 'WO Number'
+		dataType: string
+		lineageTag: 5e83a12f-6b40-4d97-a3c8-140f6e2db785
+		summarizeBy: none
+		sourceColumn: WO Number
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Ledger document type. Always IC here - inventory completion. IB is a lot status change and IM an inventory material issue; neither is loaded.
+	column 'Doc Type'
+		dataType: string
+		lineageTag: 9f10c548-73be-4a02-85d6-2b7c96041fe3
+		summarizeBy: none
+		sourceColumn: Doc Type
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Ledger document number.
+	column 'Doc Num'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4c6b98d3-0e57-41af-9b28-83f0d514a67c
+		summarizeBy: sum
+		sourceColumn: Doc Num
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Date the material physically went into inventory. The earliest of these with a positive quantity is what WorkOrders[Completion Date (SOP Basis)] reports on.
+	column 'Transaction Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 71ea3d69-8c05-4b14-a726-9d5308bf1c2b
+		summarizeBy: none
+		sourceColumn: Transaction Date
+
+		variation Variation
+			isDefault
+			relationship: 9008e733-545b-470a-b4b5-0830c4ccc45b
+			defaultHierarchy: LocalDateTable_181bd93b-93c6-4b13-95cf-07402ae3a9de.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	/// Accounting date the transaction posted to. Differs from the transaction date around period close; the S&OP date deliberately uses the transaction date, not this.
+	column 'GL Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 2b95f7c0-4d81-4e36-97a5-6ce1023db8f4
+		summarizeBy: none
+		sourceColumn: GL Date
+
+		variation Variation
+			isDefault
+			relationship: 3a2fe168-3e06-4de1-80de-23d566149994
+			defaultHierarchy: LocalDateTable_5eaa5b48-8683-4227-be85-ea89c33d94f4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	/// Date the ledger record was created.
+	column 'Created Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 6d40e83b-15c7-42fa-b069-8f2135c7ae90
+		summarizeBy: none
+		sourceColumn: Created Date
+
+		variation Variation
+			isDefault
+			relationship: 80825c73-04c9-43dc-9ed0-7f7fcac009c9
+			defaultHierarchy: LocalDateTable_254c5380-4a79-4111-86d0-ffda116da154.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	/// Time of day the transaction was keyed. Text, not a time - it is display only, and a SQL time cannot round-trip cleanly.
+	column 'Time Of Day'
+		dataType: string
+		lineageTag: 0a7c6e29-b354-4d18-8f27-91d6b0453fca
+		summarizeBy: none
+		sourceColumn: Time Of Day
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Quantity completed in the transaction UOM. A NEGATIVE value is JDE backing out a mis-keyed completion; these net against their positive twin, so SUM this column rather than filtering to positives if you want the true completed quantity.
+	column 'Qty Transaction'
+		dataType: double
+		lineageTag: 83f1a04d-2eb6-4759-a1c3-70e582d6194b
+		summarizeBy: sum
+		sourceColumn: Qty Transaction
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Unit of measure the transaction was keyed in.
+	column 'UOM Transaction'
+		dataType: string
+		lineageTag: 1e59d7b8-40ca-4b63-89f7-25a80c31eb46
+		summarizeBy: none
+		sourceColumn: UOM Transaction
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Quantity completed converted to the item's primary UOM.
+	column 'Qty Primary'
+		dataType: double
+		lineageTag: 7c02b96f-58d3-4e01-a4b8-6390f1ad5e27
+		summarizeBy: sum
+		sourceColumn: Qty Primary
+
+		annotation SummarizationSetBy = Automatic
+
+	/// The item's primary unit of measure.
+	column 'UOM Primary'
+		dataType: string
+		lineageTag: 4b8e30a7-91fd-4256-b7c0-08e5417f2db9
+		summarizeBy: none
+		sourceColumn: UOM Primary
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Branch plant the material was completed into.
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 9d7215e4-3ba0-48cf-81e6-c4703f28b95d
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Inventory location the material was completed into.
+	column Location
+		dataType: string
+		lineageTag: 6f4a8c31-70e2-4d95-b813-2a509de6714c
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Lot number the completion created.
+	column 'Lot Num'
+		dataType: string
+		lineageTag: 2c916bd5-84f7-4a30-9e51-b7038f4ac6e2
+		summarizeBy: none
+		sourceColumn: Lot Num
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE's description of the transaction. Reads "Completed W.O.'s To Inventory" on a completion.
+	column Explanation
+		dataType: string
+		lineageTag: 5a30f7c8-16b9-42de-a074-83c1069e5b2f
+		summarizeBy: none
+		sourceColumn: Explanation
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE user who keyed the transaction.
+	column 'User ID'
+		dataType: string
+		lineageTag: 8b1e50a6-c342-4f79-9d05-71ea6c2380df
+		summarizeBy: none
+		sourceColumn: User ID
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE program that wrote the record. R31802A is the work order completion batch.
+	column 'Program ID'
+		dataType: string
+		lineageTag: 3e07ac91-5d68-4b12-8fa3-96540c7bd81e
+		summarizeBy: none
+		sourceColumn: Program ID
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Line number within the ledger transaction.
+	column 'Transaction Line Num'
+		dataType: double
+		lineageTag: 7fa4c260-98e1-4b53-8d76-04b219ce35a8
+		summarizeBy: sum
+		sourceColumn: Transaction Line Num
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Unique identifier of the ledger row. An identifier, so it is never summarised.
+	column 'Unique Key ID'
+		dataType: double
+		lineageTag: 0c8532eb-4790-41d6-b52a-8e6f731490ac
+		summarizeBy: count
+		sourceColumn: Unique Key ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Item Ledger' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(
+				        "EDWPROD",
+				        "EDW",
+				        [
+				            Query = "
+				SELECT
+				    il.WorkOrderSKey,
+				    il.OrderNum                                    AS [WO Number],
+				    LTRIM(RTRIM(il.DocumentType))                  AS [Doc Type],
+				    il.DocumentNum                                 AS [Doc Num],
+				    il.TransactionDate                             AS [Transaction Date],
+				    il.GLDate                                      AS [GL Date],
+				    il.CreatedDate                                 AS [Created Date],
+				    CONVERT(varchar(8), il.TimeOfDay, 108)         AS [Time Of Day],
+				    il.QuantityTransactionUOM                      AS [Qty Transaction],
+				    LTRIM(RTRIM(il.UOMTransaction))                AS [UOM Transaction],
+				    il.QuantityPrimaryUOM                          AS [Qty Primary],
+				    LTRIM(RTRIM(il.UOMPrimary))                    AS [UOM Primary],
+				    LTRIM(RTRIM(il.Branch))                        AS [Branch Plant],
+				    LTRIM(RTRIM(il.Location))                      AS [Location],
+				    LTRIM(RTRIM(il.LotNum_F4111))                  AS [Lot Num],
+				    LTRIM(RTRIM(il.Explanation))                   AS [Explanation],
+				    LTRIM(RTRIM(il.UserId))                        AS [User ID],
+				    LTRIM(RTRIM(il.ProgramID))                     AS [Program ID],
+				    il.TransactionLineNum                          AS [Transaction Line Num],
+				    il.UniqueKeyID                                 AS [Unique Key ID]
+				FROM       BIQL.FactInventoryDetail il WITH (NOLOCK)
+				INNER JOIN BIQL.DimWorkOrder        wo WITH (NOLOCK)
+				       ON  wo.WorkOrderSKey = il.WorkOrderSKey
+				WHERE      il.DocumentType = 'IC'
+				  AND      (wo.CompletionDate >= '2024-01-01' OR wo.RequestedDate >= '2024-01-01')
+				",
+				            CreateNavigationProperties = false
+				        ]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {
+				            {"WorkOrderSKey",         Int64.Type},
+				            {"WO Number",             type text},
+				            {"Doc Type",              type text},
+				            {"Doc Num",               Int64.Type},
+				            {"Transaction Date",      type date},
+				            {"GL Date",               type date},
+				            {"Created Date",          type date},
+				            {"Time Of Day",           type text},
+				            {"Qty Transaction",       type number},
+				            {"UOM Transaction",       type text},
+				            {"Qty Primary",           type number},
+				            {"UOM Primary",           type text},
+				            {"Branch Plant",          type text},
+				            {"Location",              type text},
+				            {"Lot Num",               type text},
+				            {"Explanation",           type text},
+				            {"User ID",               type text},
+				            {"Program ID",            type text},
+				            {"Transaction Line Num",  type number},
+				            {"Unique Key ID",         type number}
+				        }
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

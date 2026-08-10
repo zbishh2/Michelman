@@ -1,0 +1,105 @@
+table 'UOM Conversion'
+	lineageTag: 14a1a000-0000-4000-8000-000000000015
+
+	column 'Item Short ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 14a1da06-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Item Short ID
+
+		annotation SummarizationSetBy = User
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 14a1da06-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'From UOM'
+		dataType: string
+		lineageTag: 14a1da06-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: From UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Primary UOM'
+		dataType: string
+		lineageTag: 14a1da06-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Primary UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Units per From-UOM'
+		dataType: double
+		lineageTag: 14a1da06-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Units per From-UOM
+
+		annotation SummarizationSetBy = User
+
+	column 'KG per From-UOM'
+		dataType: double
+		lineageTag: 14a1da06-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: KG per From-UOM
+
+		annotation SummarizationSetBy = User
+
+	column 'LB per From-UOM'
+		dataType: double
+		lineageTag: 14a1da06-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: LB per From-UOM
+
+		annotation SummarizationSetBy = User
+
+	column 'Primary Preference' = IF('UOM Conversion'[From UOM] = 'UOM Conversion'[Primary UOM], 0, 1)
+		formatString: 0
+		lineageTag: 14a1da06-0000-4000-8000-000000000008
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+	column 'KG per Primary Unit' = DIVIDE('UOM Conversion'[KG per From-UOM], 'UOM Conversion'[Units per From-UOM])
+		lineageTag: 14a1da06-0000-4000-8000-000000000009
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+	column 'LB per Primary Unit' = DIVIDE('UOM Conversion'[LB per From-UOM], 'UOM Conversion'[Units per From-UOM])
+		lineageTag: 14a1da06-0000-4000-8000-00000000000a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+	partition 'UOM Conversion' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            k.ItemNumShort                             AS [Item Short ID],
+				            ISNULL(LTRIM(RTRIM(k.BusinessUnit)), '')   AS [Branch Plant],
+				            LTRIM(RTRIM(k.UOM))                        AS [From UOM],
+				            LTRIM(RTRIM(k.UOMPrimary))                 AS [Primary UOM],
+				            k.ConversionFactorSecToPrim                AS [Units per From-UOM],
+				            k.KG                                       AS [KG per From-UOM],
+				            k.LB                                       AS [LB per From-UOM]
+				        FROM BIQL.DimItemUOMConversionLBKG k
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

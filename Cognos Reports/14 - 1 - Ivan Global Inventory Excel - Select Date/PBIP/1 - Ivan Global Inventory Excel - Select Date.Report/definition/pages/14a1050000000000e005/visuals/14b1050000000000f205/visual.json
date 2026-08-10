@@ -1,0 +1,143 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "14b1050000000000f205",
+  "position": {
+    "x": 776,
+    "y": 316,
+    "z": 2000,
+    "height": 396,
+    "width": 496
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Escor QOH Delta"
+                }
+              },
+              "queryRef": "Snapshot.Escor QOH Delta",
+              "nativeQueryRef": "Escor QOH Delta"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Escor KGs Delta"
+                }
+              },
+              "queryRef": "Snapshot.Escor KGs Delta",
+              "nativeQueryRef": "Escor KGs Delta"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Escor LBs Delta"
+                }
+              },
+              "queryRef": "Snapshot.Escor LBs Delta",
+              "nativeQueryRef": "Escor LBs Delta"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Lot Info Rows (DAX)"
+                }
+              },
+              "queryRef": "Snapshot.Lot Info Rows (DAX)",
+              "nativeQueryRef": "Lot Info Rows (DAX)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Lot Info Rows (SQL)"
+                }
+              },
+              "queryRef": "Snapshot.Lot Info Rows (SQL)",
+              "nativeQueryRef": "Lot Info Rows (SQL)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Lot Info Rows (Cognos)"
+                }
+              },
+              "queryRef": "Snapshot.Lot Info Rows (Cognos)",
+              "nativeQueryRef": "Lot Info Rows (Cognos)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Snapshot"
+                    }
+                  },
+                  "Property": "Missing Lots Found in DimLot"
+                }
+              },
+              "queryRef": "Snapshot.Missing Lots Found in DimLot",
+              "nativeQueryRef": "Missing Lots Found in DimLot"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Escor Inventory + Lot Info tie-out'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

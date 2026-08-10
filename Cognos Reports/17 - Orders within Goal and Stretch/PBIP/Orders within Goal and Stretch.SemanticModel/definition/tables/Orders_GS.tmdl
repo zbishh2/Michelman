@@ -1,0 +1,581 @@
+table Orders_GS
+	lineageTag: 17a00000-0000-4000-8000-000000000001
+
+	measure 'Total Order Lines' = COUNTROWS('Orders_GS')
+		formatString: 0
+		lineageTag: 17e00000-0000-4000-8000-000000000001
+
+	measure 'Total Goal' = SUM('Orders_GS'[Goal])
+		formatString: 0
+		lineageTag: 17e00000-0000-4000-8000-000000000002
+
+	measure 'Total Stretch' = SUM('Orders_GS'[Stretch])
+		formatString: 0
+		lineageTag: 17e00000-0000-4000-8000-000000000003
+
+	measure 'Total >48h' = SUM('Orders_GS'[>48h])
+		formatString: 0
+		lineageTag: 17e00000-0000-4000-8000-000000000004
+
+	measure 'Total <72h' = SUM('Orders_GS'[<72h])
+		formatString: 0
+		lineageTag: 17e00000-0000-4000-8000-000000000005
+
+	measure 'Total >72h' = SUM('Orders_GS'[>72h])
+		formatString: 0
+		lineageTag: 17e00000-0000-4000-8000-000000000006
+
+	column 'Company Code'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Company Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Company Name'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Company Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Freight Handling Code'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Freight Handling Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Number'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Order Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ordered Quantity'
+		dataType: double
+		formatString: #,##0
+		lineageTag: 17c00000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Ordered Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sold To Customer Code'
+		dataType: int64
+		formatString: 0
+		lineageTag: 17c00000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Sold To Customer Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sold To Customer Name'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Sold To Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ship To Customer Code'
+		dataType: int64
+		formatString: 0
+		lineageTag: 17c00000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Ship To Customer Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ship To Customer Name'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Ship To Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Customer Segmentation
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation Description'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Customer Segmentation Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 17c00000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Confirmation Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 17c00000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: Confirmation Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Shipped Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 17c00000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: Shipped Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Requested Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 17c00000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: Requested Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Company Level 2'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-000000000017
+		summarizeBy: none
+		sourceColumn: Company Level 2
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'JDE Order Line ID'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-000000000018
+		summarizeBy: none
+		sourceColumn: JDE Order Line ID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Business days from first pick-confirm (525, shown as Order Date) to first ship (540, shown as Confirmation Date). Weekend-endpoint behavior matches the Cognos floored-week formula exactly.
+	column 'Business Days' =
+			VAR StartDate = INT ( Orders_GS[Order Date] )
+			VAR EndDate = INT ( Orders_GS[Confirmation Date] )
+			VAR Days = EndDate - StartDate
+			VAR StartDow = WEEKDAY ( StartDate, 2 )
+			VAR EndDow = WEEKDAY ( EndDate, 2 )
+			VAR WeekendDays =
+			    TRUNC ( ( Days + StartDow ) / 7 ) * 2
+			        - IF ( StartDow = 7, 1, 0 )
+			        + IF ( EndDow = 6, 1, 0 )
+			RETURN
+			    Days - WeekendDays
+		dataType: int64
+		formatString: 0
+		lineageTag: b2022d65-44e8-4cf8-93ab-3e44bda9cb3d
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+	column Goal =
+			IF (
+			    ( Orders_GS[Company Level 2] = "RAME" && Orders_GS[Business Days] <= 1 )
+			        || ( Orders_GS[Company Level 2] IN { "REUR", "RASI" } && Orders_GS[Business Days] <= 2 ),
+			    1,
+			    0
+			)
+		dataType: int64
+		formatString: 0
+		lineageTag: 7fc83168-deae-4bb9-a120-2b8caef92cf3
+		summarizeBy: sum
+
+	column Stretch = IF ( Orders_GS[Business Days] <= 1, 1, 0 )
+		dataType: int64
+		formatString: 0
+		lineageTag: 214e0445-5a6e-4874-83b8-2e344e0cea1e
+		summarizeBy: sum
+
+	column >48h = IF ( Orders_GS[Business Days] > 2, 1, 0 )
+		dataType: int64
+		formatString: 0
+		lineageTag: 46fb5f84-9ced-4010-9fe5-17866c9a9f82
+		summarizeBy: sum
+
+	column <72h = IF ( Orders_GS[Business Days] < 3, 1, 0 )
+		dataType: int64
+		formatString: 0
+		lineageTag: c3ea8f89-732c-4bb6-bcb8-8351d7202e04
+		summarizeBy: sum
+
+	column >72h = IF ( Orders_GS[Business Days] > 3, 1, 0 )
+		dataType: int64
+		formatString: 0
+		lineageTag: 23dcebe9-31ea-422c-bcb0-39f0d9ee267f
+		summarizeBy: sum
+
+	/// JDE order entry date (SDTRDJ). This is the date the report window and date slicer filter on - not the displayed Order Date column, which shows the first 525 pick-confirm event.
+	column 'Order Entry Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 17c00000-0000-4000-8000-000000000019
+		summarizeBy: none
+		sourceColumn: Order Entry Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// HIDDEN — F0006.MCRP03 is empty on ODS (BUILD.md round-2 probe); Cognos's Business Group prompt fed from the legacy DW org hierarchy, which has no populated JDE counterpart. Kept in fetch for a future mapping.
+	column 'Business Group'
+		dataType: string
+		isHidden
+		lineageTag: 17c00000-0000-4000-8000-00000000001a
+		summarizeBy: none
+		sourceColumn: Business Group
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Customer service rep assigned to the true ship-to customer (F42140 type CSR, earliest rep number; mailing name from F0111). Was a report prompt; now a page slicer.
+	column 'CSR Name'
+		dataType: string
+		lineageTag: 17c00000-0000-4000-8000-00000000001b
+		summarizeBy: none
+		sourceColumn: CSR Name
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Hidden join key for the Validation page relationship (Company + Order; JDE order numbers are only unique per company).
+	column 'Order Key' = Orders_GS[Company Code] & "|" & Orders_GS[Order Number]
+		dataType: string
+		isHidden
+		lineageTag: 17c00000-0000-4000-8000-000000000020
+		summarizeBy: none
+
+	/// Order Date (first 525 event) with full timestamp - for the Validation page.
+	column 'Order Date (ts)' = Orders_GS[Order Date]
+		dataType: dateTime
+		formatString: m/d/yy h:mm:ss AM/PM
+		lineageTag: 17c00000-0000-4000-8000-00000000001c
+		summarizeBy: none
+
+	/// Confirmation Date (first 540 event) with full timestamp - for the Validation page.
+	column 'Confirmation Date (ts)' = Orders_GS[Confirmation Date]
+		dataType: dateTime
+		formatString: m/d/yy h:mm:ss AM/PM
+		lineageTag: 17c00000-0000-4000-8000-00000000001d
+		summarizeBy: none
+
+	/// The 525 datetime Cognos displayed as Order Date in the 2026-07-21 capture, looked up from 'Cognos Capture' by Company + Order + Item (qty tie-break). Blank = row absent from the Cognos export.
+	column 'Cognos Order Date' =
+			VAR c = Orders_GS[Company Code]
+			VAR o = Orders_GS[Order Number]
+			VAR it = Orders_GS[2nd Item Number]
+			VAR q = Orders_GS[Ordered Quantity]
+			VAR m =
+			    FILTER (
+			        'Cognos Capture',
+			        'Cognos Capture'[Company Code] = c
+			            && 'Cognos Capture'[Order Number] = o
+			            && 'Cognos Capture'[2nd Item Number] = it
+			    )
+			VAR exact =
+			    FILTER ( m, ABS ( 'Cognos Capture'[Ordered Quantity] - q ) < 0.01 )
+			RETURN
+			    IF (
+			        COUNTROWS ( exact ) > 0,
+			        MINX ( exact, 'Cognos Capture'[Order Date] ),
+			        MINX ( m, 'Cognos Capture'[Order Date] )
+			    )
+		dataType: dateTime
+		formatString: m/d/yy h:mm:ss AM/PM
+		lineageTag: 17c00000-0000-4000-8000-00000000001e
+		summarizeBy: none
+
+	/// The 540 datetime Cognos displayed as Confirmation Date in the 2026-07-21 capture, same lookup. Blank = row absent from the Cognos export.
+	column 'Cognos Confirmation Date' =
+			VAR c = Orders_GS[Company Code]
+			VAR o = Orders_GS[Order Number]
+			VAR it = Orders_GS[2nd Item Number]
+			VAR q = Orders_GS[Ordered Quantity]
+			VAR m =
+			    FILTER (
+			        'Cognos Capture',
+			        'Cognos Capture'[Company Code] = c
+			            && 'Cognos Capture'[Order Number] = o
+			            && 'Cognos Capture'[2nd Item Number] = it
+			    )
+			VAR exact =
+			    FILTER ( m, ABS ( 'Cognos Capture'[Ordered Quantity] - q ) < 0.01 )
+			RETURN
+			    IF (
+			        COUNTROWS ( exact ) > 0,
+			        MINX ( exact, 'Cognos Capture'[Confirmation Date] ),
+			        MINX ( m, 'Cognos Capture'[Confirmation Date] )
+			    )
+		dataType: dateTime
+		formatString: m/d/yy h:mm:ss AM/PM
+		lineageTag: 17c00000-0000-4000-8000-00000000001f
+		summarizeBy: none
+
+	partition Orders_GS = m
+		mode: import
+		source =
+				let
+					    Source = Sql.Database("ODSPROD", "ODS"),
+					    Data = Value.NativeQuery(
+					        Source,
+					        "
+					        SET NOCOUNT ON;
+				
+					        ------------------------------------------------------------------------------
+					        -- STEP 1: ELIGIBLE ORDER LINES (#ord)
+					        -- Sales-order lines from F4211 (open) plus F42119 (purged history, so
+					        -- completed lines stay visible after JDE's nightly purge). F0006 turns the
+					        -- branch into a company; the CASE decodes the region that drives the Goal
+					        -- target. Filters: no S5/ST order types, no cancelled lines (980), rolling
+					        -- 12-month window on order entry date, companies 00024/00025 excluded.
+					        ------------------------------------------------------------------------------
+					        SELECT
+					            o.SDKCOO, o.SDDOCO, o.SDDCTO, o.SDLNID,
+					            LTRIM(RTRIM(o.SDMCU))                       AS Branch,
+					            LTRIM(RTRIM(o.SDFRTH))                      AS Freight,
+					            o.SDAN8, o.SDSHAN,
+					            LTRIM(RTRIM(o.SDLITM))                      AS Item2nd,
+					            o.SDITM, o.SDUORG, o.SDUOM, o.SDTRDJ, o.SDDRQJ, o.SDADDJ,
+					            LTRIM(RTRIM(bu.MCCO))                       AS CompanyCode,
+					            CASE LTRIM(RTRIM(bu.MCCO)) WHEN '00010' THEN 'RAME' WHEN '00020' THEN 'REUR'
+					                 WHEN '00030' THEN 'RASI' WHEN '00034' THEN 'RASI' WHEN '00035' THEN 'RASI'
+					                 ELSE '' END                            AS CompanyLevel2,
+					            LTRIM(RTRIM(bu.MCRP03))                     AS BusinessGroup
+					        INTO #ord
+					        FROM (
+					            SELECT SDKCOO, SDDOCO, SDDCTO, SDLNID, SDMCU, SDFRTH, SDAN8, SDSHAN, SDLITM, SDITM, SDUORG, SDUOM, SDTRDJ, SDDRQJ, SDADDJ, SDNXTR, SDLTTR
+					            FROM PRODDTA.F4211
+					            UNION ALL
+					            SELECT h.SDKCOO, h.SDDOCO, h.SDDCTO, h.SDLNID, h.SDMCU, h.SDFRTH, h.SDAN8, h.SDSHAN, h.SDLITM, h.SDITM, h.SDUORG, h.SDUOM, h.SDTRDJ, h.SDDRQJ, h.SDADDJ, h.SDNXTR, h.SDLTTR
+					            FROM PRODDTA.F42119 h
+					            WHERE NOT EXISTS (SELECT 1 FROM PRODDTA.F4211 c
+					                              WHERE c.SDKCOO = h.SDKCOO AND c.SDDOCO = h.SDDOCO
+					                                AND c.SDDCTO = h.SDDCTO AND c.SDLNID = h.SDLNID)
+					        ) o
+					        LEFT JOIN PRODDTA.F0006 bu ON LTRIM(RTRIM(bu.MCMCU)) = LTRIM(RTRIM(o.SDMCU))
+					        WHERE o.SDDCTO NOT IN ('S5','ST')
+					          AND o.SDNXTR <> '980'
+					          AND o.SDLTTR <> '980'
+					          AND o.SDTRDJ >= (YEAR(DATEADD(DAY,-365,GETDATE()))-1900)*1000 + DATEPART(DAYOFYEAR,DATEADD(DAY,-365,GETDATE()))
+					          AND LTRIM(RTRIM(bu.MCCO)) NOT IN ('00024','00025');
+					        CREATE UNIQUE CLUSTERED INDEX ixo ON #ord (SDKCOO, SDDOCO, SDDCTO, SDLNID);
+				
+					        ------------------------------------------------------------------------------
+					        -- STEP 2: FIRST PICK-CONFIRM EVENT (#l525)
+					        -- Sales ledger F42199 = the audit trail of every status change. Keep the
+					        -- 525 records, rebuild the real timestamp from JDE's Julian date + time,
+					        -- and take the EARLIEST per order line.
+					        ------------------------------------------------------------------------------
+					        SELECT l.SLKCOO, l.SLDOCO, l.SLDCTO, l.SLLNID,
+					               MIN(DATEADD(SECOND,(l.SLTDAY/10000)*3600 + ((l.SLTDAY/100)%100)*60 + (l.SLTDAY%100),
+					                           CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2))) AS Date525
+					        INTO #l525
+					        FROM PRODDTA.F42199 l
+					        JOIN #ord o ON o.SDKCOO = l.SLKCOO AND o.SDDOCO = l.SLDOCO AND o.SDDCTO = l.SLDCTO AND o.SDLNID = l.SLLNID
+					        WHERE l.SLNXTR = '525' AND l.SLUPMJ > 0
+					        GROUP BY l.SLKCOO, l.SLDOCO, l.SLDCTO, l.SLLNID;
+					        CREATE UNIQUE CLUSTERED INDEX ix5 ON #l525 (SLKCOO, SLDOCO, SLDCTO, SLLNID);
+				
+					        ------------------------------------------------------------------------------
+					        -- STEP 3: FIRST SHIP EVENT (#l540)
+					        -- Same thing for status 540.
+					        ------------------------------------------------------------------------------
+					        SELECT l.SLKCOO, l.SLDOCO, l.SLDCTO, l.SLLNID,
+					               MIN(DATEADD(SECOND,(l.SLTDAY/10000)*3600 + ((l.SLTDAY/100)%100)*60 + (l.SLTDAY%100),
+					                           CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2))) AS Date540
+					        INTO #l540
+					        FROM PRODDTA.F42199 l
+					        JOIN #ord o ON o.SDKCOO = l.SLKCOO AND o.SDDOCO = l.SLDOCO AND o.SDDCTO = l.SLDCTO AND o.SDLNID = l.SLLNID
+					        WHERE l.SLNXTR = '540' AND l.SLUPMJ > 0
+					        GROUP BY l.SLKCOO, l.SLDOCO, l.SLDCTO, l.SLLNID;
+					        CREATE UNIQUE CLUSTERED INDEX ix4 ON #l540 (SLKCOO, SLDOCO, SLDCTO, SLLNID);
+				
+					        ------------------------------------------------------------------------------
+					        -- STEP 4: PAIR THE TWO EVENTS (#metric)
+					        -- Inner join = the report's definition of a row: a line must have BOTH a
+					        -- 525 and a 540 event. The only join in the query that removes rows.
+					        ------------------------------------------------------------------------------
+					        SELECT b.SLKCOO, b.SLDOCO, b.SLDCTO, b.SLLNID, b.Date525, c.Date540
+					        INTO #metric
+					        FROM #l525 b
+					        JOIN #l540 c ON b.SLKCOO = c.SLKCOO AND b.SLDOCO = c.SLDOCO AND b.SLDCTO = c.SLDCTO AND b.SLLNID = c.SLLNID;
+					        CREATE UNIQUE CLUSTERED INDEX ixm ON #metric (SLKCOO, SLDOCO, SLDCTO, SLLNID);
+				
+					        ------------------------------------------------------------------------------
+					        -- STEP 5: UNIT CONVERSION FACTORS (#uom)
+					        -- F41002 converts the line's transaction UOM to the item's primary UOM.
+					        -- De-duplicated (MAX per item/from/to) because the table holds duplicate
+					        -- rows on this server.
+					        ------------------------------------------------------------------------------
+					        SELECT u.UMITM, LTRIM(RTRIM(u.UMUM)) AS UMUM, LTRIM(RTRIM(u.UMRUM)) AS UMRUM, MAX(u.UMCONV) AS UMCONV
+					        INTO #uom
+					        FROM PRODDTA.F41002 u
+					        WHERE EXISTS (SELECT 1 FROM #ord o WHERE o.SDITM = u.UMITM)
+					        GROUP BY u.UMITM, LTRIM(RTRIM(u.UMUM)), LTRIM(RTRIM(u.UMRUM));
+					        CREATE UNIQUE CLUSTERED INDEX ixu ON #uom (UMITM, UMUM, UMRUM);
+				
+					        ------------------------------------------------------------------------------
+					        -- STEP 6: CSR PER SHIP-TO (#csr)
+					        -- One CSR per ship-to customer from F42140.
+					        ------------------------------------------------------------------------------
+					        SELECT c.CMAN8, MIN(c.CMSLSM) AS CSR_AN8
+					        INTO #csr
+					        FROM PRODDTA.F42140 c
+					        WHERE LTRIM(RTRIM(c.CMRTYPE)) = 'CSR'
+					        GROUP BY c.CMAN8;
+					        CREATE UNIQUE CLUSTERED INDEX ixc ON #csr (CMAN8);
+				
+					        ------------------------------------------------------------------------------
+					        -- FINAL ASSEMBLY
+					        -- Inner select: order lines + the event pair, decorated with name/code
+					        -- lookups (all LEFT JOINs -- none remove rows). Quantity is converted to the
+					        -- item's primary UOM. Last two filters: intercompany ship-tos and GST/duty
+					        -- tax items excluded. Cognos label quirks preserved for parity:
+					        -- [Order Date] shows the 525 event, [Confirmation Date] shows the 540
+					        -- event, and the Ship To columns display the sold-to.
+					        -- Outer GROUP BY: where Cognos shows identical display rows it groups them
+					        -- and sums quantity -- this reproduces that display grain.
+					        ------------------------------------------------------------------------------
+					        SELECT
+					            g.[Company Code], g.[Company Name], g.[Branch Plant], g.[Freight Handling Code], g.[Order Number],
+					            SUM(g.[Ordered Quantity]) AS [Ordered Quantity],
+					            g.[2nd Item Number],
+					            g.[Sold To Customer Code], g.[Sold To Customer Name], g.[Ship To Customer Code], g.[Ship To Customer Name],
+					            g.[Customer Segmentation], g.[Customer Segmentation Description],
+					            g.[Order Date], g.[Confirmation Date], g.[Shipped Date], g.[Requested Date],
+					            g.[Company Level 2],
+					            MIN(g.[JDE Order Line ID]) AS [JDE Order Line ID],
+					            MIN(g.[Order Entry Date]) AS [Order Entry Date],
+					            MIN(g.[Business Group]) AS [Business Group],
+					            MIN(g.[CSR Name]) AS [CSR Name]
+					        FROM (
+					        SELECT
+					            o.CompanyCode                              AS [Company Code],
+					            LTRIM(RTRIM(co.CCNAME))                    AS [Company Name],
+					            o.Branch                                   AS [Branch Plant],
+					            o.Freight                                  AS [Freight Handling Code],
+					            CAST(o.SDDOCO AS varchar(20))              AS [Order Number],
+					            (o.SDUORG / 10000.0)
+					              * CASE WHEN LTRIM(RTRIM(o.SDUOM)) = LTRIM(RTRIM(im.IMUOM1)) THEN 1.0
+					                     ELSE ISNULL(uom.UMCONV / 10000000.0, 1.0) END AS [Ordered Quantity],
+					            o.Item2nd                                  AS [2nd Item Number],
+					            o.SDAN8                                    AS [Sold To Customer Code],
+					            LTRIM(RTRIM(sold.ABALPH))                  AS [Sold To Customer Name],
+					            o.SDAN8                                    AS [Ship To Customer Code],
+					            LTRIM(RTRIM(sold.ABALPH))                  AS [Ship To Customer Name],
+					            LTRIM(RTRIM(ship.ABAC06))                  AS [Customer Segmentation],
+					            LTRIM(RTRIM(seg.DRDL01))                   AS [Customer Segmentation Description],
+					            m.Date525                                  AS [Order Date],
+					            m.Date540                                  AS [Confirmation Date],
+					            CASE WHEN o.SDADDJ > 0 THEN DATEADD(DAY,(o.SDADDJ%1000)-1,DATEFROMPARTS(1900+(o.SDADDJ/1000),1,1)) END AS [Shipped Date],
+					            CASE WHEN o.SDDRQJ > 0 THEN DATEADD(DAY,(o.SDDRQJ%1000)-1,DATEFROMPARTS(1900+(o.SDDRQJ/1000),1,1)) END AS [Requested Date],
+					            o.CompanyLevel2                            AS [Company Level 2],
+					            LTRIM(RTRIM(o.SDKCOO)) + '|' + CAST(o.SDDOCO AS varchar(20)) + '|' + LTRIM(RTRIM(o.SDDCTO)) + '|' + CAST(o.SDLNID AS varchar(20)) AS [JDE Order Line ID],
+					            CASE WHEN o.SDTRDJ > 0 THEN DATEADD(DAY,(o.SDTRDJ%1000)-1,DATEFROMPARTS(1900+(o.SDTRDJ/1000),1,1)) END AS [Order Entry Date],
+					            o.BusinessGroup                            AS [Business Group],
+					            LTRIM(RTRIM(csrw.WWMLNM))                  AS [CSR Name]
+					        FROM #ord o
+					        JOIN #metric m ON m.SLKCOO = o.SDKCOO AND m.SLDOCO = o.SDDOCO AND m.SLDCTO = o.SDDCTO AND m.SLLNID = o.SDLNID
+					        LEFT JOIN PRODDTA.F0010 co   ON LTRIM(RTRIM(co.CCCO)) = o.CompanyCode
+					        LEFT JOIN PRODDTA.F0101 sold ON sold.ABAN8 = o.SDAN8
+					        LEFT JOIN PRODDTA.F0101 ship ON ship.ABAN8 = o.SDSHAN
+					        LEFT JOIN PRODCTL.F0005 seg  ON LTRIM(RTRIM(seg.DRSY)) = '01' AND LTRIM(RTRIM(seg.DRRT)) = '06'
+					                                    AND LTRIM(RTRIM(seg.DRKY)) = LTRIM(RTRIM(ship.ABAC06))
+					        LEFT JOIN PRODDTA.F554101 tag ON tag.IMITM = o.SDITM
+					        LEFT JOIN PRODDTA.F4101 im   ON im.IMITM = o.SDITM
+					        LEFT JOIN #uom uom ON uom.UMITM = o.SDITM
+					                          AND uom.UMUM  = LTRIM(RTRIM(o.SDUOM))
+					                          AND uom.UMRUM = LTRIM(RTRIM(im.IMUOM1))
+					        LEFT JOIN #csr cs ON cs.CMAN8 = o.SDSHAN
+					        LEFT JOIN PRODDTA.F0111 csrw ON csrw.WWAN8 = cs.CSR_AN8 AND csrw.WWIDLN = 0
+					        WHERE ISNULL(LTRIM(RTRIM(ship.ABAC01)),'') <> 'INT'
+					          AND CASE WHEN ISNULL(LTRIM(RTRIM(tag.IMGBLK)),'-') = '-' THEN o.Item2nd ELSE LTRIM(RTRIM(tag.IMGBLK)) END
+					              NOT IN ('IGST','CGST','SGST','CVD','ADD')
+					        ) g
+					        GROUP BY
+					            g.[Company Code], g.[Company Name], g.[Branch Plant], g.[Freight Handling Code], g.[Order Number],
+					            g.[2nd Item Number],
+					            g.[Sold To Customer Code], g.[Sold To Customer Name], g.[Ship To Customer Code], g.[Ship To Customer Name],
+					            g.[Customer Segmentation], g.[Customer Segmentation Description],
+					            g.[Order Date], g.[Confirmation Date], g.[Shipped Date], g.[Requested Date],
+					            g.[Company Level 2];
+					        ",
+					        null,
+					        [EnableFolding = false]
+					    ),
+					    Typed = Table.TransformColumnTypes(
+					        Data,
+					        {
+					            {"Company Code", type text},
+					            {"Company Name", type text},
+					            {"Branch Plant", type text},
+					            {"Freight Handling Code", type text},
+					            {"Order Number", type text},
+					            {"Ordered Quantity", type number},
+					            {"2nd Item Number", type text},
+					            {"Sold To Customer Code", Int64.Type},
+					            {"Sold To Customer Name", type text},
+					            {"Ship To Customer Code", Int64.Type},
+					            {"Ship To Customer Name", type text},
+					            {"Customer Segmentation", type text},
+					            {"Customer Segmentation Description", type text},
+					            {"Order Date", type datetime},
+					            {"Confirmation Date", type datetime},
+					            {"Shipped Date", type date},
+					            {"Requested Date", type date},
+					            {"Company Level 2", type text},
+					            {"JDE Order Line ID", type text},
+					            {"Order Entry Date", type date},
+					            {"Business Group", type text},
+					            {"CSR Name", type text}
+					        },
+					        "en-US"
+					    )
+					in
+					    Typed
+
+	annotation PBI_ResultType = Table
+

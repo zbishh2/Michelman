@@ -1,0 +1,507 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "1500000000000000d005",
+  "position": {
+    "x": 7.7811550151975686,
+    "y": 150,
+    "z": 0,
+    "height": 546,
+    "width": 1264.4376899696049
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "Order"
+                }
+              },
+              "queryRef": "Open Orders.Order",
+              "nativeQueryRef": "Order"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "Customer"
+                }
+              },
+              "queryRef": "Open Orders.Customer",
+              "nativeQueryRef": "Customer"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "Next"
+                }
+              },
+              "queryRef": "Open Orders.Next",
+              "nativeQueryRef": "Next"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "BP"
+                }
+              },
+              "queryRef": "Open Orders.BP",
+              "nativeQueryRef": "BP"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "Requested"
+                }
+              },
+              "queryRef": "Open Orders.Requested",
+              "nativeQueryRef": "Requested"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "Promised Ship"
+                }
+              },
+              "queryRef": "Open Orders.Promised Ship",
+              "nativeQueryRef": "Promised Ship"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "Qty"
+                }
+              },
+              "queryRef": "Open Orders.Qty",
+              "nativeQueryRef": "Qty"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "UOM"
+                }
+              },
+              "queryRef": "Open Orders.UOM",
+              "nativeQueryRef": "UOM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "Weight"
+                }
+              },
+              "queryRef": "Open Orders.Weight",
+              "nativeQueryRef": "Weight"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "Item"
+                }
+              },
+              "queryRef": "Open Orders.Item",
+              "nativeQueryRef": "Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "Hold"
+                }
+              },
+              "queryRef": "Open Orders.Hold",
+              "nativeQueryRef": "Hold"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "Carrier"
+                }
+              },
+              "queryRef": "Open Orders.Carrier",
+              "nativeQueryRef": "Carrier"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "MOT"
+                }
+              },
+              "queryRef": "Open Orders.MOT",
+              "nativeQueryRef": "MOT"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "DI1"
+                }
+              },
+              "queryRef": "Open Orders.DI1",
+              "nativeQueryRef": "DI1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Open Orders"
+                    }
+                  },
+                  "Property": "DI2"
+                }
+              },
+              "queryRef": "Open Orders.DI2",
+              "nativeQueryRef": "DI2"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Open Orders"
+                  }
+                },
+                "Property": "Item"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a6b8938fa9d7173e9734",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "Order"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "412a9f654a5b6f6d3dc5",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "Customer"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "105332e82a85bb104255",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "Next"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "41e0fd36ab1ecda0ec52",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "BP"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "eb08bc47c3cdcca8497a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "Requested"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "2f86e9ea83a519b2ab7d",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "Promised Ship"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "045ce98a70a1a233e0a7",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "Qty"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "efd815700e42de056e33",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "UOM"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "4fd3947eed36ad469965",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "Weight"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "949028d4c7c4b1b47639",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "Item"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "eeed5f3da0beccf6af03",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "Hold"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "516474bb02a11c560924",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "Carrier"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "c9c940d2eb5988a12a91",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "MOT"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "4335f679726e002d2ef7",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "DI1"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "14b060c301232680d8ef",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Open Orders"
+              }
+            },
+            "Property": "DI2"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

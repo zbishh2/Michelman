@@ -1,0 +1,319 @@
+table Sales_Orders_Static
+	lineageTag: 8c8bffd7-b5f0-4a5d-af18-a93bf0c7faaf
+
+	column 'Order Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: f09e06fd-5d57-49a4-b96c-7034b0b17e0c
+		summarizeBy: none
+		sourceColumn: Order Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Line Number'
+		dataType: double
+		lineageTag: 56b549a7-1708-41f7-9692-c6d8bd9388c3
+		summarizeBy: none
+		sourceColumn: Line Number
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Ordered Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 042eb733-0272-4559-bedd-235f23123869
+		summarizeBy: none
+		sourceColumn: Ordered Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Promised Ship Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: ffa04f12-8176-447b-b594-3e40c6ce45b1
+		summarizeBy: none
+		sourceColumn: Promised Ship Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'CSR Name'
+		dataType: string
+		lineageTag: e42a31c5-0654-4817-bb09-710927352d56
+		summarizeBy: none
+		sourceColumn: CSR Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Name'
+		dataType: string
+		lineageTag: 62e22d84-3885-4798-bf6c-cf564c7d5968
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 276406a3-a17d-4e23-af84-2b7950468c9b
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Description 1'
+		dataType: string
+		lineageTag: 3b78e104-e43d-4275-819e-f80db5ad96b7
+		summarizeBy: none
+		sourceColumn: Description 1
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Description 1 (2)'
+		dataType: string
+		lineageTag: de0e9e95-f0ee-471c-98cd-c5f1828aaaac
+		summarizeBy: none
+		sourceColumn: Description 1 (2)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Delivery Instructions Line 1'
+		dataType: string
+		lineageTag: 6adfef2a-53be-4997-908b-f8b00673fbf3
+		summarizeBy: none
+		sourceColumn: Delivery Instructions Line 1
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Delivery Instructions Line 2'
+		dataType: string
+		lineageTag: 3d3800e6-9825-43e1-a5ce-460e767eb205
+		summarizeBy: none
+		sourceColumn: Delivery Instructions Line 2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Next Status'
+		dataType: string
+		lineageTag: 52abeb53-d585-453d-9a0d-2f04245c91e5
+		summarizeBy: none
+		sourceColumn: Next Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ordered Quantity'
+		dataType: double
+		formatString: #,##0
+		lineageTag: d30402e8-9f3a-4209-a1a8-2632dee45723
+		summarizeBy: sum
+		sourceColumn: Ordered Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ordered Quantity LBs'
+		dataType: double
+		formatString: #,##0
+		lineageTag: 709638f1-3d63-46e9-bcef-05eff3d4b0a7
+		summarizeBy: sum
+		sourceColumn: Ordered Quantity LBs
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation'
+		dataType: string
+		lineageTag: f4bb55c8-a825-4a88-8125-9422f7d79e61
+		summarizeBy: none
+		sourceColumn: Customer Segmentation
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TM Name'
+		dataType: string
+		lineageTag: 6c51aa59-2771-444a-88db-d9a0826ddee7
+		summarizeBy: none
+		sourceColumn: TM Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Make Site'
+		dataType: string
+		lineageTag: 74817a83-f87d-4dc3-8939-c51648bd19aa
+		summarizeBy: none
+		sourceColumn: Make Site
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lead Time Order to Ship'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8825646a-8547-4670-aca1-38bbb16b2261
+		summarizeBy: none
+		sourceColumn: Lead Time Order to Ship
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ship Site'
+		dataType: string
+		lineageTag: d762f2a5-042e-4b91-a47c-727549d37c67
+		summarizeBy: none
+		sourceColumn: Ship Site
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Carrier Name'
+		dataType: string
+		lineageTag: a97b3d0f-677f-4d4b-a81d-90418342d3ba
+		summarizeBy: none
+		sourceColumn: Carrier Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Freight Handling Code'
+		dataType: string
+		lineageTag: d98a98f5-d436-492d-bc26-d5035fc41f5d
+		summarizeBy: none
+		sourceColumn: Freight Handling Code
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Sales_Orders_Static' = m
+		mode: import
+		source =
+				let
+				    Source = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular_v2",
+				        [Query = "
+				        EVALUATE
+				        VAR Base =
+				            FILTER(
+				                'Sales',
+				                NOT ISBLANK('Sales'[Scheduled Pick Date])
+				                    && 'Sales'[Scheduled Pick Date] >= TODAY() - 365
+				                    && 'Sales'[Scheduled Pick Date] <= TODAY() + 30
+				                    && RELATED('Branch'[Branch Plant]) IN {""CINC"", ""CIN2"", ""CIN4""}
+				                    && NOT ISBLANK(RELATED('CSR for Sales Orders'[CSRNum]))
+				                    && NOT (
+				                        IF(
+				                            RELATED('Item Branch'[Item Num Global Bulk]) = ""-""
+				                                || ISBLANK(RELATED('Item Branch'[Item Num Global Bulk])),
+				                            'Sales'[Item Num 2nd],
+				                            RELATED('Item Branch'[Item Num Global Bulk])
+				                        ) IN {""IGST"", ""CGST"", ""SGST"", ""CVD"", ""ADD""}
+				                    )
+				            )
+				        RETURN
+				        SELECTCOLUMNS(
+				            SUMMARIZE(
+				                Base,
+				                'Sales'[Order Num],
+				                'Sales'[Line Num],
+				                'Sales'[Order Date],
+				                'Sales'[Scheduled Pick Date],
+				                'CSR for Sales Orders'[CSRName],
+				                'Customer Ship To'[Customer Ship To Name],
+				                'Sales'[Item Num 2nd],
+				                'Sales'[Description 1],
+				                'Sales'[Delivery Instructions Line 1],
+				                'Sales'[Delivery Instructions Line 2],
+				                'Sales'[Status Code Next],
+				                'Customer Ship To'[Customer Segmentation],
+				                'Territory Manager'[Mailing Name],
+				                'Branch'[Branch Plant],
+				                'Item Branch'[Stocking Type],
+				                'Item Branch'[Lead Time MFG_BP],
+				                'Sales'[UOM],
+				                'Sales'[UOM Primary],
+				                'Sales'[Carrier Name],
+				                'Sales'[Freight Handling Code],
+				                ""@RawQty"", SUM('Sales'[QuantityOrdered]),
+				                ""@Qty"", SUM('Sales'[QuantityOrderedPrimaryUOM]),
+				                ""@QtyLB"", SUM('Sales'[QuantityOrderedLB])
+				            ),
+				            ""Order Number"", 'Sales'[Order Num],
+				            ""Line Number"", 'Sales'[Line Num],
+				            ""Ordered Date"", 'Sales'[Order Date],
+				            ""Promised Ship Date"", 'Sales'[Scheduled Pick Date],
+				            ""CSR Name"",
+				                IF(
+				                    TRIM('CSR for Sales Orders'[CSRName]) = """", ""-"",
+				                    IF(
+				                        SEARCH("","", 'CSR for Sales Orders'[CSRName], 1, 0) = 0,
+				                        'CSR for Sales Orders'[CSRName],
+				                        TRIM(MID('CSR for Sales Orders'[CSRName], SEARCH("","", 'CSR for Sales Orders'[CSRName], 1, 0) + 1, 200))
+				                            & "" ""
+				                            & TRIM(LEFT('CSR for Sales Orders'[CSRName], SEARCH("","", 'CSR for Sales Orders'[CSRName], 1, 0) - 1))
+				                    )
+				                ),
+				            ""Customer Name"", 'Customer Ship To'[Customer Ship To Name],
+				            ""2nd Item Number"", 'Sales'[Item Num 2nd],
+				            ""Description 1"", 'Sales'[Description 1],
+				            ""Description 1 (2)"", 'Sales'[Description 1],
+				            ""Delivery Instructions Line 1"", IF(TRIM('Sales'[Delivery Instructions Line 1]) = """", ""-"", 'Sales'[Delivery Instructions Line 1]),
+				            ""Delivery Instructions Line 2"", IF(TRIM('Sales'[Delivery Instructions Line 2]) = """", ""-"", 'Sales'[Delivery Instructions Line 2]),
+				            ""Next Status"", 'Sales'[Status Code Next],
+				            ""Ordered Quantity"", IF('Sales'[UOM] <> 'Sales'[UOM Primary] && [@Qty] = [@RawQty], 0, [@Qty]),
+				            ""Ordered Quantity LBs"",
+				                IF(
+				                    ('Sales'[UOM] <> 'Sales'[UOM Primary] && [@Qty] = [@RawQty])
+				                        || ('Sales'[UOM] <> ""LB"" && [@QtyLB] = [@RawQty]),
+				                    0,
+				                    [@QtyLB]
+				                ),
+				            ""Customer Segmentation"", 'Customer Ship To'[Customer Segmentation],
+				            ""TM Name"", IF(TRIM('Territory Manager'[Mailing Name]) = """", ""Not Available"", 'Territory Manager'[Mailing Name]),
+				            ""Make Site"", SWITCH(TRUE(),
+				                'Branch'[Branch Plant] = ""CIN2"" && 'Item Branch'[Stocking Type] IN {""S"", ""M"", ""Q"", ""P""}, ""Kemper"",
+				                'Branch'[Branch Plant] = ""CIN2"" && 'Item Branch'[Stocking Type] IN {""D""}, ""Shell"",
+				                'Branch'[Branch Plant] = ""CINC"" && 'Item Branch'[Stocking Type] IN {""S"", ""M"", ""Q"", ""P""}, ""Shell"",
+				                ""OTHER""),
+				            ""Lead Time Order to Ship"", 'Item Branch'[Lead Time MFG_BP],
+				            ""Ship Site"", SWITCH(TRUE(),
+				                'Branch'[Branch Plant] = ""CIN2"", ""Kemper"",
+				                'Branch'[Branch Plant] = ""CINC"", ""Shell"",
+				                ""OTHER""),
+				            ""Carrier Name"", 'Sales'[Carrier Name],
+				            ""Freight Handling Code"", 'Sales'[Freight Handling Code]
+				        )
+				        ", Implementation = "2.0"]
+				    ),
+				    Renamed = Table.TransformColumnNames(
+				        Source,
+				        each if Text.StartsWith(_, "[") then Text.BetweenDelimiters(_, "[", "]") else _
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Renamed,
+				        {
+				            {"Order Number", Int64.Type},
+				            {"Line Number", type number},
+				            {"Ordered Date", type date},
+				            {"Promised Ship Date", type date},
+				            {"CSR Name", type text},
+				            {"Customer Name", type text},
+				            {"2nd Item Number", type text},
+				            {"Description 1", type text},
+				            {"Description 1 (2)", type text},
+				            {"Delivery Instructions Line 1", type text},
+				            {"Delivery Instructions Line 2", type text},
+				            {"Next Status", type text},
+				            {"Ordered Quantity", type number},
+				            {"Ordered Quantity LBs", type number},
+				            {"Customer Segmentation", type text},
+				            {"TM Name", type text},
+				            {"Make Site", type text},
+				            {"Lead Time Order to Ship", Int64.Type},
+				            {"Ship Site", type text},
+				            {"Carrier Name", type text},
+				            {"Freight Handling Code", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+	annotation PBI_ResultType = Table
+

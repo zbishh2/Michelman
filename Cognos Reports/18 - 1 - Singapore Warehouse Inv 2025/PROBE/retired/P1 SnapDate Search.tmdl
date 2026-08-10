@@ -1,0 +1,54 @@
+table 'P1 SnapDate Search'
+	lineageTag: 18000100-0000-4000-8000-000000000001
+
+	column Ordinal
+		dataType: int64
+		lineageTag: 18000101-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column ColumnName
+		dataType: string
+		lineageTag: 18000101-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: ColumnName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataType
+		dataType: string
+		lineageTag: 18000101-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P1 SnapDate Search' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT c.column_id AS Ordinal, c.name AS ColumnName, ty.name AS DataType
+				        FROM sys.columns c
+				        JOIN sys.types ty ON ty.user_type_id = c.user_type_id
+				        WHERE c.object_id = OBJECT_ID('BIQL.FactInventorySnapshot_History_Filtered')
+				        ORDER BY c.column_id
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"Ordinal", Int64.Type},
+							{"ColumnName", type text},
+							{"DataType", type text}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

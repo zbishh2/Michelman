@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Americas - Open Purchase Orders (SSAS)"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "765d42a4-9f9d-400e-be59-4d9a193b5096"
+  }
+}

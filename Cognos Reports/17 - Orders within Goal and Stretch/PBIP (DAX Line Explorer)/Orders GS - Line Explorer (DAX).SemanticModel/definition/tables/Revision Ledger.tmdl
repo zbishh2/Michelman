@@ -1,0 +1,230 @@
+/// F42199 ledger events for the eligible lines, filtered to Next Status 525/540 (the two statuses the metric considers). Line-grain relationship to Order Lines on Line Key - selecting a line shows exactly its considered events.
+table 'Revision Ledger'
+	lineageTag: 17da0000-0000-4000-8000-000000000200
+
+	column 'Line Key'
+		dataType: string
+		isHidden
+		lineageTag: 17da0000-0000-4000-8000-000000000201
+		summarizeBy: none
+		sourceColumn: Line Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Company Code'
+		dataType: string
+		lineageTag: 17da0000-0000-4000-8000-000000000202
+		summarizeBy: none
+		sourceColumn: Company Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Number'
+		dataType: string
+		lineageTag: 17da0000-0000-4000-8000-000000000203
+		summarizeBy: none
+		sourceColumn: Order Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Type'
+		dataType: string
+		lineageTag: 17da0000-0000-4000-8000-000000000204
+		summarizeBy: none
+		sourceColumn: Order Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Line
+		dataType: double
+		formatString: 0.###
+		lineageTag: 17da0000-0000-4000-8000-000000000205
+		summarizeBy: none
+		sourceColumn: Line
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last Status'
+		dataType: string
+		lineageTag: 17da0000-0000-4000-8000-000000000206
+		summarizeBy: none
+		sourceColumn: Last Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Next Status'
+		dataType: string
+		lineageTag: 17da0000-0000-4000-8000-000000000207
+		summarizeBy: none
+		sourceColumn: Next Status
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Reconstructed from SLUPMJ (Julian date) + SLTDAY (HHMMSS).
+	column 'Event Datetime'
+		dataType: dateTime
+		formatString: m/d/yy h:mm:ss AM/PM
+		lineageTag: 17da0000-0000-4000-8000-000000000208
+		summarizeBy: none
+		sourceColumn: Event Datetime
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ordered Qty'
+		dataType: double
+		formatString: #,##0.###
+		lineageTag: 17da0000-0000-4000-8000-000000000209
+		summarizeBy: none
+		sourceColumn: Ordered Qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOM
+		dataType: string
+		lineageTag: 17da0000-0000-4000-8000-00000000020a
+		summarizeBy: none
+		sourceColumn: UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Raw JDE Julian date as stored (CYYDDD) - what you see in SSMS.
+	column 'Julian Date (SLUPMJ)'
+		dataType: int64
+		formatString: 0
+		lineageTag: 17da0000-0000-4000-8000-00000000020b
+		summarizeBy: none
+		sourceColumn: Julian Date (SLUPMJ)
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Raw JDE time as stored (HHMMSS integer) - what you see in SSMS.
+	column 'Time (SLTDAY)'
+		dataType: int64
+		formatString: 0
+		lineageTag: 17da0000-0000-4000-8000-00000000020c
+		summarizeBy: none
+		sourceColumn: Time (SLTDAY)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Program ID'
+		dataType: string
+		lineageTag: 17da0000-0000-4000-8000-00000000020d
+		summarizeBy: none
+		sourceColumn: Program ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User ID'
+		dataType: string
+		lineageTag: 17da0000-0000-4000-8000-00000000020e
+		summarizeBy: none
+		sourceColumn: User ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Workstation
+		dataType: string
+		lineageTag: 17da0000-0000-4000-8000-00000000020f
+		summarizeBy: none
+		sourceColumn: Workstation
+
+		annotation SummarizationSetBy = Automatic
+
+	column Originator
+		dataType: string
+		lineageTag: 17da0000-0000-4000-8000-000000000210
+		summarizeBy: none
+		sourceColumn: Originator
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Revision Ledger' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+
+				        -- Same eligible-line set as the Order Lines table (identical filters).
+				        SELECT o.SDKCOO, o.SDDOCO, o.SDDCTO, o.SDLNID
+				        INTO #ord
+				        FROM (
+				            SELECT SDKCOO, SDDOCO, SDDCTO, SDLNID, SDMCU, SDSHAN, SDLITM, SDITM, SDTRDJ, SDNXTR, SDLTTR
+				            FROM PRODDTA.F4211
+				            UNION ALL
+				            SELECT h.SDKCOO, h.SDDOCO, h.SDDCTO, h.SDLNID, h.SDMCU, h.SDSHAN, h.SDLITM, h.SDITM, h.SDTRDJ, h.SDNXTR, h.SDLTTR
+				            FROM PRODDTA.F42119 h
+				            WHERE NOT EXISTS (SELECT 1 FROM PRODDTA.F4211 c
+				                              WHERE c.SDKCOO = h.SDKCOO AND c.SDDOCO = h.SDDOCO
+				                                AND c.SDDCTO = h.SDDCTO AND c.SDLNID = h.SDLNID)
+				        ) o
+				        LEFT JOIN PRODDTA.F0006 bu    ON LTRIM(RTRIM(bu.MCMCU)) = LTRIM(RTRIM(o.SDMCU))
+				        LEFT JOIN PRODDTA.F0101 ship  ON ship.ABAN8 = o.SDSHAN
+				        LEFT JOIN PRODDTA.F554101 tag ON tag.IMITM = o.SDITM
+				        WHERE o.SDDCTO NOT IN ('S5','ST')
+				          AND o.SDNXTR <> '980'
+				          AND o.SDLTTR <> '980'
+				          AND o.SDTRDJ >= (YEAR(DATEADD(DAY,-365,GETDATE()))-1900)*1000 + DATEPART(DAYOFYEAR,DATEADD(DAY,-365,GETDATE()))
+				          AND LTRIM(RTRIM(bu.MCCO)) NOT IN ('00024','00025')
+				          AND ISNULL(LTRIM(RTRIM(ship.ABAC01)),'') <> 'INT'
+				          AND CASE WHEN ISNULL(LTRIM(RTRIM(tag.IMGBLK)),'-') = '-' THEN LTRIM(RTRIM(o.SDLITM)) ELSE LTRIM(RTRIM(tag.IMGBLK)) END
+				              NOT IN ('IGST','CGST','SGST','CVD','ADD');
+				        CREATE UNIQUE CLUSTERED INDEX ixo ON #ord (SDKCOO, SDDOCO, SDDCTO, SDLNID);
+
+				        -- Every 525/540 ledger event for those lines (the considered population).
+				        SELECT
+				            LTRIM(RTRIM(l.SLKCOO)) + '|' + CAST(l.SLDOCO AS varchar(20)) + '|' + LTRIM(RTRIM(l.SLDCTO)) + '|' + CAST(l.SLLNID AS varchar(20)) AS [Line Key],
+				            LTRIM(RTRIM(l.SLKCOO))                     AS [Company Code],
+				            CAST(l.SLDOCO AS varchar(20))              AS [Order Number],
+				            LTRIM(RTRIM(l.SLDCTO))                     AS [Order Type],
+				            l.SLLNID / 1000.0                          AS [Line],
+				            LTRIM(RTRIM(l.SLLTTR))                     AS [Last Status],
+				            LTRIM(RTRIM(l.SLNXTR))                     AS [Next Status],
+				            DATEADD(SECOND,(l.SLTDAY/10000)*3600 + ((l.SLTDAY/100)%100)*60 + (l.SLTDAY%100),
+				                    CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2(0))) AS [Event Datetime],
+				            l.SLUORG / 10000.0                         AS [Ordered Qty],
+				            LTRIM(RTRIM(l.SLUOM))                      AS [UOM],
+				            l.SLUPMJ                                   AS [Julian Date (SLUPMJ)],
+				            l.SLTDAY                                   AS [Time (SLTDAY)],
+				            LTRIM(RTRIM(l.SLPID))                      AS [Program ID],
+				            LTRIM(RTRIM(l.SLUSER))                     AS [User ID],
+				            LTRIM(RTRIM(l.SLJOBN))                     AS [Workstation],
+				            LTRIM(RTRIM(l.SLTORG))                     AS [Originator]
+				        FROM PRODDTA.F42199 l
+				        JOIN #ord o ON o.SDKCOO = l.SLKCOO AND o.SDDOCO = l.SLDOCO AND o.SDDCTO = l.SLDCTO AND o.SDLNID = l.SLLNID
+				        WHERE l.SLNXTR IN ('525','540') AND l.SLUPMJ > 0;
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Line Key", type text},
+				            {"Company Code", type text},
+				            {"Order Number", type text},
+				            {"Order Type", type text},
+				            {"Line", type number},
+				            {"Last Status", type text},
+				            {"Next Status", type text},
+				            {"Event Datetime", type datetime},
+				            {"Ordered Qty", type number},
+				            {"UOM", type text},
+				            {"Julian Date (SLUPMJ)", Int64.Type},
+				            {"Time (SLTDAY)", Int64.Type},
+				            {"Program ID", type text},
+				            {"User ID", type text},
+				            {"Workstation", type text},
+				            {"Originator", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

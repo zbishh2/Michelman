@@ -1,0 +1,51 @@
+table 'CSR Fan-Out'
+	lineageTag: 15000000-0000-0002-0000-000000000000
+
+	column 'Customer AN8'
+		dataType: int64
+		formatString: 0
+		lineageTag: 15000000-0000-0002-0001-000000000001
+		summarizeBy: none
+		sourceColumn: Customer AN8
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CSR Rows'
+		dataType: int64
+		formatString: 0
+		lineageTag: 15000000-0000-0002-0001-000000000002
+		summarizeBy: none
+		sourceColumn: CSR Rows
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'CSR Fan-Out' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT c.CMAN8 AS [Customer AN8], COUNT(*) AS [CSR Rows]
+				        FROM PRODDTA.F42140 c
+				        WHERE c.CMRTYPE = 'CSR'
+				        GROUP BY c.CMAN8
+				        HAVING COUNT(*) > 1
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Customer AN8", Int64.Type},
+				            {"CSR Rows", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

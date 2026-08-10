@@ -1,0 +1,63 @@
+table '05 Fan-Out 525 540'
+	lineageTag: 17050000-0000-4000-8000-000000000001
+
+	column status
+		dataType: string
+		lineageTag: 17050001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column lines_with_multi_events
+		dataType: int64
+		lineageTag: 17050001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: lines_with_multi_events
+
+		annotation SummarizationSetBy = User
+
+	column max_events_on_a_line
+		dataType: int64
+		lineageTag: 17050001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: max_events_on_a_line
+
+		annotation SummarizationSetBy = User
+
+	partition '05 Fan-Out 525 540' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT SLNXTR AS status,
+				               SUM(CASE WHEN cnt > 1 THEN 1 ELSE 0 END) AS lines_with_multi_events,
+				               MAX(cnt) AS max_events_on_a_line
+				        FROM (
+				            SELECT SLKCOO, SLDOCO, SLDCTO, SLLNID, SLNXTR, COUNT(*) AS cnt
+				            FROM PRODDTA.F42199
+				            WHERE SLNXTR IN ('525','540') AND SLUPMJ > 0
+				            GROUP BY SLKCOO, SLDOCO, SLDCTO, SLLNID, SLNXTR
+				        ) g
+				        GROUP BY SLNXTR
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"status", type text},
+				            {"lines_with_multi_events", Int64.Type},
+				            {"max_events_on_a_line", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,7 @@
+expression AsOfDate = #date(2026, 7, 21) meta [IsParameterQuery=true, Type="Date", IsParameterQueryRequired=true]
+	lineageTag: 14a1c0de-0000-4000-8000-0000000000a5
+
+	annotation PBI_ResultType = Date
+
+	annotation PBI_NavigationStepName = Navigation
+

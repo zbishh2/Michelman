@@ -1,0 +1,274 @@
+table WO_Parts_List
+	lineageTag: 4ceb8c08-d57e-4707-a49b-4215ce0ec982
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 9217e621-a510-44e7-bcb3-6bfc1e59a17b
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 8e67d5fa-c4e5-402e-8088-a33cd3832923
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 6b90f66b-f548-4829-8059-bb03ee5fd79c
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 376b9843-894f-41cf-b1fc-81944c47a00f
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'WO Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 9a9aca5b-d339-41c0-ba1f-64db66b2cfc3
+		summarizeBy: none
+		sourceColumn: WO Number
+
+		annotation SummarizationSetBy = User
+
+	column 'WO Status'
+		dataType: string
+		lineageTag: 2fd21495-0d91-4b51-b8dc-13f38668d16e
+		summarizeBy: none
+		sourceColumn: WO Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 78385dac-763c-4911-b03e-a6b4a6e791a0
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Start Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 93929eb6-e514-4743-9da8-59d8bc1b502e
+		summarizeBy: none
+		sourceColumn: Start Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Completed Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 6394c49a-d489-44c0-adac-701646582bdd
+		summarizeBy: none
+		sourceColumn: Completed Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Quantity Requested'
+		dataType: double
+		formatString: #,0
+		lineageTag: 33c54f3b-c8ec-41bf-a5e5-93757e4cc4f6
+		summarizeBy: sum
+		sourceColumn: Quantity Requested
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Quantity Completed'
+		dataType: double
+		formatString: #,0
+		lineageTag: 08f3bbe1-5679-4afd-b848-0792a01515e3
+		summarizeBy: sum
+		sourceColumn: Quantity Completed
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Unit of Measure'
+		dataType: string
+		lineageTag: a1bfb766-99c9-41d8-833b-15ba489defa6
+		summarizeBy: none
+		sourceColumn: Unit of Measure
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Component Branch'
+		dataType: string
+		lineageTag: bfc7d382-c5af-4ddc-b4a1-47c4f1485763
+		summarizeBy: none
+		sourceColumn: Component Branch
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Component 2nd Item Number'
+		dataType: string
+		lineageTag: bc091ca4-ada2-4a67-85f1-742174eb3bb1
+		summarizeBy: none
+		sourceColumn: Component 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ordered Quantity'
+		dataType: double
+		formatString: #,0
+		lineageTag: 0f8223bc-470e-4c6f-bdad-89c107ab51d6
+		summarizeBy: sum
+		sourceColumn: Ordered Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Issued Quantity'
+		dataType: double
+		formatString: #,0
+		lineageTag: 219539da-a3d8-4dc2-9318-bb3782bd6f7c
+		summarizeBy: sum
+		sourceColumn: Issued Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Component UOM'
+		dataType: string
+		lineageTag: b9207052-4283-4658-80b0-5f89f1307ce1
+		summarizeBy: none
+		sourceColumn: Component UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Requested Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 948ee335-1185-41ec-8464-df3e979d3fca
+		summarizeBy: none
+		sourceColumn: Requested Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition WO_Parts_List = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            m.C0  AS [Branch Plant],
+				            m.C1  AS [Global Bulk Item],
+				            m.C2  AS [Bulk Item],
+				            m.C3  AS [2nd Item Number],
+				            m.C4  AS [WO Number],
+				            m.C5  AS [WO Status],
+				            m.C6  AS [Order Date],
+				            m.C7  AS [Start Date],
+				            m.C8  AS [Completed Date],
+				            SUM(m.sumReq)  OVER (PARTITION BY m.C0,m.C1,m.C2,m.C3,m.C4,m.C5,m.C6,m.C7,m.C8,m.C11)
+				                / NULLIF(SUM(m.cntReq) OVER (PARTITION BY m.C0,m.C1,m.C2,m.C3,m.C4,m.C5,m.C6,m.C7,m.C8,m.C11),0)  AS [Quantity Requested],
+				            SUM(m.sumComp) OVER (PARTITION BY m.C0,m.C1,m.C2,m.C3,m.C4,m.C5,m.C6,m.C7,m.C8,m.C11)
+				                / NULLIF(SUM(m.cntComp) OVER (PARTITION BY m.C0,m.C1,m.C2,m.C3,m.C4,m.C5,m.C6,m.C7,m.C8,m.C11),0) AS [Quantity Completed],
+				            m.C11 AS [Unit of Measure],
+				            m.C12 AS [Component Branch],
+				            m.C13 AS [Component 2nd Item Number],
+				            m.OrderedQty AS [Ordered Quantity],
+				            m.IssuedQty  AS [Issued Quantity],
+				            m.C14 AS [Component UOM],
+				            m.C15 AS [Requested Date]
+				        FROM
+				        (
+				            SELECT
+				                LTRIM(RTRIM(wo.WAMMCU))  AS C0,
+				                LTRIM(RTRIM(tag.IMGBLK)) AS C1,
+				                tag.IMBULK               AS C2,
+				                LTRIM(RTRIM(wo.WALITM))  AS C3,
+				                wo.WADOCO                AS C4,
+				                wo.WASRST                AS C5,
+				                wo.WATRDJ                AS C6,
+				                wo.WASTRT                AS C7,
+				                wo.WASTRX                AS C8,
+				                wo.WAUOM                 AS C11,
+				                wp.WMCMCU                AS C12,
+				                LTRIM(RTRIM(wp.WMCPIL))  AS C13,
+				                wp.WMUM                  AS C14,
+				                wp.WMDRQJ                AS C15,
+				                SUM(wo.WAUORG/10000.0)   AS sumReq,
+				                COUNT(wo.WAUORG/10000.0) AS cntReq,
+				                SUM(wo.WASOQS/10000.0)   AS sumComp,
+				                COUNT(wo.WASOQS/10000.0) AS cntComp,
+				                SUM(wp.WMUORG/10000.0)   AS OrderedQty,
+				                SUM(wp.WMTRQT/10000.0)   AS IssuedQty
+				            FROM
+				            (
+				                SELECT
+				                    WADOCO, WAMMCU, WASRST, WAITM, WALITM, WAUORG, WASOQS, WAUOM,
+				                    CASE WHEN WATRDJ>0 THEN DATEADD(DAY,(WATRDJ%1000)-1,DATEFROMPARTS(1900+(WATRDJ/1000),1,1)) ELSE NULL END AS WATRDJ,
+				                    CASE WHEN WASTRT>0 THEN DATEADD(DAY,(WASTRT%1000)-1,DATEFROMPARTS(1900+(WASTRT/1000),1,1)) ELSE NULL END AS WASTRT,
+				                    CASE WHEN WASTRX>0 THEN DATEADD(DAY,(WASTRX%1000)-1,DATEFROMPARTS(1900+(WASTRX/1000),1,1)) ELSE NULL END AS WASTRX
+				                FROM PRODDTA.F4801
+				            ) wo
+				            JOIN
+				            (
+				                SELECT
+				                    WMDOCO, WMCPIL, WMCMCU, WMUORG, WMTRQT, WMUM,
+				                    CASE WHEN WMDRQJ>0 THEN DATEADD(DAY,(WMDRQJ%1000)-1,DATEFROMPARTS(1900+(WMDRQJ/1000),1,1)) ELSE NULL END AS WMDRQJ
+				                FROM PRODDTA.F3111
+				            ) wp ON wo.WADOCO = wp.WMDOCO
+				            JOIN PRODDTA.F4102 ib  ON wo.WAITM = ib.IBITM AND wo.WAMMCU = ib.IBMCU
+				            JOIN PRODDTA.F4101 im  ON ib.IBITM = im.IMITM
+				            JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+				            WHERE wo.WASRST NOT IN ('95','96','97','98','99','MM','CD')
+				              AND wo.WASTRT >= DATEADD(DAY,-30,CAST(GETDATE() AS date))
+				              AND (wp.WMUORG/10000.0 + wp.WMTRQT/10000.0) > 0
+				            GROUP BY
+				                LTRIM(RTRIM(wo.WAMMCU)), LTRIM(RTRIM(tag.IMGBLK)), tag.IMBULK, LTRIM(RTRIM(wo.WALITM)),
+				                wo.WADOCO, wo.WASRST, wo.WATRDJ, wo.WASTRT, wo.WASTRX, wo.WAUOM,
+				                wp.WMCMCU, LTRIM(RTRIM(wp.WMCPIL)), wp.WMUM, wp.WMDRQJ
+				            HAVING AVG(wo.WASOQS/10000.0) = 0
+				        ) m
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Branch Plant", type text}, {"Global Bulk Item", type text}, {"Bulk Item", type text},
+				            {"2nd Item Number", type text}, {"WO Number", Int64.Type}, {"WO Status", type text},
+				            {"Order Date", type date}, {"Start Date", type date}, {"Completed Date", type date},
+				            {"Quantity Requested", type number}, {"Quantity Completed", type number},
+				            {"Unit of Measure", type text}, {"Component Branch", type text},
+				            {"Component 2nd Item Number", type text}, {"Ordered Quantity", type number},
+				            {"Issued Quantity", type number}, {"Component UOM", type text}, {"Requested Date", type date}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,28 @@
+table 'Select Date'
+	lineageTag: 14a1a000-0000-4000-8000-000000000018
+
+	column Date
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 14a1da09-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition 'Select Date' = m
+		mode: import
+		source =
+				let
+				    Today = Date.From(DateTime.LocalNow()),
+				    Start = Date.AddMonths(Today, -13),
+				    Dates = List.Dates(Start, Duration.Days(Today - Start) + 1, #duration(1, 0, 0, 0)),
+				    T = Table.TransformColumnTypes(Table.FromList(Dates, Splitter.SplitByNothing(), {"Date"}), {{"Date", type date}}),
+				    Sorted = Table.Sort(T, {{"Date", Order.Descending}})
+				in
+				    Sorted
+
+	annotation PBI_ResultType = Table
+

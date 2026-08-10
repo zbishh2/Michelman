@@ -1,0 +1,50 @@
+table 'Live CSR List'
+	lineageTag: 15000000-0000-0003-0000-000000000000
+
+	column 'CSR Name'
+		dataType: string
+		lineageTag: 15000000-0000-0003-0001-000000000001
+		summarizeBy: none
+		sourceColumn: CSR Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customers
+		dataType: int64
+		formatString: 0
+		lineageTag: 15000000-0000-0003-0001-000000000002
+		summarizeBy: none
+		sourceColumn: Customers
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Live CSR List' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT LTRIM(RTRIM(n.ABALPH)) AS [CSR Name], COUNT(DISTINCT c.CMAN8) AS [Customers]
+				        FROM PRODDTA.F42140 c
+				        INNER JOIN PRODDTA.F0101 n ON c.CMSLSM = n.ABAN8
+				        WHERE c.CMRTYPE = 'CSR'
+				        GROUP BY LTRIM(RTRIM(n.ABALPH))
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"CSR Name", type text},
+				            {"Customers", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

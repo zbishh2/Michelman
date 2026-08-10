@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "1 - Ivan FC 2023 Forecast (Live)"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "8d3a9a43-69cd-4e36-9f52-cc8131e87b37"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/reportExtension/1.0.0/schema.json",
+  "name": "extension",
+  "entities": [
+    {
+      "name": "Inventory Snapshot",
+      "measures": [
+        {
+          "name": "R14 OH USD",
+          "dataType": "Double",
+          "expression": "[Total Ext Cost IC USD]",
+          "formatString": "$#,##0;($#,##0)"
+        },
+        {
+          "name": "R14 OH EUR",
+          "dataType": "Double",
+          "expression": "CALCULATE([Total Ext Cost IC], TREATAS({2}, 'Selected Currency Filter'[Selected Currency]))",
+          "formatString": "$#,##0;($#,##0)"
+        }
+      ]
+    },
+    {
+      "name": "Calendar Inventory Snapshot",
+      "measures": [
+        {
+          "name": "R14 Inventory Date",
+          "dataType": "DateTime",
+          "expression": "VAR q = [Qty On Hand]\nRETURN\n    IF(NOT ISBLANK(q), SELECTEDVALUE('Calendar Inventory Snapshot'[Calendar Date]))",
+          "formatString": "d MMM, yyyy"
+        },
+        {
+          "name": "R14 Last Refreshed",
+          "dataType": "Text",
+          "expression": "\"As of \" & FORMAT(MAX('Calendar Inventory Snapshot'[Calendar Date]), \"MMM d, yyyy\")"
+        }
+      ]
+    }
+  ]
+}

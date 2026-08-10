@@ -1,0 +1,34 @@
+table '20 Std UOM Conv'
+	lineageTag: 17140000-0000-4000-8000-000000000001
+
+	column RowJson
+		dataType: string
+		lineageTag: 17140001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: RowJson
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '20 Std UOM Conv' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        SELECT TOP 1000 (SELECT u.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER) AS RowJson
+				        FROM PRODDTA.F41003 u;
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"RowJson", type text}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

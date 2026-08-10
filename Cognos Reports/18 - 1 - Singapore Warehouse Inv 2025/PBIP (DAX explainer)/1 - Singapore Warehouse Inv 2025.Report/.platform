@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "1 - Singapore Warehouse Inv 2025"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "18d2f3b8-1809-4d13-ae42-18b1d1ef5200"
+  }
+}

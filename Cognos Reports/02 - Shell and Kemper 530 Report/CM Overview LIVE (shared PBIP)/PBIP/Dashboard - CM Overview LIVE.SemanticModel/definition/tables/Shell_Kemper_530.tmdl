@@ -1,0 +1,428 @@
+table Shell_Kemper_530
+	lineageTag: 3e1a4327-53ba-4cea-820f-3b5e23bbd906
+
+	measure 'Number of Errors' = CALCULATE(COUNTROWS('Shell_Kemper_530'), 'Shell_Kemper_530'[Owner] = "ERROR")
+		formatString: 0
+		lineageTag: d0e0b926-8430-49e9-99c2-71e533698d21
+
+	measure 'Is Error Row' = IF(SELECTEDVALUE('Shell_Kemper_530'[Owner]) = "ERROR", 1, 0)
+		lineageTag: a7a4ace6-8e34-46cf-a519-3b829e26a0ad
+
+	measure 'Row Background Color' = IF(SELECTEDVALUE('Shell_Kemper_530'[Owner]) = "ERROR", "#FF0000")
+		lineageTag: ee8a988f-0950-47f4-87ca-e3be88bcd317
+
+	measure 'Row Font Color' = IF(SELECTEDVALUE('Shell_Kemper_530'[Owner]) = "ERROR", "#FFFFFF")
+		lineageTag: 6f7835ff-2fa6-465f-99c1-1dbac446a8b6
+
+	measure 'Requested Cell Color' = IF(SELECTEDVALUE('Shell_Kemper_530'[Owner]) = "ERROR", "#FF0000", IF(NOT ISBLANK(SELECTEDVALUE('Shell_Kemper_530'[Requested])) && NOT ISBLANK(SELECTEDVALUE('Shell_Kemper_530'[Promised Ship])) && SELECTEDVALUE('Shell_Kemper_530'[Requested]) < SELECTEDVALUE('Shell_Kemper_530'[Promised Ship]), "#FFFF00"))
+		lineageTag: 4956dbbb-beba-403e-8540-0fa00a15de5e
+
+	measure 'Error Card BG' = IF([Number of Errors] > 0, "#FF0000")
+		lineageTag: 8fef0815-64df-4c6b-ae5f-5ff91212bab1
+
+	measure 'Error Card Font' = IF([Number of Errors] > 0, "#FFFFFF", "#000000")
+		lineageTag: 8803a6a1-bf12-4672-82aa-dd4877401fdf
+
+	column 'Promised Ship'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 88211d39-b270-4264-9e33-a0ff7b395842
+		summarizeBy: none
+		sourceColumn: Promised Ship
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Requested
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 30911689-5337-45ff-b16f-ab643e7061f6
+		summarizeBy: none
+		sourceColumn: Requested
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Plant
+		dataType: string
+		lineageTag: 6fad7c41-1533-4173-a310-84cd50a3e8de
+		summarizeBy: none
+		sourceColumn: Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ship To'
+		dataType: string
+		lineageTag: c1013e56-6b49-4bcb-b1b0-6981cbba37d2
+		summarizeBy: none
+		sourceColumn: Ship To
+
+		annotation SummarizationSetBy = Automatic
+
+	column CS
+		dataType: string
+		lineageTag: 03e4b36d-9177-4621-bde8-6989e6b2b547
+		summarizeBy: none
+		sourceColumn: CS
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order#
+		dataType: int64
+		formatString: 0
+		lineageTag: 30b8f7dd-3389-4c6e-b782-a3d3bf3552da
+		summarizeBy: none
+		sourceColumn: Order#
+
+		annotation SummarizationSetBy = Automatic
+
+	column Line#
+		dataType: double
+		lineageTag: cd69502b-2ffe-4a64-b523-d2aa01c35939
+		summarizeBy: none
+		sourceColumn: Line#
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column Bulk
+		dataType: string
+		lineageTag: 5588dd12-4137-4328-a8ca-504ac4928433
+		summarizeBy: none
+		sourceColumn: Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column Item
+		dataType: string
+		lineageTag: 911cfb92-c593-4283-84bc-fa08226aa20b
+		summarizeBy: none
+		sourceColumn: Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: dd3bc838-3ad3-4c62-9491-23ed57b55a33
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Owner
+		dataType: string
+		lineageTag: c5a4cf08-5dca-4a2e-9b07-441efc9cc30e
+		summarizeBy: none
+		sourceColumn: Owner
+
+		annotation SummarizationSetBy = Automatic
+
+	column Planner
+		dataType: int64
+		formatString: 0
+		lineageTag: 3f0dcef3-bb32-4876-9f67-0258b5e1e9e9
+		summarizeBy: none
+		sourceColumn: Planner
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: bc9823d9-8c84-4000-b7fe-28c6a1c71e4c
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Primary Qty'
+		dataType: double
+		formatString: #,0
+		lineageTag: 0a63a4c7-797d-4fd2-9965-eb57daeb5348
+		summarizeBy: none
+		sourceColumn: Primary Qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Primary UOM'
+		dataType: string
+		lineageTag: 105da293-d6a8-41f7-ac4a-e556da9165a7
+		summarizeBy: none
+		sourceColumn: Primary UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Secondary Qty'
+		dataType: double
+		formatString: #,0
+		lineageTag: 037ad8fc-cb26-45f8-a258-91cfa9c950d2
+		summarizeBy: none
+		sourceColumn: Secondary Qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Secondary UOM'
+		dataType: string
+		lineageTag: fb089409-165b-4d22-ba71-e9a5f2c7f52f
+		summarizeBy: none
+		sourceColumn: Secondary UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 5f3624fa-5c6a-447d-98ef-75edded0aaf7
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'CSR Name'
+		dataType: string
+		lineageTag: 802ada81-528d-4803-ba30-e054841229c2
+		summarizeBy: none
+		sourceColumn: CSR Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Work Ctr'
+		dataType: string
+		lineageTag: a475ce97-f301-4531-8d5d-4f28404de13b
+		summarizeBy: none
+		sourceColumn: Work Ctr
+
+		annotation SummarizationSetBy = Automatic
+
+	column MPF
+		dataType: string
+		lineageTag: 5c9dc870-8476-43e9-a49e-514cf0c3b50f
+		summarizeBy: none
+		sourceColumn: MPF
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Shell_Kemper_530 = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            mb.Promised_Ship_Date                                     AS [Promised Ship],
+				            mb.Requested_Date                                         AS [Requested],
+				            mb.Branch_Plant                                           AS [Plant],
+				            mb.Customer_Name                                          AS [Ship To],
+				            mb.Customer_Segmentation                                  AS [CS],
+				            mb.Order_Number                                           AS [Order#],
+				            mb.Order_Line                                             AS [Line#],
+				            mb.Bulk_Item                                              AS [Bulk],
+				            mb.C_2nd_Item_Number                                      AS [Item],
+				            CASE mb.C_2nd_Item_Number
+				                 WHEN 'NEWITEMFG'  THEN mb.Description_1
+				                 WHEN 'NEWITEMPKG' THEN mb.Description_1
+				                 ELSE ' '
+				            END                                                       AS [Description],
+				            CASE mb.Planner
+				                 WHEN '324363' THEN 'Eric'
+				                 WHEN '20444'  THEN 'Eric'
+				                 WHEN '20445'  THEN 'Lance'
+				                 WHEN '291740' THEN 'Mark Tilley'
+				                 WHEN '328907' THEN 'Lance'
+				                 WHEN '333530' THEN 'Lance'
+				                 WHEN '316775' THEN 'Lance'
+				                 WHEN '334927' THEN 'Tammy'
+				                 WHEN '290808' THEN 'David Kramer'
+				                 WHEN '335951' THEN 'Lance'
+				                 WHEN '300021' THEN 'Tammy'
+				                 WHEN '324287' THEN 'Brent'
+				                 ELSE 'ERROR'
+				            END                                                       AS [Owner],
+				            mb.Planner                                                AS [Planner],
+				            mb.Next_Status                                            AS [Status],
+				            AVG(mb.Primary_Quantity_Ordered)                          AS [Primary Qty],
+				            mb.Primary_UOM                                            AS [Primary UOM],
+				            AVG(mb.Secondary_Quantity_Ordered)                        AS [Secondary Qty],
+				            mb.Secondary_UOM                                          AS [Secondary UOM],
+				            mb.Order_Date                                             AS [Order Date],
+				            mb.CSR_Name                                               AS [CSR Name],
+				            r.Work_Center                                             AS [Work Ctr],
+				            mb.MPF                                                    AS [MPF]
+				        FROM (
+				            SELECT
+				                m8.Branch_Plant, m8.CSR_Name, m8.Order_Number, m8.Order_Line,
+				                m8.Customer_PO, m8.Customer_Name, m8.Customer_Segmentation,
+				                m8.C_2nd_Item_Number, m8.Last_Status, m8.Next_Status, m8.Order_Date,
+				                SUM(m8.Primary_Quantity_Ordered)   AS Primary_Quantity_Ordered,
+				                m8.Primary_UOM, m8.Requested_Date, m8.Promised_Ship_Date,
+				                SUM(m8.Secondary_Quantity_Ordered) AS Secondary_Quantity_Ordered,
+				                m8.Secondary_UOM, m8.MPF, m8.Description_1,
+				                i9.Bulk_Item, i9.Planner
+				            FROM (
+				                SELECT
+				                    so.SDKCOO                          AS Order_Company,
+				                    LTRIM(RTRIM(so.SDMCU))             AS Branch_Plant,
+				                    LTRIM(RTRIM(csr.ABALPH))           AS CSR_Name,
+				                    so.SDDOCO                          AS Order_Number,
+				                    so.SDLNID / 1000.0                 AS Order_Line,
+				                    so.SDVR01                          AS Customer_PO,
+				                    LTRIM(RTRIM(cust.ABALPH))          AS Customer_Name,
+				                    LTRIM(RTRIM(cust.ABAC06))          AS Customer_Segmentation,
+				                    LTRIM(RTRIM(so.SDLITM))            AS C_2nd_Item_Number,
+				                    so.SDLTTR                          AS Last_Status,
+				                    so.SDNXTR                          AS Next_Status,
+				                    (CASE WHEN so.SDTRDJ > 0
+				                          THEN DATEADD(DAY, (so.SDTRDJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDTRDJ / 1000), 1, 1))
+				                     END)                              AS Order_Date,
+				                    SUM(so.SDPQOR / 10000.0)           AS Primary_Quantity_Ordered,
+				                    so.SDUOM1                          AS Primary_UOM,
+				                    (CASE WHEN so.SDDRQJ > 0
+				                          THEN DATEADD(DAY, (so.SDDRQJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDDRQJ / 1000), 1, 1))
+				                     END)                              AS Requested_Date,
+				                    (CASE WHEN so.SDPDDJ > 0
+				                          THEN DATEADD(DAY, (so.SDPDDJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDPDDJ / 1000), 1, 1))
+				                     END)                              AS Promised_Ship_Date,
+				                    SUM(so.SDSQOR / 10000.0)           AS Secondary_Quantity_Ordered,
+				                    so.SDUOM2                          AS Secondary_UOM,
+				                    so.SDPRP4                          AS MPF,
+				                    LTRIM(RTRIM(so.SDDSC1))            AS Description_1
+				                FROM PRODDTA.F4211 so
+				                INNER JOIN PRODDTA.F0101 cust ON so.SDSHAN = cust.ABAN8
+				                LEFT OUTER JOIN (
+				                    SELECT cm.CMAN8, ab.ABALPH
+				                    FROM PRODDTA.F42140 cm
+				                    JOIN PRODDTA.F0101 ab ON cm.CMSLSM = ab.ABAN8
+				                    WHERE cm.CMRTYPE = 'CSR'
+				                ) csr ON so.SDSHAN = csr.CMAN8
+				                WHERE so.SDNXTR IN ('525','530','535','540','545','550')
+				                  AND so.SDKCOO = '00010'
+				                GROUP BY
+				                    so.SDKCOO, LTRIM(RTRIM(so.SDMCU)), LTRIM(RTRIM(csr.ABALPH)),
+				                    so.SDDOCO, so.SDLNID / 1000.0, so.SDVR01,
+				                    LTRIM(RTRIM(cust.ABALPH)), LTRIM(RTRIM(cust.ABAC06)),
+				                    LTRIM(RTRIM(so.SDLITM)), so.SDLTTR, so.SDNXTR,
+				                    (CASE WHEN so.SDTRDJ > 0
+				                          THEN DATEADD(DAY, (so.SDTRDJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDTRDJ / 1000), 1, 1))
+				                     END),
+				                    so.SDUOM1,
+				                    (CASE WHEN so.SDDRQJ > 0
+				                          THEN DATEADD(DAY, (so.SDDRQJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDDRQJ / 1000), 1, 1))
+				                     END),
+				                    (CASE WHEN so.SDPDDJ > 0
+				                          THEN DATEADD(DAY, (so.SDPDDJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDPDDJ / 1000), 1, 1))
+				                     END),
+				                    so.SDUOM2, so.SDPRP4, LTRIM(RTRIM(so.SDDSC1))
+				            ) m8
+				            INNER JOIN (
+				                SELECT DISTINCT
+				                    LTRIM(RTRIM(ib.IBMCU))   AS Branch_Plant,
+				                    LTRIM(RTRIM(tag.IMBULK)) AS Bulk_Item,
+				                    LTRIM(RTRIM(ib.IBLITM))  AS C_2nd_Item_Number,
+				                    ib.IBANPL                AS Planner
+				                FROM PRODDTA.F4102 ib
+				                JOIN PRODDTA.F4101 im  ON ib.IBITM = im.IMITM
+				                JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+				            ) i9
+				              ON m8.Branch_Plant = i9.Branch_Plant
+				             AND m8.C_2nd_Item_Number = i9.C_2nd_Item_Number
+				            GROUP BY
+				                m8.Order_Company, m8.Branch_Plant, m8.CSR_Name, m8.Order_Number,
+				                m8.Order_Line, m8.Customer_PO, m8.Customer_Name, m8.Customer_Segmentation,
+				                m8.C_2nd_Item_Number, m8.Last_Status, m8.Next_Status, m8.Order_Date,
+				                m8.Primary_UOM, m8.Requested_Date, m8.Promised_Ship_Date,
+				                m8.Secondary_UOM, m8.MPF, m8.Description_1,
+				                i9.Branch_Plant, i9.Bulk_Item, i9.C_2nd_Item_Number, i9.Planner
+				        ) mb
+				        FULL OUTER JOIN (
+				            SELECT DISTINCT
+				                LTRIM(RTRIM(cp.CWMMCU)) AS Item_Branch,
+				                LTRIM(RTRIM(ib.IBLITM)) AS C_2nd_Item_Number,
+				                LTRIM(RTRIM(cp.CWMCU))  AS Work_Center
+				            FROM PRODDTA.F3312 cp
+				            JOIN PRODDTA.F4102 ib ON cp.CWITM = ib.IBITM AND cp.CWWMCU = ib.IBMCU
+				            JOIN PRODDTA.F3313 cl ON cp.CWMCU  = cl.CRMCU
+				                                 AND cp.CWCAPM = cl.CRCAPM
+				                                 AND cp.CWDRQJ = cl.CRSTRT
+				                                 AND cp.CWWMCU = cl.CRWMCU
+				            WHERE LTRIM(RTRIM(cp.CWMMCU)) IN ('CINC','CIN2')
+				              AND LTRIM(RTRIM(ib.IBLITM)) NOT LIKE '%-%'
+				              AND LTRIM(RTRIM(cp.CWMCU)) IN
+				                  ('SREC23','SREC37','SREC48','SREC72','SREC130','SDMD','SPEC','SPREC',
+				                   'SECG','SE2','SCOLD','SPDMD','SPCOLD','SLAB','SRENAME','SREPACK',
+				                   'SHILDA','KLAB','KBB','KSB','KWG','KBOT','KREPACK','KRENAME')
+				              AND cp.CWDOCO = 0
+				              AND (CASE WHEN cp.CWDRQJ > 0
+				                        THEN DATEADD(DAY, (cp.CWDRQJ % 1000) - 1, DATEFROMPARTS(1900 + (cp.CWDRQJ / 1000), 1, 1))
+				                        ELSE DATEFROMPARTS(1900, 1, 1)
+				                   END) > DATEADD(DAY, 31, CAST(GETDATE() AS date))
+				        ) r
+				          ON mb.Bulk_Item = r.C_2nd_Item_Number
+				        WHERE mb.C_2nd_Item_Number IS NOT NULL
+				          AND mb.Next_Status = '530'
+				        GROUP BY
+				            mb.Branch_Plant, mb.CSR_Name, mb.Order_Number, mb.Order_Line,
+				            mb.Customer_Name, mb.Customer_Segmentation, mb.C_2nd_Item_Number,
+				            mb.Next_Status, mb.Primary_UOM, mb.Secondary_UOM, mb.Order_Date,
+				            mb.Requested_Date, mb.Promised_Ship_Date, mb.MPF, mb.Bulk_Item,
+				            r.Work_Center, mb.Planner,
+				            CASE mb.Planner
+				                 WHEN '324363' THEN 'Eric'      WHEN '20444'  THEN 'Eric'
+				                 WHEN '20445'  THEN 'Lance'     WHEN '291740' THEN 'Mark Tilley'
+				                 WHEN '328907' THEN 'Lance'     WHEN '333530' THEN 'Lance'
+				                 WHEN '316775' THEN 'Lance'     WHEN '334927' THEN 'Tammy'
+				                 WHEN '290808' THEN 'David Kramer' WHEN '335951' THEN 'Lance'
+				                 WHEN '300021' THEN 'Tammy'     WHEN '324287' THEN 'Brent'
+				                 ELSE 'ERROR'
+				            END,
+				            CASE mb.C_2nd_Item_Number
+				                 WHEN 'NEWITEMFG'  THEN mb.Description_1
+				                 WHEN 'NEWITEMPKG' THEN mb.Description_1
+				                 ELSE ' '
+				            END
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Promised Ship", type date},
+				            {"Requested", type date},
+				            {"Plant", type text},
+				            {"Ship To", type text},
+				            {"CS", type text},
+				            {"Order#", Int64.Type},
+				            {"Line#", type number},
+				            {"Bulk", type text},
+				            {"Item", type text},
+				            {"Description", type text},
+				            {"Owner", type text},
+				            {"Planner", Int64.Type},
+				            {"Status", type text},
+				            {"Primary Qty", type number},
+				            {"Primary UOM", type text},
+				            {"Secondary Qty", type number},
+				            {"Secondary UOM", type text},
+				            {"Order Date", type date},
+				            {"CSR Name", type text},
+				            {"Work Ctr", type text},
+				            {"MPF", type text}
+				        }
+				    )
+				in
+				    Typed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

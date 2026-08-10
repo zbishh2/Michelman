@@ -1,0 +1,289 @@
+/// Cognos side of the 2026-07-21 tight-capture export (10:45:56 AM), restricted to the orders on the Validation page. Entered as report-side data because Cognos values cannot be derived from ODS; refreshes anywhere (no data source). Regen from the report-out workbook via gen_cognos_capture.py after any new capture.
+table 'Cognos Capture'
+	lineageTag: 17f30000-0000-4000-8000-000000000000
+
+	column 'Company Code'
+		dataType: string
+		lineageTag: 17f30000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Company Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Company Name'
+		dataType: string
+		lineageTag: 17f30000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Company Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 17f30000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Freight Handling Code'
+		dataType: string
+		lineageTag: 17f30000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Freight Handling Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Number'
+		dataType: string
+		lineageTag: 17f30000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Order Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ordered Quantity'
+		dataType: double
+		formatString: #,##0.###
+		lineageTag: 17f30000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Ordered Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 17f30000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sold To Customer Code'
+		dataType: string
+		lineageTag: 17f30000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Sold To Customer Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sold To Customer Name'
+		dataType: string
+		lineageTag: 17f30000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Sold To Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ship To Customer Code'
+		dataType: string
+		lineageTag: 17f30000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Ship To Customer Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ship To Customer Name'
+		dataType: string
+		lineageTag: 17f30000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Ship To Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation'
+		dataType: string
+		lineageTag: 17f30000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Customer Segmentation
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation Description'
+		dataType: string
+		lineageTag: 17f30000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Customer Segmentation Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: m/d/yy h:mm:ss AM/PM
+		lineageTag: 17f30000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Confirmation Date'
+		dataType: dateTime
+		formatString: m/d/yy h:mm:ss AM/PM
+		lineageTag: 17f30000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: Confirmation Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Shipped Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 17f30000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: Shipped Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Requested Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 17f30000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: Requested Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Goal'
+		dataType: int64
+		formatString: 0
+		lineageTag: 17f30000-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: Goal
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stretch'
+		dataType: int64
+		formatString: 0
+		lineageTag: 17f30000-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: Stretch
+
+		annotation SummarizationSetBy = Automatic
+
+	column '>48h'
+		dataType: int64
+		formatString: 0
+		lineageTag: 17f30000-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: >48h
+
+		annotation SummarizationSetBy = Automatic
+
+	column '<72h'
+		dataType: int64
+		formatString: 0
+		lineageTag: 17f30000-0000-4000-8000-000000000015
+		summarizeBy: none
+		sourceColumn: <72h
+
+		annotation SummarizationSetBy = Automatic
+
+	column '>72h'
+		dataType: int64
+		formatString: 0
+		lineageTag: 17f30000-0000-4000-8000-000000000016
+		summarizeBy: none
+		sourceColumn: >72h
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Cognos Capture' = m
+		mode: import
+		source =
+				let
+				    Output = #table(
+				        type table [#"Company Code" = text, #"Company Name" = text, #"Branch Plant" = text, #"Freight Handling Code" = text, #"Order Number" = text, #"Ordered Quantity" = nullable number, #"2nd Item Number" = text, #"Sold To Customer Code" = text, #"Sold To Customer Name" = text, #"Ship To Customer Code" = text, #"Ship To Customer Name" = text, #"Customer Segmentation" = text, #"Customer Segmentation Description" = text, #"Order Date" = nullable datetime, #"Confirmation Date" = nullable datetime, #"Shipped Date" = nullable datetime, #"Requested Date" = nullable datetime, #"Goal" = Int64.Type, #"Stretch" = Int64.Type, #">48h" = Int64.Type, #"<72h" = Int64.Type, #">72h" = Int64.Type],
+				        {
+				            { "00020", "Michelman Internat. Belgium", "AUBA", "EXW", "26001153", 18, "NVLF4002.E-PL", "308030", "Keyser Mackay (X) Dietikon CH", "308030", "Keyser Mackay (X) Dietikon CH", "DO", "Distributor Only", #datetime(2026,6,19,9,34,3), #datetime(2026,6,23,3,20,42), #datetime(2026,6,29,0,0,0), #datetime(2026,6,26,0,0,0), 1, 0, 0, 1, 0 },
+				            { "00020", "Michelman Internat. Belgium", "AUBA", "EXW", "26001153", 18, "NVLF4605.E-PL", "308030", "Keyser Mackay (X) Dietikon CH", "308030", "Keyser Mackay (X) Dietikon CH", "DO", "Distributor Only", #datetime(2026,6,17,12,7,32), #datetime(2026,6,23,3,20,42), #datetime(2026,6,29,0,0,0), #datetime(2026,6,26,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00020", "Michelman Internat. Belgium", "AUBA", "EXW", "26001158", 1000, "MDU2012B.E-TO", "324899", "Keyser & Mackay (X) Amsterdam NL", "324899", "Keyser & Mackay (X) Amsterdam NL", "DO", "Distributor Only", #datetime(2026,6,18,10,1,28), #datetime(2026,6,22,9,55,39), #datetime(2026,6,29,0,0,0), #datetime(2026,6,22,0,0,0), 1, 0, 0, 1, 0 },
+				            { "00020", "Michelman Internat. Belgium", "AUBA", "DAP", "26001173", 1000, "ME93204.E-TO", "348034", "Solenis (X BE) Schaffhausen CH", "348034", "Solenis (X BE) Schaffhausen CH", "PL", "Platinum", #datetime(2026,6,19,14,3,39), #datetime(2026,6,23,3,20,47), #datetime(2026,7,10,0,0,0), #datetime(2026,7,10,0,0,0), 1, 0, 0, 1, 0 },
+				            { "00020", "Michelman Internat. Belgium", "AUBA", "EXW", "26001176", 200, "MFP1855.E-PD", "288577", "Apaco Grosshandel (X) Wien AT", "288577", "Apaco Grosshandel (X) Wien AT", "DO", "Distributor Only", #datetime(2026,6,22,10,17,3), #datetime(2026,6,23,3,20,48), #datetime(2026,6,26,0,0,0), #datetime(2026,6,29,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00020", "Michelman Internat. Belgium", "AUBA", "DAP", "26001181", 120, "LICW440.E-LP", "291384", "Safic FR (X) Puteaux FR", "291384", "Safic FR (X) Puteaux FR", "DO", "Distributor Only", #datetime(2026,6,23,3,20,48), #datetime(2026,6,25,13,9,43), #datetime(2026,7,3,0,0,0), #datetime(2026,7,2,0,0,0), 1, 0, 0, 1, 0 },
+				            { "00020", "Michelman Internat. Belgium", "AUBA", "DAP", "26001181", 200, "ME36840A.E-PD", "291384", "Safic FR (X) Puteaux FR", "291384", "Safic FR (X) Puteaux FR", "DO", "Distributor Only", #datetime(2026,6,23,3,20,48), #datetime(2026,6,25,13,9,43), #datetime(2026,7,3,0,0,0), #datetime(2026,7,2,0,0,0), 1, 0, 0, 1, 0 },
+				            { "00020", "Michelman Internat. Belgium", "AUBA", "DAP", "26001181", 144, "ML723HSP.E-PL", "291384", "Safic FR (X) Puteaux FR", "291384", "Safic FR (X) Puteaux FR", "DO", "Distributor Only", #datetime(2026,6,23,3,20,48), #datetime(2026,6,25,13,9,43), #datetime(2026,7,3,0,0,0), #datetime(2026,7,2,0,0,0), 1, 0, 0, 1, 0 },
+				            { "00020", "Michelman Internat. Belgium", "AUBA", "DAP", "26001181", 3000, "MP4983R.E-TO", "291384", "Safic FR (X) Puteaux FR", "291384", "Safic FR (X) Puteaux FR", "DO", "Distributor Only", #datetime(2026,6,23,3,20,48), #datetime(2026,6,25,13,9,43), #datetime(2026,7,3,0,0,0), #datetime(2026,7,2,0,0,0), 1, 0, 0, 1, 0 },
+				            { "00020", "Michelman Internat. Belgium", "AUBA", "DAP", "26001182", 216, "DPI8020.E-PL", "291384", "Safic FR (X) Puteaux FR", "291384", "Safic FR (X) Puteaux FR", "DO", "Distributor Only", #datetime(2026,7,9,11,54,17), #datetime(2026,7,15,10,7,8), null, #datetime(2026,8,6,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00020", "Michelman Internat. Belgium", "AUBA", "DAP", "26001182", 120, "LICW440.E-LP", "291384", "Safic FR (X) Puteaux FR", "291384", "Safic FR (X) Puteaux FR", "DO", "Distributor Only", #datetime(2026,7,9,11,54,17), #datetime(2026,7,15,10,7,8), null, #datetime(2026,8,6,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00020", "Michelman Internat. Belgium", "AUBA", "EXW", "26001183", 400, "MP4983R.E-PD", "331958", "Keyser & Mackay (X) Koeln DE", "331958", "Keyser & Mackay (X) Koeln DE", "DO", "Distributor Only", #datetime(2026,6,23,3,20,50), #datetime(2026,6,24,15,22,38), #datetime(2026,7,6,0,0,0), #datetime(2026,6,25,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2708703", 1600, "ML160PFP.S-PD", "322602", "VACMET - Unit V- Ujjain", "322602", "VACMET - Unit V- Ujjain", "GD", "Gold", #datetime(2026,6,25,13,13,43), #datetime(2026,6,25,13,14,58), #datetime(2026,6,25,0,0,0), #datetime(2026,6,25,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2711569", 2, "DP680.S-B1", "342918", "ASEAN PACK", "342918", "ASEAN PACK", "BR", "Bronze", #datetime(2026,6,2,15,26,7), #datetime(2026,6,3,13,20,16), #datetime(2026,6,3,0,0,0), #datetime(2026,6,3,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2712290", 3, "DP680.S-B1", "339243", "EMBEE FLEXI LABEL PRIVATE LIMITED", "339243", "EMBEE FLEXI LABEL PRIVATE LIMITED", "BR", "Bronze", #datetime(2026,6,3,13,44,5), #datetime(2026,6,4,17,58,10), #datetime(2026,6,4,0,0,0), #datetime(2026,6,4,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2712668", 2600, "ME62330-T3", "294670", "Sherwin Williams - Statesville, NC", "294670", "Sherwin Williams - Statesville, NC", "PL", "Platinum", #datetime(2026,6,3,13,25,11), #datetime(2026,6,8,7,50,3), #datetime(2026,6,30,0,0,0), #datetime(2026,6,30,0,0,0), 0, 0, 1, 0, 0 },
+				            { "00034", "Michelman New Material Co ltd", "SHAN", "DDP", "2712969", 161.2444, "NM73-PL", "329903", "Tat seng Pack-China", "329903", "Tat seng Pack-China", "BR", "Bronze", #datetime(2026,6,4,10,50,50), #datetime(2026,6,4,15,1,5), #datetime(2026,6,4,0,0,0), #datetime(2026,6,4,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2713170", 2, "DP680.S-B1", "347731", "MAA GAYATRI OFFSET PRINTERS", "347731", "MAA GAYATRI OFFSET PRINTERS", "BR", "Bronze", #datetime(2026,6,4,17,19,55), #datetime(2026,6,5,15,30,12), #datetime(2026,6,5,0,0,0), #datetime(2026,6,5,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2713312", 1410, "ML723-FD", "344091", "Tremco - Corsicana, TX", "344091", "Tremco - Corsicana, TX", "GD", "Gold", #datetime(2026,6,11,7,52,57), #datetime(2026,6,11,8,8,6), #datetime(2026,6,12,0,0,0), #datetime(2026,7,2,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2713374", 39000, "ME62330-T3", "22687", "Sherwin Williams - Matteson, IL", "22687", "Sherwin Williams - Matteson, IL", "PL", "Platinum", #datetime(2026,6,4,11,25,7), #datetime(2026,6,8,7,50,3), null, #datetime(2026,8,24,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2713782", 8, "DP680.S-B1", "317038", "Janus International-India", "317038", "Janus International-India", "BR", "Bronze", #datetime(2026,6,5,11,58,8), #datetime(2026,6,5,12,58,51), #datetime(2026,6,5,0,0,0), #datetime(2026,6,5,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2716012", 10, "DP680.S-B1", "326721", "EPL Limited - Assam", "326721", "EPL Limited - Assam", "GD", "Gold", #datetime(2026,6,8,12,51,4), #datetime(2026,6,12,17,2,25), #datetime(2026,6,18,0,0,0), #datetime(2026,6,19,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00030", "Michelman Asia-Pacific", "SNG4", "CIF", "2716119", 16000, "ME94340.S-TL", "294060", "Taishan Fiberglass Inc. - China", "294060", "Taishan Fiberglass Inc. - China", "PL", "Platinum", #datetime(2026,6,8,15,37,53), #datetime(2026,6,22,20,1,4), null, #datetime(2026,7,21,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00030", "Michelman Asia-Pacific", "SNG4", "CIF", "2716119", 4000, "TSM312.S-TL", "294060", "Taishan Fiberglass Inc. - China", "294060", "Taishan Fiberglass Inc. - China", "PL", "Platinum", #datetime(2026,6,8,15,37,53), #datetime(2026,6,22,20,1,4), null, #datetime(2026,7,21,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2716781", 1, "Q4310A.S-B1", "320976", "PM Digital Products", "320976", "PM Digital Products", "BR", "Bronze", #datetime(2026,6,9,12,15,31), #datetime(2026,6,10,13,1,55), #datetime(2026,6,10,0,0,0), #datetime(2026,6,10,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00034", "Michelman New Material Co ltd", "SHAN", "DDP", "2717614", 8520, "NM73-PL", "341132", "Guangzhou Tuke -China", "341132", "Guangzhou Tuke -China", "DO", "Distributor Only", #datetime(2026,6,10,14,4,27), #datetime(2026,6,10,15,1,2), #datetime(2026,6,16,0,0,0), #datetime(2026,6,10,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00034", "Michelman New Material Co ltd", "SHAN", "DDP", "2717615", 200, "NM73-PL", "341132", "Guangzhou Tuke -China", "341132", "Guangzhou Tuke -China", "DO", "Distributor Only", #datetime(2026,6,10,14,13,6), #datetime(2026,6,10,15,1,2), #datetime(2026,6,16,0,0,0), #datetime(2026,6,10,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2717633", 4, "DP680.S-B1", "330811", "XPRESS LABELS PRIVATE LIMITED", "330811", "XPRESS LABELS PRIVATE LIMITED", "BR", "Bronze", #datetime(2026,6,10,14,54,17), #datetime(2026,6,12,13,12,38), #datetime(2026,6,29,0,0,0), #datetime(2026,6,29,0,0,0), 1, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2718835", 940, "ML723-FD", "324666", "Haas dba Incora - Acument, Spencer, TN", "324666", "Haas dba Incora - Acument, Spencer, TN", "BR", "Bronze", #datetime(2026,6,11,16,15,42), #datetime(2026,6,17,14,39,38), #datetime(2026,7,13,0,0,0), #datetime(2026,6,12,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00010", "Michelman, Inc", "CIN2", "CLL", "2718980", 900, "MFR1924A-KP", "348281", "OPP FILM S.A. - Lima, Peru", "348281", "OPP FILM S.A. - Lima, Peru", "BR", "Bronze", #datetime(2026,6,12,5,51,35), #datetime(2026,6,24,13,44,57), #datetime(2026,7,14,0,0,0), #datetime(2026,7,10,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPI", "2718981", 800, "DP050-PL", "298451", "Graphicsource-Quito, Ecuador", "298451", "Graphicsource-Quito, Ecuador", "DO", "Distributor Only", #datetime(2026,6,12,5,51,35), #datetime(2026,6,24,10,8,15), #datetime(2026,7,1,0,0,0), #datetime(2026,6,22,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPI", "2718981", 3, "DP680-B1", "298451", "Graphicsource-Quito, Ecuador", "298451", "Graphicsource-Quito, Ecuador", "DO", "Distributor Only", #datetime(2026,6,12,5,51,35), #datetime(2026,6,24,10,8,15), #datetime(2026,7,1,0,0,0), #datetime(2026,6,22,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2722186", 5, "DPV9000.S-B1", "350347", "CCL DESIGN INDIA PRIVATE LIMITED", "350347", "CCL DESIGN INDIA PRIVATE LIMITED", "PL", "Platinum", #datetime(2026,6,16,14,31,17), #datetime(2026,6,23,13,31,22), #datetime(2026,6,23,0,0,0), #datetime(2026,6,23,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2722324", 10, "DP680.S-B1", "333589", "SAI DIGISTIK PRIVATE LIMITED", "333589", "SAI DIGISTIK PRIVATE LIMITED", "BR", "Bronze", #datetime(2026,6,16,19,9,24), #datetime(2026,6,17,13,36,14), #datetime(2026,6,17,0,0,0), #datetime(2026,6,17,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2722949", 10, "DP680.S-B1", "317210", "Pragati Pack - India", "317210", "Pragati Pack - India", "SI", "Silver", #datetime(2026,6,17,14,11,20), #datetime(2026,6,18,15,23,2), #datetime(2026,6,18,0,0,0), #datetime(2026,6,18,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2722950", 3, "DP680.S-B1", "339243", "EMBEE FLEXI LABEL PRIVATE LIMITED", "339243", "EMBEE FLEXI LABEL PRIVATE LIMITED", "BR", "Bronze", #datetime(2026,6,17,14,24,47), #datetime(2026,6,19,14,3,46), #datetime(2026,6,23,0,0,0), #datetime(2026,6,23,0,0,0), 1, 0, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2723033", 3, "DP680.S-B1", "349907", "PINNACLE TRAXIM PRIVATE LIMITED", "349907", "PINNACLE TRAXIM PRIVATE LIMITED", "BR", "Bronze", #datetime(2026,6,17,16,56,55), #datetime(2026,6,18,14,16,44), #datetime(2026,6,18,0,0,0), #datetime(2026,6,18,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPD", "2723184", 10800, "HY1000AF-T3", "296361", "Sun Coatings - Phoenix, AZ", "296361", "Sun Coatings - Phoenix, AZ", "PL", "Platinum", #datetime(2026,6,17,9,56,8), #datetime(2026,6,17,11,50,6), null, #datetime(2026,7,24,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2723683", 144, "DP050.S-PD", "318069", "Hora Art-Noida-India", "318069", "Hora Art-Noida-India", "BR", "Bronze", #datetime(2026,6,18,12,55,2), #datetime(2026,6,18,12,56,55), #datetime(2026,6,18,0,0,0), #datetime(2026,6,18,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2723683", 2, "DP680.S-B1", "318069", "Hora Art-Noida-India", "318069", "Hora Art-Noida-India", "BR", "Bronze", #datetime(2026,6,18,12,55,7), #datetime(2026,6,18,12,56,55), #datetime(2026,6,18,0,0,0), #datetime(2026,6,18,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2723911", 10, "DP680.S-B1", "324998", "EPL LTD - VALSAD", "324998", "EPL LTD - VALSAD", "GD", "Gold", #datetime(2026,6,18,19,56,1), #datetime(2026,6,18,19,57,43), #datetime(2026,6,19,0,0,0), #datetime(2026,6,19,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2723942", 1900, "ST865-UN", "26632", "Independent Corr. - Mississauga, ON, CA", "26632", "Independent Corr. - Mississauga, ON, CA", "PL", "Platinum", #datetime(2026,6,18,13,5,33), #datetime(2026,6,23,1,20,17), #datetime(2026,6,30,0,0,0), #datetime(2026,6,18,0,0,0), 0, 0, 1, 0, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2723990", 2700, "ML723-T3", "344091", "Tremco - Corsicana, TX", "344091", "Tremco - Corsicana, TX", "GD", "Gold", #datetime(2026,6,18,10,30,1), #datetime(2026,6,23,5,51,25), #datetime(2026,7,9,0,0,0), #datetime(2026,6,26,0,0,0), 0, 0, 1, 0, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2724067", 1900, "ME93235-FD", "293646", "Advantage Coating - Louisville, CO", "293646", "Advantage Coating - Louisville, CO", "BR", "Bronze", #datetime(2026,6,18,13,4,49), #datetime(2026,6,23,5,51,25), #datetime(2026,6,26,0,0,0), #datetime(2026,6,26,0,0,0), 0, 0, 1, 0, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPI", "2724146", 2880, "DP050-P2", "294362", "Ferrostaal-Chile", "294362", "Ferrostaal-Chile", "DO", "Distributor Only", #datetime(2026,6,18,15,7,3), #datetime(2026,6,23,5,51,25), #datetime(2026,7,9,0,0,0), #datetime(2026,6,29,0,0,0), 0, 0, 1, 0, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPI", "2724146", 7392, "DP680-P1", "294362", "Ferrostaal-Chile", "294362", "Ferrostaal-Chile", "DO", "Distributor Only", #datetime(2026,6,18,15,7,3), #datetime(2026,6,23,5,51,25), #datetime(2026,7,9,0,0,0), #datetime(2026,6,29,0,0,0), 0, 0, 1, 0, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2724198", 26460, "ME20117-T2", "289693", "Barentz - (Sold To) Boca Raton, FL", "289693", "Barentz - (Sold To) Boca Raton, FL", "DN", "Distributor NO Discount", #datetime(2026,6,18,16,30,40), #datetime(2026,6,23,5,51,28), null, #datetime(2026,7,31,0,0,0), 0, 0, 1, 0, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2724217", 1764, "ME20117-PD", "289886", "Advanced Polymer Inc. - Carlstadt., NJ", "289886", "Advanced Polymer Inc. - Carlstadt., NJ", "SI", "Silver", #datetime(2026,6,19,9,23,3), #datetime(2026,6,23,5,51,28), null, #datetime(2026,10,29,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2724217", 6615, "ME20117-T2", "289886", "Advanced Polymer Inc. - Carlstadt., NJ", "289886", "Advanced Polymer Inc. - Carlstadt., NJ", "SI", "Silver", #datetime(2026,6,18,17,21,55), #datetime(2026,6,23,5,51,28), null, #datetime(2026,10,29,0,0,0), 0, 0, 1, 0, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2724233", 1764, "ME20117-PD", "289886", "Advanced Polymer Inc. - Carlstadt., NJ", "289886", "Advanced Polymer Inc. - Carlstadt., NJ", "SI", "Silver", #datetime(2026,6,18,17,43,5), #datetime(2026,6,23,5,51,28), null, #datetime(2026,8,28,0,0,0), 0, 0, 1, 0, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2724233", 6615, "ME20117-T2", "289886", "Advanced Polymer Inc. - Carlstadt., NJ", "289886", "Advanced Polymer Inc. - Carlstadt., NJ", "SI", "Silver", #datetime(2026,6,18,17,43,5), #datetime(2026,6,23,5,51,28), null, #datetime(2026,8,28,0,0,0), 0, 0, 1, 0, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2724248", 1, "DP680.S-B1", "360723", "HARJEET PRESS LIMITED", "360723", "HARJEET PRESS LIMITED", "BR", "Bronze", #datetime(2026,6,19,13,3,47), #datetime(2026,6,19,19,48,50), #datetime(2026,6,19,0,0,0), #datetime(2026,6,19,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2724545", 5200, "ML743-T3", "22273", "Pittsburgh Paints Co. - Louisville, KY", "22273", "Pittsburgh Paints Co. - Louisville, KY", "PL", "Platinum", #datetime(2026,6,19,10,19,50), #datetime(2026,6,23,5,51,30), null, #datetime(2026,7,22,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2724561", 2300, "DPE3500-T2", "292764", "Monadnock Paper - Bennington, NH", "292764", "Monadnock Paper - Bennington, NH", "SI", "Silver", #datetime(2026,6,19,10,43,24), #datetime(2026,6,23,5,51,30), null, #datetime(2026,7,30,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2724564", 475, "MP4983R-FD", "60826", "Amcor - Oshkosh, WI(2450 Badger)", "60826", "Amcor - Oshkosh, WI(2450 Badger)", "PL", "Platinum", #datetime(2026,6,19,11,13,50), #datetime(2026,6,23,5,51,30), #datetime(2026,6,29,0,0,0), #datetime(2026,6,29,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2724579", 22000, "MP4983R-T2", "304227", "Ahlstrom-Munksjo-Rhinelander,WI(Phillip)", "304227", "Ahlstrom-Munksjo-Rhinelander,WI(Phillip)", "PL", "Platinum", #datetime(2026,6,19,11,29,7), #datetime(2026,6,23,5,51,30), null, #datetime(2026,7,27,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPD", "2724595", 2500, "BLND550GM-T3", "23600", "Spartan Chemical - Maumee, OH", "23600", "Spartan Chemical - Maumee, OH", "PL", "Platinum", #datetime(2026,6,19,11,37,4), #datetime(2026,6,23,5,51,30), #datetime(2026,6,30,0,0,0), #datetime(2026,6,26,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2724596", 4400, "MP48525R-T2", "304227", "Ahlstrom-Munksjo-Rhinelander,WI(Phillip)", "304227", "Ahlstrom-Munksjo-Rhinelander,WI(Phillip)", "PL", "Platinum", #datetime(2026,6,19,11,38,40), #datetime(2026,6,23,5,51,32), #datetime(2026,6,29,0,0,0), #datetime(2026,6,29,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2724661", 882, "ME09730-PD", "297140", "Segan - Burlingame, CA", "297140", "Segan - Burlingame, CA", "BR", "Bronze", #datetime(2026,6,19,13,47,28), #datetime(2026,6,23,5,51,33), #datetime(2026,6,29,0,0,0), #datetime(2026,6,29,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2724677", 280, "MT242AF-PL", "299103", "Capitol City Container - Indianapolis,IN", "299103", "Capitol City Container - Indianapolis,IN", "BR", "Bronze", #datetime(2026,6,19,14,29,56), #datetime(2026,6,23,5,51,33), #datetime(2026,6,29,0,0,0), #datetime(2026,6,24,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COB", "2724678", 1900, "ME93235-FD", "291038", "Axalta - Cornwall, ON, CA", "291038", "Axalta - Cornwall, ON, CA", "PL", "Platinum", #datetime(2026,6,19,14,30,56), #datetime(2026,6,23,5,51,33), #datetime(2026,7,16,0,0,0), #datetime(2026,7,16,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPD", "2724694", 2700, "ME44730-T3", "23600", "Spartan Chemical - Maumee, OH", "23600", "Spartan Chemical - Maumee, OH", "PL", "Platinum", #datetime(2026,6,19,14,30,48), #datetime(2026,6,23,5,51,33), #datetime(2026,7,9,0,0,0), #datetime(2026,7,9,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2724695", 475, "ME93235-FD", "222609", "Van Technologies - Duluth, MN", "222609", "Van Technologies - Duluth, MN", "BR", "Bronze", #datetime(2026,6,19,14,57,2), #datetime(2026,6,23,5,51,33), #datetime(2026,6,29,0,0,0), #datetime(2026,6,29,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COB", "2724711", 2600, "ME35940-T3", "288946", "Rustoleum - Lesage WV", "288946", "Rustoleum - Lesage WV", "GD", "Gold", #datetime(2026,6,19,15,17,28), #datetime(2026,6,23,5,51,33), null, #datetime(2026,7,23,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2724712", 120, "NM73R-PL", "337674", "Pratt (Target Container) - Austell, GA", "337674", "Pratt (Target Container) - Austell, GA", "PL", "Platinum", #datetime(2026,6,19,15,22,38), #datetime(2026,6,23,5,51,35), #datetime(2026,6,25,0,0,0), #datetime(2026,6,19,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2724712", 240, "RB105-PL", "337674", "Pratt (Target Container) - Austell, GA", "337674", "Pratt (Target Container) - Austell, GA", "PL", "Platinum", #datetime(2026,6,19,15,22,38), #datetime(2026,6,23,5,51,35), #datetime(2026,6,25,0,0,0), #datetime(2026,6,19,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPI", "2724746", 25, "DP680-B1", "296771", "Intermarket-Miami,Fl(International Acct)", "296771", "Intermarket-Miami,Fl(International Acct)", "DO", "Distributor Only", #datetime(2026,6,19,16,29,0), #datetime(2026,6,23,5,51,35), #datetime(2026,7,10,0,0,0), #datetime(2026,7,6,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPD", "2724781", 13070, "ME25317-T3", "309358", "Signode Ind Group-Bridgeview IL", "309358", "Signode Ind Group-Bridgeview IL", "PL", "Platinum", #datetime(2026,6,19,17,2,0), #datetime(2026,6,23,5,51,35), #datetime(2026,7,10,0,0,0), #datetime(2026,7,9,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00034", "Michelman New Material Co ltd", "SHAN", "EXW", "2726521", 600, "ME59040.C-OP", "305620", "KELLY TECHNOLOGY CO.,LTD DONGGUAN CO.,LT", "305620", "KELLY TECHNOLOGY CO.,LTD DONGGUAN CO.,LT", "DO", "Distributor Only", #datetime(2026,6,22,14,17,31), #datetime(2026,6,22,15,1,4), #datetime(2026,7,16,0,0,0), #datetime(2026,7,15,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00034", "Michelman New Material Co ltd", "SHAN", "EXW", "2726521", 2400, "ME59240.C-OP", "305620", "KELLY TECHNOLOGY CO.,LTD DONGGUAN CO.,LT", "305620", "KELLY TECHNOLOGY CO.,LTD DONGGUAN CO.,LT", "DO", "Distributor Only", #datetime(2026,6,22,14,17,31), #datetime(2026,6,22,15,1,4), #datetime(2026,7,16,0,0,0), #datetime(2026,7,15,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2726572", 18, "MC300.S-PL", "361098", "AARON FINE INDUSTRIES P. LTD - PALGHAR", "361098", "AARON FINE INDUSTRIES P. LTD - PALGHAR", "BR", "Bronze", #datetime(2026,6,22,15,52,18), #datetime(2026,6,29,13,3,3), #datetime(2026,6,29,0,0,0), #datetime(2026,6,29,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2726897", 2250, "ME62330-FD", "289700", "Premier Ink Systems - Harrison, OH", "289700", "Premier Ink Systems - Harrison, OH", "PL", "Platinum", #datetime(2026,6,23,5,51,38), #datetime(2026,6,24,13,40,10), #datetime(2026,6,29,0,0,0), #datetime(2026,6,25,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2726897", 80, "UV1-PL", "289700", "Premier Ink Systems - Harrison, OH", "289700", "Premier Ink Systems - Harrison, OH", "PL", "Platinum", #datetime(2026,6,23,14,56,13), #datetime(2026,6,24,13,40,10), #datetime(2026,6,29,0,0,0), #datetime(2026,6,25,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2726914", 475, "ME39235-FD", "304483", "Meoded Paints - South Gate, CA", "304483", "Meoded Paints - South Gate, CA", "BR", "Bronze", #datetime(2026,6,23,1,20,21), #datetime(2026,6,24,8,50,6), #datetime(2026,6,30,0,0,0), #datetime(2026,6,30,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPA", "2726915", 900, "ML270R-FD", "304513", "Mayco Coloramics - Hilliard, OH", "304513", "Mayco Coloramics - Hilliard, OH", "BR", "Bronze", #datetime(2026,6,23,5,51,38), #datetime(2026,6,24,9,50,8), #datetime(2026,7,7,0,0,0), #datetime(2026,7,7,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COL", "2726966", 8100, "VAP2200R-T3", "26414", "Cascades Sonoco - Berthierville, QC, CA", "26414", "Cascades Sonoco - Berthierville, QC, CA", "GD", "Gold", #datetime(2026,6,23,5,51,40), #datetime(2026,7,9,12,50,3), null, #datetime(2026,7,31,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00010", "Michelman, Inc", "CIN2", "PPI", "2727125", 882, "HL280-KP", "315634", "OCV Mexico (Tetla plant)", "315634", "OCV Mexico (Tetla plant)", "PL", "Platinum", #datetime(2026,6,23,5,51,40), #datetime(2026,6,25,5,51,28), null, #datetime(2026,8,11,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00034", "Michelman New Material Co ltd", "SHAN", "DDP", "2727270", 161.2444, "NM73-PL", "329903", "Tat seng Pack-China", "329903", "Tat seng Pack-China", "BR", "Bronze", #datetime(2026,6,23,13,40,27), #datetime(2026,6,23,15,1,7), #datetime(2026,7,1,0,0,0), #datetime(2026,7,1,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COB", "2727477", 1275, "ML124-FD", "289693", "Barentz - (Sold To) Boca Raton, FL", "289693", "Barentz - (Sold To) Boca Raton, FL", "DN", "Distributor NO Discount", #datetime(2026,6,23,8,15,57), #datetime(2026,6,25,5,51,30), null, #datetime(2026,7,20,0,0,0), 0, 0, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COB", "2727544", 2200, "ME67235-T2", "289693", "Barentz - (Sold To) Boca Raton, FL", "289693", "Barentz - (Sold To) Boca Raton, FL", "DN", "Distributor NO Discount", #datetime(2026,6,23,9,58,55), #datetime(2026,6,24,5,51,42), #datetime(2026,7,7,0,0,0), #datetime(2026,7,6,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COB", "2727544", 3325, "ME93935-FD", "289693", "Barentz - (Sold To) Boca Raton, FL", "289693", "Barentz - (Sold To) Boca Raton, FL", "DN", "Distributor NO Discount", #datetime(2026,6,23,9,58,57), #datetime(2026,6,24,5,51,42), #datetime(2026,7,7,0,0,0), #datetime(2026,7,6,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00010", "Michelman, Inc", "CIN2", "COB", "2727544", 3800, "ME94340-FD", "289693", "Barentz - (Sold To) Boca Raton, FL", "289693", "Barentz - (Sold To) Boca Raton, FL", "DN", "Distributor NO Discount", #datetime(2026,6,23,9,58,57), #datetime(2026,6,24,5,51,42), #datetime(2026,7,7,0,0,0), #datetime(2026,7,6,0,0,0), 1, 1, 0, 1, 0 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2728044", 1, "Q4310A.S-B1", "318444", "Print Xpress - Gurubal Engg-Bangalore", "318444", "Print Xpress - Gurubal Engg-Bangalore", "BR", "Bronze", #datetime(2026,6,24,13,39,33), #datetime(2026,7,3,13,48,1), #datetime(2026,7,3,0,0,0), #datetime(2026,7,3,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00010", "Michelman, Inc", "CINC", "COB", "2729866", 44000, "HYPOD8510", "291086", "DOW - (TOLL-BILL/SOLD)Dallas,TX", "291086", "DOW - (TOLL-BILL/SOLD)Dallas,TX", "TL", "Toll Customer", #datetime(2026,6,26,10,36,24), #datetime(2026,7,20,11,8,58), null, #datetime(2026,7,21,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2731956", 4, "DP680.S-B1", "317045", "Skanem India Pvt.Ltd", "317045", "Skanem India Pvt.Ltd", "BR", "Bronze", #datetime(2026,6,29,19,13,29), #datetime(2026,7,8,13,18,51), #datetime(2026,7,8,0,0,0), #datetime(2026,7,8,0,0,0), 0, 0, 1, 0, 1 },
+				            { "00035", "Michelman Private Limited", "MUM3", "EXW", "2731957", 2, "DP680.S-B1", "342918", "ASEAN PACK", "342918", "ASEAN PACK", "BR", "Bronze", #datetime(2026,6,29,19,20,56), #datetime(2026,6,30,13,27,36), #datetime(2026,6,30,0,0,0), #datetime(2026,6,30,0,0,0), 1, 1, 0, 1, 0 }
+				        }
+				    )
+				in
+				    Output
+
+	annotation PBI_ResultType = Table

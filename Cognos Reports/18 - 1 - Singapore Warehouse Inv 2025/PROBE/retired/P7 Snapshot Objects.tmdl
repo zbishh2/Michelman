@@ -1,0 +1,53 @@
+table 'P7 Snapshot Objects'
+	lineageTag: 18000800-0000-4000-8000-000000000001
+
+	column SchemaName
+		dataType: string
+		lineageTag: 18000801-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: SchemaName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ObjectName
+		dataType: string
+		lineageTag: 18000801-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: ObjectName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ObjectType
+		dataType: string
+		lineageTag: 18000801-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: ObjectType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P7 Snapshot Objects' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT t.TABLE_SCHEMA AS SchemaName, t.TABLE_NAME AS ObjectName, t.TABLE_TYPE AS ObjectType
+				        FROM INFORMATION_SCHEMA.TABLES t
+				        WHERE t.TABLE_NAME LIKE '%Snapshot%' OR t.TABLE_NAME LIKE '%Currency%' OR t.TABLE_NAME LIKE '%Exchange%'
+				        ORDER BY t.TABLE_SCHEMA, t.TABLE_NAME
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"SchemaName", type text},
+							{"ObjectName", type text},
+							{"ObjectType", type text}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

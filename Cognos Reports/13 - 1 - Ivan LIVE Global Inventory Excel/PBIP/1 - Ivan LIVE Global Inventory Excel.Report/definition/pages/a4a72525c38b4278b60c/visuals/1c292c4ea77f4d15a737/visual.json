@@ -1,0 +1,619 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "1c292c4ea77f4d15a737",
+  "position": {
+    "x": 8,
+    "y": 46,
+    "z": 0,
+    "height": 650,
+    "width": 1264
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Company"
+                }
+              },
+              "queryRef": "PO_Summary.Company",
+              "nativeQueryRef": "Company",
+              "displayName": "Company"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "PO_Summary.Branch Plant",
+              "nativeQueryRef": "Branch Plant",
+              "displayName": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "PO_Summary.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number",
+              "displayName": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Purchase Order Number"
+                }
+              },
+              "queryRef": "PO_Summary.Purchase Order Number",
+              "nativeQueryRef": "Purchase Order Number",
+              "displayName": "Purchase Order Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Reference 2"
+                }
+              },
+              "queryRef": "PO_Summary.Reference 2",
+              "nativeQueryRef": "Reference 2",
+              "displayName": "Reference 2"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Reporting Code 3"
+                }
+              },
+              "queryRef": "PO_Summary.Reporting Code 3",
+              "nativeQueryRef": "Reporting Code 3",
+              "displayName": "Reporting Code 3"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Open Quantity"
+                }
+              },
+              "queryRef": "PO_Summary.Open Quantity",
+              "nativeQueryRef": "Open Quantity",
+              "displayName": "Open Quantity"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Primary Quantity"
+                }
+              },
+              "queryRef": "PO_Summary.Primary Quantity",
+              "nativeQueryRef": "Primary Quantity",
+              "displayName": "Primary Quantity"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Primary UOM"
+                }
+              },
+              "queryRef": "PO_Summary.Primary UOM",
+              "nativeQueryRef": "Primary UOM",
+              "displayName": "Primary UOM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Secondary Quantity"
+                }
+              },
+              "queryRef": "PO_Summary.Secondary Quantity",
+              "nativeQueryRef": "Secondary Quantity",
+              "displayName": "Secondary Quantity"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Secondary UOM"
+                }
+              },
+              "queryRef": "PO_Summary.Secondary UOM",
+              "nativeQueryRef": "Secondary UOM",
+              "displayName": "Secondary UOM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Last Status"
+                }
+              },
+              "queryRef": "PO_Summary.Last Status",
+              "nativeQueryRef": "Last Status",
+              "displayName": "Last Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Next Status"
+                }
+              },
+              "queryRef": "PO_Summary.Next Status",
+              "nativeQueryRef": "Next Status",
+              "displayName": "Next Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Requested Date"
+                }
+              },
+              "queryRef": "PO_Summary.Requested Date",
+              "nativeQueryRef": "Requested Date",
+              "displayName": "Requested Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Promised Date"
+                }
+              },
+              "queryRef": "PO_Summary.Promised Date",
+              "nativeQueryRef": "Promised Date",
+              "displayName": "Promised Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Vendor Code"
+                }
+              },
+              "queryRef": "PO_Summary.Vendor Code",
+              "nativeQueryRef": "Vendor Code",
+              "displayName": "Vendor Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Vendor Name"
+                }
+              },
+              "queryRef": "PO_Summary.Vendor Name",
+              "nativeQueryRef": "Vendor Name",
+              "displayName": "Vendor Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Freeze Code Flag"
+                }
+              },
+              "queryRef": "PO_Summary.Freeze Code Flag",
+              "nativeQueryRef": "Freeze Code Flag",
+              "displayName": "Freeze Code Flag"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Branch Plant1"
+                }
+              },
+              "queryRef": "PO_Summary.Branch Plant1",
+              "nativeQueryRef": "Branch Plant1",
+              "displayName": "Branch Plant1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Global Bulk Item"
+                }
+              },
+              "queryRef": "PO_Summary.Global Bulk Item",
+              "nativeQueryRef": "Global Bulk Item",
+              "displayName": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Bulk Item"
+                }
+              },
+              "queryRef": "PO_Summary.Bulk Item",
+              "nativeQueryRef": "Bulk Item",
+              "displayName": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "2nd Item Number1"
+                }
+              },
+              "queryRef": "PO_Summary.2nd Item Number1",
+              "nativeQueryRef": "2nd Item Number1",
+              "displayName": "2nd Item Number1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Commodity Class"
+                }
+              },
+              "queryRef": "PO_Summary.Commodity Class",
+              "nativeQueryRef": "Commodity Class",
+              "displayName": "Commodity Class"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Sub Class"
+                }
+              },
+              "queryRef": "PO_Summary.Sub Class",
+              "nativeQueryRef": "Sub Class",
+              "displayName": "Sub Class"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Master Planning Family"
+                }
+              },
+              "queryRef": "PO_Summary.Master Planning Family",
+              "nativeQueryRef": "Master Planning Family",
+              "displayName": "Master Planning Family"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "GL Category"
+                }
+              },
+              "queryRef": "PO_Summary.GL Category",
+              "nativeQueryRef": "GL Category",
+              "displayName": "GL Category"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Primary Supplier"
+                }
+              },
+              "queryRef": "PO_Summary.Primary Supplier",
+              "nativeQueryRef": "Primary Supplier",
+              "displayName": "Primary Supplier"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Safety Stock"
+                }
+              },
+              "queryRef": "PO_Summary.Safety Stock",
+              "nativeQueryRef": "Safety Stock",
+              "displayName": "Safety Stock"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PO_Summary"
+                    }
+                  },
+                  "Property": "Leadtime Level"
+                }
+              },
+              "queryRef": "PO_Summary.Leadtime Level",
+              "nativeQueryRef": "Leadtime Level",
+              "displayName": "Leadtime Level"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

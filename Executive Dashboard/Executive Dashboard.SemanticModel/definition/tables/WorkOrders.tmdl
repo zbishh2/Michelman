@@ -1,0 +1,584 @@
+/// Work orders from JDE F4801 via EDW, one row per work order, from 2024 onward. The batch population behind Right Time First Batch. The source query projects raw columns only; all batch scoping is done in the calculated columns on this table. Source query: edw_model/WorkOrders.m.
+table WorkOrders
+	lineageTag: 4a78ceaf-3c5e-45a3-8228-724301ebbfd0
+
+	/// Surrogate key for the JDE work order (F4801.WADOCO). An identifier, so it is never summarised.
+	column WorkOrderSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 4d1dc049-2234-45ce-a5d7-3f7ad3ed9daa
+		summarizeBy: none
+		sourceColumn: WorkOrderSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	/// The JDE work order number, as printed on the work order.
+	column WorkOrderNum
+		dataType: string
+		lineageTag: 2f5a91b4-8c07-4d63-a19e-6b4c7f3d8e21
+		summarizeBy: none
+		sourceColumn: WorkOrderNum
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	/// F4801 order date. The active join to DateTable.
+	column 'Order Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 9cc7b34c-72ab-42e9-b416-dcea2d4f4cf5
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	/// F4801 completion date. Not joined to DateTable. JDE rewrites this as the work order status advances, so report on [Completion Date (SOP Basis)] instead.
+	column 'Completion Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: 7b3e42a8-51d9-4c07-b6f2-9e18a5c3d740
+		summarizeBy: none
+		sourceColumn: Completion Date
+
+		variation Variation
+			isDefault
+			relationship: d8a66db1-db09-4aab-b765-4b17513fbc99
+			defaultHierarchy: LocalDateTable_cec2f101-e260-4189-830a-33efa15cb0b4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	/// F4801 requested completion date. Not joined to DateTable.
+	column 'Requested Date'
+		dataType: dateTime
+		formatString: m/d/yy
+		lineageTag: c19f8d64-2a75-4b31-8e05-3d7061b2f9ac
+		summarizeBy: none
+		sourceColumn: Requested Date
+
+		variation Variation
+			isDefault
+			relationship: c715f575-8ab5-403c-9c66-93cf9c71d49f
+			defaultHierarchy: LocalDateTable_6637d993-b113-40ab-9310-9e49be2425ca.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	/// JDE company (F0010), reached through the branch. Shares its Region mapping with FactSalesDetail.
+	column 'Order Company'
+		dataType: string
+		lineageTag: eeb9a675-5d5b-4be5-a3f5-b3386183b20a
+		summarizeBy: none
+		sourceColumn: Order Company
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE branch plant (F0006). Bulk production runs at CINC, CIN2, SING and AUBA.
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: a897dc7f-e152-4448-8c63-731501cc7ac0
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant Desc'
+		dataType: string
+		lineageTag: 3f1f50f2-8e7b-4028-b531-30a55e59326b
+		summarizeBy: none
+		sourceColumn: Branch Plant Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column BranchSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 228b7fa7-1f8f-4e7a-81dc-5ae751913aa2
+		summarizeBy: count
+		sourceColumn: BranchSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Lot surrogate key. Not currently joined. Salesforce cases carry a lot key too, and it is the only batch-level link available between a case and a work order.
+	column LotSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 6a48a4ca-dd83-4f84-b039-5f3534952e6f
+		summarizeBy: count
+		sourceColumn: LotSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderDateSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: bb1c6bd3-3f48-4518-a55d-f4c3f57bb65f
+		summarizeBy: count
+		sourceColumn: OrderDateSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartDateSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 0188e775-b974-40e0-a6da-2321943a7030
+		summarizeBy: count
+		sourceColumn: StartDateSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompletionDateSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 05e29f9a-bb73-4064-9132-2663f8464a4d
+		summarizeBy: count
+		sourceColumn: CompletionDateSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Quantity ordered on the work order.
+	column QuantityOrdered
+		dataType: double
+		lineageTag: 9b261dff-8b96-4b8a-b469-b82ef7b553ec
+		summarizeBy: sum
+		sourceColumn: QuantityOrdered
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Quantity cancelled or scrapped.
+	column QuantityCanceledScrapped
+		dataType: double
+		lineageTag: 95a953c8-74c4-45c6-abe6-5be4e88cd9f0
+		summarizeBy: sum
+		sourceColumn: QuantityCanceledScrapped
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Quantity completed on the work order.
+	column QuantityShipped
+		dataType: double
+		lineageTag: 63bfda4c-a8eb-4d1a-9067-56aa84a20ab4
+		summarizeBy: sum
+		sourceColumn: QuantityShipped
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE type of routing (F4801.WATRT). M is the standard manufacturing routing.
+	column 'Type Routing'
+		dataType: string
+		lineageTag: 8d40e6a2-13cb-4f79-9a52-c07be1d4835f
+		summarizeBy: none
+		sourceColumn: Type Routing
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Type Routing Desc'
+		dataType: string
+		lineageTag: 6c827b15-4e30-42da-8f61-b95d073ea2c8
+		summarizeBy: none
+		sourceColumn: Type Routing Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE work order status code.
+	column 'WO Status'
+		dataType: string
+		lineageTag: 4a19f7c3-b268-4e05-91da-2f8c61047bd9
+		summarizeBy: none
+		sourceColumn: WO Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'WO Status Desc'
+		dataType: string
+		lineageTag: d5b6094e-7f21-4c83-a60b-138e5290fc7a
+		summarizeBy: none
+		sourceColumn: WO Status Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE second item number, for example ME91735.S. A hyphen in the number marks a packed item rather than bulk.
+	column 'Item Num'
+		dataType: string
+		lineageTag: 7d2a91c4-5e08-4b36-9f71-a3c05e18d642
+		summarizeBy: none
+		sourceColumn: Item Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Desc'
+		dataType: string
+		lineageTag: 1c8f30b7-6a24-4d59-8e03-b74d1592ae0f
+		summarizeBy: none
+		sourceColumn: Item Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	/// The bulk item this item derives from. Equal to [Item Num] when the item is itself bulk.
+	column 'Item Bulk'
+		dataType: string
+		lineageTag: b0e37c48-95a1-4d26-8f70-16c2439ebd57
+		summarizeBy: none
+		sourceColumn: Item Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Global Bulk'
+		dataType: string
+		lineageTag: 3c61d80f-7ba4-4e19-b532-8d0947f16ace
+		summarizeBy: none
+		sourceColumn: Item Global Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE stocking type (IBSTKT). O marks an obsolete item.
+	column 'Stocking Type'
+		dataType: string
+		lineageTag: 9e451ad3-27c6-4f80-b512-6083df7c9a15
+		summarizeBy: none
+		sourceColumn: Stocking Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stocking Type Desc'
+		dataType: string
+		lineageTag: 4b07e6c2-91d5-4a38-a76e-2c19f30bd584
+		summarizeBy: none
+		sourceColumn: Stocking Type Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Active Flag Status'
+		dataType: string
+		lineageTag: 3e58b7d1-0c94-4a26-9f83-51d072ac4b6e
+		summarizeBy: none
+		sourceColumn: Active Flag Status
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Reporting region, mapped from [Order Company] using the same mapping as FactSalesDetail.
+	column Region =
+			SWITCH (
+			    VALUE ( 'WorkOrders'[Order Company] ),
+			    10, "Americas",
+			    20, "EMEA",
+			    30, "Asia",
+			    34, "Asia",
+			    35, "Asia",
+			    "Unmapped"
+			)
+		lineageTag: cc79b661-8324-4218-89bb-f6df66df975d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// The date the work order's material first went into inventory: the earliest positive inventory-completion transaction in the item ledger. This is the date basis for [Batches]. Blank where the work order has no completion transaction. A negative ledger quantity is JDE backing out a mis-keyed completion, which is why only positive rows count.
+	column 'Completion Date (SOP Basis)' =
+			VAR _sk = WorkOrders[WorkOrderSKey]
+			RETURN
+			    MINX (
+			        FILTER (
+			            ALL (
+			                'Item Ledger'[WorkOrderSKey],
+			                'Item Ledger'[Transaction Date],
+			                'Item Ledger'[Qty Transaction]
+			            ),
+			            'Item Ledger'[WorkOrderSKey] = _sk
+			                && 'Item Ledger'[Qty Transaction] > 0
+			        ),
+			        'Item Ledger'[Transaction Date]
+			    )
+		formatString: m/d/yy
+		lineageTag: 6e2a94f5-8317-4bd0-9c26-b5f80371ea48
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	/// Whether the work order's routing keeps it in the batch population, read the way round JDE already answers it: a work order is out when any of its operations runs at a work centre JDE flags as a rename centre (Bulk Production Work Center = RNM, which is ARENAME, KRENAME, MRENAME and SRENAME), and in otherwise. Inverted on 2026-08-07 from the 95-entry maintained list it replaced, so a plant adding a production work centre no longer has to be reflected here by hand - only a new rename centre would be, and JDE flags those itself.
+	column 'SOP Flag - Work Centre' =
+			VAR _wo = WorkOrders[WorkOrderSKey]
+			VAR _ops =
+			    COUNTROWS (
+			        FILTER (
+			            ALL (
+			                WorkOrderRouting[WorkOrderSKey],
+			                WorkOrderRouting[Bulk Production Work Center]
+			            ),
+			            WorkOrderRouting[WorkOrderSKey] = _wo
+			        )
+			    )
+			VAR _rename =
+			    COUNTROWS (
+			        FILTER (
+			            ALL (
+			                WorkOrderRouting[WorkOrderSKey],
+			                WorkOrderRouting[Bulk Production Work Center]
+			            ),
+			            WorkOrderRouting[WorkOrderSKey] = _wo
+			                && WorkOrderRouting[Bulk Production Work Center] = "RNM"
+			        )
+			    )
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        ISBLANK ( _ops ), "No routing",
+			        _rename > 0, "Rename work centre",
+			        "Production work centre"
+			    )
+		lineageTag: 1e5c8a34-92f7-4d06-b8e1-73a0526cf914
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Item classification: bulk, packed (the item number contains a hyphen), or a boil-out cleaning run.
+	column 'SOP Flag - Item' =
+			SWITCH (
+			    TRUE (),
+			    ISBLANK ( WorkOrders[Item Num] ), "Unknown item",
+			    WorkOrders[Item Num] IN ALL ( 'SOP Excluded Items'[Item Num] ), "Boilout (excluded)",
+			    CONTAINSSTRING ( WorkOrders[Item Num], "-" ), "Packed (hyphen)",
+			    "Bulk (no hyphen)"
+			)
+		lineageTag: 6b2f70d9-45ac-4e13-9f58-2c81e4670da3
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Whether the work order carries a status the S&OP report includes (93, 94, 95, 97 or 99).
+	column 'SOP Flag - WO Status' =
+			SWITCH (
+			    TRUE (),
+			    ISBLANK ( WorkOrders[WO Status] ), "No status",
+			    WorkOrders[WO Status] IN { "93", "94", "95", "97", "99" }, "S&OP reported status",
+			    "Other status (" & WorkOrders[WO Status] & ")"
+			)
+		lineageTag: 9a03c6e8-71bd-4f52-a846-508e1937cb27
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Whether the work order completed any quantity.
+	column 'SOP Flag - Completed Qty' =
+			SWITCH (
+			    TRUE (),
+			    ISBLANK ( WorkOrders[QuantityShipped] ), "No quantity",
+			    WorkOrders[QuantityShipped] > 0, "Completed > 0",
+			    "Nothing completed"
+			)
+		lineageTag: c74e1b50-38fa-4d69-9c02-6e5f30b8a147
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Whether this work order counts as a batch. All five conditions must hold: it is not a rename by the parts-list rule, its routing does not run at a rename work centre, it is a bulk item that is not a boil-out, it carries a reported work order status, and it completed a quantity above zero. This is the column [Batches] counts. The two rename tests are deliberately belt and braces: the parts-list rule is the team's definition and does the work, and the work centre test catches the repacks it reads as batches because they issue bulk plus packaging.
+	column 'SOP Flag - Counts As Batch' =
+			IF (
+			        WorkOrders[SOP Flag - Rename (Parts)] = "Not a rename"
+			            && WorkOrders[SOP Flag - Work Centre] = "Production work centre"
+			            && NOT ISBLANK ( WorkOrders[Item Num] )
+			            && NOT CONTAINSSTRING ( WorkOrders[Item Num], "-" )
+			            && NOT ( WorkOrders[Item Num] IN ALL ( 'SOP Excluded Items'[Item Num] ) )
+			            && WorkOrders[WO Status] IN { "93", "94", "95", "97", "99" }
+			            && WorkOrders[QuantityShipped] > 0,
+			        "Batch",
+			        "Not a batch"
+			    )
+		lineageTag: 0f81d63b-5e47-4a92-b7c3-19d4a0857f26
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// First day of the month [Completion Date (SOP Basis)] falls in. The month a batch is counted in.
+	column 'S&OP Month' =
+			VAR _d = WorkOrders[Completion Date (SOP Basis)]
+			RETURN
+			    IF ( NOT ISBLANK ( _d ), DATE ( YEAR ( _d ), MONTH ( _d ), 1 ) )
+		dataType: dateTime
+		formatString: mmm yyyy
+		lineageTag: c6f0428d-71b9-4e35-a806-395d2ec417f0
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: 49790f47-b18a-49cf-b2ca-6d52c9914d8a
+			defaultHierarchy: LocalDateTable_97203b4d-e1cd-4228-882e-84e28a20acbc.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Completion Date Old' =
+			
+			FORMAT (
+			    CALCULATE (
+			        MAX ( 'Quality Database WOs'[Sheet Completion Date] ),
+			        RELATEDTABLE ( 'Quality Database WOs' )
+			    ),
+			    "MMM yyyy"
+			)
+		lineageTag: d5c47fc2-9764-49eb-8516-bfac7cc0d6fb
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'In Old PBI' = IF(ISBLANK(CALCULATE(MAX('Quality Database WOs'[WO Number]),RELATEDTABLE('Quality Database WOs'))),"Not in OLD","In OLD")
+		lineageTag: dbf0cd3d-1a44-4471-b2ef-76ff59204877
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// The previous date basis, kept for reconciliation only: the work order completion date, or the requested date where completion is later, with dates before 2000 treated as absent. Read from the work order header, which JDE rewrites as the status advances. Superseded 2026-08-07 by the item ledger; shown beside it on the Population Compare page so the month movement can be demonstrated.
+	column 'Completion Date (Header Basis)' =
+			VAR _comp =
+			    IF ( WorkOrders[Completion Date] >= DATE ( 2000, 1, 1 ), WorkOrders[Completion Date] )
+			VAR _req =
+			    IF ( WorkOrders[Requested Date] >= DATE ( 2000, 1, 1 ), WorkOrders[Requested Date] )
+			RETURN
+			    IF (
+			        ISBLANK ( _comp ),
+			        BLANK (),
+			        IF ( ISBLANK ( _req ) || _comp <= _req, _comp, _req )
+			    )
+		isHidden
+		formatString: m/d/yy
+		lineageTag: b4d7f290-6c15-4e83-a071-9532dc8ba46e
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: 4982df1e-87c7-4760-9908-296b97ccd7e2
+			defaultHierarchy: LocalDateTable_05f10de0-d703-45d9-a92f-83de363914d4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	/// Whether the work order is a rename, by the team's rule: collapse its parts list to distinct component item and lot pairs that carry an issued quantity, and count them. Exactly one means one thing went in and one thing came out under a different item number, so it is a relabel and not a batch. This is the test [SOP Flag - Counts As Batch] uses.
+	column 'SOP Flag - Rename (Parts)' =
+			VAR _sk = WorkOrders[WorkOrderSKey]
+			VAR _rows =
+			    FILTER (
+			        ALL (
+			            'WO Parts List'[WorkOrderSKey],
+			            'WO Parts List'[Unique Key ID],
+			            'WO Parts List'[Component Item],
+			            'WO Parts List'[Lot Num],
+			            'WO Parts List'[Qty Issued]
+			        ),
+			        'WO Parts List'[WorkOrderSKey] = _sk
+			    )
+			VAR _pairs =
+			    COUNTROWS (
+			        FILTER (
+			            GROUPBY (
+			                _rows,
+			                'WO Parts List'[Component Item],
+			                'WO Parts List'[Lot Num],
+			                "@Issued", SUMX ( CURRENTGROUP (), 'WO Parts List'[Qty Issued] )
+			            ),
+			            [@Issued] > 0
+			        )
+			    )
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        ISBLANK ( _pairs ) || _pairs = 0, "No components issued",
+			        _pairs = 1, "Rename",
+			        "Not a rename"
+			    )
+		lineageTag: c0f4e871-2a95-4b63-8d10-476e2ba9503f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// How this work order reconciles against the batch population the business measures to today. Dropped by the old process means it is a batch by the S&OP definition, in a month their sheet covers, but absent from their sheet.
+	/// Why the old process missed this batch, in plain language. Blank unless it was missed.
+	partition WorkOrders = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(
+				        "EDWPROD",
+				        "EDW",
+				        [
+				            Query = "
+				SELECT
+				    wo.WorkOrderSKey,
+				    wo.WorkOrderNum,
+				    wo.OrderDate              AS [Order Date],
+				    wo.CompletionDate         AS [Completion Date],
+				    wo.RequestedDate          AS [Requested Date],
+				    c.Company                 AS [Order Company],
+				    b.[Branch Plant]          AS [Branch Plant],
+				    b.[Branch Plant Desc]     AS [Branch Plant Desc],
+				    wo.BranchSKey,
+				    wo.LotSKey,
+				    wo.OrderDateSKey,
+				    wo.StartDateSKey,
+				    wo.CompletionDateSKey,
+				    wo.QuantityOrdered,
+				    wo.QuantityCanceledScrapped,
+				    wo.QuantityShipped,
+				    LTRIM(RTRIM(wo.TypeRouting))              AS [Type Routing],
+				    LTRIM(RTRIM(wo.TypeRoutingDesc))          AS [Type Routing Desc],
+				    LTRIM(RTRIM(wo.StatusCodeWorkOrder))      AS [WO Status],
+				    LTRIM(RTRIM(wo.StatusCodeWorkOrderDesc))  AS [WO Status Desc],
+				    LTRIM(RTRIM(ib.[Item Num 2nd]))           AS [Item Num],
+				    LTRIM(RTRIM(ib.[Item Num 2nd Desc]))      AS [Item Desc],
+				    LTRIM(RTRIM(ib.[Item Bulk]))              AS [Item Bulk],
+				    LTRIM(RTRIM(ib.[Item Global Bulk]))       AS [Item Global Bulk],
+				    LTRIM(RTRIM(ib.[Stocking Type]))          AS [Stocking Type],
+				    LTRIM(RTRIM(ib.[Stocking Type Desc]))     AS [Stocking Type Desc],
+				    LTRIM(RTRIM(ib.[Active Flag Status]))     AS [Active Flag Status]
+				FROM       BIQL.DimWorkOrder wo WITH (NOLOCK)
+				LEFT JOIN  BIQL.TbBranch     b  WITH (NOLOCK) ON b.BranchSKey      = wo.BranchSKey
+				LEFT JOIN  BIQL.TbCompany    c  WITH (NOLOCK) ON c.CompanySKey     = b.CompanySKey
+				LEFT JOIN  BIQL.TbItemBranch ib WITH (NOLOCK) ON ib.ItemBranchSKey = wo.ItemBranchSKey
+				WHERE      wo.CompletionDate >= '2024-01-01' OR wo.RequestedDate >= '2024-01-01'
+				",
+				            CreateNavigationProperties = false
+				        ]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {
+				            {"WorkOrderSKey", Int64.Type}, {"WorkOrderNum", Int64.Type},
+				            {"Order Date", type date}, {"Completion Date", type date},
+				            {"Requested Date", type date}, {"Order Company", type text},
+				            {"Branch Plant", type text}, {"Branch Plant Desc", type text},
+				            {"BranchSKey", Int64.Type}, {"LotSKey", Int64.Type},
+				            {"OrderDateSKey", Int64.Type}, {"StartDateSKey", Int64.Type},
+				            {"CompletionDateSKey", Int64.Type}, {"QuantityOrdered", type number},
+				            {"QuantityCanceledScrapped", type number}, {"QuantityShipped", type number},
+				            {"Type Routing", type text}, {"Type Routing Desc", type text},
+				            {"WO Status", type text}, {"WO Status Desc", type text},
+				            {"Item Num", type text}, {"Item Desc", type text},
+				            {"Item Bulk", type text}, {"Item Global Bulk", type text},
+				            {"Stocking Type", type text}, {"Stocking Type Desc", type text},
+				            {"Active Flag Status", type text}
+				        }
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

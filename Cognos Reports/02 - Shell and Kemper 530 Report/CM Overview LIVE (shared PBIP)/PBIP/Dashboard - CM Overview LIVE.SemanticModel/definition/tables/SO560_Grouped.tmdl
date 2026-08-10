@@ -1,0 +1,614 @@
+table SO560_Grouped
+	lineageTag: 051194ce-0f33-47b0-b79c-c46b819ef00e
+
+	measure 'Grid BG SO' =
+			VAR isTot = MAX ( 'SO560_Grouped'[_IsTotal] ) = 1
+			VAR isSup = MAX ( 'SO560_Grouped'[_SuppSO] ) = 1
+			VAR prm = SELECTEDVALUE ( 'SO560_Grouped'[Promised Ship] )
+			VAR isPastDue = NOT ISBLANK ( prm ) && prm <= TODAY ()
+			VAR isFlagSts = SELECTEDVALUE ( 'SO560_Grouped'[Next Status] ) IN { "525", "530", "535" }
+			RETURN
+				IF ( isTot, "#82A9D6",
+					IF ( isSup, BLANK (),
+						IF ( isPastDue, "#FF0000", IF ( isFlagSts, "#FFFF00", BLANK () ) ) ) )
+		lineageTag: f55f29fc-8662-4240-b557-70aeca766189
+
+	measure 'Grid BG Base' = IF ( MAX ( 'SO560_Grouped'[_IsTotal] ) = 1, "#82A9D6" )
+		lineageTag: 72275e0c-2c49-414a-bff2-a142de012985
+
+	measure 'Grid BG WO Status' =
+			IF ( MAX ( 'SO560_Grouped'[_IsTotal] ) = 1, "#82A9D6",
+				IF ( MAX ( 'SO560_Grouped'[_SuppWO] ) = 1, BLANK (),
+					IF ( SELECTEDVALUE ( 'SO560_Grouped'[WO Status] ) = "90", "#FFFF00" ) ) )
+		lineageTag: efc9209c-5ef4-4946-8c0f-47656339866e
+
+	measure 'Grid FG SO' = IF ( MAX ( 'SO560_Grouped'[_IsTotal] ) = 1 || MAX ( 'SO560_Grouped'[_SuppSO] ) = 1, "#FFFFFF" )
+		lineageTag: 09261c37-e891-4f33-a944-786b167ce790
+
+	measure 'Grid FG Base' = IF ( MAX ( 'SO560_Grouped'[_IsTotal] ) = 1, "#FFFFFF" )
+		lineageTag: 255bf34b-3a41-4064-8147-91932e918d5a
+
+	measure 'Grid FG Inv' = IF ( MAX ( 'SO560_Grouped'[_IsTotal] ) = 1 || MAX ( 'SO560_Grouped'[_SuppInv] ) = 1, "#FFFFFF" )
+		lineageTag: ccfb9d2a-eb41-4726-8e3b-f0a695e78165
+
+	measure 'Grid FG WO' = IF ( MAX ( 'SO560_Grouped'[_IsTotal] ) = 1 || MAX ( 'SO560_Grouped'[_SuppWO] ) = 1, "#FFFFFF" )
+		lineageTag: 39dd9519-0f92-4e5f-bd72-b880955b210e
+
+	measure 'Grid FG White' = "#FFFFFF"
+		lineageTag: b7d15c6c-b66e-443b-aaf4-7540d819fadb
+
+	column Plant
+		dataType: string
+		lineageTag: ebcafbbe-94a8-4d33-98a4-81e8562a7bc0
+		summarizeBy: none
+		sourceColumn: Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column Item
+		dataType: string
+		lineageTag: d86a3917-63d6-4fd3-802f-c529f2bce5cb
+		summarizeBy: none
+		sourceColumn: Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: fdeb1268-6049-49e2-a11d-20cb69fcc167
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Order#
+		dataType: int64
+		formatString: 0
+		lineageTag: 1cd5c06d-0532-41c1-8b61-4b682441cf68
+		summarizeBy: none
+		sourceColumn: Order#
+
+		annotation SummarizationSetBy = Automatic
+
+	column Line#
+		dataType: double
+		formatString: 0.####
+		lineageTag: 37d7b3ec-4a7d-4092-b673-73efd40469a0
+		summarizeBy: none
+		sourceColumn: Line#
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Promised Ship'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 920df237-3afc-4fec-aca1-5184f4055231
+		summarizeBy: none
+		sourceColumn: Promised Ship
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Customer
+		dataType: string
+		lineageTag: dc897378-ada8-4446-b94a-e8e624cbc068
+		summarizeBy: none
+		sourceColumn: Customer
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Next Status'
+		dataType: string
+		lineageTag: 1b33a112-37f0-436f-8ee1-9cc3ebc9345e
+		summarizeBy: none
+		sourceColumn: Next Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Qty
+		dataType: double
+		formatString: #,0
+		lineageTag: f5b8aef9-5c48-442b-823d-3953338cf7c1
+		summarizeBy: none
+		sourceColumn: Qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Primary Qty'
+		dataType: double
+		formatString: #,0
+		lineageTag: ff0d186c-28a4-40f7-beb1-b157f2442001
+		summarizeBy: none
+		sourceColumn: Primary Qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column Lot#
+		dataType: string
+		lineageTag: df65b922-5943-432f-a738-6e94d793b605
+		summarizeBy: none
+		sourceColumn: Lot#
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inv Plant'
+		dataType: string
+		lineageTag: e8a8a284-f54c-4748-a43f-6b9373c09613
+		summarizeBy: none
+		sourceColumn: Inv Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inv Item'
+		dataType: string
+		lineageTag: 174d5578-3c5c-4e54-a5d2-21707f45bb0a
+		summarizeBy: none
+		sourceColumn: Inv Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'On Hand'
+		dataType: double
+		formatString: #,0
+		lineageTag: 088f0205-c4ab-44bc-b78f-d678e7c150db
+		summarizeBy: none
+		sourceColumn: On Hand
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column Commit
+		dataType: double
+		formatString: #,0
+		lineageTag: 8adb8197-2335-4f5a-9a7b-9304f0cdbbf1
+		summarizeBy: none
+		sourceColumn: Commit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column AVAIL
+		dataType: double
+		formatString: #,0
+		lineageTag: 9c3ce58f-a5bd-49d8-8b34-b30860317cbf
+		summarizeBy: none
+		sourceColumn: AVAIL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column Location
+		dataType: string
+		lineageTag: a80fe2e7-0be9-4af5-ae0d-29c8aafc29a3
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inv Lot#'
+		dataType: string
+		lineageTag: d14d7048-1365-4b72-86cc-aace6c83db8c
+		summarizeBy: none
+		sourceColumn: Inv Lot#
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inv Status'
+		dataType: string
+		lineageTag: 6306143f-36d4-4fec-bb81-a4cbcc523fa2
+		summarizeBy: none
+		sourceColumn: Inv Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'WO Item'
+		dataType: string
+		lineageTag: 2486cbc5-daf0-4271-b1fd-3395c9179d74
+		summarizeBy: none
+		sourceColumn: WO Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'WO Plant'
+		dataType: string
+		lineageTag: 52f74508-e8de-4b6b-88b4-d455c4b5f0c5
+		summarizeBy: none
+		sourceColumn: WO Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column WO#
+		dataType: int64
+		formatString: 0
+		lineageTag: 245043e0-9190-40ea-b347-7e5f4254b4e2
+		summarizeBy: none
+		sourceColumn: WO#
+
+		annotation SummarizationSetBy = Automatic
+
+	column Start
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: e6f0cc8e-d5ae-4c86-8501-63b64bcbe33b
+		summarizeBy: none
+		sourceColumn: Start
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Requested
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: e5d61e7d-3746-4e4a-96d4-eeb964e3983c
+		summarizeBy: none
+		sourceColumn: Requested
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'WO Qty'
+		dataType: double
+		formatString: #,0
+		lineageTag: 0f4ff581-9f08-4845-89bf-a9c6a3414685
+		summarizeBy: none
+		sourceColumn: WO Qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'WO Lot#'
+		dataType: string
+		lineageTag: 42963eff-ba51-4655-bdf5-e6ce323d4430
+		summarizeBy: none
+		sourceColumn: WO Lot#
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'WO Status'
+		dataType: string
+		lineageTag: 8e2a80f7-6f7c-4b2b-a8b4-8648d635d02c
+		summarizeBy: none
+		sourceColumn: WO Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column _Sort
+		dataType: string
+		isHidden
+		lineageTag: 4e6896f4-b605-4a54-bb55-5e258826958c
+		summarizeBy: none
+		sourceColumn: _Sort
+
+		annotation SummarizationSetBy = Automatic
+
+	column _IsTotal
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: bfff3bc6-369b-4705-8d60-c4ba18eac041
+		summarizeBy: none
+		sourceColumn: _IsTotal
+
+		annotation SummarizationSetBy = Automatic
+
+	column _SuppSO
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 54b4b81e-1d4c-460b-8d9d-d13b7d21e164
+		summarizeBy: none
+		sourceColumn: _SuppSO
+
+		annotation SummarizationSetBy = Automatic
+
+	column _SuppInv
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 86aefa21-11d0-4d86-8f5f-2a01ba2c01c7
+		summarizeBy: none
+		sourceColumn: _SuppInv
+
+		annotation SummarizationSetBy = Automatic
+
+	column _SuppWO
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e19998b1-ba54-49a8-9ac5-94621c415ad8
+		summarizeBy: none
+		sourceColumn: _SuppWO
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SO560_Grouped = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            so.[Plant], so.[Item], so.[Order Date], so.[Order#], so.[Line#],
+				            so.[Promised Ship], so.[Customer], so.[Next Status], so.[Qty],
+				            so.[Primary Qty], so.[Lot#],
+				            inv.[Inv Plant], inv.[Inv Item], inv.[On Hand], inv.[Commit],
+				            inv.[AVAIL], inv.[Location], inv.[Inv Lot#], inv.[Inv Status],
+				            wo.[WO Item], wo.[WO Plant], wo.[WO#], wo.[Start], wo.[Requested],
+				            wo.[WO Qty], wo.[WO Lot#], wo.[WO Status],
+				            so.[Item] + '|0|' + RIGHT('000000' + CAST(ROW_NUMBER() OVER (
+				                PARTITION BY so.[Item]
+				                ORDER BY so.[Order#], so.[Line#], inv.[Location], inv.[Inv Lot#], inv.[Inv Plant], wo.[WO#]
+				            ) AS varchar(6)), 6)                                     AS [_Sort],
+				            0                                                        AS [_IsTotal],
+				            (CASE WHEN ROW_NUMBER() OVER (
+				                    PARTITION BY so.[Item], so.[Order#], so.[Line#]
+				                    ORDER BY inv.[Location], inv.[Inv Lot#], inv.[Inv Plant], wo.[WO#]) > 1
+				                  THEN 1 ELSE 0 END)                                 AS [_SuppSO],
+				            (CASE WHEN DENSE_RANK() OVER (
+				                    PARTITION BY so.[Item]
+				                    ORDER BY so.[Order#], so.[Line#]) > 1
+				                    OR ROW_NUMBER() OVER (
+				                    PARTITION BY so.[Item], so.[Order#], so.[Line#], inv.[Location], inv.[Inv Lot#]
+				                    ORDER BY wo.[WO#]) > 1
+				                  THEN 1 ELSE 0 END)                                 AS [_SuppInv],
+				            (CASE WHEN DENSE_RANK() OVER (
+				                    PARTITION BY so.[Item]
+				                    ORDER BY so.[Order#], so.[Line#]) > 1
+				                    OR DENSE_RANK() OVER (
+				                    PARTITION BY so.[Item], so.[Order#], so.[Line#]
+				                    ORDER BY inv.[Location], inv.[Inv Lot#]) > 1
+				                  THEN 1 ELSE 0 END)                                 AS [_SuppWO]
+				        FROM (
+				            SELECT
+				                LTRIM(RTRIM(so.SDMCU))                                   AS [Plant],
+				                LTRIM(RTRIM(so.SDLITM))                                  AS [Item],
+				                (CASE WHEN so.SDTRDJ > 0
+				                      THEN DATEADD(DAY, (so.SDTRDJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDTRDJ / 1000), 1, 1))
+				                 END)                                                    AS [Order Date],
+				                so.SDDOCO                                                AS [Order#],
+				                so.SDLNID / 1000.0                                       AS [Line#],
+				                (CASE WHEN so.SDPDDJ > 0
+				                      THEN DATEADD(DAY, (so.SDPDDJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDPDDJ / 1000), 1, 1))
+				                 END)                                                    AS [Promised Ship],
+				                shipto.ABALPH                                            AS [Customer],
+				                so.SDNXTR                                                AS [Next Status],
+				                so.SDUORG / 10000.0                                      AS [Qty],
+				                so.SDPQOR / 10000.0                                      AS [Primary Qty],
+				                LTRIM(RTRIM(so.SDLOTN))                                  AS [Lot#],
+				                SUM(so.SDPQOR / 10000.0)
+				                    OVER (PARTITION BY LTRIM(RTRIM(so.SDLITM)))          AS [Qty Ordered Per Item]
+				            FROM PRODDTA.F4211 so
+				            INNER JOIN PRODDTA.F0101 shipto ON so.SDSHAN = shipto.ABAN8
+				            INNER JOIN PRODDTA.F0101 soldto ON so.SDAN8  = soldto.ABAN8
+				            INNER JOIN PRODDTA.F0010 comp   ON so.SDKCOO = comp.CCCO
+				            WHERE so.SDNXTR IN ('525','530','535','536','537','540','545','550')
+				              AND so.SDLNTY = 'S'
+				              AND LTRIM(RTRIM(so.SDLITM)) IN (
+				                    '161017CX-FD','161017CX-OP','161190PX-T2','161190PX-T3','171143PX-T2',
+				                    '191245PX-T2','APT10','APT10-T2','APT11','APT11-T2','BPADA','BTDA','BYK3565',
+				                    'C2','CAN','CORNERB','CRTNCLEAR','CRTNDARK','CRTNWHITE','DMAEMA','DMEA',
+				                    'DPE3500-T2','EMA3065','FERSUL7W','GEN926','HP1432AT-OP','HP1632','HP1632-T2',
+				                    'HP1632-T2*OP10','IND139','KOH50','MD4020-C1','MD4020-C2','MD4020C-C2','MD4021',
+				                    'MD4021-C1','MD4021-C2','MD4021C-C2','MD4022','MD4022C-C2','MD4023','MD4023-C2',
+				                    'MD4023C-C2','MDU20-T2','MPD','MW40504','MW40504-C2','MW40514','MW40514-C2',
+				                    'NS41-PL','PEG1450','PEG1450.S','PERSD','PTMG','STODSO','TC275','THERMOT','THF',
+				                    'U1001-OP','U101-OP','U201-T2','U2022-OP','U2023-OP','U204-OP','U204-T2','U470-OP',
+				                    'U501B','U501B-OP','U501-OP','U502.E','U502-OP','U601-OP','U701-OP','UNYTE201',
+				                    'UNYTEC201-FD','WAH12MDI','WAV501','WD40','WD40-SP','WD40-UN','JS037-OP','HP401-OP',
+				                    'HSCF410-PL','UNYTEC201-FD'
+				                  )
+				              AND (so.SDLOTN IS NULL OR LTRIM(RTRIM(so.SDLOTN)) = '')
+				              AND (CASE WHEN so.SDPDDJ > 0
+				                        THEN DATEADD(DAY, (so.SDPDDJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDPDDJ / 1000), 1, 1))
+				                   END) <= DATEADD(DAY, 21, CAST(GETDATE() AS date))
+				              AND LTRIM(RTRIM(so.SDMCU)) IN ('CINC','CIN2','CIN4')
+				        ) so
+				        LEFT JOIN (
+				            SELECT
+				                LTRIM(RTRIM(ib.IBMCU))                                   AS [Inv Plant],
+				                LTRIM(RTRIM(ib.IBLITM))                                  AS [Inv Item],
+				                il.LIPQOH / 10000.0                                      AS [On Hand],
+				                il.LIHCOM / 10000.0                                      AS [Commit],
+				                (CASE WHEN (il.LILOTS IS NULL OR LTRIM(RTRIM(il.LILOTS)) = '')
+				                      THEN (il.LIPQOH - il.LIHCOM) / 10000.0
+				                      ELSE 0 END)                                        AS [AVAIL],
+				                il.LILOCN                                                AS [Location],
+				                LTRIM(RTRIM(il.LILOTN))                                  AS [Inv Lot#],
+				                il.LILOTS                                                AS [Inv Status]
+				            FROM PRODDTA.F4102 ib
+				            INNER JOIN PRODDTA.F41021 il  ON ib.IBMCU = il.LIMCU AND ib.IBITM = il.LIITM
+				            INNER JOIN PRODDTA.F4101 im   ON ib.IBITM = im.IMITM
+				            INNER JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+				            WHERE LTRIM(RTRIM(ib.IBMCU)) IN ('CINC','CIN2','CIN4')
+				              AND il.LIPQOH / 10000.0 > 0
+				              AND ( LTRIM(RTRIM(il.LILOTS)) <> '' OR (il.LIPQOH - il.LIHCOM) / 10000.0 > 0 )
+				        ) inv ON so.[Item] = inv.[Inv Item]
+				        LEFT JOIN (
+				            SELECT
+				                LTRIM(RTRIM(wo.WALITM))                                  AS [WO Item],
+				                LTRIM(RTRIM(wo.WAMMCU))                                  AS [WO Plant],
+				                wo.WADOCO                                                AS [WO#],
+				                (CASE WHEN wo.WASTRT > 0
+				                      THEN DATEADD(DAY, (wo.WASTRT % 1000) - 1, DATEFROMPARTS(1900 + (wo.WASTRT / 1000), 1, 1))
+				                 END)                                                    AS [Start],
+				                (CASE WHEN wo.WADRQJ > 0
+				                      THEN DATEADD(DAY, (wo.WADRQJ % 1000) - 1, DATEFROMPARTS(1900 + (wo.WADRQJ / 1000), 1, 1))
+				                 END)                                                    AS [Requested],
+				                wo.WAUORG / 10000.0                                      AS [WO Qty],
+				                LTRIM(RTRIM(wo.WALOTN))                                  AS [WO Lot#],
+				                wo.WASRST                                                AS [WO Status]
+				            FROM PRODDTA.F4801 wo
+				            INNER JOIN PRODDTA.F4102 ib   ON wo.WAITM = ib.IBITM AND wo.WAMMCU = ib.IBMCU
+				            INNER JOIN PRODDTA.F4101 im   ON ib.IBITM = im.IMITM
+				            INNER JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+				            WHERE wo.WASRST IN ('20','30','32','35','40','45','50','90')
+				              AND wo.WAUORG / 10000.0 > 0
+				              AND (CASE WHEN wo.WADRQJ > 0
+				                        THEN DATEADD(DAY, (wo.WADRQJ % 1000) - 1, DATEFROMPARTS(1900 + (wo.WADRQJ / 1000), 1, 1))
+				                   END) <= DATEADD(DAY, 31, CAST(GETDATE() AS date))
+				              AND LTRIM(RTRIM(wo.WAMMCU)) IN ('CINC','CIN2','CIN4')
+				        ) wo ON so.[Item] = wo.[WO Item]
+				        LEFT JOIN (
+				            SELECT
+				                LTRIM(RTRIM(ib.IBLITM))                                  AS [Item],
+				                SUM(CASE WHEN (il.LILOTS IS NULL OR LTRIM(RTRIM(il.LILOTS)) = '')
+				                         THEN (il.LIPQOH - il.LIHCOM) / 10000.0
+				                         ELSE 0 END)                                     AS [AvailPerItem]
+				            FROM PRODDTA.F4102 ib
+				            INNER JOIN PRODDTA.F41021 il  ON ib.IBMCU = il.LIMCU AND ib.IBITM = il.LIITM
+				            INNER JOIN PRODDTA.F4101 im   ON ib.IBITM = im.IMITM
+				            INNER JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+				            WHERE LTRIM(RTRIM(ib.IBMCU)) IN ('CINC','CIN2','CIN4')
+				              AND il.LIPQOH / 10000.0 > 0
+				              AND ( LTRIM(RTRIM(il.LILOTS)) <> '' OR (il.LIPQOH - il.LIHCOM) / 10000.0 > 0 )
+				            GROUP BY LTRIM(RTRIM(ib.IBLITM))
+				        ) ia ON so.[Item] = ia.[Item]
+				        WHERE ( so.[Qty Ordered Per Item] > ia.[AvailPerItem]
+				                OR ia.[AvailPerItem] = 0
+				                OR ia.[AvailPerItem] IS NULL )
+				
+				        UNION ALL
+				
+				        SELECT
+				            NULL, so2.[Item] + ' - Total', NULL, NULL,
+				            CAST(COUNT(DISTINCT so2.[Order#]) AS float), NULL, NULL, NULL, NULL,
+				            SUM(so2.[Primary Qty]), NULL,
+				            NULL, CAST(ISNULL(MAX(ia2.[LotCnt]), 0) AS varchar(12)), NULL, NULL,
+				            MAX(ia2.[AvailPerItem]), NULL, NULL, NULL,
+				            CAST(ISNULL(MAX(wa2.[WOCnt]), 0) AS varchar(12)), NULL, NULL, NULL, NULL,
+				            MAX(wa2.[WOQtySum]), NULL, NULL,
+				            so2.[Item] + '|1|', 1, 0, 0, 0
+				        FROM (
+				            SELECT
+				                LTRIM(RTRIM(so.SDLITM))                                  AS [Item],
+				                so.SDDOCO                                                AS [Order#],
+				                so.SDPQOR / 10000.0                                      AS [Primary Qty]
+				            FROM PRODDTA.F4211 so
+				            INNER JOIN PRODDTA.F0101 shipto ON so.SDSHAN = shipto.ABAN8
+				            INNER JOIN PRODDTA.F0101 soldto ON so.SDAN8  = soldto.ABAN8
+				            INNER JOIN PRODDTA.F0010 comp   ON so.SDKCOO = comp.CCCO
+				            WHERE so.SDNXTR IN ('525','530','535','536','537','540','545','550')
+				              AND so.SDLNTY = 'S'
+				              AND LTRIM(RTRIM(so.SDLITM)) IN (
+				                    '161017CX-FD','161017CX-OP','161190PX-T2','161190PX-T3','171143PX-T2',
+				                    '191245PX-T2','APT10','APT10-T2','APT11','APT11-T2','BPADA','BTDA','BYK3565',
+				                    'C2','CAN','CORNERB','CRTNCLEAR','CRTNDARK','CRTNWHITE','DMAEMA','DMEA',
+				                    'DPE3500-T2','EMA3065','FERSUL7W','GEN926','HP1432AT-OP','HP1632','HP1632-T2',
+				                    'HP1632-T2*OP10','IND139','KOH50','MD4020-C1','MD4020-C2','MD4020C-C2','MD4021',
+				                    'MD4021-C1','MD4021-C2','MD4021C-C2','MD4022','MD4022C-C2','MD4023','MD4023-C2',
+				                    'MD4023C-C2','MDU20-T2','MPD','MW40504','MW40504-C2','MW40514','MW40514-C2',
+				                    'NS41-PL','PEG1450','PEG1450.S','PERSD','PTMG','STODSO','TC275','THERMOT','THF',
+				                    'U1001-OP','U101-OP','U201-T2','U2022-OP','U2023-OP','U204-OP','U204-T2','U470-OP',
+				                    'U501B','U501B-OP','U501-OP','U502.E','U502-OP','U601-OP','U701-OP','UNYTE201',
+				                    'UNYTEC201-FD','WAH12MDI','WAV501','WD40','WD40-SP','WD40-UN','JS037-OP','HP401-OP',
+				                    'HSCF410-PL','UNYTEC201-FD'
+				                  )
+				              AND (so.SDLOTN IS NULL OR LTRIM(RTRIM(so.SDLOTN)) = '')
+				              AND (CASE WHEN so.SDPDDJ > 0
+				                        THEN DATEADD(DAY, (so.SDPDDJ % 1000) - 1, DATEFROMPARTS(1900 + (so.SDPDDJ / 1000), 1, 1))
+				                   END) <= DATEADD(DAY, 21, CAST(GETDATE() AS date))
+				              AND LTRIM(RTRIM(so.SDMCU)) IN ('CINC','CIN2','CIN4')
+				        ) so2
+				        LEFT JOIN (
+				            SELECT
+				                LTRIM(RTRIM(ib.IBLITM))                                  AS [Item],
+				                SUM(CASE WHEN (il.LILOTS IS NULL OR LTRIM(RTRIM(il.LILOTS)) = '')
+				                         THEN (il.LIPQOH - il.LIHCOM) / 10000.0
+				                         ELSE 0 END)                                     AS [AvailPerItem],
+				                COUNT(DISTINCT (CASE WHEN (il.LILOTS IS NULL OR LTRIM(RTRIM(il.LILOTS)) = '')
+				                         THEN (il.LIPQOH - il.LIHCOM) / 10000.0
+				                         ELSE 0 END))                                    AS [LotCnt]
+				            FROM PRODDTA.F4102 ib
+				            INNER JOIN PRODDTA.F41021 il  ON ib.IBMCU = il.LIMCU AND ib.IBITM = il.LIITM
+				            INNER JOIN PRODDTA.F4101 im   ON ib.IBITM = im.IMITM
+				            INNER JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+				            WHERE LTRIM(RTRIM(ib.IBMCU)) IN ('CINC','CIN2','CIN4')
+				              AND il.LIPQOH / 10000.0 > 0
+				              AND ( LTRIM(RTRIM(il.LILOTS)) <> '' OR (il.LIPQOH - il.LIHCOM) / 10000.0 > 0 )
+				            GROUP BY LTRIM(RTRIM(ib.IBLITM))
+				        ) ia2 ON so2.[Item] = ia2.[Item]
+				        LEFT JOIN (
+				            SELECT
+				                LTRIM(RTRIM(wo.WALITM))                                  AS [Item],
+				                COUNT(DISTINCT wo.WADOCO)                                AS [WOCnt],
+				                SUM(wo.WAUORG / 10000.0)                                 AS [WOQtySum]
+				            FROM PRODDTA.F4801 wo
+				            INNER JOIN PRODDTA.F4102 ib   ON wo.WAITM = ib.IBITM AND wo.WAMMCU = ib.IBMCU
+				            INNER JOIN PRODDTA.F4101 im   ON ib.IBITM = im.IMITM
+				            INNER JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+				            WHERE wo.WASRST IN ('20','30','32','35','40','45','50','90')
+				              AND wo.WAUORG / 10000.0 > 0
+				              AND (CASE WHEN wo.WADRQJ > 0
+				                        THEN DATEADD(DAY, (wo.WADRQJ % 1000) - 1, DATEFROMPARTS(1900 + (wo.WADRQJ / 1000), 1, 1))
+				                   END) <= DATEADD(DAY, 31, CAST(GETDATE() AS date))
+				              AND LTRIM(RTRIM(wo.WAMMCU)) IN ('CINC','CIN2','CIN4')
+				            GROUP BY LTRIM(RTRIM(wo.WALITM))
+				        ) wa2 ON so2.[Item] = wa2.[Item]
+				        GROUP BY so2.[Item]
+				        HAVING ( SUM(so2.[Primary Qty]) > MAX(ia2.[AvailPerItem])
+				                 OR MAX(ia2.[AvailPerItem]) = 0
+				                 OR MAX(ia2.[AvailPerItem]) IS NULL )
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Plant", type text},
+				            {"Item", type text},
+				            {"Order Date", type date},
+				            {"Order#", Int64.Type},
+				            {"Line#", type number},
+				            {"Promised Ship", type date},
+				            {"Customer", type text},
+				            {"Next Status", type text},
+				            {"Qty", type number},
+				            {"Primary Qty", type number},
+				            {"Lot#", type text},
+				            {"Inv Plant", type text},
+				            {"Inv Item", type text},
+				            {"On Hand", type number},
+				            {"Commit", type number},
+				            {"AVAIL", type number},
+				            {"Location", type text},
+				            {"Inv Lot#", type text},
+				            {"Inv Status", type text},
+				            {"WO Item", type text},
+				            {"WO Plant", type text},
+				            {"WO#", Int64.Type},
+				            {"Start", type date},
+				            {"Requested", type date},
+				            {"WO Qty", type number},
+				            {"WO Lot#", type text},
+				            {"WO Status", type text},
+				            {"_Sort", type text},
+				            {"_IsTotal", Int64.Type},
+				            {"_SuppSO", Int64.Type},
+				            {"_SuppInv", Int64.Type},
+				            {"_SuppWO", Int64.Type}
+				        }
+				    )
+				in
+				    Typed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

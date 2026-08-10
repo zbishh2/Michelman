@@ -1,0 +1,48 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "c4e8a2f1907b3d6e5a80",
+  "position": {
+    "x": 7.7811550151975686,
+    "y": 6.8085106382978724,
+    "z": 1000,
+    "height": 78,
+    "width": 1000,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "OBJECTIVE: Identify the materials that need to be transferred to CINC from CIN2 based on Work Order parts requested date needed by the (2nd) business day forward",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#001eff"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Full inventory on hand list of materials needed at CINC",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#e40011"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

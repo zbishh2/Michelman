@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "1 - Ivan SK 2023 Forecast (SSAS)"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "0f601ce4-4916-41d6-a358-f3a744f51ce8"
+  }
+}

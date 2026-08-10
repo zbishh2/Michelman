@@ -1,0 +1,105 @@
+table Item
+	lineageTag: 14a1a000-0000-4000-8000-000000000011
+
+	column ItemSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 14a1da02-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: ItemSKey
+
+		annotation SummarizationSetBy = User
+
+	column 'Item Short ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 14a1da02-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Item Short ID
+
+		annotation SummarizationSetBy = User
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 14a1da02-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 14a1da02-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 14a1da02-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stock Type Code'
+		dataType: string
+		lineageTag: 14a1da02-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Stock Type Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Master Planning Family'
+		dataType: string
+		lineageTag: 14a1da02-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Master Planning Family
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Commodity Class Description'
+		dataType: string
+		lineageTag: 14a1da02-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Commodity Class Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Commodity Sub Class Description'
+		dataType: string
+		lineageTag: 14a1da02-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Commodity Sub Class Description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Item = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            it.ItemSKey                       AS [ItemSKey],
+				            it.ItemNumShort                   AS [Item Short ID],
+				            it.ItemNum2nd                     AS [2nd Item Number],
+				            it.ItemBulk                       AS [Bulk Item],
+				            it.ItemGlobalBulk                 AS [Global Bulk Item],
+				            it.StockingType                   AS [Stock Type Code],
+				            it.MasterPlanningFamily           AS [Master Planning Family],
+				            it.CommodityClassCodesDesc        AS [Commodity Class Description],
+				            it.CommoditySubClassCodesDesc     AS [Commodity Sub Class Description]
+				        FROM BIQL.DimItem it
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

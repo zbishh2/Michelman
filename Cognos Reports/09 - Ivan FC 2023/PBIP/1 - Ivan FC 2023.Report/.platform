@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "1 - Ivan FC 2023"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "26a99de9-3324-4cdb-a116-b037dfcf1a8c"
+  }
+}

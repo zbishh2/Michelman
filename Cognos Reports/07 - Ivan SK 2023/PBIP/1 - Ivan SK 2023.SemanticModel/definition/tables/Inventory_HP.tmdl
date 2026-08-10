@@ -1,0 +1,185 @@
+table Inventory_HP
+	lineageTag: ee2ee74c-8cdd-4297-9eee-538ea9439b44
+
+	column REGION
+		dataType: string
+		lineageTag: 0a974001-4a29-46c6-9686-00d3a3464cfa
+		summarizeBy: none
+		sourceColumn: REGION
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: b4382062-f941-4300-b47f-ea33f6b75abd
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 5aaeceaf-b641-4eae-9d6d-141324801ba7
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 16ed2a42-b5d7-41c8-9e40-0edeb90b7f86
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: b485b946-8e1c-4341-82ae-305b9a28d6aa
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: 56fbab68-aad6-459b-9061-27bce781cbfd
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Number'
+		dataType: string
+		lineageTag: 1bbb167e-43ae-42b9-b487-3e6080cacb5a
+		summarizeBy: none
+		sourceColumn: Lot Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 00da3d90-6083-4b9e-a9cf-12ac95c7bcd8
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Primary UOM'
+		dataType: string
+		lineageTag: 219fc31d-40cd-4131-a421-cc0cd9e1e4e4
+		summarizeBy: none
+		sourceColumn: Primary UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quantity On Hand'
+		dataType: double
+		formatString: #,0
+		lineageTag: 0922b099-19d7-4267-9d72-075e6afb2f19
+		summarizeBy: none
+		sourceColumn: Quantity On Hand
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column LB
+		dataType: double
+		formatString: #,0
+		lineageTag: a1587b77-5768-4e58-9190-b35a0c0603af
+		summarizeBy: none
+		sourceColumn: LB
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	partition Inventory_HP = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            CASE LTRIM(RTRIM(ib.IBMCU))
+				                 WHEN 'CINC' THEN 'Americas'
+				                 WHEN 'CIN2' THEN 'Americas'
+				                 WHEN 'CIN4' THEN 'Americas'
+				                 WHEN 'AUBA' THEN 'EMEA'
+				                 WHEN 'AUB2' THEN 'EMEA'
+				                 WHEN 'SING' THEN 'PacRim'
+				                 WHEN 'SNG4' THEN 'PacRim'
+				                 WHEN 'MUM3' THEN 'India'
+				                 WHEN 'SHAN' THEN 'China'
+				            END                                     AS [REGION],
+				            LTRIM(RTRIM(ib.IBMCU))                  AS [Branch Plant],
+				            LTRIM(RTRIM(tag.IMGBLK))                AS [Global Bulk Item],
+				            LTRIM(RTRIM(tag.IMBULK))                AS [Bulk Item],
+				            LTRIM(RTRIM(ib.IBLITM))                 AS [2nd Item Number],
+				            LTRIM(RTRIM(loc.LILOCN))                AS [Location],
+				            LTRIM(RTRIM(loc.LILOTN))                AS [Lot Number],
+				            LTRIM(RTRIM(loc.LILOTS))                AS [Status],
+				            im.IMUOM1                               AS [Primary UOM],
+				            SUM(loc.LIPQOH/10000.0)                 AS [Quantity On Hand],
+				            CASE WHEN MIN(im.IMUOM1) = 'LB' THEN SUM(loc.LIPQOH/10000.0)
+				                 WHEN MIN(im.IMUOM1) = 'KG' THEN SUM(loc.LIPQOH/10000.0) / 0.453593
+				                 WHEN MIN(im.IMUOM1) = 'EA' THEN SUM(loc.LIPQOH/10000.0) * 40
+				                 ELSE 0
+				            END                                     AS [LB]
+				        FROM PRODDTA.F4102 ib
+				        JOIN PRODDTA.F4101   im  ON ib.IBITM = im.IMITM
+				        JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+				        JOIN PRODDTA.F41021  loc ON ib.IBITM = loc.LIITM
+				                                AND ib.IBMCU = loc.LIMCU
+				        WHERE (loc.LILOTS IS NULL OR LTRIM(RTRIM(loc.LILOTS)) = '' OR LTRIM(RTRIM(loc.LILOTS)) IN ('T', 'B', 'Q', 'H'))
+				          AND LTRIM(RTRIM(ib.IBMCU)) IN ('AUBA', 'AUB2', 'SING', 'SNG4', 'MUM3', 'SHAN', 'CINC', 'CIN2', 'CIN4')
+				          AND LTRIM(RTRIM(tag.IMBULK)) IN ('251194NX.E', 'DPI8200.E', '201250PX.E', '251095NX.E', 'DPI8600.E', 'DP040', '251194NX', 'DPI8600', '251095NX', '251194NX.S', 'PR5985', 'PR5985.E', 'PR5985.S')
+				        GROUP BY
+				            CASE LTRIM(RTRIM(ib.IBMCU))
+				                 WHEN 'CINC' THEN 'Americas'
+				                 WHEN 'CIN2' THEN 'Americas'
+				                 WHEN 'CIN4' THEN 'Americas'
+				                 WHEN 'AUBA' THEN 'EMEA'
+				                 WHEN 'AUB2' THEN 'EMEA'
+				                 WHEN 'SING' THEN 'PacRim'
+				                 WHEN 'SNG4' THEN 'PacRim'
+				                 WHEN 'MUM3' THEN 'India'
+				                 WHEN 'SHAN' THEN 'China'
+				            END,
+				            LTRIM(RTRIM(ib.IBMCU)),
+				            LTRIM(RTRIM(tag.IMGBLK)),
+				            LTRIM(RTRIM(tag.IMBULK)),
+				            LTRIM(RTRIM(ib.IBLITM)),
+				            LTRIM(RTRIM(loc.LILOCN)),
+				            LTRIM(RTRIM(loc.LILOTN)),
+				            LTRIM(RTRIM(loc.LILOTS)),
+				            im.IMUOM1
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"REGION", type text},
+				            {"Branch Plant", type text},
+				            {"Global Bulk Item", type text},
+				            {"Bulk Item", type text},
+				            {"2nd Item Number", type text},
+				            {"Location", type text},
+				            {"Lot Number", type text},
+				            {"Status", type text},
+				            {"Primary UOM", type text},
+				            {"Quantity On Hand", type number},
+				            {"LB", type number}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

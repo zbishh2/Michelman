@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "09d23e775b804bb2a539",
+  "position": {
+    "x": 0,
+    "y": 679.87841945288756,
+    "z": 2000,
+    "height": 39.878419452887542,
+    "width": 1264.4376899696049,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Report can be found at the following: Michelman Reporting > Planning > Critical Report - Live JDE Data Americas",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "12px",
+                      "color": "#000000"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,77 @@
+table 'P8 Candidate Columns'
+	lineageTag: 18000900-0000-4000-8000-000000000001
+
+	column SchemaName
+		dataType: string
+		lineageTag: 18000901-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: SchemaName
+
+		annotation SummarizationSetBy = Automatic
+
+	column TableName
+		dataType: string
+		lineageTag: 18000901-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: TableName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ColumnName
+		dataType: string
+		lineageTag: 18000901-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: ColumnName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataType
+		dataType: string
+		lineageTag: 18000901-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrdinalPosition
+		dataType: int64
+		formatString: 0
+		lineageTag: 18000901-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: OrdinalPosition
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P8 Candidate Columns' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT c.TABLE_SCHEMA AS SchemaName, c.TABLE_NAME AS TableName, c.COLUMN_NAME AS ColumnName,
+				               c.DATA_TYPE AS DataType, c.ORDINAL_POSITION AS OrdinalPosition
+				        FROM INFORMATION_SCHEMA.COLUMNS c
+				        WHERE (c.TABLE_SCHEMA = 'dbo' AND c.TABLE_NAME = 'FactInventorySnapshot_History')
+				           OR (c.TABLE_SCHEMA = 'BIQL' AND c.TABLE_NAME IN (
+				                'TbInventorySnapshot_History', 'HistoricalSnapshot', 'TbInventorySnapshot_Detail',
+				                'DimCurrencyExchangeRatesUSDDaily', 'DimCurrencyCrossRatesCalc',
+				                'TbCurrencyRates', 'CurrencyRatesTo', 'DimCurrencyRatesToCXA'))
+				        ORDER BY c.TABLE_SCHEMA, c.TABLE_NAME, c.ORDINAL_POSITION
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"SchemaName", type text},
+							{"TableName", type text},
+							{"ColumnName", type text},
+							{"DataType", type text},
+							{"OrdinalPosition", Int64.Type}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

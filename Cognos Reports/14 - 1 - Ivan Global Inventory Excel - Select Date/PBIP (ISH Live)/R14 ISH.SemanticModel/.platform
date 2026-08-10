@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "1 - Ivan Global Inventory Excel - Select Date (ISH Live)"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "a6a9c891-4a3b-4eef-9f15-4696f067f9b1"
+  }
+}

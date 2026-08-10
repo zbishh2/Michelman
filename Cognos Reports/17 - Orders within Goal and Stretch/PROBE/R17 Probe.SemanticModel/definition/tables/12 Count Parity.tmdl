@@ -1,0 +1,128 @@
+table '12 Count Parity'
+	lineageTag: 170c0000-0000-4000-8000-000000000001
+
+	column total_order_lines
+		dataType: int64
+		lineageTag: 170c0001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: total_order_lines
+
+		annotation SummarizationSetBy = User
+
+	column total_goal
+		dataType: int64
+		lineageTag: 170c0001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: total_goal
+
+		annotation SummarizationSetBy = User
+
+	column total_stretch
+		dataType: int64
+		lineageTag: 170c0001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: total_stretch
+
+		annotation SummarizationSetBy = User
+
+	column total_gt48h
+		dataType: int64
+		lineageTag: 170c0001-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: total_gt48h
+
+		annotation SummarizationSetBy = User
+
+	column total_lt72h
+		dataType: int64
+		lineageTag: 170c0001-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: total_lt72h
+
+		annotation SummarizationSetBy = User
+
+	column total_gt72h
+		dataType: int64
+		lineageTag: 170c0001-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: total_gt72h
+
+		annotation SummarizationSetBy = User
+
+	partition '12 Count Parity' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        SELECT o.SDKCOO,o.SDDOCO,o.SDDCTO,o.SDLNID, o.SDSHAN, o.SDITM, LTRIM(RTRIM(o.SDLITM)) AS Item2nd, CASE LTRIM(RTRIM(bu.MCCO)) WHEN '00010' THEN 'RAME' WHEN '00020' THEN 'REUR' WHEN '00030' THEN 'RASI' WHEN '00034' THEN 'RASI' WHEN '00035' THEN 'RASI' ELSE '' END AS CompanyLevel2
+				        INTO #ord
+				        FROM (
+				            SELECT SDKCOO,SDDOCO,SDDCTO,SDLNID,SDMCU,SDSHAN,SDLITM,SDITM,SDNXTR,SDLTTR,SDTRDJ FROM PRODDTA.F4211
+				            UNION ALL
+				            SELECT h.SDKCOO,h.SDDOCO,h.SDDCTO,h.SDLNID,h.SDMCU,h.SDSHAN,h.SDLITM,h.SDITM,h.SDNXTR,h.SDLTTR,h.SDTRDJ FROM PRODDTA.F42119 h
+				            WHERE NOT EXISTS (SELECT 1 FROM PRODDTA.F4211 c WHERE c.SDKCOO=h.SDKCOO AND c.SDDOCO=h.SDDOCO AND c.SDDCTO=h.SDDCTO AND c.SDLNID=h.SDLNID)
+				        ) o
+				        LEFT JOIN PRODDTA.F0006 bu ON LTRIM(RTRIM(bu.MCMCU))=LTRIM(RTRIM(o.SDMCU))
+				        WHERE o.SDDCTO NOT IN ('S5','ST') AND o.SDNXTR<>'980' AND o.SDLTTR<>'980'
+				          AND o.SDTRDJ BETWEEN 126152 AND 126181
+				          AND LTRIM(RTRIM(bu.MCCO)) NOT IN ('00024','00025');
+				        CREATE UNIQUE CLUSTERED INDEX ixo ON #ord (SDKCOO,SDDOCO,SDDCTO,SDLNID);
+				
+				        SELECT l.SLKCOO,l.SLDOCO,l.SLDCTO,l.SLLNID,
+				               MIN(DATEADD(SECOND,(l.SLTDAY/10000)*3600+((l.SLTDAY/100)%100)*60+(l.SLTDAY%100),CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2))) AS Date525
+				        INTO #l525 FROM PRODDTA.F42199 l JOIN #ord o ON o.SDKCOO=l.SLKCOO AND o.SDDOCO=l.SLDOCO AND o.SDDCTO=l.SLDCTO AND o.SDLNID=l.SLLNID
+				        WHERE l.SLNXTR='525' AND l.SLUPMJ>0 GROUP BY l.SLKCOO,l.SLDOCO,l.SLDCTO,l.SLLNID;
+				        CREATE UNIQUE CLUSTERED INDEX ix5 ON #l525 (SLKCOO,SLDOCO,SLDCTO,SLLNID);
+				
+				        SELECT l.SLKCOO,l.SLDOCO,l.SLDCTO,l.SLLNID,
+				               MIN(DATEADD(SECOND,(l.SLTDAY/10000)*3600+((l.SLTDAY/100)%100)*60+(l.SLTDAY%100),CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2))) AS Date540
+				        INTO #l540 FROM PRODDTA.F42199 l JOIN #ord o ON o.SDKCOO=l.SLKCOO AND o.SDDOCO=l.SLDOCO AND o.SDDCTO=l.SLDCTO AND o.SDLNID=l.SLLNID
+				        WHERE l.SLNXTR='540' AND l.SLUPMJ>0 GROUP BY l.SLKCOO,l.SLDOCO,l.SLDCTO,l.SLLNID;
+				        CREATE UNIQUE CLUSTERED INDEX ix4 ON #l540 (SLKCOO,SLDOCO,SLDCTO,SLLNID);
+				
+				        SELECT b.SLKCOO,b.SLDOCO,b.SLDCTO,b.SLLNID,
+				               cal.diff - (((cal.diff+cal.dow525)/7)*2 - CASE WHEN cal.dow525=7 THEN 1 ELSE 0 END + CASE WHEN cal.dow540=6 THEN 1 ELSE 0 END) AS BusinessDays
+				        INTO #metric FROM #l525 b JOIN #l540 c ON b.SLKCOO=c.SLKCOO AND b.SLDOCO=c.SLDOCO AND b.SLDCTO=c.SLDCTO AND b.SLLNID=c.SLLNID
+				        CROSS APPLY (SELECT diff=DATEDIFF(DAY,CAST(b.Date525 AS date),CAST(c.Date540 AS date)),
+				                            dow525=((DATEDIFF(DAY,'2003-01-06',CAST(b.Date525 AS date))%7)+7)%7+1,
+				                            dow540=((DATEDIFF(DAY,'2003-01-06',CAST(c.Date540 AS date))%7)+7)%7+1) cal;
+				        CREATE UNIQUE CLUSTERED INDEX ixm ON #metric (SLKCOO,SLDOCO,SLDCTO,SLLNID);
+				
+				        SELECT
+				          COUNT(*) AS total_order_lines,
+				          SUM(CASE WHEN (o.CompanyLevel2='RAME' AND m.BusinessDays<=1) OR (o.CompanyLevel2 IN ('REUR','RASI') AND m.BusinessDays<=2) THEN 1 ELSE 0 END) AS total_goal,
+				          SUM(CASE WHEN m.BusinessDays<=1 THEN 1 ELSE 0 END) AS total_stretch,
+				          SUM(CASE WHEN m.BusinessDays>2 THEN 1 ELSE 0 END) AS total_gt48h,
+				          SUM(CASE WHEN m.BusinessDays<3 THEN 1 ELSE 0 END) AS total_lt72h,
+				          SUM(CASE WHEN m.BusinessDays>3 THEN 1 ELSE 0 END) AS total_gt72h
+				        FROM #ord o
+				        JOIN #metric m ON m.SLKCOO=o.SDKCOO AND m.SLDOCO=o.SDDOCO AND m.SLDCTO=o.SDDCTO AND m.SLLNID=o.SDLNID
+				        LEFT JOIN PRODDTA.F0101 ship ON ship.ABAN8=o.SDSHAN
+				        LEFT JOIN PRODDTA.F554101 tag ON tag.IMITM=o.SDITM
+				        WHERE ISNULL(LTRIM(RTRIM(ship.ABAC01)),'') <> 'INT'
+				          AND CASE WHEN ISNULL(LTRIM(RTRIM(tag.IMGBLK)),'-')='-' THEN o.Item2nd ELSE LTRIM(RTRIM(tag.IMGBLK)) END NOT IN ('IGST','CGST','SGST','CVD','ADD');
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"total_order_lines", Int64.Type},
+				            {"total_goal", Int64.Type},
+				            {"total_stretch", Int64.Type},
+				            {"total_gt48h", Int64.Type},
+				            {"total_lt72h", Int64.Type},
+				            {"total_gt72h", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

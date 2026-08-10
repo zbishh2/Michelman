@@ -1,0 +1,240 @@
+/// Full F42199 status-ledger stream (every revision row, no MIN filter) for the orders on the Validation page.
+table 'Revision History'
+	lineageTag: 17f10000-0000-4000-8000-000000000000
+
+	column 'Company Code'
+		dataType: string
+		lineageTag: 17f10000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Company Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Number'
+		dataType: string
+		lineageTag: 17f10000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Order Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Type'
+		dataType: string
+		lineageTag: 17f10000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Order Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Line
+		dataType: double
+		formatString: 0.###
+		lineageTag: 17f10000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Line
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 17f10000-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 17f10000-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last Status'
+		dataType: string
+		lineageTag: 17f10000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Last Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Next Status'
+		dataType: string
+		lineageTag: 17f10000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Next Status
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Reconstructed from SLUPMJ (Julian date) + SLTDAY (HHMMSS).
+	column 'Event Datetime'
+		dataType: dateTime
+		formatString: m/d/yy h:mm:ss AM/PM
+		lineageTag: 17f10000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Event Datetime
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ordered Qty'
+		dataType: double
+		formatString: #,##0.###
+		lineageTag: 17f10000-0000-4000-8000-000000000015
+		summarizeBy: none
+		sourceColumn: Ordered Qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOM
+		dataType: string
+		lineageTag: 17f10000-0000-4000-8000-000000000016
+		summarizeBy: none
+		sourceColumn: UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ship To'
+		dataType: int64
+		formatString: 0
+		lineageTag: 17f10000-0000-4000-8000-000000000017
+		summarizeBy: none
+		sourceColumn: Ship To
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Raw JDE Julian date as stored (CYYDDD) - what you see in SSMS.
+	column 'Julian Date (SLUPMJ)'
+		dataType: int64
+		formatString: 0
+		lineageTag: 17f10000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Julian Date (SLUPMJ)
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Raw JDE time as stored (HHMMSS integer) - what you see in SSMS.
+	column 'Time (SLTDAY)'
+		dataType: int64
+		formatString: 0
+		lineageTag: 17f10000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Time (SLTDAY)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Program ID'
+		dataType: string
+		lineageTag: 17f10000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Program ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User ID'
+		dataType: string
+		lineageTag: 17f10000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: User ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Workstation
+		dataType: string
+		lineageTag: 17f10000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Workstation
+
+		annotation SummarizationSetBy = Automatic
+
+	column Originator
+		dataType: string
+		lineageTag: 17f10000-0000-4000-8000-000000000018
+		summarizeBy: none
+		sourceColumn: Originator
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Hidden join key matching Orders_GS[Order Key] (Company + Order).
+	column 'Order Key' = 'Revision History'[Company Code] & "|" & 'Revision History'[Order Number]
+		dataType: string
+		isHidden
+		lineageTag: 17f10000-0000-4000-8000-000000000019
+		summarizeBy: none
+
+	partition 'Revision History' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        -- Every F42199 status-ledger row for the orders on the Validation page.
+				        -- No MIN, no status filter: all revisions per order line, as stored.
+				        SELECT
+				            LTRIM(RTRIM(l.SLKCOO))                     AS [Company Code],
+				            CAST(l.SLDOCO AS varchar(20))              AS [Order Number],
+				            LTRIM(RTRIM(l.SLDCTO))                     AS [Order Type],
+				            l.SLLNID / 1000.0                          AS [Line],
+				            LTRIM(RTRIM(l.SLLITM))                     AS [2nd Item Number],
+				            LTRIM(RTRIM(l.SLMCU))                      AS [Branch Plant],
+				            LTRIM(RTRIM(l.SLLTTR))                     AS [Last Status],
+				            LTRIM(RTRIM(l.SLNXTR))                     AS [Next Status],
+				            DATEADD(SECOND,(l.SLTDAY/10000)*3600 + ((l.SLTDAY/100)%100)*60 + (l.SLTDAY%100),
+				                    CAST(DATEADD(DAY,(l.SLUPMJ%1000)-1,DATEFROMPARTS(1900+(l.SLUPMJ/1000),1,1)) AS datetime2(0))) AS [Event Datetime],
+				            l.SLUORG / 10000.0                         AS [Ordered Qty],
+				            LTRIM(RTRIM(l.SLUOM))                      AS [UOM],
+				            l.SLSHAN                                   AS [Ship To],
+				            l.SLUPMJ                                   AS [Julian Date (SLUPMJ)],
+				            l.SLTDAY                                   AS [Time (SLTDAY)],
+				            LTRIM(RTRIM(l.SLPID))                      AS [Program ID],
+				            LTRIM(RTRIM(l.SLUSER))                     AS [User ID],
+				            LTRIM(RTRIM(l.SLJOBN))                     AS [Workstation],
+				            LTRIM(RTRIM(l.SLTORG))                     AS [Originator]
+				        FROM PRODDTA.F42199 l
+				        WHERE l.SLUPMJ > 0
+				          AND l.SLDOCO IN (
+				            2708703,2711569,2712290,2712668,2712969,2713170,2713312,2713374,2713782,2716012,
+				            2716083,2716119,2716781,2717614,2717615,2717633,2718835,2718961,2718980,2718981,
+				            2722186,2722324,2722949,2722950,2723033,2723184,2723683,2723911,2723942,2723990,
+				            2724067,2724146,2724165,2724198,2724200,2724217,2724233,2724248,2724545,2724561,
+				            2724564,2724579,2724595,2724596,2724661,2724677,2724678,2724694,2724695,2724711,
+				            2724712,2724746,2724781,2726521,2726572,2726799,2726816,2726848,2726864,2726896,
+				            2726897,2726913,2726914,2726915,2726931,2726932,2726948,2726950,2726966,2726982,
+				            2726998,2727125,2727144,2727160,2727270,2727477,2727544,2727910,2727911,2727930,
+				            2727932,2727933,2728044,2729866,2731956,2731957,26001153,26001158,26001173,26001176,
+				            26001181,26001182,26001183)
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Company Code", type text},
+				            {"Order Number", type text},
+				            {"Order Type", type text},
+				            {"Line", type number},
+				            {"2nd Item Number", type text},
+				            {"Branch Plant", type text},
+				            {"Last Status", type text},
+				            {"Next Status", type text},
+				            {"Event Datetime", type datetime},
+				            {"Ordered Qty", type number},
+				            {"UOM", type text},
+				            {"Ship To", Int64.Type},
+				            {"Julian Date (SLUPMJ)", Int64.Type},
+				            {"Time (SLTDAY)", Int64.Type},
+				            {"Program ID", type text},
+				            {"User ID", type text},
+				            {"Workstation", type text},
+				            {"Originator", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

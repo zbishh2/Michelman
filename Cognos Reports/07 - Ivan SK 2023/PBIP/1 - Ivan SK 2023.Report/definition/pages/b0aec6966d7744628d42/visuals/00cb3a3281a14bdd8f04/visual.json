@@ -1,0 +1,536 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "00cb3a3281a14bdd8f04",
+  "position": {
+    "x": 8,
+    "y": 46,
+    "z": 0,
+    "height": 650,
+    "width": 1264,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "REGION"
+                }
+              },
+              "queryRef": "Work_Orders.REGION",
+              "nativeQueryRef": "REGION"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "STATE"
+                }
+              },
+              "queryRef": "Work_Orders.STATE",
+              "nativeQueryRef": "STATE"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Work_Orders.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "WO Number"
+                }
+              },
+              "queryRef": "Work_Orders.WO Number",
+              "nativeQueryRef": "WO Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "Global Bulk Item"
+                }
+              },
+              "queryRef": "Work_Orders.Global Bulk Item",
+              "nativeQueryRef": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "Bulk Item"
+                }
+              },
+              "queryRef": "Work_Orders.Bulk Item",
+              "nativeQueryRef": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "Work_Orders.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "WO Status"
+                }
+              },
+              "queryRef": "Work_Orders.WO Status",
+              "nativeQueryRef": "WO Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "Start Date"
+                }
+              },
+              "queryRef": "Work_Orders.Start Date",
+              "nativeQueryRef": "Start Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "Completed Date"
+                }
+              },
+              "queryRef": "Work_Orders.Completed Date",
+              "nativeQueryRef": "Completed Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "Quantity Requested"
+                }
+              },
+              "queryRef": "Work_Orders.Quantity Requested",
+              "nativeQueryRef": "Quantity Requested"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "Quantity Completed"
+                }
+              },
+              "queryRef": "Work_Orders.Quantity Completed",
+              "nativeQueryRef": "Quantity Completed"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "Component 2nd Item Number"
+                }
+              },
+              "queryRef": "Work_Orders.Component 2nd Item Number",
+              "nativeQueryRef": "Component 2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "Component UOM"
+                }
+              },
+              "queryRef": "Work_Orders.Component UOM",
+              "nativeQueryRef": "Component UOM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "REQUEST KG"
+                }
+              },
+              "queryRef": "Work_Orders.REQUEST KG",
+              "nativeQueryRef": "REQUEST KG"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "COMPLETE KG"
+                }
+              },
+              "queryRef": "Work_Orders.COMPLETE KG",
+              "nativeQueryRef": "COMPLETE KG"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "P7 ISSUED KG"
+                }
+              },
+              "queryRef": "Work_Orders.P7 ISSUED KG",
+              "nativeQueryRef": "P7 ISSUED KG"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "P7 ORDERED KG"
+                }
+              },
+              "queryRef": "Work_Orders.P7 ORDERED KG",
+              "nativeQueryRef": "P7 ORDERED KG"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "P7 ISSUED LB"
+                }
+              },
+              "queryRef": "Work_Orders.P7 ISSUED LB",
+              "nativeQueryRef": "P7 ISSUED LB"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "P7 ORDERED LB"
+                }
+              },
+              "queryRef": "Work_Orders.P7 ORDERED LB",
+              "nativeQueryRef": "P7 ORDERED LB"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "P7 REMAINING"
+                }
+              },
+              "queryRef": "Work_Orders.P7 REMAINING",
+              "nativeQueryRef": "P7 REMAINING"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Work_Orders"
+                    }
+                  },
+                  "Property": "DATE"
+                }
+              },
+              "queryRef": "Work_Orders.DATE",
+              "nativeQueryRef": "DATE"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Work_Orders"
+                  }
+                },
+                "Property": "REGION"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Work_Orders"
+                  }
+                },
+                "Property": "Start Date"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Work_Orders"
+                  }
+                },
+                "Property": "Completed Date"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

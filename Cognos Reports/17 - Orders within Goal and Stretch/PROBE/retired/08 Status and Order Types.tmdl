@@ -1,0 +1,74 @@
+table '08 Status and Order Types'
+	lineageTag: 17080000-0000-4000-8000-000000000001
+
+	column kind
+		dataType: string
+		lineageTag: 17080001-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: kind
+
+		annotation SummarizationSetBy = Automatic
+
+	column code
+		dataType: string
+		lineageTag: 17080001-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+
+	column cnt
+		dataType: int64
+		lineageTag: 17080001-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: cnt
+
+		annotation SummarizationSetBy = User
+
+	partition '08 Status and Order Types' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				        SELECT o.SDKCOO,o.SDDOCO,o.SDDCTO,o.SDLNID
+				        INTO #ow
+				        FROM (
+				            SELECT SDKCOO,SDDOCO,SDDCTO,SDLNID,SDMCU,SDNXTR,SDTRDJ FROM PRODDTA.F4211
+				            UNION ALL
+				            SELECT h.SDKCOO,h.SDDOCO,h.SDDCTO,h.SDLNID,h.SDMCU,h.SDNXTR,h.SDTRDJ FROM PRODDTA.F42119 h
+				            WHERE NOT EXISTS (SELECT 1 FROM PRODDTA.F4211 c WHERE c.SDKCOO=h.SDKCOO AND c.SDDOCO=h.SDDOCO AND c.SDDCTO=h.SDDCTO AND c.SDLNID=h.SDLNID)
+				        ) o
+				        LEFT JOIN PRODDTA.F0006 bu ON LTRIM(RTRIM(bu.MCMCU))=LTRIM(RTRIM(o.SDMCU))
+				        WHERE o.SDDCTO NOT IN ('S5','ST') AND o.SDNXTR<>'980'
+				          AND o.SDTRDJ BETWEEN 126152 AND 126181
+				          AND LTRIM(RTRIM(bu.MCCO)) NOT IN ('00024','00025');
+				
+				        SELECT 'NXTR' AS kind, LTRIM(RTRIM(l.SLNXTR)) AS code, COUNT(*) AS cnt
+				        FROM PRODDTA.F42199 l JOIN #ow o ON o.SDKCOO=l.SLKCOO AND o.SDDOCO=l.SLDOCO AND o.SDDCTO=l.SLDCTO AND o.SDLNID=l.SLLNID
+				        WHERE l.SLNXTR IN ('525','540') AND l.SLUPMJ>0
+				        GROUP BY LTRIM(RTRIM(l.SLNXTR))
+				        UNION ALL
+				        SELECT 'DCTO' AS kind, LTRIM(RTRIM(SDDCTO)) AS code, COUNT(*) AS cnt
+				        FROM #ow GROUP BY LTRIM(RTRIM(SDDCTO));
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"kind", type text},
+				            {"code", type text},
+				            {"cnt", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

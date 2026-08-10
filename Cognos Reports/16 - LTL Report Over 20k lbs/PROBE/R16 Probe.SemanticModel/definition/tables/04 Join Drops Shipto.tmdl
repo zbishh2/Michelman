@@ -1,0 +1,55 @@
+table '04 Join Drops Shipto'
+	lineageTag: f274ccbb-0000-4057-a55d-0247e430e301
+
+	column qualifying_lines
+		dataType: int64
+		lineageTag: 17c09f4a-6fdf-4dbe-897e-6d514537382e
+		summarizeBy: none
+		sourceColumn: qualifying_lines
+
+		annotation SummarizationSetBy = User
+
+	column dropped_no_shipto
+		dataType: int64
+		lineageTag: 42227402-714b-4b29-b7d4-c3cce733b51c
+		summarizeBy: none
+		sourceColumn: dropped_no_shipto
+
+		annotation SummarizationSetBy = User
+
+	partition '04 Join Drops Shipto' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            COUNT(*)                                            AS qualifying_lines,
+				            SUM(CASE WHEN st.ABAN8 IS NULL THEN 1 ELSE 0 END)   AS dropped_no_shipto
+				        FROM PRODDTA.F4211 o
+				        LEFT JOIN PRODDTA.F0101 st ON o.SDSHAN = st.ABAN8
+				        WHERE o.SDKCOO = '00010'
+				          AND o.SDDCTO IN ('S4','S5','SZ','SC','ST')
+				          AND o.SDNXTR IN ('560','550','545','540','535','530','525')
+				          AND o.SDCARS NOT IN (293371,29671,288676,26185,293492,98725,301322,195487,136656,293919,304977,309791,301333,309741,27710,26171,283919,26175,301761,292099,309757,316502)
+				          AND o.SDPQOR / 10000.0 > 20000
+				          AND o.SDCARS <> 308636
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"qualifying_lines", Int64.Type},
+				            {"dropped_no_shipto", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

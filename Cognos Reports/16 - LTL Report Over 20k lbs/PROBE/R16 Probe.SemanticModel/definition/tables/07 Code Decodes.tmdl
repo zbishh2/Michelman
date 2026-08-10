@@ -1,0 +1,61 @@
+table '07 Code Decodes'
+	lineageTag: 479e9395-4bf4-4748-9889-27dd949920cd
+
+	column next_status
+		dataType: string
+		lineageTag: d230de92-95b4-48f6-88d3-d3724eedb6b0
+		summarizeBy: none
+		sourceColumn: next_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_type
+		dataType: string
+		lineageTag: 9de6da13-ada7-485b-8fab-ca7e70d96e25
+		summarizeBy: none
+		sourceColumn: order_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column lines
+		dataType: int64
+		lineageTag: 78635c19-1ddc-4d45-9c72-693a4e84e5e1
+		summarizeBy: none
+		sourceColumn: lines
+
+		annotation SummarizationSetBy = User
+
+	partition '07 Code Decodes' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT o.SDNXTR AS next_status, o.SDDCTO AS order_type, COUNT(*) AS lines
+				        FROM PRODDTA.F4211 o
+				        WHERE o.SDKCOO='00010' AND o.SDDCTO IN ('S4','S5','SZ','SC','ST')
+				          AND o.SDNXTR IN ('560','550','545','540','535','530','525')
+				          AND o.SDPQOR/10000.0 > 20000 AND o.SDCARS <> 308636
+				          AND o.SDCARS NOT IN (293371,29671,288676,26185,293492,98725,301322,195487,136656,293919,304977,309791,301333,309741,27710,26171,283919,26175,301761,292099,309757,316502)
+				        GROUP BY o.SDNXTR, o.SDDCTO
+				        ORDER BY o.SDNXTR, o.SDDCTO
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"next_status", type text},
+				            {"order_type", type text},
+				            {"lines", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

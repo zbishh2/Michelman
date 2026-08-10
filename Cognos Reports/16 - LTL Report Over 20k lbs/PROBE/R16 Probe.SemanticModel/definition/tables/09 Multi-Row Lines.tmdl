@@ -1,0 +1,78 @@
+table '09 Multi-Row Lines'
+	lineageTag: d6f24042-0ded-460c-8bac-a5aa88646510
+
+	column SDDOCO
+		dataType: int64
+		lineageTag: b1714375-b9f0-4441-bed0-f519d3c67f6a
+		summarizeBy: none
+		sourceColumn: SDDOCO
+
+		annotation SummarizationSetBy = User
+
+	column SDDCTO
+		dataType: string
+		lineageTag: e1996591-fe4a-4759-8627-d493b36025d7
+		summarizeBy: none
+		sourceColumn: SDDCTO
+
+		annotation SummarizationSetBy = Automatic
+
+	column SDKCOO
+		dataType: string
+		lineageTag: 2f044354-56ff-4650-8726-32be7e4e4532
+		summarizeBy: none
+		sourceColumn: SDKCOO
+
+		annotation SummarizationSetBy = Automatic
+
+	column ln
+		dataType: double
+		lineageTag: 9c23d514-b003-4bb2-b111-be52ad681b3f
+		summarizeBy: none
+		sourceColumn: ln
+
+		annotation SummarizationSetBy = User
+
+	column rows_per_line
+		dataType: int64
+		lineageTag: e125273e-5b53-4656-9277-a87864594c43
+		summarizeBy: none
+		sourceColumn: rows_per_line
+
+		annotation SummarizationSetBy = User
+
+	partition '09 Multi-Row Lines' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT TOP 20 SDDOCO, SDDCTO, SDKCOO, SDLNID/1000.0 AS ln, COUNT(*) AS rows_per_line
+				        FROM PRODDTA.F4211
+				        WHERE SDKCOO='00010' AND SDDCTO IN ('S4','S5','SZ','SC','ST')
+				          AND SDNXTR IN ('560','550','545','540','535','530','525')
+				        GROUP BY SDDOCO, SDDCTO, SDKCOO, SDLNID/1000.0
+				        HAVING COUNT(*) > 1
+				        ORDER BY COUNT(*) DESC
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"SDDOCO", Int64.Type},
+				            {"SDDCTO", type text},
+				            {"SDKCOO", type text},
+				            {"ln", type number},
+				            {"rows_per_line", Int64.Type}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

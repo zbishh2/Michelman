@@ -1,0 +1,97 @@
+table Planner_Responsibilities
+	lineageTag: 961573ae-bdc7-4e10-bbf7-53f2d52b7afe
+
+	column Ord
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0981129e-2ee0-4253-9332-67bb486a28a7
+		summarizeBy: none
+		sourceColumn: Ord
+
+		annotation SummarizationSetBy = Automatic
+
+	column Planner
+		dataType: string
+		lineageTag: ec2407a0-c13b-41b4-894e-418b0674e06a
+		summarizeBy: none
+		sourceColumn: Planner
+		sortByColumn: Ord
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reactor (FRC / RRC)'
+		dataType: string
+		lineageTag: 7ea07ef9-5ff3-4568-b426-9c0097764487
+		summarizeBy: none
+		sourceColumn: Reactor (FRC / RRC)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'EC (FEC / REC)'
+		dataType: string
+		lineageTag: 65208846-6e40-457d-9b52-d505ea2eac8c
+		summarizeBy: none
+		sourceColumn: EC (FEC / REC)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Cold Blend (FCB / RCB)'
+		dataType: string
+		lineageTag: 124f53b7-a542-4b20-ad1c-3354e0f642cd
+		summarizeBy: none
+		sourceColumn: Cold Blend (FCB / RCB)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bluewave (FBW / RBW)'
+		dataType: string
+		lineageTag: 26ebf364-e5f9-4245-83bd-3c9e5d55f00e
+		summarizeBy: none
+		sourceColumn: Bluewave (FBW / RBW)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CM (TOL)'
+		dataType: string
+		lineageTag: 1f26a708-6cde-482c-8dc5-582b5730e076
+		summarizeBy: none
+		sourceColumn: CM (TOL)
+
+		annotation SummarizationSetBy = Automatic
+
+	column PKG
+		dataType: string
+		lineageTag: b56f2d16-de71-47b2-a319-da65df8168c4
+		summarizeBy: none
+		sourceColumn: PKG
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Planner_Responsibilities = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				        type table [
+				            Ord                       = Int64.Type,
+				            Planner                   = text,
+				            #"Reactor (FRC / RRC)"    = text,
+				            #"EC (FEC / REC)"         = text,
+				            #"Cold Blend (FCB / RCB)" = text,
+				            #"Bluewave (FBW / RBW)"   = text,
+				            #"CM (TOL)"               = text,
+				            PKG                       = text
+				        ],
+				        {
+				            { 1, "Lance",       "",  "",  "CIN2 Only", "",  "ORTC and DANC Only", "CIN2 Only" },
+				            { 2, "Eric",        "X", "X", "CINC Only", "",  "X",                  "CINC Only" },
+				            { 3, "Travis",      "",  "",  "",          "X", "",                   "" },
+				            { 4, "Mark Tilley", "",  "",  "",          "",  "Coaters",            "" }
+				        }
+				    )
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

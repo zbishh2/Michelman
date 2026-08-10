@@ -1,0 +1,337 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "4e07d53fb19a86205c4d",
+  "position": {
+    "x": 24,
+    "y": 392,
+    "z": 3000,
+    "height": 484,
+    "width": 1232,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "WO Number"
+                }
+              },
+              "queryRef": "Item Ledger.WO Number",
+              "nativeQueryRef": "WO Number",
+              "displayName": "WO number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "Transaction Date"
+                }
+              },
+              "queryRef": "Item Ledger.Transaction Date",
+              "nativeQueryRef": "Transaction Date",
+              "displayName": "Transaction date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "Time Of Day"
+                }
+              },
+              "queryRef": "Item Ledger.Time Of Day",
+              "nativeQueryRef": "Time Of Day",
+              "displayName": "Time"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "Transaction Line Num"
+                }
+              },
+              "queryRef": "Item Ledger.Transaction Line Num",
+              "nativeQueryRef": "Transaction Line Num",
+              "displayName": "Line"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "Doc Type"
+                }
+              },
+              "queryRef": "Item Ledger.Doc Type",
+              "nativeQueryRef": "Doc Type",
+              "displayName": "Doc type"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "Lot Num"
+                }
+              },
+              "queryRef": "Item Ledger.Lot Num",
+              "nativeQueryRef": "Lot Num",
+              "displayName": "Lot"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Item Ledger.Branch Plant",
+              "nativeQueryRef": "Branch Plant",
+              "displayName": "Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "Location"
+                }
+              },
+              "queryRef": "Item Ledger.Location",
+              "nativeQueryRef": "Location",
+              "displayName": "Location"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "Qty Transaction"
+                }
+              },
+              "queryRef": "Item Ledger.Qty Transaction",
+              "nativeQueryRef": "Qty Transaction",
+              "displayName": "Qty"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "UOM Transaction"
+                }
+              },
+              "queryRef": "Item Ledger.UOM Transaction",
+              "nativeQueryRef": "UOM Transaction",
+              "displayName": "UOM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "Explanation"
+                }
+              },
+              "queryRef": "Item Ledger.Explanation",
+              "nativeQueryRef": "Explanation",
+              "displayName": "Explanation"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "User ID"
+                }
+              },
+              "queryRef": "Item Ledger.User ID",
+              "nativeQueryRef": "User ID",
+              "displayName": "Keyed by"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Ledger"
+                    }
+                  },
+                  "Property": "Program ID"
+                }
+              },
+              "queryRef": "Item Ledger.Program ID",
+              "nativeQueryRef": "Program ID",
+              "displayName": "Program"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Item Ledger"
+                  }
+                },
+                "Property": "Transaction Date"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Item ledger - JDE F4111 inventory completions'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#221c35'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

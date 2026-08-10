@@ -1,0 +1,147 @@
+table 'Safety Stock'
+	lineageTag: 19a1a000-0000-4000-8000-000000000001
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stock Type Code'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Stock Type Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Master Planning Family'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Master Planning Family
+
+		annotation SummarizationSetBy = Automatic
+
+	/// F4102.IBLTMF. Renders as a plain integer in the Cognos export.
+	column 'Lead Time Order to Ship'
+		dataType: int64
+		formatString: 0
+		lineageTag: 19a10000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Lead Time Order to Ship
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE address book number of the planner. Identifier - never aggregate.
+	column 'Planner Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 19a10000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Planner Number
+
+		annotation SummarizationSetBy = Automatic
+
+	/// EDW's normalised 'First Last' form. Kept only as the fallback arm of [Planner Name]. Not displayed.
+	column 'Planner Name (EDW)'
+		dataType: string
+		isHidden
+		lineageTag: 19a10000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Planner Name (EDW)
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Cognos renders the planner as 'Last, First' and drops non-ASCII accents; EDW's own column renders 'First Last' and keeps them, differing on all 177 rows. F0101.ABALPH reproduces both in one step. Falls back to the EDW form only if a planner number ever fails to resolve - it resolves on 177 of 177 today.
+	column 'Planner Name' = COALESCE ( RELATED ( 'Planner Names'[Planner Name (JDE)] ), 'Safety Stock'[Planner Name (EDW)] )
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-000000000009
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// F4102.IBSAFE / 10000. Expressed in the item's PRIMARY unit of measure and NOT weight-converted. Export format is #0 - no thousands separator.
+	column 'Safety Stock'
+		dataType: double
+		formatString: 0
+		lineageTag: 19a10000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Safety Stock
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Unit of Measure Primary'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Unit of Measure Primary
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Grain key. Carries the many-to-one relationship from Shipments. Unique on all 177 rows with no nulls. Not displayed.
+	column ItemBranchSKey
+		dataType: int64
+		isHidden
+		lineageTag: 19a10000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: ItemBranchSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Safety Stock' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SET NOCOUNT ON;
+				
+				        SELECT
+				            LTRIM(RTRIM(ib.[Business Unit]))            AS [Branch Plant],
+				            ib.[Item Bulk]                              AS [Bulk Item],
+				            ib.[Item Num 2nd]                           AS [2nd Item Number],
+				            LTRIM(RTRIM(ib.[Stocking Type]))            AS [Stock Type Code],
+				            LTRIM(RTRIM(ib.[Master Planning Family]))   AS [Master Planning Family],
+				            ib.[Lead Time MFG_BP]                       AS [Lead Time Order to Ship],
+				            ib.[Planner Num]                            AS [Planner Number],
+				            LTRIM(RTRIM(ib.[Planner Name]))             AS [Planner Name (EDW)],
+				            ib.SafetyStock                              AS [Safety Stock],
+				            LTRIM(RTRIM(ib.[UOM Primary]))              AS [Unit of Measure Primary],
+				            ib.ItemBranchSKey                           AS [ItemBranchSKey]
+				        FROM BIQL.TbItemBranch ib WITH (NOLOCK)
+				        WHERE LTRIM(RTRIM(ib.[Business Unit])) IN ('CINC','CIN2','AUBA','AUB2','SING','SNG4')
+				          AND ib.SafetyStock > 1
+				          AND LTRIM(RTRIM(ib.[Stocking Type])) NOT IN ('O')
+				          AND ib.[Master Planning Family] LIKE '%F%'
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,254 @@
+cultureInfo en-US
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "inventory.quantity_on_hand": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Inventory",
+			          "ConceptualProperty": "Quantity on Hand"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "inventory.primary_unit_of_measure": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Inventory",
+			          "ConceptualProperty": "Primary Unit of Measure"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "inventory.quantity_on_hand_kgs": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Inventory",
+			          "ConceptualProperty": "Quantity on Hand KGs"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "inventory.quantity_on_hand_lbs": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Inventory",
+			          "ConceptualProperty": "Quantity on Hand LBs"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "inventory.extended_cost_for_quantity_on_hand_usd": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Inventory",
+			          "ConceptualProperty": "Extended Cost for Quantity On Hand USD"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "inventory.extended_cost_for_quantity_on_hand_eur": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Inventory",
+			          "ConceptualProperty": "Extended Cost for Quantity On Hand EUR"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "snapshot.lot_status_position": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Snapshot",
+			          "ConceptualProperty": "Lot Status (Position)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Lot Status": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "snapshot.region": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Snapshot",
+			          "ConceptualProperty": "Region"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "REGION": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "snapshot.primary_unit_of_measure": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Snapshot",
+			          "ConceptualProperty": "Primary Unit of Measure"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "UOM": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "snapshot.escor_inventory_date": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Snapshot",
+			          "ConceptualProperty": "Escor Inventory Date"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Inventory Date": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "snapshot.lot_status_master": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Snapshot",
+			          "ConceptualProperty": "Lot Status (Master)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Lot Status": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "snapshot.escor_oh_kgs": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Snapshot",
+			          "ConceptualProperty": "Escor OH KGs"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Quantity on Hand KGs": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "snapshot.escor_oh_lbs": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Snapshot",
+			          "ConceptualProperty": "Escor OH LBs"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Quantity on Hand LBs": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "snapshot.escor_on_hand": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Snapshot",
+			          "ConceptualProperty": "Escor On Hand"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Quantity on Hand": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "select_date.date": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Select Date",
+			          "ConceptualProperty": "Date"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Inventory Date": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
+			}
+		contentType: json
+

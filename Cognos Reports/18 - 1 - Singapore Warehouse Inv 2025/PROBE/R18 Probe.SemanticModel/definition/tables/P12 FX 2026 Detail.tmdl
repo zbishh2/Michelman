@@ -1,0 +1,137 @@
+table 'P12 FX 2026 Detail'
+	lineageTag: 18000d00-0000-4000-8000-000000000001
+
+	column src
+		dataType: string
+		lineageTag: 18000d01-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: src
+
+		annotation SummarizationSetBy = Automatic
+
+	column code_from
+		dataType: string
+		lineageTag: 18000d01-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: code_from
+
+		annotation SummarizationSetBy = Automatic
+
+	column code_to
+		dataType: string
+		lineageTag: 18000d01-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: code_to
+
+		annotation SummarizationSetBy = Automatic
+
+	column cal_date
+		dataType: string
+		lineageTag: 18000d01-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: cal_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column eff_date
+		dataType: string
+		lineageTag: 18000d01-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: eff_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column rate_daily
+		dataType: double
+		lineageTag: 18000d01-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: rate_daily
+
+		annotation SummarizationSetBy = User
+
+	column rate_a
+		dataType: double
+		lineageTag: 18000d01-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: rate_a
+
+		annotation SummarizationSetBy = User
+
+	column rate_m
+		dataType: double
+		lineageTag: 18000d01-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: rate_m
+
+		annotation SummarizationSetBy = User
+
+	partition 'P12 FX 2026 Detail' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT a.src, a.code_from, a.code_to, a.cal_date, a.eff_date, a.rate_daily, a.rate_a, a.rate_m FROM (
+				            SELECT TOP 15 'USDDaily' AS src, LTRIM(RTRIM(fx.CurrencyCodeFrom)) AS code_from, 'USD' AS code_to,
+				                   CONVERT(varchar(10), fx.CalendarDate, 120) AS cal_date,
+				                   CONVERT(varchar(10), fx.[Effective Date], 120) AS eff_date,
+				                   CAST(fx.[Exchange Rate] AS float) AS rate_daily,
+				                   CAST(NULL AS float) AS rate_a, CAST(NULL AS float) AS rate_m
+				            FROM BIQL.DimCurrencyExchangeRatesUSDDaily fx
+				            WHERE fx.CalendarDate >= '2026-06-01' AND LTRIM(RTRIM(fx.CurrencyCodeFrom)) IN ('EUR','SGD','AUD')
+				            ORDER BY fx.CalendarDate DESC, fx.CurrencyCodeFrom
+				        ) a
+				        UNION ALL
+				        SELECT b.* FROM (
+				            SELECT TOP 15 'TbCurrencyRates' AS src, LTRIM(RTRIM(r.CurrencyCodeFrom)) AS code_from, LTRIM(RTRIM(r.CurrencyCodeTo)) AS code_to,
+				                   CONVERT(varchar(10), r.CalendarDate, 120) AS cal_date,
+				                   CONVERT(varchar(10), r.EffectiveDateDaily, 120) AS eff_date,
+				                   CAST(r.ToRateDaily AS float) AS rate_daily, CAST(r.ToRateA AS float) AS rate_a, CAST(r.ToRateM AS float) AS rate_m
+				            FROM BIQL.TbCurrencyRates r
+				            WHERE r.CalendarDate >= '2026-06-01' AND LTRIM(RTRIM(r.CurrencyCodeTo)) IN ('USD','EUR')
+				              AND (r.ToRateDaily IS NOT NULL OR r.ToRateA IS NOT NULL OR r.ToRateM IS NOT NULL)
+				            ORDER BY r.CalendarDate DESC, r.CurrencyCodeTo
+				        ) b
+				        UNION ALL
+				        SELECT c2.* FROM (
+				            SELECT TOP 15 'CurrencyRatesTo' AS src, LTRIM(RTRIM(c.CurrencyCodeFrom)) AS code_from, LTRIM(RTRIM(c.CurrencyCodeTo)) AS code_to,
+				                   CONVERT(varchar(10), c.CalendarDate, 120) AS cal_date,
+				                   CONVERT(varchar(10), c.EffectiveDateDaily, 120) AS eff_date,
+				                   CAST(c.ToRateDaily AS float) AS rate_daily, CAST(c.ToRateA AS float) AS rate_a, CAST(c.ToRateM AS float) AS rate_m
+				            FROM BIQL.CurrencyRatesTo c
+				            WHERE c.CalendarDate >= '2026-06-01' AND LTRIM(RTRIM(c.CurrencyCodeTo)) IN ('USD','EUR')
+				              AND (c.ToRateDaily IS NOT NULL OR c.ToRateA IS NOT NULL OR c.ToRateM IS NOT NULL)
+				            ORDER BY c.CalendarDate DESC, c.CurrencyCodeTo
+				        ) c2
+				        UNION ALL
+				        SELECT d2.* FROM (
+				            SELECT TOP 15 'RatesToCXA' AS src, LTRIM(RTRIM(x.CurrencyCodeFrom)) AS code_from, LTRIM(RTRIM(x.CurrencyCodeTo)) AS code_to,
+				                   CONVERT(varchar(10), x.CalendarDate, 120) AS cal_date,
+				                   CONVERT(varchar(10), x.EffectiveDateDaily, 120) AS eff_date,
+				                   CAST(x.ToRateDaily AS float) AS rate_daily, CAST(x.ToRateA AS float) AS rate_a, CAST(x.ToRateM AS float) AS rate_m
+				            FROM BIQL.DimCurrencyRatesToCXA x
+				            WHERE x.CalendarDate >= '2026-06-01' AND LTRIM(RTRIM(x.CurrencyCodeTo)) IN ('USD','EUR')
+				              AND (x.ToRateDaily IS NOT NULL OR x.ToRateA IS NOT NULL OR x.ToRateM IS NOT NULL)
+				            ORDER BY x.CalendarDate DESC, x.CurrencyCodeTo
+				        ) d2
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"src", type text},
+							{"code_from", type text},
+							{"code_to", type text},
+							{"cal_date", type text},
+							{"eff_date", type text},
+							{"rate_daily", type number},
+							{"rate_a", type number},
+							{"rate_m", type number}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

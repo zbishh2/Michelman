@@ -1,0 +1,80 @@
+table 'P3b KG Factors'
+	lineageTag: 18000300-0000-4000-8000-000000000001
+
+	column ItemNumShort
+		dataType: string
+		lineageTag: 18000301-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: ItemNumShort
+
+		annotation SummarizationSetBy = Automatic
+
+	column BU
+		dataType: string
+		lineageTag: 18000301-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: BU
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOM
+		dataType: string
+		lineageTag: 18000301-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOMPrimary
+		dataType: string
+		lineageTag: 18000301-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: UOMPrimary
+
+		annotation SummarizationSetBy = Automatic
+
+	column KGperPrim
+		dataType: double
+		lineageTag: 18000301-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: KGperPrim
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'P3b KG Factors' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT TOP 100 z.ItemNumShort, z.BU, z.UOM, z.UOMPrimary, z.KGperPrim
+				        FROM (
+				            SELECT k.ItemNumShort,
+				                   ISNULL(LTRIM(RTRIM(k.BusinessUnit)), '') AS BU,
+				                   LTRIM(RTRIM(k.UOM)) AS UOM,
+				                   LTRIM(RTRIM(k.UOMPrimary)) AS UOMPrimary,
+				                   k.KG / NULLIF(k.ConversionFactorSecToPrim, 0) AS KGperPrim,
+				                   ROW_NUMBER() OVER (PARTITION BY k.ItemNumShort, ISNULL(LTRIM(RTRIM(k.BusinessUnit)), '')
+				                                      ORDER BY CASE WHEN LTRIM(RTRIM(k.UOM)) = LTRIM(RTRIM(k.UOMPrimary)) THEN 0 ELSE 1 END, k.UOM) AS rn
+				            FROM BIQL.DimItemUOMConversionLBKG k
+				        ) z
+				        WHERE z.rn = 1 AND z.UOMPrimary = 'LB'
+				        ORDER BY z.ItemNumShort
+				        ",
+				        null,
+				        [EnableFolding = false]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {
+							{"ItemNumShort", type text},
+							{"BU", type text},
+							{"UOM", type text},
+							{"UOMPrimary", type text},
+							{"KGperPrim", type number}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

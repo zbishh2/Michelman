@@ -1,0 +1,45 @@
+table Branch
+	lineageTag: 8506df3b-cdbd-4e12-868c-201f59ffc34f
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: e71e7af8-7e45-4f8a-a63c-ba90816f182e
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Branch = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT DISTINCT
+				            LTRIM(RTRIM(bom.IXMMCU)) AS [Branch Plant]
+				        FROM PRODDTA.F3002 bom
+				            INNER JOIN PRODDTA.F4102 pib
+				                ON pib.IBITM = bom.IXKIT
+				               AND LTRIM(RTRIM(pib.IBMCU)) = LTRIM(RTRIM(bom.IXMMCU))
+				            LEFT JOIN PRODDTA.F0006 org
+				                ON LTRIM(RTRIM(org.MCMCU)) = LTRIM(RTRIM(bom.IXMMCU))
+				        WHERE bom.IXTBM = 'M'
+				          AND pib.IBSTKT = 'M'
+				          AND ISNULL(LTRIM(RTRIM(org.MCSTYL)), '') <> 'LAB'
+				          AND LTRIM(RTRIM(bom.IXMMCU)) NOT LIKE 'LAB%'
+				          AND (CASE WHEN bom.IXEFFT > 0
+				                    THEN DATEADD(DAY, (bom.IXEFFT % 1000) - 1,
+				                                 DATEFROMPARTS(1900 + (bom.IXEFFT / 1000), 1, 1))
+				               END) > CAST(GETDATE() AS date)
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(Data, {{"Branch Plant", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

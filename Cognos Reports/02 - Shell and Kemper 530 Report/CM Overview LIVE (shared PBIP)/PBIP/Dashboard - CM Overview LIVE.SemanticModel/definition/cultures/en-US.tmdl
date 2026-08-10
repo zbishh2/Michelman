@@ -1,0 +1,515 @@
+cultureInfo en-US
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "so560_grouped.order": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "Order#"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Order #": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "so560_grouped.line": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "Line#"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Line #": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "so560_grouped.primary_qty": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "Primary Qty"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Qty": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "so560_grouped.inv_plant": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "Inv Plant"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Plant": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "so560_grouped.inv_item": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "Inv Item"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Item": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "so560_grouped.inv_lot": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "Inv Lot#"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Lot#": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "so560_grouped.inv_status": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "Inv Status"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Status": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "so560_grouped.wo_item": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "WO Item"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Item": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "so560_grouped.wo_plant": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "WO Plant"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Plant": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "so560_grouped.wo": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "WO#"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "WO #": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "so560_grouped.wo_qty": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "WO Qty"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Qty": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "so560_grouped.wo_lot": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "WO Lot#"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Lot#": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "so560_grouped.wo_status": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SO560_Grouped",
+			          "ConceptualProperty": "WO Status"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Status": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "cm_open_sales_orders.primary_qty": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "CM_Open_Sales_Orders",
+			          "ConceptualProperty": "Primary Qty"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "QTY": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "cm_open_sales_orders.primary_uom": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "CM_Open_Sales_Orders",
+			          "ConceptualProperty": "Primary UOM"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "UOM": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "cm_open_sales_orders.secondary_qty": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "CM_Open_Sales_Orders",
+			          "ConceptualProperty": "Secondary Qty"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "QTY": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "cm_open_sales_orders.secondary_uom": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "CM_Open_Sales_Orders",
+			          "ConceptualProperty": "Secondary UOM"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "UOM": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "cm_po_live.branch_plant": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "CM_PO_Live",
+			          "ConceptualProperty": "Branch Plant"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Branch": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "cm_po_live.purchase_order_number": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "CM_PO_Live",
+			          "ConceptualProperty": "Purchase Order Number"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "PO #": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "cm_po_live.line_number": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "CM_PO_Live",
+			          "ConceptualProperty": "Line Number"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Line #": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "cm_po_live.column2nd_item_number": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "CM_PO_Live",
+			          "ConceptualProperty": "2nd Item Number"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Item": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "cm_po_live.primary_quantity": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "CM_PO_Live",
+			          "ConceptualProperty": "Primary Quantity"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "QTY": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "cm_po_live.open_quantity": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "CM_PO_Live",
+			          "ConceptualProperty": "Open Quantity"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Open QTY": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "cm_po_live.secondary_quantity": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "CM_PO_Live",
+			          "ConceptualProperty": "Secondary Quantity"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "2nd QTY": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
+			}
+		contentType: json
+

@@ -1,0 +1,271 @@
+table CM_PO_Live
+	lineageTag: 6665e95c-3497-452c-b808-f5040159200a
+
+	column Company
+		dataType: string
+		lineageTag: ffee0963-c5f8-4c61-bcf7-b9473561ff4f
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 3f82d691-090f-409b-a7c3-1505e0d5a139
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Purchase Order Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: c8cc6147-6faf-4027-ad6f-e299f1b3fab5
+		summarizeBy: none
+		sourceColumn: Purchase Order Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Line Number'
+		dataType: double
+		lineageTag: 85a15b83-57ee-436f-9de4-b62c83993f49
+		summarizeBy: none
+		sourceColumn: Line Number
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 2f84f0c6-28d9-4e7f-acc5-deab053effde
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 81415c42-584e-410e-9dc0-5428662eaa0e
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Primary Quantity'
+		dataType: double
+		formatString: #,0
+		lineageTag: 0f6fcd65-a82b-45cd-b9e5-684cece5cc36
+		summarizeBy: none
+		sourceColumn: Primary Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Open Quantity'
+		dataType: double
+		formatString: #,0
+		lineageTag: 16d44129-b0f1-4bd2-907a-623864de151a
+		summarizeBy: none
+		sourceColumn: Open Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Secondary Quantity'
+		dataType: double
+		formatString: #,0
+		lineageTag: c0b2eddf-532d-4fdd-8791-956a0efb7108
+		summarizeBy: none
+		sourceColumn: Secondary Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Next Status'
+		dataType: string
+		lineageTag: 8e306d57-f58c-4728-8543-091a687b2d2a
+		summarizeBy: none
+		sourceColumn: Next Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Requested Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: f3ef4328-adb9-421c-af7f-e2b6eb111bd0
+		summarizeBy: none
+		sourceColumn: Requested Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Promised Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: eb2f73a3-799c-41ca-8bb5-d9d09755afd4
+		summarizeBy: none
+		sourceColumn: Promised Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Vendor Name'
+		dataType: string
+		lineageTag: 810f437c-3874-4bc0-8407-60b532bb2788
+		summarizeBy: none
+		sourceColumn: Vendor Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column REGION
+		dataType: string
+		lineageTag: c1729de5-1bff-4274-8c94-7ac5d88f2bf6
+		summarizeBy: none
+		sourceColumn: REGION
+
+		annotation SummarizationSetBy = Automatic
+
+	partition CM_PO_Live = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT
+				            po.[Company]                    AS [Company],
+				            po.[Branch_Plant]               AS [Branch Plant],
+				            po.[Purchase_Order_Number]      AS [Purchase Order Number],
+				            po.[Line_Number]                AS [Line Number],
+				            ib.[Bulk_Item]                  AS [Bulk Item],
+				            po.[C_2nd_Item_Number]          AS [2nd Item Number],
+				            SUM(po.[Primary_Quantity])      AS [Primary Quantity],
+				            SUM(po.[Open_Quantity])         AS [Open Quantity],
+				            SUM(po.[Secondary_Quantity])    AS [Secondary Quantity],
+				            po.[Next_Status]                AS [Next Status],
+				            po.[Requested_Date]             AS [Requested Date],
+				            po.[Promised_Date]              AS [Promised Date],
+				            po.[Vendor_Name]                AS [Vendor Name],
+				            po.[REGION]                     AS [REGION]
+				        FROM (
+				            SELECT DISTINCT
+				                LTRIM(RTRIM(ib.IBMCU))    AS Branch_Plant,
+				                LTRIM(RTRIM(tag.IMGBLK))  AS Global_Bulk_Item,
+				                LTRIM(RTRIM(tag.IMBULK))  AS Bulk_Item,
+				                LTRIM(RTRIM(ib.IBLITM))   AS C_2nd_Item_Number
+				            FROM PRODDTA.F4102 ib
+				            JOIN PRODDTA.F4101   im  ON ib.IBITM = im.IMITM
+				            JOIN PRODDTA.F554101 tag ON im.IMITM = tag.IMITM
+				        ) ib
+				        LEFT OUTER JOIN (
+				            SELECT
+				                d.PDKCOO                        AS Company,
+				                d.PDDOCO                        AS Purchase_Order_Number,
+				                d.PDDCTO                        AS Purchase_Order_Type,
+				                d.PDLNID/1000.0                 AS Line_Number,
+				                LTRIM(RTRIM(d.PDMCU))           AS Branch_Plant,
+				                d.Requested_Date                AS Requested_Date,
+				                d.PDVR02                        AS Reference_2,
+				                d.PDPDP3                        AS Reporting_Code_3,
+				                LTRIM(RTRIM(d.PDLITM))          AS C_2nd_Item_Number,
+				                SUM(d.PDSQOR/10000.0)           AS Secondary_Quantity,
+				                SUM(d.PDPQOR/10000.0)           AS Primary_Quantity,
+				                d.PDLTTR                         AS Last_Status,
+				                d.PDNXTR                         AS Next_Status,
+				                d.Promised_Date                 AS Promised_Date,
+				                SUM(d.PDUOPN/10000.0)           AS Open_Quantity,
+				                SUM(d.PDAN8)                     AS Vendor_Code,
+				                LTRIM(RTRIM(v.ABALPH))          AS Vendor_Name,
+				                CASE LTRIM(RTRIM(d.PDMCU))
+				                     WHEN 'CINC' THEN 'Americas'
+				                     WHEN 'CIN2' THEN 'Americas'
+				                     WHEN 'CIN4' THEN 'Americas'
+				                     WHEN 'GRAN' THEN 'Americas'
+				                     WHEN 'DANC' THEN 'Americas'
+				                     WHEN 'AUBA' THEN 'Aubange'
+				                     WHEN 'AUB2' THEN 'Aubange'
+				                     WHEN 'SHAN' THEN 'Shanghai'
+				                     WHEN 'SING' THEN 'Singapore'
+				                     WHEN 'SNG4' THEN 'Singapore'
+				                     WHEN 'MUM3' THEN 'Mumbai'
+				                     ELSE 'OTHER'
+				                END                              AS REGION
+				            FROM (
+				                SELECT
+				                    PDKCOO, PDDOCO, PDDCTO, PDLNID, PDMCU, PDAN8,
+				                    CASE WHEN PDDRQJ>0 THEN DATEADD(DAY,(PDDRQJ%1000)-1,DATEFROMPARTS(1900+(PDDRQJ/1000),1,1)) END AS Requested_Date,
+				                    CASE WHEN PDPDDJ>0 THEN DATEADD(DAY,(PDPDDJ%1000)-1,DATEFROMPARTS(1900+(PDPDDJ/1000),1,1)) END AS Promised_Date,
+				                    PDVR02, PDLITM, PDNXTR, PDLTTR, PDPDP3, PDUOPN, PDPQOR, PDSQOR
+				                FROM PRODDTA.F4311
+				            ) d
+				            JOIN PRODDTA.F0101 v ON d.PDAN8 = v.ABAN8
+				            WHERE d.PDUOPN/10000.0 > 0
+				              AND d.Promised_Date >= DATEADD(DAY,-90, CAST(GETDATE() AS date))
+				            GROUP BY
+				                d.PDKCOO, d.PDDOCO, d.PDDCTO, d.PDLNID/1000.0,
+				                LTRIM(RTRIM(d.PDMCU)), d.Requested_Date, d.PDVR02, d.PDPDP3,
+				                LTRIM(RTRIM(d.PDLITM)), d.PDLTTR, d.PDNXTR, d.Promised_Date,
+				                LTRIM(RTRIM(v.ABALPH)),
+				                CASE LTRIM(RTRIM(d.PDMCU))
+				                     WHEN 'CINC' THEN 'Americas'
+				                     WHEN 'CIN2' THEN 'Americas'
+				                     WHEN 'CIN4' THEN 'Americas'
+				                     WHEN 'GRAN' THEN 'Americas'
+				                     WHEN 'DANC' THEN 'Americas'
+				                     WHEN 'AUBA' THEN 'Aubange'
+				                     WHEN 'AUB2' THEN 'Aubange'
+				                     WHEN 'SHAN' THEN 'Shanghai'
+				                     WHEN 'SING' THEN 'Singapore'
+				                     WHEN 'SNG4' THEN 'Singapore'
+				                     WHEN 'MUM3' THEN 'Mumbai'
+				                     ELSE 'OTHER'
+				                END
+				        ) po
+				            ON  ib.Branch_Plant      = po.Branch_Plant
+				            AND ib.C_2nd_Item_Number = po.C_2nd_Item_Number
+				        WHERE po.Branch_Plant      = ib.Branch_Plant
+				          AND po.C_2nd_Item_Number = ib.C_2nd_Item_Number
+				          AND ib.Bulk_Item IN ('161017CX', '161190PX', '171143PX', '171228PX.E', '181020CX.E', '181136IX', '181192IX', '181193EU.E', '191011CX', '191026CX.E', '191245PX', '23409A', 'ABEX2525', 'APT10', 'APT11', 'DMAEMA', 'EMA3065', 'ET2012.E', 'ET2022.E', 'ET4075.E', 'ET440.E', 'FERSUL7W', 'HP1432AT', 'HP1632', 'MD4020', 'MD4020C', 'MD4020S', 'MD4021', 'MD4021C', 'MD4021S', 'MD4022', 'MD4022C', 'MD4023', 'MD4023C', 'MDU20', 'MDU2012.E', 'MDU2012B.E', 'MDU4075.E', 'MDU4075B.E', 'MDU440.E', 'MDU440B.E', 'MPEG2000', 'MW40504', 'MW40514', 'NP4LF', 'NP4LF.S', 'OMS', 'PUD1.E', 'STODSO', 'U1001', 'U101', 'U201', 'U2022', 'U2022EU.E', 'U2023', 'U204', 'U204EU.E', 'U470', 'U501', 'U501B', 'U502', 'U502.E', 'U502X1.E', 'U601', 'U701', 'U802', 'U802.E', 'WAV501', 'WD40', 'WD40T', 'DPE3500', 'JS037', 'HP401', 'HSCF410', 'UNYTEC201')
+				        GROUP BY
+				            po.[Company], po.[Purchase_Order_Number], po.[Line_Number],
+				            po.[Branch_Plant], po.[Requested_Date], po.[C_2nd_Item_Number],
+				            po.[Next_Status], po.[Promised_Date], po.[Vendor_Name],
+				            ib.[Bulk_Item], po.[REGION]
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Company", type text},
+				            {"Branch Plant", type text},
+				            {"Purchase Order Number", Int64.Type},
+				            {"Line Number", type number},
+				            {"Bulk Item", type text},
+				            {"2nd Item Number", type text},
+				            {"Primary Quantity", type number},
+				            {"Open Quantity", type number},
+				            {"Secondary Quantity", type number},
+				            {"Next Status", type text},
+				            {"Requested Date", type date},
+				            {"Promised Date", type date},
+				            {"Vendor Name", type text},
+				            {"REGION", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

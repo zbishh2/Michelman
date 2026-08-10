@@ -1,0 +1,4 @@
+relationship b5a82a22-c90c-4535-827c-67e9bd1f0aea
+	fromColumn: Report.'Branch Plant'
+	toColumn: Branch.'Branch Plant'
+

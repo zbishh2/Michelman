@@ -1,0 +1,63 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "a1c07f42e8b3d95610fa",
+  "position": {
+    "x": 24,
+    "y": 16,
+    "z": 0,
+    "height": 76,
+    "width": 1232
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "A work order is a RENAME when its parts list collapses to exactly one component item and lot carrying an issued quantity - read the middle grid: one line means rename, two or more means batch. Routing through a rename work centre (ARENAME, KRENAME, MRENAME, SRENAME) excludes it as well, which is what keeps repacks out: they issue bulk plus packaging.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#221C35"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
