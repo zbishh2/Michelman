@@ -1,0 +1,21 @@
+table 'OTIF Impact Selector'
+	lineageTag: 3d4e9ab2-0e89-4fe2-9da8-8cae6d48f420
+
+	column Selection
+		lineageTag: 50f8cc7e-4b62-43a9-aa1e-339e0d7e073f
+		summarizeBy: none
+		sourceColumn: [Selection]
+
+	partition 'OTIF Impact Selector' = calculated
+		mode: import
+		source =
+				DATATABLE (
+				    "Selection", STRING,
+				    {
+				        { "All orders" },
+				        { "OTIF-impact orders" }
+				    }
+				)
+
+	annotation PBI_Id = e55fa5c885aa4a878d0d5c9f0285f64a
+

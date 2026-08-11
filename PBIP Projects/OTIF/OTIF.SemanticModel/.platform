@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "OTIF"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "cda1197d-0592-46e4-8818-6fa82f412df6"
+  }
+}

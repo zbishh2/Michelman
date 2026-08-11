@@ -1,0 +1,33 @@
+/// What-if parameter behind the dotted target line on the OTIF trend charts (Ivan item 10 — "a red dotted
+/// line showing the 96% target that can be adjusted or removed"). Drop the slicer on a page and users
+/// slide the target; sliding it to 0 blanks [OTIF Target Line], which removes the line from the charts.
+table 'OTIF Target'
+	lineageTag: 2c94e57a-b4de-4387-c70f-e6732955c432
+
+	column 'OTIF Target'
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 3da5f68b-c5ef-4498-d81a-f7843a66d543
+		summarizeBy: sum
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 0
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'OTIF Target' = calculated
+		mode: import
+		source =
+				// 0 = "no target line"; the rest is the 80-100% band targets realistically live in.
+				// Deliberately short so it reads well as a filter-pane list — the trend pages are full
+				// to the pixel (charts end at y=716 of 720), so there is no canvas room for a slider.
+				UNION (
+				    ROW ( "Value", 0 ),
+				    GENERATESERIES ( 0.6, 1, 0.01 )
+				)
+
+	annotation PBI_Id = 8f3b1d0c6a2e4f57b9d84c1e70a5236f
+

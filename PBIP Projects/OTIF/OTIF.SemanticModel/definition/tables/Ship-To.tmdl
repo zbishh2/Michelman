@@ -1,0 +1,95 @@
+/// Ship-to address dim (dbo.DimAddress), joined to Orders on ShipToAddressSKey. Provides ship-to customer name + true geography (City/State/Country).
+table Ship-To
+	lineageTag: 9d6edf44-95be-45da-9d44-ea70a836ae80
+
+	column AddressSKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 2224e654-966f-4151-aa41-336bf3a88c16
+		summarizeBy: none
+		sourceColumn: AddressSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ship-To Name'
+		dataType: string
+		lineageTag: 0c2a46d6-0cda-42ca-936c-b1a743197b11
+		summarizeBy: none
+		sourceColumn: Ship-To Name
+
+	column City
+		dataType: string
+		lineageTag: f578f1bf-74b9-4eda-a05c-06bbd26fba03
+		summarizeBy: none
+		sourceColumn: City
+
+	column State
+		dataType: string
+		lineageTag: cba86069-4d91-4e70-9a5b-0b90680124bb
+		summarizeBy: none
+		sourceColumn: State
+
+	column 'State Desc'
+		dataType: string
+		lineageTag: 072e33c7-6f7f-4e83-a387-55d209023142
+		summarizeBy: none
+		sourceColumn: State Desc
+
+	column Country
+		dataType: string
+		lineageTag: e2c31774-450c-4929-a2f2-bc5f045c0611
+		summarizeBy: none
+		sourceColumn: Country
+
+	column 'Country Desc'
+		dataType: string
+		lineageTag: 47c11500-7430-432d-a27e-5bb92be94860
+		summarizeBy: none
+		sourceColumn: Country Desc
+
+	column 'Customer Segmentation Code'
+		dataType: string
+		lineageTag: b1d705eb-a7a2-4ffe-9bd4-48134c637f9e
+		summarizeBy: none
+		sourceColumn: Customer Segmentation Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation'
+		dataType: string
+		lineageTag: 2a4984c6-55b3-49a3-81ab-091f77838496
+		summarizeBy: none
+		sourceColumn: Customer Segmentation
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Ship-To = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(
+				        "EDWPROD",
+				        "EDW",
+				        [Query = "
+				SELECT
+				    a.AddressSKey,
+				    a.MailingName              AS [Ship-To Name],
+				    a.MailAddressCity          AS [City],
+				    a.MailAddressState         AS [State],
+				    a.MailAddressStateDesc     AS [State Desc],
+				    a.MailAddressCountry       AS [Country],
+				    a.MailAddressCountryDesc   AS [Country Desc],
+				    b.CustomerSegmentation     AS [Customer Segmentation Code],
+				    b.CustomerSegmentationDesc AS [Customer Segmentation]
+				FROM dbo.DimAddress a
+				LEFT JOIN BIQL.DimAddress b ON b.AddressSKey = a.AddressSKey
+				"]
+				    )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

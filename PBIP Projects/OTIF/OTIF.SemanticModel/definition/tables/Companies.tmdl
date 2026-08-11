@@ -1,0 +1,17 @@
+/// Picklist source for the writeback visuals' company pickers. Deliberately UNRELATED to FactSalesDetail: nothing filters it, so it always holds every company regardless of page slicers. Never bind a column from this table into a grid's field well - a disconnected column cross-joins the group-by. Read it through [Company List (All)] instead. Refreshes with the model, so a new JDE company appears automatically.
+table Companies
+	isHidden
+	lineageTag: 9b9664a9-8a41-4653-8a51-eb1ccd86dd0d
+
+	column 'Order Company'
+		lineageTag: 645645b2-8f0c-4f7f-b867-1a24a4e140ac
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Order Company]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Companies = calculated
+		mode: import
+		source = FILTER ( DISTINCT ( SELECTCOLUMNS ( FactSalesDetail, "Order Company", FactSalesDetail[Order Company] ) ), NOT ISBLANK ( [Order Company] ) && [Order Company] <> "" )
+

@@ -1,0 +1,96 @@
+table DateTable
+	lineageTag: c6452861-5a54-4480-bbce-dab8c2e648b0
+
+	column Date
+		formatString: General Date
+		lineageTag: e2ddccb7-4005-45ae-8680-6589aef6887a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: 5ff85644-5de7-42fb-8b0c-d9b158b46fda
+			defaultHierarchy: LocalDateTable_19504664-740d-4d72-b7c1-a24f41f1f809.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: 098f381b-7025-4951-981a-280084d26a0a
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month No'
+		formatString: 0
+		lineageTag: 498aa8e0-75cc-48e8-854e-9b3ac936ea01
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Month No]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		lineageTag: 13f606f4-3b86-4216-adef-a682f9cf7b65
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year-Month
+		lineageTag: 6ac1ed70-148d-4ff5-8466-86661ebb8426
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year-Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: de0620e4-e5c1-4339-bb7b-7ad553e7414b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year-Quarter
+		lineageTag: fcc75609-49e8-42f7-9ee0-1c41d04613b3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year-Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month MMM' = FORMAT(DateTable[Date],"MMM")
+		lineageTag: 4000efef-ec9e-4f6a-848e-41f9ccb1c23d
+		summarizeBy: none
+		sortByColumn: 'Month No'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DateTable = calculated
+		mode: import
+		source = ```
+				
+				  // Open order lines carry the JDE 1900 GL-date placeholder — they must not stretch the calendar back to 1900.
+				  VAR MinDate = MIN ( MINX ( FILTER ( 'FactSalesDetail', 'FactSalesDetail'[GL Date] > DATE ( 1900, 12, 31 ) ), 'FactSalesDetail'[GL Date] ), MINX ( Complaints, Complaints[Date_of_Occurrence] ) )
+				  // Open orders promise into future years; a promise past the calendar's end maps to DateTable's blank member and falls out of every DateTable-filtered count, so the calendar runs to the latest promise.
+				  VAR MaxDate = MAX ( MAX ( MAXX ( 'FactSalesDetail','FactSalesDetail'[GL Date] ), MAXX ( 'FactSalesDetail','FactSalesDetail'[Promised Delivery Date] ) ), MAXX ( Complaints, Complaints[Date_of_Occurrence] ) )
+				  RETURN
+				  ADDCOLUMNS (
+				      CALENDAR ( DATE ( YEAR ( MinDate ), 1, 1 ), DATE ( YEAR ( MaxDate ), 12, 31 ) ),
+				      "Year", YEAR ( [Date] ),
+				      "Month No", MONTH ( [Date] ),
+				      "Month", FORMAT ( [Date], "mmm" ),
+				      "Year-Month", FORMAT ( [Date], "MMM-YY" ),
+				      "Quarter", "Q" & FORMAT ( [Date], "Q" ),
+				      "Year-Quarter", FORMAT ( [Date], "yyyy" ) & " Q" & FORMAT ( [Date], "Q" )
+				  )
+				```
+
+	annotation PBI_Id = 9399b01b667945bba6864a01fd1f05af
+

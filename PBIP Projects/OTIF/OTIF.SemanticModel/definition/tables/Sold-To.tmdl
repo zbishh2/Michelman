@@ -1,0 +1,140 @@
+table Sold-To
+	lineageTag: 911f806b-d979-4b71-8961-c4ad0142c08c
+
+	column AddressSKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 84cd1a46-eed9-4ef8-89a6-1d4ec232b427
+		summarizeBy: none
+		sourceColumn: AddressSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sold-To Name'
+		dataType: string
+		lineageTag: efa78d82-f1be-4ce9-bbe6-d7973accfc48
+		summarizeBy: none
+		sourceColumn: Sold-To Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: e2c8946b-be79-4927-83e8-1d1c6b696758
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: 78e9fb93-17bc-4e40-ac16-ecb89d4eabca
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'State Desc'
+		dataType: string
+		lineageTag: 4b393f24-d2e6-401b-989f-e15c3aa11f69
+		summarizeBy: none
+		sourceColumn: State Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 7c6bea3c-5714-4acd-ac4f-2844130fd480
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Country Desc'
+		dataType: string
+		lineageTag: 3c3f3a8f-570f-4b07-bae4-cdb828707ec3
+		summarizeBy: none
+		sourceColumn: Country Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation Code'
+		dataType: string
+		lineageTag: 7f42d389-91c4-4d2a-be6e-aa29ae067a14
+		summarizeBy: none
+		sourceColumn: Customer Segmentation Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation'
+		dataType: string
+		lineageTag: 351dd4b5-22b7-486f-a171-89abd4de8f11
+		summarizeBy: none
+		sourceColumn: Customer Segmentation
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Strategic when the customer tier is Gold or Platinum, otherwise STD.
+	column 'SLO Segmentation' =
+			
+			IF(
+			    'Sold-To'[Customer Segmentation] IN {"Gold", "Platinum"},
+			    "Strategic",
+			    "STD"
+			)
+		lineageTag: 6ae999cc-4c59-4ad3-87b0-33c8e9e30c41
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sold-To = m
+		mode: import
+		source =
+				// Sold-To — sold-to address dimension. Mirror of Ship-To (ShipTo.m): same
+				// dbo.DimAddress / BIQL.DimAddress source, role-played on the SOLD-TO key instead of
+				// the ship-to key. Provides the sold-to customer name and TRUE geography
+				// (City / State / Country) for the ordering party, independent of the JDE
+				// order-company region rollup.
+				//
+				// Source: EDWPROD / EDW / dbo.DimAddress. Joined to Orders on the surrogate key.
+				// Relationship: Orders[SoldToAddressSKey] * -> 1 Sold-To[AddressSKey] (active).
+				//   (Ship-To takes Orders[ShipToAddressSKey]; both are DimAddress, role-playing —
+				//   so Sold-To gets the SECOND, active relationship and Ship-To’s stays active too.)
+				// Paste into Power BI -> Get Data -> Blank Query -> Advanced Editor (Import mode).
+				//
+				// Customer Segmentation rides the EXISTING DimAddress join — no new relationship.
+				// This is the SOLD-TO-level segmentation (per ordering address). As in Ship-To,
+				// segmentation does NOT exist on dbo.DimAddress — it lives only on the BIQL view
+				// BIQL.DimAddress, so we LEFT JOIN that view on AddressSKey (same EDW database,
+				// cross-schema; folds server-side). Assumes BIQL.DimAddress is 1 row per AddressSKey
+				// and shares the dbo key space — if the row count jumps after this, dedupe the BIQL side.
+				//
+				// Columns validated against edw_schema/03_columns.csv (2026-06-28): AddressSKey,
+				// MailingName, MailAddressCity/State/StateDesc/Country/CountryDesc all exist on
+				// dbo.DimAddress; CustomerSegmentation/CustomerSegmentationDesc on BIQL.DimAddress.
+				let
+				    Source = Sql.Database(
+				        "EDWPROD",
+				        "EDW",
+				        [Query = "
+				SELECT
+				    a.AddressSKey,
+				    a.MailingName              AS [Sold-To Name],
+				    a.MailAddressCity          AS [City],
+				    a.MailAddressState         AS [State],
+				    a.MailAddressStateDesc     AS [State Desc],
+				    a.MailAddressCountry       AS [Country],
+				    a.MailAddressCountryDesc   AS [Country Desc],
+				    b.CustomerSegmentation     AS [Customer Segmentation Code],
+				    b.CustomerSegmentationDesc AS [Customer Segmentation]
+				FROM dbo.DimAddress a
+				LEFT JOIN BIQL.DimAddress b ON b.AddressSKey = a.AddressSKey
+				"]
+				    )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
