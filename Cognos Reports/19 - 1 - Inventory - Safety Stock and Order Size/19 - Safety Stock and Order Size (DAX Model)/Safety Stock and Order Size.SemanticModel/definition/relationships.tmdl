@@ -1,0 +1,15 @@
+relationship 19d1re01-shipments-itembranch
+	fromColumn: Shipments.ItemBranchSKey
+	toColumn: 'Safety Stock'.ItemBranchSKey
+
+relationship 19d1re02-shipments-shipto
+	fromColumn: Shipments.ShipToCustomerSKey
+	toColumn: 'Customer Ship To'.ShipToCustomerSKey
+
+relationship 19d1re03-shipments-soldto
+	fromColumn: Shipments.SoldToCustomerSKey
+	toColumn: Customer.CustomerSKey
+
+relationship 19d1re04-shipments-territorymanager
+	fromColumn: Shipments.TerritoryManagerSKey
+	toColumn: 'Territory Manager'.TerritoryManagerSKey

@@ -1,0 +1,62 @@
+table 'Customer Ship To'
+	lineageTag: 19d3a000-0000-4000-8000-000000000001
+
+	column ShipToCustomerSKey
+		dataType: int64
+		isHidden
+		lineageTag: 19d30000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: ShipToCustomerSKey
+
+	column 'Customer Code'
+		dataType: int64
+		formatString: 0
+		lineageTag: 19d30000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Customer Code
+
+	column 'Customer Name'
+		dataType: string
+		lineageTag: 19d30000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+	column 'Sales Business Unit'
+		dataType: string
+		lineageTag: 19d30000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Sales Business Unit
+
+	column 'Customer Segmentation Description'
+		dataType: string
+		lineageTag: 19d30000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Customer Segmentation Description
+
+	column 'Country Name'
+		dataType: string
+		lineageTag: 19d30000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Country Name
+
+	partition 'Customer Ship To' = m
+		mode: import
+		source =
+				let
+					Raw = AnalysisServices.Database("SSASPROD", "BIQLTabular", [Query = "
+					EVALUATE
+					SELECTCOLUMNS (
+					    'Customer Ship To',
+					    ""ShipToCustomerSKey"", 'Customer Ship To'[ShipToCustomerSKey],
+					    ""Customer Code"", 'Customer Ship To'[Customer Ship To],
+					    ""Customer Name"", TRIM ( 'Customer Ship To'[Customer Ship To Name] ),
+					    ""Sales Business Unit"", 'Customer Ship To'[Sales Business Unit],
+					    ""Customer Segmentation Description"", 'Customer Ship To'[Customer Segmentation Desc],
+					    ""Country Name"", 'Customer Ship To'[Country Desc]
+					)
+					"]),
+					Data = Table.TransformColumnNames(Raw, each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]") then Text.Middle(_, 1, Text.Length(_) - 2) else _)
+				in
+					Data
+
+	annotation PBI_ResultType = Table

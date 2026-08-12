@@ -1167,3 +1167,250 @@ prerequisite and leaves it a nice-to-have.
 schema (`visualContainer 2.1.0`, `page 2.0.0`, `report 2.1.0`, `pagesMetadata 1.0.0` — all below the
 2.146 ceiling, so root `CLAUDE.md` §7's forward-skew trap has no purchase here). No bookmarks
 exist in this report, which removes that failure mode entirely. ✅
+
+**43 — SAME-DAY TIGHT CAPTURE TIES CLEAN: the sign-off validation. Every residual is a known,
+counted class.** Cognos export pulled and jumpbox refresh saved the **same minute** (2026-08-11
+10:20) — the tightest capture this report has had, and a **morning run**: min Promised Ship Date
+2026-02-09 = D−183, so the shipped `-183` window aligns exactly and V17's +0.90% boundary variance
+does not appear. Cache mounted locally, both tables exported uncapped, compared in full.
+
+**Safety Stock: 177 / 177, all 10 columns 0 mismatches, 0 unmatched keys on either side.** The V18
+snapshot-drift row is gone — same-day capture, no drift.
+
+**Shipments: 5,749 Cognos rows vs 5,775 model groups (7,332 lines collapsed to the 15-key report
+grain, India filter applied); 5,729 keys shared (99.65%).** On the shared keys:
+
+| Column | exact (1e-6) | after `#,##0` | Σ delta |
+|---|---|---|---|
+| Ordered Quantity *(control)* | **5,729 / 5,729 — 100.00%** | 100.00% | **+0.0000%** |
+| Ordered Quantity LBs | 5,670 (98.97%) | 5,694 (99.39%) | **−0.0021%** |
+| Ordered Quantity KGs | 5,670 (98.97%) | 5,696 (99.42%) | **−0.0021%** |
+
+Identical to V42's profile to the second decimal — the V40 weight rule holds on a third
+independent capture.
+
+**All 66 unmatched keys characterised, none new:** the 20 Cognos-only keys each pair to a
+model-only near-match differing in exactly **one attribute** — **8 TM rows** (`Brendan Schloerb` /
+`Bryan Fuka` vs `Not Available` — V22's thin-dimension gap, the *exact* predicted count), **11
+Global Parent rows** (all one customer: Cognos `Aegilops (X) Val de Reuil FR` vs EDW
+`Aegilops - Global parent` — source-side parent-name drift), **1 Bulk Item** (Cognos `-` vs EDW
+`DP050` — item master populated in EDW, NULL in legacy DW), **1 Segmentation**. The **26 unpaired
+model-only keys** all carry Promised Ship Dates of 2026-08-07/10/11 — current-week in-flight lines
+whose status moved in live Oracle after EDW's nightly load (the INSERT-current / UPDATE-stale drift,
+CLAUDE.md §7). Weight residuals after rounding (35 LB / 33 KG rows) are V42's characterised classes
+(sample-item factor-1 fallback + water-jug density + the one corrupt `Unit_Weight_Adj` row).
+
+**Verdict: VALIDATED FOR SIGN-OFF.** Report-out workbook is the remaining deliverable. ✅
+
+---
+
+## 13. Rejected v2 live prototype — `19 - Safety Stock and Order Size (SSAS Live)\`
+
+This folder is a validation prototype against `BIQLTabular_v2`; it is **not the production
+deliverable**. `BIQLTabular` is the production model on `SSASPROD`, while v2 is a
+modeling/development-like model. The live prototype also cannot expose the report's normal
+rolling Promised Ship Date filter as required by the team. It remains only as evidence that the
+three-page report layout and full-model field coverage validate. Do not publish it as Report 19.
+
+A second PBIP, live-connected to `SSASPROD` / `BIQLTabular_v2` (full Model, not a perspective),
+built on the report-12 `(SSAS Live)` pattern: thin PBIR report + proxy SemanticModel
+(`modelReference.json`, `analysisServicesDatabaseLive`), report-level measures in
+`definition\reportExtensions.json`, WHERE-clause logic as measure-internal `KEEPFILTERS` plus
+hidden Include measures applied as visual-level `= 1` filters. Same three pages, same visuals,
+same sorts and formatting as the import PBIP. Microsoft's PBIR validator passes it with
+0 errors / 0 warnings.
+
+**NOT blocked — the §1.1 blocker dissolves on the live connection.** `Item Branch`
+[`Lead Time MFG_BP`] (= `F4102.IBLTMF`, Cognos's *Lead Time Order to Ship*) sits in `v2.xmla`'s
+**base `Item Branch` table** (132 columns; the `Supply and Demand` perspective exposes 131 — the
+one it hides is exactly this column). §1.1's "zero perspectives" finding is true but only
+constrains perspective connections; this variant connects to the **full Model**
+(`Cube=Model` in `modelReference.json`), where every base-table column is visible. Every field
+the report binds, including this one, is proven present in `v2.xmla`. Belt-and-braces: probe J2
+(`$SYSTEM.TMSCHEMA_COLUMNS` on the live server) confirms before first open.
+
+### 13.1 Field mapping (import → live)
+
+| Header | Import (EDW SQL) | Live (BIQLTabular_v2) |
+|---|---|---|
+| Branch Plant (SS pages) | `ib.[Business Unit]` | `Item Branch`[Business Unit] |
+| Bulk Item | `ib.[Item Bulk]` | `Item Branch`[Item Bulk] |
+| 2nd Item Number (SS) | `ib.[Item Num 2nd]` | `Item Branch`[Item Num 2nd] |
+| Stock Type Code | `ib.[Stocking Type]` | `Item Branch`[Stocking Type] |
+| Master Planning Family | `ib.[Master Planning Family]` | `Item Branch`[Master Planning Family] |
+| Lead Time Order to Ship | `ib.[Lead Time MFG_BP]` | `Item Branch`[Lead Time MFG_BP] — base model only, no perspective; fine on full-Model live |
+| Planner Number | `ib.[Planner Num]` | `Item Branch`[Planner Num] |
+| Planner Name | ODS `F0101` merge (§3.4 trap 3) | `Item Branch`[Planner Name] — **EDW's stale name, see 13.3** |
+| Safety Stock | `ib.SafetyStock` | `Item Branch`[SafetyStock] |
+| Unit of Measure Primary | `ib.[UOM Primary]` | `Item Branch`[UOM Primary] |
+| Order Company / Order Number | `f.OrderCompany` / `f.OrderNum` | `Sales`[Order Company] / [Order Num] |
+| Branch Plant (Shipments) | `f.BusinessUnit` | `Sales`[BusinessUnit] |
+| Bulk Item (Shipments) | `[Bulk Item (Display)]` calc col | measure `[Bulk Item (Display)]` = COALESCE(SELECTEDVALUE(`Item Branch`[Item Bulk]), "-") |
+| 2nd Item Number (Shipments) | `f.ItemNum2nd` | `Sales`[Item Num 2nd] |
+| Ordered Date | `f.OrderDate` | `Sales`[Order Date] |
+| Ordered Quantity / LBs / KGs | measures over SQL-filtered rows | measures over `Sales`[QuantityOrderedPrimaryUOM] / [QuantityOrderedLB] / [QuantityOrderedKG] — see 13.3 |
+| Ordering Unit of Measure | `f.UOMTransaction` | `Sales`[UOM] |
+| Promised / Sched Pick dates | `f.PromisedShipmentDate` / `f.ScheduledPickDate` | `Sales`[Promised Shipment Date] / [Scheduled Pick Date] |
+| Customer Code / Name | `f.AddressNumShipTo` / `sa.AddressDesc` | `Customer Ship To`[Customer Ship To] / [Customer Ship To Name] |
+| Global Parent Name | `p5.AddressDesc` via `sa.AddressNum5th` | `Customer Parent`[Customer Parent Name] via `Sales`[ParentCustomerSKey] — verify equivalence on first refresh |
+| Customer Segmentation Description | `sc.CustomerSegmentationDesc` | `Customer Ship To`[Customer Segmentation Desc] |
+| TM Name | `ISNULL(tm.[Mailing Name],'Not Available')` | `Territory Manager`[Mailing Name] — broken keys render BLANK, not 'Not Available' (§0.4) |
+| Country Name | `sa.MailAddressCountryDesc` | `Customer Ship To`[Country Desc] |
+| DATE | `CAST(GETDATE() AS date)` | measure `[DATE]` = TODAY() |
+| Last Refreshed card | `#table` refresh stamp | measure on `Audit`: "Last refreshed: " & FORMAT([Last Updated], …) & " ET" |
+
+### 13.2 Where the WHERE clauses went
+
+- **Safety Stock predicates** (six plants, `SafetyStock > 1`, stocking type ≠ 'O', MPF contains F)
+  → hidden measure `Item Branch`[R19 SS Include], visual-level `= 1` filter on both Safety Stock
+  grids. All four inputs are SELECTEDVALUE-safe: each grid displays every filtered column, or sits
+  at `ItemBranchSKey` grain.
+- **Shipments predicates** (Sales Detail / status 999 / six plants / promised ≥ TODAY()−183 /
+  order-type & status-code exclusions / qty > 0 / ship-to AC01 ≠ INT / MPF contains F)
+  → `KEEPFILTERS` args inside all three quantity measures, so page 3's per-item aggregates filter
+  at LINE level exactly like the SQL WHERE. The Shipments grid's row set is gated by a visual
+  filter `[Ordered Quantity] > 0` (blank = no qualifying line in the window).
+- String predicates compare through `TRIM()` so they hold whether or not the cube's JDE codes
+  carry padding.
+- The **India-tax report filter** is not ported: per the import TMDL note it removes 0 rows and
+  every such line sits in an Indian branch plant, outside the six-plant predicate that IS ported
+  (measure-internal and Include-measure both).
+
+### 13.3 Disclosed differences vs the import PBIP
+
+1. **Planner Name** reverts to EDW's `Item Branch`[Planner Name] — the §3.4 ODS `F0101` fix
+   cannot ride a live connection. Ask #2 for Rohit's team: correct the planner name upstream
+   (EDW/`BIQLTabular_v2`), or accept EDW's rendering on this variant.
+2. **LB/KG quantities** bind the model's `QuantityOrderedLB/KG`, not the import's
+   `[Line Weight Adj]`-based columns (§0.5). Whether the cube's conversion carries the UOM fix is
+   a first-refresh validation item; expect the +0.376%-class drift if it does not.
+3. **TM Name** renders BLANK where the import renders 'Not Available' (the §0.4 orphaned-SKey
+   rows). Same upstream dimension gap, different cosmetic.
+4. **Global Parent Name** rides `ParentCustomerSKey` → `Customer Parent` instead of the ship-to's
+   5th address book; tie out on first refresh.
+5. Column format strings come from the cube; the import's `#0` / `d MMM, yyyy` etc. are only
+   reproduced where a report measure carries its own formatString.
+
+### 13.4 First-open checklist (jumpbox)
+
+1. Confirm `Lead Time MFG_BP` exists on `Item Branch` (`$SYSTEM.TMSCHEMA_COLUMNS`, probe J2 —
+   expected present in the base model per `v2.xmla`), then open the PBIP — Desktop should connect
+   straight to `SSASPROD` / `BIQLTabular_v2` with no dialog.
+2. Safety Stock grid vs import: 177 rows, 10 columns tie (§10). If row count is 0, check code
+   padding — the TRIM comparisons should make that impossible, but that is the first suspect.
+3. Shipments grid vs import at the same capture: row count and the three quantity totals
+   (LB/KG per 13.3.2), TM blanks vs 'Not Available' (13.3.3), Global Parent (13.3.4),
+   Planner Name deltas (13.3.1).
+4. Page 3 aggregates: spot-check one item's Ordered Quantity against the import page 3 — proves
+   the measure-internal line-level filtering.
+
+---
+
+## 14. Production build — `19 - Safety Stock and Order Size (SSAS Import)\`
+
+The production rebuild is a three-page PBIP backed by one external source:
+`SSASPROD` / **`BIQLTabular`**, imported through the on-premises gateway. It follows the agreed
+source ladder: SSAS Live was evaluated first; SSAS Import is selected because the Shipments page
+requires a normal date-filtered snapshot. The semantic model has no EDW or ODS datasource.
+`Last Refreshed` is an internal Power Query-generated one-row table and is not an external source.
+
+### 14.1 Source evaluation
+
+- **Shipments** defines the eligible Sales rows once in the SSAS native DAX query and imports
+  them at Sales-line grain. The query retrieves related attributes from `Item Branch`,
+  `Customer Ship To`, `Customer` (sold-to), and `Territory Manager`. The three local model
+  measures sum the imported primary-UOM, LB, and KG quantity columns; no temporary SSAS measures
+  or `SUMMARIZECOLUMNS` step is required. The displayed customer fields are Ship-To Customer
+  Code, Ship-To Customer Name, and Customer Sold-To Name; no parent-name field is displayed.
+  All Cognos predicates, including `Promised Shipment Date >= TODAY()-183`, execute once when
+  defining the eligible Sales-line table.
+- **Safety Stock** imports from the full model's `Item Branch` base table. The required
+  `Lead Time MFG_BP` column exists in production `BIQLTabular`; a perspective connection is not
+  used because the relevant perspective does not expose the column.
+- **Safety Stock vs Order Size** is derived from those two imported tables and needs no third
+  source.
+- **Planner Name** comes directly from production `Item Branch`. Its `First Last` presentation
+  differs from Cognos's `Last, First` presentation. The rebuild discloses that source-owned
+  display difference instead of adding an ODS dependency.
+
+### 14.2 Published validation — 2026-08-12
+
+The private PPU semantic model refreshed successfully through the production gateway at
+2026-08-12 14:40 ET. The published report is
+`https://app.powerbi.com/groups/50b98bb9-9fcb-47db-a0df-f2c167b351fb/reports/a33863c6-6309-49fc-9151-c140739c2ee7`.
+Microsoft's PBIR validator returns 0 errors and 0 warnings.
+
+Against the fresh 2026-08-12 Cognos export:
+
+- Safety Stock: **177 / 177 keys match**. All fields tie except Planner Name formatting on all
+  177 rows.
+- Shipments: **5,639 / 5,640 Cognos business keys match**; Cognos-only 1, Power BI-only 119.
+  Power BI uses the deterministic D-183 boundary and also includes same-day source movement after
+  the Cognos capture.
+- Ordered Quantity: **5,639 / 5,639 exact**, shared-key total delta **0.0000%**.
+- Ordered Quantity LBs: 5,561 / 5,639 agree at display precision; shared-key total delta
+  **-0.000681%**.
+- Ordered Quantity KGs: 5,457 / 5,639 agree at display precision; shared-key total delta
+  **-0.001396%**.
+- Customer Name differs on 135 shared keys because the production SSAS ship-to dimension does
+  not reproduce every legacy warehouse label. Customer Sold-To Name is the approved replacement
+  for the legacy Global Parent Name column. Segmentation, TM Name, and Country Name tie.
+
+The report-out workbook is
+`Cognos Reports\Excel Validation\_report_out\19 - Safety Stock and Order Size.xlsx`.
+
+---
+
+## 15. DAX-model build — `19 - Safety Stock and Order Size (DAX Model)\`
+
+This PBIP is the maintainable star-schema implementation of the production SSAS Import report.
+Its only external source is `SSASPROD` / `BIQLTabular`; it has no EDW or ODS dependency.
+
+### 15.1 Model structure
+
+- `Shipments` preserves Sales line grain and carries the source relationship keys and quantity
+  inputs.
+- `Safety Stock`, `Customer Ship To`, `Customer`, and `Territory Manager` are separate imported
+  dimensions.
+- The local model recreates the four relationships defined by the production XMLA model:
+  `ItemBranchSKey`, `ShipToCustomerSKey`, `SoldToCustomerSKey`, and
+  `TerritoryManagerSKey` from `Shipments` to their corresponding dimension keys.
+- Customer Sold-To Name comes from `Sales[SoldToCustomerSKey]` →
+  `Customer[CustomerSKey]`; no parent-name field is used.
+- Related display fields on `Shipments` are DAX calculated columns. Ordered Quantity, LBs, and
+  KGs are local DAX measures.
+
+### 15.2 Extraction boundary vs report logic
+
+Production `BIQLTabular` marks the three required quantity columns, their raw input measures,
+and all four relationship keys as hidden. `Cube.AddAndExpandDimensionColumn` and
+`Cube.AddMeasureColumn` cannot address hidden objects; the connector returns `The key didn't
+match any rows in the table.` The partitions therefore use minimal native DAX projections to
+expose source rows and source keys. This is an SSAS connector constraint, not report logic.
+
+The `Shipments` partition limits extraction to a 200-day candidate window, the six report plants,
+and stable row predicates. The local measures repeat those predicates and own the exact rolling
+`TODAY()-183` report boundary. Consequently, model behavior remains explicit in DAX while the
+import avoids scanning irrelevant Sales history.
+
+The Safety Stock inclusion rule is a DAX Boolean column applied as a page filter. The Shipments
+business rules are `KEEPFILTERS` expressions inside all three quantity measures. The report-level
+India tax-item exclusion remains a model-calculated Boolean filter.
+
+### 15.3 Validation
+
+The private PPU model refreshes through the production BIQLTabular gateway connection in about
+23 seconds. It imports 7,896 Sales source rows and groups them to the same 5,758 displayed
+Shipments rows as the validated flattened model. Safety Stock returns the same 177 rows.
+
+An `executeQueries` comparison across all displayed shipment attributes and the three measures
+returns 5,758 rows from each model, with zero rows unique to either model. Totals match:
+
+| Measure | DAX model total |
+|---|---:|
+| Ordered Quantity | 40,189,350.2172 |
+| Ordered Quantity LBs | 49,011,758.3570 |
+| Ordered Quantity KGs | 22,231,437.1689 |
+
+The validation report and semantic model are published in `Zack (Validation)` as
+`19 - Safety Stock and Order Size (DAX Model)`.

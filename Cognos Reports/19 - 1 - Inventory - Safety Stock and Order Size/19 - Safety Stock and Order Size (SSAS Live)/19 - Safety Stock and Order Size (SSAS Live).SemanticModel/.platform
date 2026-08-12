@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "19 - Safety Stock and Order Size (SSAS Live)"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "547045c7-df64-4c3f-86dc-5a9b73cd6086"
+  }
+}

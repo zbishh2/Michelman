@@ -1,0 +1,33 @@
+table Customer
+	lineageTag: 19d4a000-0000-4000-8000-000000000001
+
+	column CustomerSKey
+		dataType: int64
+		isHidden
+		lineageTag: 19d40000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: CustomerSKey
+
+	column 'Customer Sold To Name'
+		dataType: string
+		lineageTag: 19d40000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Customer Sold To Name
+
+	partition Customer = m
+		mode: import
+		source =
+				let
+					Raw = AnalysisServices.Database("SSASPROD", "BIQLTabular", [Query = "
+					EVALUATE
+					SELECTCOLUMNS (
+					    Customer,
+					    ""CustomerSKey"", Customer[CustomerSKey],
+					    ""Customer Sold To Name"", TRIM ( Customer[Customer Sold To Name] )
+					)
+					"]),
+					Data = Table.TransformColumnNames(Raw, each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]") then Text.Middle(_, 1, Text.Length(_) - 2) else _)
+				in
+					Data
+
+	annotation PBI_ResultType = Table

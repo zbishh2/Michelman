@@ -1,0 +1,149 @@
+table 'Safety Stock'
+	lineageTag: 19a1a000-0000-4000-8000-000000000001
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stock Type Code'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Stock Type Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Master Planning Family'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Master Planning Family
+
+		annotation SummarizationSetBy = Automatic
+
+	/// F4102.IBLTMF. Renders as a plain integer in the Cognos export.
+	column 'Lead Time Order to Ship'
+		dataType: int64
+		formatString: 0
+		lineageTag: 19a10000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Lead Time Order to Ship
+
+		annotation SummarizationSetBy = Automatic
+
+	/// JDE address book number of the planner. Identifier - never aggregate.
+	column 'Planner Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 19a10000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Planner Number
+
+		annotation SummarizationSetBy = Automatic
+
+	/// F4102.IBSAFE / 10000. Expressed in the item's PRIMARY unit of measure and NOT weight-converted. Export format is #0 - no thousands separator.
+	column 'Safety Stock'
+		dataType: double
+		formatString: 0
+		lineageTag: 19a10000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Safety Stock
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Unit of Measure Primary'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Unit of Measure Primary
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Grain key. Carries the many-to-one relationship from Shipments. Unique on all 177 rows with no nulls. Not displayed.
+	column ItemBranchSKey
+		dataType: int64
+		isHidden
+		lineageTag: 19a10000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: ItemBranchSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Planner name supplied by the production BIQLTabular Item Branch table. Source-owned display differences versus Cognos are disclosed in validation rather than introducing a second data source.
+	column 'Planner Name'
+		dataType: string
+		lineageTag: 19a10000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Planner Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Safety Stock' = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				DEFINE
+				    VAR R19SafetyStock =
+				        FILTER (
+				            'Item Branch',
+				            TRIM ( 'Item Branch'[Business Unit] ) IN { ""CINC"", ""CIN2"", ""AUBA"", ""AUB2"", ""SING"", ""SNG4"" }
+				                && 'Item Branch'[SafetyStock] > 1
+				                && TRIM ( 'Item Branch'[Stocking Type] ) <> ""O""
+				                && CONTAINSSTRING ( 'Item Branch'[Master Planning Family], ""F"" )
+				        )
+				EVALUATE
+				SELECTCOLUMNS (
+				    R19SafetyStock,
+				    ""Branch Plant"", TRIM ( 'Item Branch'[Business Unit] ),
+				    ""Bulk Item"", 'Item Branch'[Item Bulk],
+				    ""2nd Item Number"", 'Item Branch'[Item Num 2nd],
+				    ""Stock Type Code"", TRIM ( 'Item Branch'[Stocking Type] ),
+				    ""Master Planning Family"", TRIM ( 'Item Branch'[Master Planning Family] ),
+				    ""Lead Time Order to Ship"", 'Item Branch'[Lead Time MFG_BP],
+				    ""Planner Number"", 'Item Branch'[Planner Num],
+				    ""Planner Name"", TRIM ( 'Item Branch'[Planner Name] ),
+				    ""Safety Stock"", 'Item Branch'[SafetyStock],
+				    ""Unit of Measure Primary"", TRIM ( 'Item Branch'[UOM Primary] ),
+				    ""ItemBranchSKey"", 'Item Branch'[ItemBranchSKey]
+				)
+				ORDER BY [Bulk Item], [Branch Plant]
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table

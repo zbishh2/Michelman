@@ -1,0 +1,128 @@
+table 'Safety Stock'
+	lineageTag: 19d1a000-0000-4000-8000-000000000001
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 19d10000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 19d10000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 19d10000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+	column 'Stock Type Code'
+		dataType: string
+		lineageTag: 19d10000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Stock Type Code
+
+	column 'Master Planning Family'
+		dataType: string
+		lineageTag: 19d10000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Master Planning Family
+
+	column 'Lead Time Order to Ship'
+		dataType: int64
+		formatString: 0
+		lineageTag: 19d10000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Lead Time Order to Ship
+
+	column 'Planner Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 19d10000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Planner Number
+
+	column 'Safety Stock'
+		dataType: double
+		formatString: 0
+		lineageTag: 19d10000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Safety Stock
+
+	column 'Unit of Measure Primary'
+		dataType: string
+		lineageTag: 19d10000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Unit of Measure Primary
+
+	column ItemBranchSKey
+		dataType: int64
+		isHidden
+		lineageTag: 19d10000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: ItemBranchSKey
+
+	column 'Planner Name'
+		dataType: string
+		lineageTag: 19d10000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Planner Name
+
+	column 'Item Global Bulk'
+		dataType: string
+		isHidden
+		lineageTag: 19d10000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Item Global Bulk
+
+	column 'R19 Safety Stock Include' =
+			TRIM ( 'Safety Stock'[Branch Plant] ) IN { "CINC", "CIN2", "AUBA", "AUB2", "SING", "SNG4" }
+				&& 'Safety Stock'[Safety Stock] > 1
+				&& TRIM ( 'Safety Stock'[Stock Type Code] ) <> "O"
+				&& CONTAINSSTRING ( COALESCE ( 'Safety Stock'[Master Planning Family], "" ), "F" )
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 19d10000-0000-4000-8000-00000000000d
+		summarizeBy: none
+
+	partition 'Safety Stock' = m
+		mode: import
+		source =
+				let
+					Raw = AnalysisServices.Database(
+						"SSASPROD",
+						"BIQLTabular",
+						[
+							Query = "
+							EVALUATE
+							SELECTCOLUMNS (
+							    'Item Branch',
+							    ""ItemBranchSKey"", 'Item Branch'[ItemBranchSKey],
+							    ""Branch Plant"", TRIM ( 'Item Branch'[Business Unit] ),
+							    ""Bulk Item"", 'Item Branch'[Item Bulk],
+							    ""2nd Item Number"", 'Item Branch'[Item Num 2nd],
+							    ""Stock Type Code"", TRIM ( 'Item Branch'[Stocking Type] ),
+							    ""Master Planning Family"", TRIM ( 'Item Branch'[Master Planning Family] ),
+							    ""Lead Time Order to Ship"", 'Item Branch'[Lead Time MFG_BP],
+							    ""Planner Number"", 'Item Branch'[Planner Num],
+							    ""Planner Name"", TRIM ( 'Item Branch'[Planner Name] ),
+							    ""Safety Stock"", 'Item Branch'[SafetyStock],
+							    ""Unit of Measure Primary"", TRIM ( 'Item Branch'[UOM Primary] ),
+							    ""Item Global Bulk"", 'Item Branch'[Item Global Bulk]
+							)
+							"
+						]
+					),
+					Data = Table.TransformColumnNames(
+						Raw,
+						each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+							then Text.Middle(_, 1, Text.Length(_) - 2)
+							else _
+					)
+				in
+					Data
+
+	annotation PBI_ResultType = Table

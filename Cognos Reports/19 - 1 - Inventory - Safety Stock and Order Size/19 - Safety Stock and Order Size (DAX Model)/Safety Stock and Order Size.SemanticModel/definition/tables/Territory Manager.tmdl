@@ -1,0 +1,33 @@
+table 'Territory Manager'
+	lineageTag: 19d5a000-0000-4000-8000-000000000001
+
+	column TerritoryManagerSKey
+		dataType: int64
+		isHidden
+		lineageTag: 19d50000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: TerritoryManagerSKey
+
+	column 'TM Name'
+		dataType: string
+		lineageTag: 19d50000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: TM Name
+
+	partition 'Territory Manager' = m
+		mode: import
+		source =
+				let
+					Raw = AnalysisServices.Database("SSASPROD", "BIQLTabular", [Query = "
+					EVALUATE
+					SELECTCOLUMNS (
+					    'Territory Manager',
+					    ""TerritoryManagerSKey"", 'Territory Manager'[TerritoryManagerSKey],
+					    ""TM Name"", 'Territory Manager'[Mailing Name]
+					)
+					"]),
+					Data = Table.TransformColumnNames(Raw, each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]") then Text.Middle(_, 1, Text.Length(_) - 2) else _)
+				in
+					Data
+
+	annotation PBI_ResultType = Table

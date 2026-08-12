@@ -1,0 +1,337 @@
+table Shipments
+	lineageTag: 19d2a000-0000-4000-8000-000000000001
+
+	measure 'Ordered Quantity' =
+			CALCULATE (
+				SUM ( Shipments[Ordered Quantity Primary UOM] ),
+				KEEPFILTERS (
+					FILTER (
+						Shipments,
+						TRIM ( Shipments[Record Type] ) = "Sales Detail"
+							&& TRIM ( Shipments[Status Code Next] ) = "999"
+							&& TRIM ( Shipments[Business Unit] ) IN { "CINC", "CIN2", "AUBA", "AUB2", "SING", "SNG4" }
+							&& Shipments[Promised Ship Date] >= TODAY () - 183
+							&& NOT TRIM ( Shipments[Order Type] ) IN { "S5", "ST" }
+							&& NOT CONTAINSSTRING ( COALESCE ( Shipments[Line Type], "" ), "F" )
+							&& NOT TRIM ( Shipments[Status Code Last] ) IN { "980", "984" }
+							&& Shipments[Ordered Quantity Primary UOM] > 0
+					)
+				),
+				KEEPFILTERS ( FILTER ( 'Customer Ship To', TRIM ( 'Customer Ship To'[Sales Business Unit] ) <> "INT" ) ),
+				KEEPFILTERS ( FILTER ( 'Safety Stock', CONTAINSSTRING ( COALESCE ( 'Safety Stock'[Master Planning Family], "" ), "F" ) ) )
+			)
+		formatString: #,##0
+		lineageTag: 19d2b000-0000-4000-8000-000000000001
+
+	measure 'Ordered Quantity LBs' =
+			CALCULATE (
+				SUM ( Shipments[Ordered Quantity LBs (Line)] ),
+				KEEPFILTERS (
+					FILTER (
+						Shipments,
+						TRIM ( Shipments[Record Type] ) = "Sales Detail"
+							&& TRIM ( Shipments[Status Code Next] ) = "999"
+							&& TRIM ( Shipments[Business Unit] ) IN { "CINC", "CIN2", "AUBA", "AUB2", "SING", "SNG4" }
+							&& Shipments[Promised Ship Date] >= TODAY () - 183
+							&& NOT TRIM ( Shipments[Order Type] ) IN { "S5", "ST" }
+							&& NOT CONTAINSSTRING ( COALESCE ( Shipments[Line Type], "" ), "F" )
+							&& NOT TRIM ( Shipments[Status Code Last] ) IN { "980", "984" }
+							&& Shipments[Ordered Quantity Primary UOM] > 0
+					)
+				),
+				KEEPFILTERS ( FILTER ( 'Customer Ship To', TRIM ( 'Customer Ship To'[Sales Business Unit] ) <> "INT" ) ),
+				KEEPFILTERS ( FILTER ( 'Safety Stock', CONTAINSSTRING ( COALESCE ( 'Safety Stock'[Master Planning Family], "" ), "F" ) ) )
+			)
+		formatString: #,##0
+		lineageTag: 19d2b000-0000-4000-8000-000000000002
+
+	measure 'Ordered Quantity KGs' =
+			CALCULATE (
+				SUM ( Shipments[Ordered Quantity KGs (Line)] ),
+				KEEPFILTERS (
+					FILTER (
+						Shipments,
+						TRIM ( Shipments[Record Type] ) = "Sales Detail"
+							&& TRIM ( Shipments[Status Code Next] ) = "999"
+							&& TRIM ( Shipments[Business Unit] ) IN { "CINC", "CIN2", "AUBA", "AUB2", "SING", "SNG4" }
+							&& Shipments[Promised Ship Date] >= TODAY () - 183
+							&& NOT TRIM ( Shipments[Order Type] ) IN { "S5", "ST" }
+							&& NOT CONTAINSSTRING ( COALESCE ( Shipments[Line Type], "" ), "F" )
+							&& NOT TRIM ( Shipments[Status Code Last] ) IN { "980", "984" }
+							&& Shipments[Ordered Quantity Primary UOM] > 0
+					)
+				),
+				KEEPFILTERS ( FILTER ( 'Customer Ship To', TRIM ( 'Customer Ship To'[Sales Business Unit] ) <> "INT" ) ),
+				KEEPFILTERS ( FILTER ( 'Safety Stock', CONTAINSSTRING ( COALESCE ( 'Safety Stock'[Master Planning Family], "" ), "F" ) ) )
+			)
+		formatString: #,##0
+		lineageTag: 19d2b000-0000-4000-8000-000000000003
+
+	column 'Order Company'
+		dataType: string
+		lineageTag: 19d20000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: Order Company
+
+	column 'Order Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 19d20000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Order Number
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 19d20000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+	column 'Ordered Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 19d20000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Ordered Date
+
+	column 'Ordered Quantity Primary UOM'
+		dataType: double
+		isHidden
+		formatString: #,##0
+		lineageTag: 19d20000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Ordered Quantity Primary UOM
+
+	column 'Promised Ship Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 19d20000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Promised Ship Date
+
+	column 'Scheduled Pick Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 19d20000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Scheduled Pick Date
+
+	column ItemBranchSKey
+		dataType: int64
+		isHidden
+		lineageTag: 19d20000-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: ItemBranchSKey
+
+	column 'Tax Item Key' =
+			VAR GlobalBulkItem = TRIM ( COALESCE ( RELATED ( 'Safety Stock'[Item Global Bulk] ), "" ) )
+			RETURN IF ( GlobalBulkItem IN { "", "-" }, TRIM ( Shipments[2nd Item Number] ), GlobalBulkItem )
+		dataType: string
+		isHidden
+		lineageTag: 19d20000-0000-4000-8000-00000000001f
+		summarizeBy: none
+
+	column 'Is India Tax Item' = Shipments[Tax Item Key] IN { "IGST", "CGST", "SGST", "CVD", "ADD" }
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 19d20000-0000-4000-8000-000000000020
+		summarizeBy: none
+
+	column 'Bulk Item (Display)' = COALESCE ( RELATED ( 'Safety Stock'[Bulk Item] ), "-" )
+		dataType: string
+		lineageTag: 19d20000-0000-4000-8000-000000000017
+		summarizeBy: none
+
+	column 'Business Unit'
+		dataType: string
+		isHidden
+		lineageTag: 19d20000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Business Unit
+
+	column 'Branch Plant' = TRIM ( Shipments[Business Unit] )
+		dataType: string
+		lineageTag: 19d20000-0000-4000-8000-000000000003
+		summarizeBy: none
+
+	column UOM
+		dataType: string
+		isHidden
+		lineageTag: 19d20000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: UOM
+
+	column 'Ordering Unit of Measure' = TRIM ( Shipments[UOM] )
+		dataType: string
+		lineageTag: 19d20000-0000-4000-8000-000000000008
+		summarizeBy: none
+
+	column 'Ordered Quantity LBs (Line)'
+		dataType: double
+		isHidden
+		formatString: #,##0
+		lineageTag: 19d20000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Ordered Quantity LBs (Line)
+
+	column 'Ordered Quantity KGs (Line)'
+		dataType: double
+		isHidden
+		formatString: #,##0
+		lineageTag: 19d20000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Ordered Quantity KGs (Line)
+
+	column 'Record Type'
+		dataType: string
+		isHidden
+		lineageTag: 19d20000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: Record Type
+
+	column 'Status Code Next'
+		dataType: string
+		isHidden
+		lineageTag: 19d20000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: Status Code Next
+
+	column 'Status Code Last'
+		dataType: string
+		isHidden
+		lineageTag: 19d20000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: Status Code Last
+
+	column 'Order Type'
+		dataType: string
+		isHidden
+		lineageTag: 19d20000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: Order Type
+
+	column 'Line Type'
+		dataType: string
+		isHidden
+		lineageTag: 19d20000-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: Line Type
+
+	column ShipToCustomerSKey
+		dataType: int64
+		isHidden
+		lineageTag: 19d20000-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: ShipToCustomerSKey
+
+	column SoldToCustomerSKey
+		dataType: int64
+		isHidden
+		lineageTag: 19d20000-0000-4000-8000-000000000015
+		summarizeBy: none
+		sourceColumn: SoldToCustomerSKey
+
+	column TerritoryManagerSKey
+		dataType: int64
+		isHidden
+		lineageTag: 19d20000-0000-4000-8000-000000000016
+		summarizeBy: none
+		sourceColumn: TerritoryManagerSKey
+
+	column 'Customer Code' = RELATED ( 'Customer Ship To'[Customer Code] )
+		dataType: int64
+		formatString: 0
+		lineageTag: 19d20000-0000-4000-8000-000000000018
+		summarizeBy: none
+
+	column 'Customer Name' = TRIM ( RELATED ( 'Customer Ship To'[Customer Name] ) )
+		dataType: string
+		lineageTag: 19d20000-0000-4000-8000-000000000019
+		summarizeBy: none
+
+	column 'Customer Sold To Name' = TRIM ( RELATED ( Customer[Customer Sold To Name] ) )
+		dataType: string
+		lineageTag: 19d20000-0000-4000-8000-00000000001a
+		summarizeBy: none
+
+	column 'Customer Segmentation Description' = RELATED ( 'Customer Ship To'[Customer Segmentation Description] )
+		dataType: string
+		lineageTag: 19d20000-0000-4000-8000-00000000001b
+		summarizeBy: none
+
+	column 'TM Name' = COALESCE ( TRIM ( RELATED ( 'Territory Manager'[TM Name] ) ), "Not Available" )
+		dataType: string
+		lineageTag: 19d20000-0000-4000-8000-00000000001c
+		summarizeBy: none
+
+	column 'Country Name' = RELATED ( 'Customer Ship To'[Country Name] )
+		dataType: string
+		lineageTag: 19d20000-0000-4000-8000-00000000001d
+		summarizeBy: none
+
+	column DATE = TODAY ()
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 19d20000-0000-4000-8000-00000000001e
+		summarizeBy: none
+
+	partition Shipments = m
+		mode: import
+		source =
+				let
+					Raw = AnalysisServices.Database(
+						"SSASPROD",
+						"BIQLTabular",
+						[
+							Query = "
+							EVALUATE
+							VAR ExtractionRows =
+							    FILTER (
+							        Sales,
+							        Sales[Promised Shipment Date] >= TODAY () - 200
+							            && TRIM ( Sales[Record Type] ) = ""Sales Detail""
+							            && TRIM ( Sales[BusinessUnit] ) IN { ""CINC"", ""CIN2"", ""AUBA"", ""AUB2"", ""SING"", ""SNG4"" }
+							            && TRIM ( Sales[Status Code Next] ) = ""999""
+							            && NOT TRIM ( Sales[Order Type] ) IN { ""S5"", ""ST"" }
+							            && NOT CONTAINSSTRING ( Sales[Line Type], ""F"" )
+							            && NOT TRIM ( Sales[Status Code Last] ) IN { ""980"", ""984"" }
+							            && Sales[QuantityOrderedPrimaryUOM] > 0
+							            && TRIM ( RELATED ( 'Customer Ship To'[Sales Business Unit] ) ) <> ""INT""
+							            && CONTAINSSTRING ( RELATED ( 'Item Branch'[Master Planning Family] ), ""F"" )
+							    )
+							RETURN
+							    SELECTCOLUMNS (
+							        ExtractionRows,
+							        ""Order Company"", Sales[Order Company],
+							        ""Business Unit"", Sales[BusinessUnit],
+							        ""Order Number"", Sales[Order Num],
+							        ""2nd Item Number"", Sales[Item Num 2nd],
+							        ""Ordered Date"", Sales[Order Date],
+							        ""UOM"", Sales[UOM],
+							        ""Promised Ship Date"", Sales[Promised Shipment Date],
+							        ""Scheduled Pick Date"", Sales[Scheduled Pick Date],
+							        ""Ordered Quantity Primary UOM"", Sales[QuantityOrderedPrimaryUOM],
+							        ""Ordered Quantity LBs (Line)"", Sales[QuantityOrderedLB],
+							        ""Ordered Quantity KGs (Line)"", Sales[QuantityOrderedKG],
+							        ""Record Type"", Sales[Record Type],
+							        ""Status Code Next"", Sales[Status Code Next],
+							        ""Status Code Last"", Sales[Status Code Last],
+							        ""Order Type"", Sales[Order Type],
+							        ""Line Type"", Sales[Line Type],
+							        ""ItemBranchSKey"", Sales[ItemBranchSKey],
+							        ""ShipToCustomerSKey"", Sales[ShipToCustomerSKey],
+							        ""SoldToCustomerSKey"", Sales[SoldToCustomerSKey],
+							        ""TerritoryManagerSKey"", Sales[TerritoryManagerSKey]
+							    )
+							"
+						]
+					),
+					Data = Table.TransformColumnNames(
+						Raw,
+						each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+							then Text.Middle(_, 1, Text.Length(_) - 2)
+							else _
+					)
+				in
+					Data
+
+	annotation PBI_ResultType = Table

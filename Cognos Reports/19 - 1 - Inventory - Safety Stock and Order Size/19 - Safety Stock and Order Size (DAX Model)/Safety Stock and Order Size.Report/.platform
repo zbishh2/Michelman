@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Safety Stock and Order Size"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "82da8f48-eb32-4c1d-9d59-dd686f771133"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/reportExtension/1.0.0/schema.json",
+  "name": "extension",
+  "entities": [
+    {
+      "name": "Sales",
+      "measures": [
+        {
+          "name": "Ordered Quantity",
+          "dataType": "Double",
+          "expression": "CALCULATE (\n    SUM ( Sales[QuantityOrderedPrimaryUOM] ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Record Type] ), TRIM ( Sales[Record Type] ) = \"Sales Detail\" ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Status Code Next] ), TRIM ( Sales[Status Code Next] ) = \"999\" ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[BusinessUnit] ), TRIM ( Sales[BusinessUnit] ) IN { \"CINC\", \"CIN2\", \"AUBA\", \"AUB2\", \"SING\", \"SNG4\" } ) ),\n    KEEPFILTERS ( Sales[Promised Shipment Date] >= TODAY () - 183 ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Order Type] ), NOT TRIM ( Sales[Order Type] ) IN { \"S5\", \"ST\" } ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Line Type] ), NOT CONTAINSSTRING ( Sales[Line Type], \"F\" ) ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Status Code Last] ), NOT TRIM ( Sales[Status Code Last] ) IN { \"980\", \"984\" } ) ),\n    KEEPFILTERS ( Sales[QuantityOrderedPrimaryUOM] > 0 ),\n    KEEPFILTERS ( FILTER ( VALUES ( 'Customer Ship To'[Sales Business Unit] ), TRIM ( COALESCE ( 'Customer Ship To'[Sales Business Unit], \"\" ) ) <> \"INT\" ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( 'Item Branch'[Master Planning Family] ), CONTAINSSTRING ( 'Item Branch'[Master Planning Family], \"F\" ) ) )\n)",
+          "formatString": "#,##0"
+        },
+        {
+          "name": "Ordered Quantity LBs",
+          "dataType": "Double",
+          "expression": "CALCULATE (\n    SUM ( Sales[QuantityOrderedLB] ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Record Type] ), TRIM ( Sales[Record Type] ) = \"Sales Detail\" ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Status Code Next] ), TRIM ( Sales[Status Code Next] ) = \"999\" ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[BusinessUnit] ), TRIM ( Sales[BusinessUnit] ) IN { \"CINC\", \"CIN2\", \"AUBA\", \"AUB2\", \"SING\", \"SNG4\" } ) ),\n    KEEPFILTERS ( Sales[Promised Shipment Date] >= TODAY () - 183 ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Order Type] ), NOT TRIM ( Sales[Order Type] ) IN { \"S5\", \"ST\" } ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Line Type] ), NOT CONTAINSSTRING ( Sales[Line Type], \"F\" ) ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Status Code Last] ), NOT TRIM ( Sales[Status Code Last] ) IN { \"980\", \"984\" } ) ),\n    KEEPFILTERS ( Sales[QuantityOrderedPrimaryUOM] > 0 ),\n    KEEPFILTERS ( FILTER ( VALUES ( 'Customer Ship To'[Sales Business Unit] ), TRIM ( COALESCE ( 'Customer Ship To'[Sales Business Unit], \"\" ) ) <> \"INT\" ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( 'Item Branch'[Master Planning Family] ), CONTAINSSTRING ( 'Item Branch'[Master Planning Family], \"F\" ) ) )\n)",
+          "formatString": "#,##0"
+        },
+        {
+          "name": "Ordered Quantity KGs",
+          "dataType": "Double",
+          "expression": "CALCULATE (\n    SUM ( Sales[QuantityOrderedKG] ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Record Type] ), TRIM ( Sales[Record Type] ) = \"Sales Detail\" ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Status Code Next] ), TRIM ( Sales[Status Code Next] ) = \"999\" ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[BusinessUnit] ), TRIM ( Sales[BusinessUnit] ) IN { \"CINC\", \"CIN2\", \"AUBA\", \"AUB2\", \"SING\", \"SNG4\" } ) ),\n    KEEPFILTERS ( Sales[Promised Shipment Date] >= TODAY () - 183 ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Order Type] ), NOT TRIM ( Sales[Order Type] ) IN { \"S5\", \"ST\" } ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Line Type] ), NOT CONTAINSSTRING ( Sales[Line Type], \"F\" ) ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( Sales[Status Code Last] ), NOT TRIM ( Sales[Status Code Last] ) IN { \"980\", \"984\" } ) ),\n    KEEPFILTERS ( Sales[QuantityOrderedPrimaryUOM] > 0 ),\n    KEEPFILTERS ( FILTER ( VALUES ( 'Customer Ship To'[Sales Business Unit] ), TRIM ( COALESCE ( 'Customer Ship To'[Sales Business Unit], \"\" ) ) <> \"INT\" ) ),\n    KEEPFILTERS ( FILTER ( VALUES ( 'Item Branch'[Master Planning Family] ), CONTAINSSTRING ( 'Item Branch'[Master Planning Family], \"F\" ) ) )\n)",
+          "formatString": "#,##0"
+        },
+        {
+          "name": "DATE",
+          "dataType": "DateTime",
+          "expression": "TODAY ()",
+          "formatString": "d MMM, yyyy"
+        }
+      ]
+    },
+    {
+      "name": "Item Branch",
+      "measures": [
+        {
+          "name": "Bulk Item (Display)",
+          "dataType": "Text",
+          "expression": "COALESCE ( SELECTEDVALUE ( 'Item Branch'[Item Bulk] ), \"-\" )"
+        },
+        {
+          "name": "R19 SS Include",
+          "dataType": "Integer",
+          "expression": "IF (\n    TRIM ( SELECTEDVALUE ( 'Item Branch'[Business Unit] ) ) IN { \"CINC\", \"CIN2\", \"AUBA\", \"AUB2\", \"SING\", \"SNG4\" }\n        && SELECTEDVALUE ( 'Item Branch'[SafetyStock] ) > 1\n        && TRIM ( COALESCE ( SELECTEDVALUE ( 'Item Branch'[Stocking Type] ), \"\" ) ) <> \"O\"\n        && CONTAINSSTRING ( SELECTEDVALUE ( 'Item Branch'[Master Planning Family] ), \"F\" ),\n    1,\n    0\n)",
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "name": "Audit",
+      "measures": [
+        {
+          "name": "Last Refreshed Label",
+          "dataType": "Text",
+          "expression": "\"Last refreshed: \" & FORMAT ( [Last Updated], \"MMM d, yyyy h:mm:ss AM/PM\" ) & \" ET\""
+        }
+      ]
+    }
+  ]
+}
