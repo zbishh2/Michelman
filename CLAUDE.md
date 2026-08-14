@@ -34,7 +34,9 @@ The cycle, every time:
 1. `connection_operations ConnectFabric` — workspace `Zack (Validation)`, the host model above.
    This reaches the XMLA endpoint `powerbi://api.powerbi.com/v1.0/myorg/Zack%20%28Validation%29`.
 2. `table_operations Create` — a **new** table whose `mExpression` carries the probe query.
-3. `table_operations RefreshWithXMLA` — **that table only**.
+3. `table_operations RefreshWithXMLA` — **that table only**. `references` takes a **single** table
+   for this operation: passing several refreshes only the first, silently leaving the rest empty.
+   One call per table.
 4. Read it with `dax_query_operations Execute` over the same connection.
 5. `table_operations Delete` the probe table, then `List` to confirm the model is back to shape.
 
