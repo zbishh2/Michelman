@@ -1,0 +1,36 @@
+EVALUATE
+VAR LatestDate = CALCULATE ( MAX ( 'Inventory Snapshot'[Calendar Date] ) )
+VAR Scope =
+    FILTER (
+        'Inventory Snapshot',
+        'Inventory Snapshot'[Calendar Date] = LatestDate
+            && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+            && TRIM ( RELATED ( 'Branch'[Branch Plant] ) ) = "SNG4"
+            && TRIM ( RELATED ( 'Item Branch'[Item Num Bulk] ) ) = "ESC5200.S"
+    )
+RETURN
+    SELECTCOLUMNS (
+        Scope,
+        "Calendar Date", 'Inventory Snapshot'[Calendar Date],
+        "Location", TRIM ( 'Inventory Snapshot'[Location] ),
+        "Lot Number", TRIM ( 'Inventory Snapshot'[LotNum] ),
+        "Cost Method", TRIM ( 'Inventory Snapshot'[CostMethod] ),
+        "Costing Selection Inventory", TRIM ( 'Inventory Snapshot'[CostingSelectionInventory] ),
+        "Cost Method Is Selection",
+            IF (
+                TRIM ( 'Inventory Snapshot'[CostMethod] )
+                    = TRIM ( 'Inventory Snapshot'[CostingSelectionInventory] ),
+                "Y",
+                "N"
+            ),
+        "On Hand", 'Inventory Snapshot'[QuantityOnHandPrimaryUOM],
+        "Unit Cost IC", 'Inventory Snapshot'[AmountUnitCost_IC],
+        "Ext Cost USD",
+            VAR SnapDate = 'Inventory Snapshot'[Calendar Date]
+            RETURN
+                CALCULATE (
+                    [Total Ext Cost IC USD],
+                    TREATAS ( { SnapDate }, 'Calendar Inventory Snapshot'[Calendar Date] )
+                )
+    )
+ORDER BY [Lot Number], [Cost Method]

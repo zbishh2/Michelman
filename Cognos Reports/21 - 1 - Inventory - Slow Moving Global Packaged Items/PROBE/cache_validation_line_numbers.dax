@@ -1,0 +1,18 @@
+EVALUATE
+TOPN (
+    50,
+    FILTER (
+        SELECTCOLUMNS (
+            Shipments,
+            "Order Company", Shipments[Order Company],
+            "Order Number", Shipments[Order Number],
+            "Line Number", Shipments[Line Number],
+            "Legacy Five Characters", LEFT ( Shipments[Line Number], 5 ),
+            "Ordered Quantity", Shipments[Ordered Quantity]
+        ),
+        LEN ( [Line Number] ) > 5
+    ),
+    [Order Company], ASC,
+    [Order Number], ASC,
+    [Line Number], ASC
+)

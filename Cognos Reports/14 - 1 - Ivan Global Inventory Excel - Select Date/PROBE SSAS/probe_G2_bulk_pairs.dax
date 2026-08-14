@@ -1,0 +1,34 @@
+EVALUATE
+VAR Scope =
+    FILTER (
+        'Item Branch',
+        TRIM ( 'Item Branch'[Item Num Bulk] ) IN { "ESC5200", "ESC5200.E", "ESC5200.S" }
+            || TRIM ( 'Item Branch'[Item Bulk] ) IN { "ESC5200", "ESC5200.E", "ESC5200.S" }
+            || TRIM ( 'Item Branch'[Master Planning Family] ) IN { "ATP", "ETP", "RAW" }
+    )
+VAR Pairs =
+    DISTINCT (
+        SELECTCOLUMNS (
+            Scope,
+            "Business Unit", TRIM ( 'Item Branch'[Business Unit] ),
+            "2nd Item Number", TRIM ( 'Item Branch'[Item Num 2nd] ),
+            "Master Planning Family", TRIM ( 'Item Branch'[Master Planning Family] ),
+            "Global Bulk F554101", TRIM ( 'Item Branch'[Item Num Global Bulk] ),
+            "Global Bulk F4102", TRIM ( 'Item Branch'[Item Global Bulk] ),
+            "Bulk F554101", TRIM ( 'Item Branch'[Item Num Bulk] ),
+            "Bulk F4102", TRIM ( 'Item Branch'[Item Bulk] )
+        )
+    )
+VAR GlobalBulkDisagreements =
+    COUNTROWS ( FILTER ( Pairs, [Global Bulk F554101] <> [Global Bulk F4102] ) )
+VAR BulkDisagreements =
+    COUNTROWS ( FILTER ( Pairs, [Bulk F554101] <> [Bulk F4102] ) )
+RETURN
+    ADDCOLUMNS (
+        Pairs,
+        "Global Bulk Disagrees", IF ( [Global Bulk F554101] <> [Global Bulk F4102], 1, 0 ),
+        "Bulk Disagrees", IF ( [Bulk F554101] <> [Bulk F4102], 1, 0 ),
+        "Total Global Bulk Disagreements", GlobalBulkDisagreements,
+        "Total Bulk Disagreements", BulkDisagreements
+    )
+ORDER BY [Global Bulk Disagrees] DESC, [Bulk Disagrees] DESC, [Business Unit], [2nd Item Number]

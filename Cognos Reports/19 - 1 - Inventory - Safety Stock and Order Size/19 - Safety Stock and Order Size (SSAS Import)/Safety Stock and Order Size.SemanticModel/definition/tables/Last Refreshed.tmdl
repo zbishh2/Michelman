@@ -42,3 +42,4 @@ table 'Last Refreshed'
 				    Output
 
 	annotation PBI_ResultType = Table
+

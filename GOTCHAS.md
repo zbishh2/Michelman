@@ -20,6 +20,8 @@ One line each, present tense. If it needs a story, it doesn't belong here.
 - Power BI invalidates a partition when its M changes as *text*, not semantically.
 - A DAX calculated table's columns materialize only on refresh, so relationships to one are invalid on a never-refreshed PBIP ("uses an invalid column ID"). Use an import table for anything a relationship points at.
 - ThemeDataColor `ColorId` N resolves to theme `dataColors[N-2]`.
+- An `actionButton`'s own `objects` (`fill`, `text`, `outline`, `shape`) are ignored when hand-written — the button draws as a bare box whatever they say, and the validator passes them. Build the look from a `shape` plus a `textbox`, and lay a transparent button on top for the click: only `visualContainerObjects` (`background`/`border` off, `visualLink`) take effect. Putting those style objects under `visualContainerObjects` instead makes the whole report fail to open.
+- Cross-report navigation is `visualLink` `type: 'WebUrl'` + `webUrl` — the workspace URL of the target page. `PageNavigation` reaches pages in the same report only.
 
 ## DAX
 - `1 - DIVIDE(...)` returns 1 on an empty period → false 100%. Write `(a-b)/a` with DIVIDE instead.
@@ -28,6 +30,12 @@ One line each, present tense. If it needs a story, it doesn't belong here.
 - Report grids can't use `USERELATIONSHIP`; whichever relationship is active governs grids.
 - A non-blankable measure (e.g. `USERPRINCIPALNAME()`) in a field well disables slicer pruning on cross-table grids. Gate it: `IF(NOT ISBLANK([X]), ...)`.
 - Dimension columns pulled across a 1:1 bidirectional hop into a group-by cause OOM; use `RELATED()` calc columns on the fact instead.
+- `VALUES(dim[col])` includes the relationship's blank member wherever the fact carries keys the dim has no row for, so counting "everything except X" comes back one too high and any `<= 1` guard never fires. List the members you want instead of excluding the ones you don't.
+- A measure written as `CALCULATE(x, dim[col] = "A")` ignores a slicer on that same column — the inner filter wins. For per-member measures that must still answer to a slicer, gate them: `IF("A" IN VALUES(dim[col]), CALCULATE(...))`. The gate is inert on pages with no slicer on that column, since `VALUES` then returns every member.
+
+## SSAS
+- `BIQLTabular_ISH` `Inventory Snapshot` carries each position once per cost method — filter `TRIM([CostMethod]) = "07"` (standard cost) or quantities fan out.
+- SSASPROD is compatibility level 1500 (SSAS 2019): no `COALESCE` in any DAX the server evaluates — RDL CommandText, live-connection report measures, native import queries. Use `IF(ISBLANK(x), y, x)`, or nothing at all under `TRIM` (TRIM coerces BLANK to `""`). Local-model DAX is unaffected, and the local mount runs Desktop's modern engine so it cannot catch this — only prod can. `CONTAINSSTRING`/`SELECTEDVALUE` are safe at 1500.
 
 ## SQL / Oracle→T-SQL porting
 - EDW is case-sensitive: column names AND string predicates.
@@ -62,4 +70,6 @@ One line each, present tense. If it needs a story, it doesn't belong here.
 - The ambient `CLOUDFLARE_API_TOKEN` env var is the wrong (personal) account — the Michelman token is `writeback/CF Token.txt` (utf-8-sig).
 - A newly deployed Cloudflare Worker 404s for a few seconds.
 - Custom visuals: a pbiviz that won't scroll = no pixel height in the chain; stamp `options.viewport` in px onto the container and give flex panes `min-height:0`.
+- Custom visuals: the Windows-native scrollbar inside a pbiviz renders blurry and reads as foreign chrome; every scrolling pane carries `scrollbar-width:thin; scrollbar-color:#c8c6c4 transparent`.
+- Custom visuals load from `cache.abf`'s document image, not `CustomVisuals/` on disk — `pbip-shoot`'s reload never shows a repackaged visual; only re-importing the `.pbiviz` in Desktop does.
 - `USERPRINCIPALNAME()` in Desktop returns the machine account, not the AAD identity.

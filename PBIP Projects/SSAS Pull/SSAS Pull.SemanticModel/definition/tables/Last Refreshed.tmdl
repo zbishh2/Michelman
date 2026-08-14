@@ -1,0 +1,23 @@
+table 'Last Refreshed'
+	lineageTag: a5ff0000-0000-4000-8000-0000000000a1
+
+	column 'Last Refreshed'
+		dataType: dateTime
+		formatString: MMM d, yyyy h:mm:ss AM/PM
+		lineageTag: a5ff0000-0000-4000-8000-0000000000b1
+		summarizeBy: none
+		sourceColumn: Last Refreshed
+
+	partition 'Last Refreshed' = m
+		mode: import
+		source =
+				let
+				    Output = #table(
+				        type table [ #"Last Refreshed" = datetime ],
+				        { { DateTime.LocalNow() } }
+				    )
+				in
+				    Output
+
+	annotation PBI_ResultType = Table
+

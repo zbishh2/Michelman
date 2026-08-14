@@ -26640,19 +26640,7 @@ cultureInfo en-US
 			          "ConceptualProperty": "OTIF Episodes (Backlog)"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "OTIF Episodes (latest line/reason only)": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "factsalesdetail.promised_year": {
 			      "Definition": {
@@ -26686,6 +26674,27 @@ cultureInfo en-US
 			      "Terms": [
 			        {
 			          "Month MMM": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "measures.otif_episodes_backlog_relevant": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": ".Measures",
+			          "ConceptualProperty": "OTIF Episodes (Backlog, Relevant)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "OTIF Episodes (latest line/reason only)": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",

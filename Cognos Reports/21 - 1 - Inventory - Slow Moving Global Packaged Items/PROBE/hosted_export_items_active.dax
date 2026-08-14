@@ -1,0 +1,10 @@
+EVALUATE
+SELECTCOLUMNS (
+    'Items - Active',
+    "Branch Plant", 'Items - Active'[Branch Plant],
+    "Global Bulk Item", 'Items - Active'[Global Bulk Item],
+    "Bulk Item", 'Items - Active'[Bulk Item],
+    "2nd Item Number", 'Items - Active'[2nd Item Number],
+    "Stock Type Code", 'Items - Active'[Stock Type Code]
+)
+ORDER BY [Global Bulk Item], [Bulk Item], [2nd Item Number], [Branch Plant]

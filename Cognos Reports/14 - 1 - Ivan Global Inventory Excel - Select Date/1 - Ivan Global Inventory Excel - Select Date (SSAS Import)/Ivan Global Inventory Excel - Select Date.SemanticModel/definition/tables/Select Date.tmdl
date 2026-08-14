@@ -1,0 +1,17 @@
+table 'Select Date'
+	lineageTag: 14b10000-0000-4000-8000-00000000003c
+
+	column Date
+		dataType: dateTime
+		isNameInferred
+		formatString: d MMM, yyyy
+		lineageTag: 14b10000-0000-4000-8000-00000000003d
+		summarizeBy: none
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Select Date' = calculated
+		mode: import
+		source = DISTINCT ( SELECTCOLUMNS ( 'Inventory', "Date", 'Inventory'[Inventory Date] ) )
+

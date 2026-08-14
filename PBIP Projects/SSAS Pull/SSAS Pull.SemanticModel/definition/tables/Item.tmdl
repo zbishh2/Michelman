@@ -1,0 +1,552 @@
+table Item
+	lineageTag: a50c0000-0000-4000-8000-0000000000a1
+
+	column ItemSKey
+		dataType: int64
+		lineageTag: a50c0000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: ItemSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemNumShort
+		dataType: int64
+		lineageTag: a50c0000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: ItemNumShort
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemNum2nd
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: ItemNum2nd
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemNum3rd
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: ItemNum3rd
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemDesc01
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: ItemDesc01
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemDesc02
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: ItemDesc02
+
+		annotation SummarizationSetBy = Automatic
+
+	column StockingType
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: StockingType
+
+		annotation SummarizationSetBy = Automatic
+
+	column StockingTypeDesc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: StockingTypeDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column MasterPlanningFamily
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: MasterPlanningFamily
+
+		annotation SummarizationSetBy = Automatic
+
+	column MasterPlanningFamilyDesc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: MasterPlanningFamilyDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductGroup
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: ProductGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductGroupDesc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: ProductGroupDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemPriceGroup
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: ItemPriceGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemPriceGroupDesc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: ItemPriceGroupDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column CommodityClassCodes
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: CommodityClassCodes
+
+		annotation SummarizationSetBy = Automatic
+
+	column CommodityClassCodesDesc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: CommodityClassCodesDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column CommoditySubClassCodes
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: CommoditySubClassCodes
+
+		annotation SummarizationSetBy = Automatic
+
+	column CommoditySubClassCodesDesc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: CommoditySubClassCodesDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesCatalogSections
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: SalesCatalogSections
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesCatalogSectionsDesc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: SalesCatalogSectionsDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesCatalogSubsections
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000015
+		summarizeBy: none
+		sourceColumn: SalesCatalogSubsections
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesCatalogSubsectionsDesc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000016
+		summarizeBy: none
+		sourceColumn: SalesCatalogSubsectionsDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesReportingCode03
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000017
+		summarizeBy: none
+		sourceColumn: SalesReportingCode03
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesReportingCode03Desc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000018
+		summarizeBy: none
+		sourceColumn: SalesReportingCode03Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesReportingCode04
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000019
+		summarizeBy: none
+		sourceColumn: SalesReportingCode04
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesReportingCode04Desc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000001a
+		summarizeBy: none
+		sourceColumn: SalesReportingCode04Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemCategoryCode06
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000001b
+		summarizeBy: none
+		sourceColumn: ItemCategoryCode06
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemCategoryCode06Desc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000001c
+		summarizeBy: none
+		sourceColumn: ItemCategoryCode06Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemCategoryCode08
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000001d
+		summarizeBy: none
+		sourceColumn: ItemCategoryCode08
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemCategoryCode08Desc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000001e
+		summarizeBy: none
+		sourceColumn: ItemCategoryCode08Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemCategoryCode09
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000001f
+		summarizeBy: none
+		sourceColumn: ItemCategoryCode09
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemCategoryCode09Desc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000020
+		summarizeBy: none
+		sourceColumn: ItemCategoryCode09Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemCategoryCode10
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000021
+		summarizeBy: none
+		sourceColumn: ItemCategoryCode10
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemCategoryCode10Desc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000022
+		summarizeBy: none
+		sourceColumn: ItemCategoryCode10Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column CommercializationYear
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000023
+		summarizeBy: none
+		sourceColumn: CommercializationYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column CommercializationYearDesc
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000024
+		summarizeBy: none
+		sourceColumn: CommercializationYearDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column LineType
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000025
+		summarizeBy: none
+		sourceColumn: LineType
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemBulk
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000026
+		summarizeBy: none
+		sourceColumn: ItemBulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemGlobalBulk
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000027
+		summarizeBy: none
+		sourceColumn: ItemGlobalBulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOMPrimary
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000028
+		summarizeBy: none
+		sourceColumn: UOMPrimary
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOMPricing
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000029
+		summarizeBy: none
+		sourceColumn: UOMPricing
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOMPurchasing
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000002a
+		summarizeBy: none
+		sourceColumn: UOMPurchasing
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOMSecondary
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000002b
+		summarizeBy: none
+		sourceColumn: UOMSecondary
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOMShipping
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000002c
+		summarizeBy: none
+		sourceColumn: UOMShipping
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOMWeight
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000002d
+		summarizeBy: none
+		sourceColumn: UOMWeight
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOMVolume
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000002e
+		summarizeBy: none
+		sourceColumn: UOMVolume
+
+		annotation SummarizationSetBy = Automatic
+
+	column HazardClass
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-00000000002f
+		summarizeBy: none
+		sourceColumn: HazardClass
+
+		annotation SummarizationSetBy = Automatic
+
+	column HarmonizedShippingCode
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000030
+		summarizeBy: none
+		sourceColumn: HarmonizedShippingCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column UNNANum
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000031
+		summarizeBy: none
+		sourceColumn: UNNANum
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlanningCode
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000032
+		summarizeBy: none
+		sourceColumn: PlanningCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderPolicyCode
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000033
+		summarizeBy: none
+		sourceColumn: OrderPolicyCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column LeadtimeLevel
+		dataType: int64
+		lineageTag: a50c0000-0000-4000-8000-000000000034
+		summarizeBy: none
+		sourceColumn: LeadtimeLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column DaysShelfLifeDays
+		dataType: int64
+		lineageTag: a50c0000-0000-4000-8000-000000000035
+		summarizeBy: none
+		sourceColumn: DaysShelfLifeDays
+
+		annotation SummarizationSetBy = Automatic
+
+	column BestBeforeDefaultDays
+		dataType: int64
+		lineageTag: a50c0000-0000-4000-8000-000000000036
+		summarizeBy: none
+		sourceColumn: BestBeforeDefaultDays
+
+		annotation SummarizationSetBy = Automatic
+
+	column SellByDefaultDays
+		dataType: int64
+		lineageTag: a50c0000-0000-4000-8000-000000000037
+		summarizeBy: none
+		sourceColumn: SellByDefaultDays
+
+		annotation SummarizationSetBy = Automatic
+
+	column LevelInventoryCost
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000038
+		summarizeBy: none
+		sourceColumn: LevelInventoryCost
+
+		annotation SummarizationSetBy = Automatic
+
+	column UniqueFormulaIdentifier
+		dataType: string
+		lineageTag: a50c0000-0000-4000-8000-000000000039
+		summarizeBy: none
+		sourceColumn: UniqueFormulaIdentifier
+
+		annotation SummarizationSetBy = Automatic
+
+	column DWIsCurrent
+		dataType: int64
+		lineageTag: a50c0000-0000-4000-8000-00000000003a
+		summarizeBy: none
+		sourceColumn: DWIsCurrent
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Item = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				SELECTCOLUMNS (
+				    'Item',
+				        ""ItemSKey"", 'Item'[ItemSKey],
+				        ""ItemNumShort"", 'Item'[ItemNumShort],
+				        ""ItemNum2nd"", 'Item'[ItemNum2nd],
+				        ""ItemNum3rd"", 'Item'[ItemNum3rd],
+				        ""ItemDesc01"", 'Item'[ItemDesc01],
+				        ""ItemDesc02"", 'Item'[ItemDesc02],
+				        ""StockingType"", 'Item'[StockingType],
+				        ""StockingTypeDesc"", 'Item'[StockingTypeDesc],
+				        ""MasterPlanningFamily"", 'Item'[MasterPlanningFamily],
+				        ""MasterPlanningFamilyDesc"", 'Item'[MasterPlanningFamilyDesc],
+				        ""ProductGroup"", 'Item'[ProductGroup],
+				        ""ProductGroupDesc"", 'Item'[ProductGroupDesc],
+				        ""ItemPriceGroup"", 'Item'[ItemPriceGroup],
+				        ""ItemPriceGroupDesc"", 'Item'[ItemPriceGroupDesc],
+				        ""CommodityClassCodes"", 'Item'[CommodityClassCodes],
+				        ""CommodityClassCodesDesc"", 'Item'[CommodityClassCodesDesc],
+				        ""CommoditySubClassCodes"", 'Item'[CommoditySubClassCodes],
+				        ""CommoditySubClassCodesDesc"", 'Item'[CommoditySubClassCodesDesc],
+				        ""SalesCatalogSections"", 'Item'[SalesCatalogSections],
+				        ""SalesCatalogSectionsDesc"", 'Item'[SalesCatalogSectionsDesc],
+				        ""SalesCatalogSubsections"", 'Item'[SalesCatalogSubsections],
+				        ""SalesCatalogSubsectionsDesc"", 'Item'[SalesCatalogSubsectionsDesc],
+				        ""SalesReportingCode03"", 'Item'[SalesReportingCode03],
+				        ""SalesReportingCode03Desc"", 'Item'[SalesReportingCode03Desc],
+				        ""SalesReportingCode04"", 'Item'[SalesReportingCode04],
+				        ""SalesReportingCode04Desc"", 'Item'[SalesReportingCode04Desc],
+				        ""ItemCategoryCode06"", 'Item'[ItemCategoryCode06],
+				        ""ItemCategoryCode06Desc"", 'Item'[ItemCategoryCode06Desc],
+				        ""ItemCategoryCode08"", 'Item'[ItemCategoryCode08],
+				        ""ItemCategoryCode08Desc"", 'Item'[ItemCategoryCode08Desc],
+				        ""ItemCategoryCode09"", 'Item'[ItemCategoryCode09],
+				        ""ItemCategoryCode09Desc"", 'Item'[ItemCategoryCode09Desc],
+				        ""ItemCategoryCode10"", 'Item'[ItemCategoryCode10],
+				        ""ItemCategoryCode10Desc"", 'Item'[ItemCategoryCode10Desc],
+				        ""CommercializationYear"", 'Item'[CommercializationYear],
+				        ""CommercializationYearDesc"", 'Item'[CommercializationYearDesc],
+				        ""LineType"", 'Item'[LineType],
+				        ""ItemBulk"", 'Item'[ItemBulk],
+				        ""ItemGlobalBulk"", 'Item'[ItemGlobalBulk],
+				        ""UOMPrimary"", 'Item'[UOMPrimary],
+				        ""UOMPricing"", 'Item'[UOMPricing],
+				        ""UOMPurchasing"", 'Item'[UOMPurchasing],
+				        ""UOMSecondary"", 'Item'[UOMSecondary],
+				        ""UOMShipping"", 'Item'[UOMShipping],
+				        ""UOMWeight"", 'Item'[UOMWeight],
+				        ""UOMVolume"", 'Item'[UOMVolume],
+				        ""HazardClass"", 'Item'[HazardClass],
+				        ""HarmonizedShippingCode"", 'Item'[HarmonizedShippingCode],
+				        ""UNNANum"", 'Item'[UNNANum],
+				        ""PlanningCode"", 'Item'[PlanningCode],
+				        ""OrderPolicyCode"", 'Item'[OrderPolicyCode],
+				        ""LeadtimeLevel"", 'Item'[LeadtimeLevel],
+				        ""DaysShelfLifeDays"", 'Item'[DaysShelfLifeDays],
+				        ""BestBeforeDefaultDays"", 'Item'[BestBeforeDefaultDays],
+				        ""SellByDefaultDays"", 'Item'[SellByDefaultDays],
+				        ""LevelInventoryCost"", 'Item'[LevelInventoryCost],
+				        ""UniqueFormulaIdentifier"", 'Item'[UniqueFormulaIdentifier],
+				        ""DWIsCurrent"", 'Item'[DWIsCurrent]
+				)
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

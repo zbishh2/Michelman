@@ -4,7 +4,7 @@
     "displayName": "Scorecard Comments",
     "guid": "scComments3F8A2D6C41B94E57",
     "visualClassName": "Visual",
-    "version": "1.0.1.0",
+    "version": "1.0.2.0",
     "description": "Read-first comment feed for the Executive Scorecard: no region tags, no author line, and posting happens in a dialog behind an Add comment button. Shares the board_comments table with OTIF Actions & Comments but carries its own GUID so the two version independently. GUID is deliberately short - it appears TWICE in the CustomVisuals path Power BI Desktop writes on save, and the full-length form pushed this report past the 256-char Windows limit.",
     "supportUrl": "https://github.com/zbishh2/michelman-writeback",
     "gitHubUrl": "https://github.com/zbishh2/michelman-writeback"
@@ -22,5 +22,5 @@
   "capabilities": "capabilities.json",
   "dependencies": null,
   "stringResources": [],
-  "version": "1.0.1.0"
+  "version": "1.0.2.0"
 }

@@ -635,3 +635,53 @@ no-carrier 5 / AMAZONP.S 10 / Summary roll-up 26). Excel-COM verified: 1,969+83+
 **0 rows with a FALSE and no note**. Builder = `build_wb14.py` (WB14_STAGE env stages to
 scratchpad). Staged copy verified; swap into `_report_out` blocked while the old workbook is open
 in Excel — close it and copy `wb14_staged.xlsx` over.
+
+
+---
+
+## 14. SSAS IMPORT VARIANT — `1 - Ivan Global Inventory Excel - Select Date (SSAS Import)\`
+
+The source-native sibling of this build. Everything is `SSASPROD / BIQLTabular_ISH` native DAX
+import; the report derives nothing. Five tables: `Inventory` (all retained snapshot dates x the
+nine plants x the 14-family scope, cost method `07`, QOH > 0), `Escor Inventory` (`ESC5200`
+global bulk; the Cognos page carries no branch or family filter, so neither does the query),
+`Escor Lot Info` (lot master joined to the `ESC5200`/`.E`/`.S` item branches on
+`ItemBranchISKey`, `DISTINCT` per the Cognos `SELECT DISTINCT`), `Select Date` (calculated
+`DISTINCT` of imported `Inventory Date` — the slicer offers only dates the report can render),
+and `Last Refreshed`. No UOM Conversion, FX Rate, Company, or interval-measure machinery: weights
+are the model's `[Qty On Hand KG]`/`[Qty On Hand LB]`, costs are `[Total Ext Cost IC USD]` and
+`[Total Ext Cost IC]` at the EUR selector code, evaluated per row.
+
+Facts the queries encode:
+
+- The ISH cost measures read `SELECTEDVALUE('Calendar Inventory Snapshot'[Calendar Date])`, and
+  the fact-to-calendar relationship is single-direction — a bare row-context transition leaves the
+  calendar empty and the measures blank. Each cost projection therefore anchors the row's own
+  snapshot date onto the calendar with `TREATAS`. `PROBE SSAS\probe_G4_cost_calendar_context.dax`
+  compares bare vs anchored.
+- `Item Branch` is date-versioned (`ItemBranchISDateKey` grain), so item attributes resolve as of
+  the snapshot date. The `Escor Lot Info` join collapses it to distinct `ItemBranchISKey` first,
+  and joins with the lineage-strip idiom (`& ""`), because the key is non-unique in the history
+  table.
+- `REGION` is the one report-side derivation: the 9-to-5 `SWITCH` from the EDW build, held until
+  the `Branch[Region (Inventory)]` cube column lands (request with Jim, `R14 ISH\CUBE_CHANGE_Region.md`).
+- The display bulk items are the F554101 pair (`Item Num Global Bulk`/`Item Num Bulk`); the F4102
+  pair is imported hidden for the lineage comparison probe.
+
+Probe gate — run `PROBE SSAS\*.dax` on SSASPROD before the first refresh:
+`probe_G3_currency_codes` (EUR selector literal, built as `3`), `probe_G1_branch_region`
+(retire the SWITCH?), `probe_G2_bulk_pairs` (F554101 vs F4102), `probe_G4_cost_calendar_context`,
+`probe_D14a_cost_basis` (`07` vs `CostingSelectionInventory` — can close the §9.7b cost-basis
+disclosure), `probe_R1_day_shift`, `probe_R5_zero_cost` (carrier-borrow need), `probe_R6_sizing`
+(all-dates import volume; the fallback is a date-window predicate in the two fact partitions).
+
+Known scope difference to state to Dave/Rohit: ISH retains ~133 approved snapshot dates
+(month-end before 2026-06, daily after) versus the EDW build's ~1,890 reconstructed daily dates.
+Cognos itself retains fewer dates than ISH (§9.2). The slicer only offers real dates, so the
+limit is visible, never silent.
+
+After the first refresh: pick the latest date in the slicer once in Desktop and save (the
+variant ships with no pinned date so it cannot go stale), then tie out against
+`Cognos export (tight capture 2026-07-22, AsOf 2026-07-21).xlsx` at the 7/21 snapshot:
+4,175 / 47 / 1,663 rows, QOH 16,906,508.18, LBs 25,905,366.47, USD 39,188,615.36,
+EUR 34,339,946.71.

@@ -53,11 +53,7 @@ table Inventory
 
 		annotation SummarizationSetBy = Automatic
 
-	/// Cognos renders a MISSING dimension attribute as '-'; it is not stored data.
-	/// The raw column is kept hidden so the real missing/blank distinction survives.
-	/// The test is on trimmed LENGTH, not ISBLANK: in scope this column is blank or
-	/// whitespace on the affected rows and NULL on none of them (BUILD.md 7 #11), so a
-	/// BLANK-only test would render nothing at all. BUILD.md 4.5 case 1, 5.2.
+	/// Cognos renders a missing dimension attribute as '-'. The raw value remains hidden.
 	column 'Location (Display)' =
 			VAR Raw = TRIM ( 'Inventory'[Location] )
 			RETURN
@@ -78,11 +74,7 @@ table Inventory
 
 		annotation SummarizationSetBy = Automatic
 
-	/// Cognos renders a MISSING dimension attribute as '-'; it is not stored data.
-	/// The raw column is kept hidden so the real missing/blank distinction survives.
-	/// The test is on trimmed LENGTH, not ISBLANK: in scope this column is blank or
-	/// whitespace on the affected rows and NULL on none of them (BUILD.md 7 #11), so a
-	/// BLANK-only test would render nothing at all. BUILD.md 4.5 case 1, 5.2.
+	/// Cognos renders a missing dimension attribute as '-'. The raw value remains hidden.
 	column 'Lot Number (Display)' =
 			VAR Raw = TRIM ( 'Inventory'[Lot Number] )
 			RETURN
@@ -103,11 +95,7 @@ table Inventory
 
 		annotation SummarizationSetBy = Automatic
 
-	/// Cognos renders a MISSING dimension attribute as '-'; it is not stored data.
-	/// The raw column is kept hidden so the real missing/blank distinction survives.
-	/// The test is on trimmed LENGTH, not ISBLANK: in scope this column is blank or
-	/// whitespace on the affected rows and NULL on none of them (BUILD.md 7 #11), so a
-	/// BLANK-only test would render nothing at all. BUILD.md 4.5 case 1, 5.2.
+	/// Cognos renders a missing dimension attribute as '-'. The raw value remains hidden.
 	column 'Lot Status (Display)' =
 			VAR Raw = TRIM ( 'Inventory'[Lot Status] )
 			RETURN
@@ -137,8 +125,7 @@ table Inventory
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
-	/// Header trap: the Cognos data item is named UOM but carries no label= override, so
-	/// the export header reads 'Primary Unit of Measure'. BUILD.md 3.1.
+	/// Primary unit of measure. The display name matches the Cognos model label.
 	column 'Primary Unit of Measure'
 		dataType: string
 		lineageTag: 21a10000-0000-4000-8000-00000000010e
@@ -146,53 +133,6 @@ table Inventory
 		sourceColumn: Primary Unit of Measure
 
 		annotation SummarizationSetBy = Automatic
-
-	/// KG/LB rule, BUILD.md 2.4 - the report's one real derivation.
-	/// primary UOM = KG -> quantity as-is; = LB -> quantity * [LB to KG];
-	/// anything else -> quantity * the per-item EDW [KG Factor].
-	/// Constants live only in the hidden 'Conversion Constants' table.
-	column 'Quantity on Hand KGs' =
-			VAR LBtoKG = MAXX ( 'Conversion Constants', 'Conversion Constants'[LB to KG] )
-			VAR Qty    = 'Inventory'[Quantity on Hand]
-			VAR UOM    = TRIM ( 'Inventory'[Primary Unit of Measure] )
-			RETURN
-			    SWITCH (
-			        TRUE (),
-			        UOM = "KG", Qty,
-			        UOM = "LB", Qty * LBtoKG,
-			        Qty * 'Inventory'[KG Factor]
-			    )
-		dataType: double
-		formatString: #,0
-		lineageTag: 21a10000-0000-4000-8000-00000000010f
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isDecimal":true}
-
-	/// KG/LB rule, BUILD.md 2.4. primary UOM = LB -> quantity as-is;
-	/// = KG -> quantity * [KG to LB]; anything else -> KGs * [KG to LB].
-	/// Constants live only in the hidden 'Conversion Constants' table.
-	column 'Quantity on Hand LBs' =
-			VAR KGtoLB = MAXX ( 'Conversion Constants', 'Conversion Constants'[KG to LB] )
-			VAR Qty    = 'Inventory'[Quantity on Hand]
-			VAR UOM    = TRIM ( 'Inventory'[Primary Unit of Measure] )
-			RETURN
-			    SWITCH (
-			        TRUE (),
-			        UOM = "LB", Qty,
-			        UOM = "KG", Qty * KGtoLB,
-			        Qty * 'Inventory'[KG Factor] * KGtoLB
-			    )
-		dataType: double
-		formatString: #,0
-		lineageTag: 21a10000-0000-4000-8000-000000000110
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isDecimal":true}
 
 	column 'Stock Type Code'
 		dataType: string
@@ -220,7 +160,8 @@ table Inventory
 
 		annotation SummarizationSetBy = Automatic
 
-	/// The RUN stamp (sysdate), one day later than the data (sysdate-1). BUILD.md 3.1.
+	/// Report run date, evaluated at refresh. The inventory snapshot is the latest
+	/// available date before it.
 	column DATE
 		dataType: dateTime
 		formatString: d MMM, yyyy
@@ -230,76 +171,95 @@ table Inventory
 
 		annotation SummarizationSetBy = Automatic
 
-	/// Kilograms per one primary unit, BIQL.DimItemUOMConversionLBKG where UOM = UOMPrimary.
-	/// Used only by the ELSE branch of the KG/LB rule (42 in-scope rows, all EA primary).
-	/// Does not reproduce the Cognos DW on EA-primary items - D-21e, gated on probe P2.
-	/// BLANK where EDW has no conversion row; left BLANK deliberately rather than forced to 0.
-	column 'KG Factor'
-		dataType: double
+	/// Inventory snapshot date selected from the source fact.
+	column 'Inventory Date'
+		dataType: dateTime
 		isHidden
-		lineageTag: 21a10000-0000-4000-8000-000000000115
+		formatString: d MMM, yyyy
+		lineageTag: 21a10000-0000-4000-8000-000000000119
 		summarizeBy: none
-		sourceColumn: KG Factor
+		sourceColumn: Inventory Date
 
 		annotation SummarizationSetBy = Automatic
+
+	/// The ISH model's native [Qty On Hand KG] measure evaluated at the position row.
+	column 'Quantity on Hand KGs'
+		dataType: double
+		formatString: #,0
+		lineageTag: 21a10000-0000-4000-8000-00000000010f
+		summarizeBy: none
+		sourceColumn: Quantity on Hand KGs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// The ISH model's native [Qty On Hand LB] measure evaluated at the position row.
+	column 'Quantity on Hand LBs'
+		dataType: double
+		formatString: #,0
+		lineageTag: 21a10000-0000-4000-8000-000000000110
+		summarizeBy: none
+		sourceColumn: Quantity on Hand LBs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
 
 	partition Inventory = m
 		mode: import
 		source =
 				let
-				    Source = Sql.Database("EDWPROD", "EDW"),
-				    Data = Value.NativeQuery(
-				        Source,
-				        "
-				        SET NOCOUNT ON;
-				
-				        SELECT
-				            LTRIM(RTRIM(snap.BusinessUnit))              AS [Branch Plant],
-				            ib.[Item Global Bulk]                        AS [Global Bulk Item],
-				            ib.[Item Bulk]                               AS [Bulk Item],
-				            ib.[Item Num 2nd]                            AS [2nd Item Number],
-				            LTRIM(RTRIM(snap.CategoryGLF41021))          AS [GL Class Code],
-				            LTRIM(RTRIM(snap.Location))                  AS [Location],
-				            LTRIM(RTRIM(snap.LotNum))                    AS [Lot Number],
-				            LTRIM(RTRIM(snap.LotStatusCode))             AS [Lot Status],
-				            LTRIM(RTRIM(ib.[Master Planning Family]))    AS [Master Planning Family],
-				            SUM(snap.QuantityOnHandPrimaryUOM)           AS [Quantity on Hand],
-				            LTRIM(RTRIM(snap.UOMPrimary))                AS [Primary Unit of Measure],
-				            LTRIM(RTRIM(ib.[Stocking Type]))             AS [Stock Type Code],
-				            l.OnHandDate                                 AS [On Hand Date],
-				            l.LotExpirationDate                          AS [Lot Expiry Date],
-				            CAST(GETDATE() AS date)                      AS [DATE],
-				            MIN(k.KG)                                    AS [KG Factor]
-				        FROM BIQL.FactInventorySnapshot_History_Filtered snap WITH (NOLOCK)
-				            INNER JOIN BIQL.TbItemBranch ib WITH (NOLOCK)
-				                    ON ib.ItemBranchSKey = snap.ItemBranchSKey
-				            LEFT  JOIN BIQL.DimLot l WITH (NOLOCK)
-				                    ON l.LotSKey = snap.LotSKey
-				            LEFT  JOIN BIQL.DimItemUOMConversionLBKG k WITH (NOLOCK)
-				                    ON k.ItemNumShort = ib.[Item Num Short]
-				                   AND LTRIM(RTRIM(k.BusinessUnit)) = LTRIM(RTRIM(ib.[Business Unit]))
-				                   AND LTRIM(RTRIM(k.UOM))          = LTRIM(RTRIM(k.UOMPrimary))
-				        WHERE snap.CalendarDate = DATEADD(DAY, -1, CAST(GETDATE() AS date))
-				          AND snap.QuantityOnHandPrimaryUOM > 0
-				          AND LTRIM(RTRIM(snap.CategoryGLF41021)) = 'IN32'
-				          AND LTRIM(RTRIM(snap.BusinessUnit)) IN ('CINC', 'CIN2', 'CIN4', 'AUBA', 'AUB2', 'SING', 'SNG4')
-				        GROUP BY
-				            LTRIM(RTRIM(snap.BusinessUnit)),
-				            ib.[Item Global Bulk],
-				            ib.[Item Bulk],
-				            ib.[Item Num 2nd],
-				            LTRIM(RTRIM(snap.CategoryGLF41021)),
-				            LTRIM(RTRIM(snap.Location)),
-				            LTRIM(RTRIM(snap.LotNum)),
-				            LTRIM(RTRIM(snap.LotStatusCode)),
-				            LTRIM(RTRIM(ib.[Master Planning Family])),
-				            LTRIM(RTRIM(snap.UOMPrimary)),
-				            LTRIM(RTRIM(ib.[Stocking Type])),
-				            l.OnHandDate,
-				            l.LotExpirationDate
-				        ",
-				        null,
-				        [EnableFolding = false]
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular_ISH",
+				        [
+				            Query = "
+				EVALUATE
+				VAR R21InventoryDate =
+				    CALCULATE (
+				        MAX ( 'Inventory Snapshot'[Calendar Date] ),
+				        'Inventory Snapshot'[Calendar Date] < TODAY ()
+				    )
+				RETURN
+				    SELECTCOLUMNS (
+				        FILTER (
+				            'Inventory Snapshot',
+				            'Inventory Snapshot'[Calendar Date] = R21InventoryDate
+				                && TRIM ( 'Inventory Snapshot'[CostMethod] ) = ""07""
+				                && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+				                && TRIM ( 'Inventory Snapshot'[CategoryGLF41021] ) = ""IN32""
+				                && TRIM ( RELATED ( 'Branch'[Branch Plant] ) )
+				                    IN { ""CINC"", ""CIN2"", ""CIN4"", ""AUBA"", ""AUB2"", ""SING"", ""SNG4"" }
+				        ),
+				        ""Branch Plant"", TRIM ( RELATED ( 'Branch'[Branch Plant] ) ),
+				        ""Global Bulk Item"", TRIM ( RELATED ( 'Item Branch'[Item Global Bulk] ) ),
+				        ""Bulk Item"", TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) ),
+				        ""2nd Item Number"", TRIM ( RELATED ( 'Item Branch'[Item Num 2nd] ) ),
+				        ""GL Class Code"", TRIM ( 'Inventory Snapshot'[CategoryGLF41021] ),
+				        ""Location"", TRIM ( 'Inventory Snapshot'[Location] ),
+				        ""Lot Number"", TRIM ( 'Inventory Snapshot'[LotNum] ),
+				        ""Lot Status"", TRIM ( 'Inventory Snapshot'[Lot Status Code] ),
+				        ""Master Planning Family"", TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) ),
+				        ""Quantity on Hand"", 'Inventory Snapshot'[QuantityOnHandPrimaryUOM],
+				        ""Primary Unit of Measure"", TRIM ( 'Inventory Snapshot'[UOMPrimary] ),
+				        ""Quantity on Hand KGs"", CALCULATE ( [Qty On Hand KG] ),
+				        ""Quantity on Hand LBs"", CALCULATE ( [Qty On Hand LB] ),
+				        ""Stock Type Code"", TRIM ( RELATED ( 'Item Branch'[Stocking Type] ) ),
+				        ""On Hand Date"", RELATED ( 'Lot'[On Hand Date] ),
+				        ""Lot Expiry Date"", RELATED ( 'Lot'[Lot Expiration Date] ),
+				        ""Inventory Date"", 'Inventory Snapshot'[Calendar Date],
+				        ""DATE"", TODAY ()
+				    )
+				ORDER BY [Global Bulk Item], [Bulk Item], [2nd Item Number], [Branch Plant]
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
 				    )
 				in
 				    Data

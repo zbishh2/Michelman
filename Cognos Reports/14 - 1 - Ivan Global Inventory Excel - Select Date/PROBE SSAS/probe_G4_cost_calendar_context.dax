@@ -1,0 +1,45 @@
+EVALUATE
+VAR LatestDate = CALCULATE ( MAX ( 'Inventory Snapshot'[Calendar Date] ) )
+VAR Scope =
+    TOPN (
+        20,
+        FILTER (
+            'Inventory Snapshot',
+            'Inventory Snapshot'[Calendar Date] = LatestDate
+                && TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07"
+                && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+                && TRIM ( RELATED ( 'Branch'[Branch Plant] ) ) = "SNG4"
+        ),
+        'Inventory Snapshot'[QuantityOnHandPrimaryUOM], DESC
+    )
+RETURN
+    SELECTCOLUMNS (
+        Scope,
+        "Lot Number", TRIM ( 'Inventory Snapshot'[LotNum] ),
+        "On Hand", 'Inventory Snapshot'[QuantityOnHandPrimaryUOM],
+        "Unit Cost IC", 'Inventory Snapshot'[AmountUnitCost_IC],
+        "Selected UOM", CALCULATE ( [Selected UOM] ),
+        "Selected Currency", CALCULATE ( [Selected Currency] ),
+        "USD Bare", CALCULATE ( [Total Ext Cost IC USD] ),
+        "USD Date Anchored",
+            VAR SnapDate = 'Inventory Snapshot'[Calendar Date]
+            RETURN
+                CALCULATE (
+                    [Total Ext Cost IC USD],
+                    TREATAS ( { SnapDate }, 'Calendar Inventory Snapshot'[Calendar Date] )
+                ),
+        "EUR Bare",
+            CALCULATE (
+                [Total Ext Cost IC],
+                TREATAS ( { 3 }, 'Selected Currency Filter'[Selected Currency Code] )
+            ),
+        "EUR Date Anchored",
+            VAR SnapDate = 'Inventory Snapshot'[Calendar Date]
+            RETURN
+                CALCULATE (
+                    [Total Ext Cost IC],
+                    TREATAS ( { 3 }, 'Selected Currency Filter'[Selected Currency Code] ),
+                    TREATAS ( { SnapDate }, 'Calendar Inventory Snapshot'[Calendar Date] )
+                )
+    )
+ORDER BY [On Hand] DESC

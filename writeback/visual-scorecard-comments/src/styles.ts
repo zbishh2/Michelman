@@ -33,6 +33,11 @@ export const CSS = `
    panel silently loses every post below the fold with no scrollbar. Same reason .scb-rte-body
    carries it. */
 .scb-thread { flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden; border-top:1px solid #edebe9; padding-top:4px; }
+
+/* Every scrolling pane uses the thin themed scrollbar, never the Windows-native one:
+   the native bar (arrow buttons, 17px gutter) reads as foreign chrome inside the
+   report and renders blurry under Desktop's scaled WebView. */
+.scb-thread, .scb-surface { scrollbar-width:thin; scrollbar-color:#c8c6c4 transparent; }
 .scb-empty { color:#767676; font-style:italic; padding:8px 2px; }
 
 .scb-item { padding:5px 2px; border-bottom:1px solid #f3f2f1; }

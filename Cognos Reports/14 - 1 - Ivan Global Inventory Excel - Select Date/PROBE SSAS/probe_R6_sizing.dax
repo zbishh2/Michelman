@@ -1,0 +1,19 @@
+EVALUATE
+VAR Scope =
+    FILTER (
+        'Inventory Snapshot',
+        TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07"
+            && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+            && TRIM ( RELATED ( 'Branch'[Branch Plant] ) ) IN { "CINC", "CIN2", "CIN4", "AUBA", "AUB2", "SING", "SNG4", "MUM3", "SHAN" }
+            && TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) )
+                IN { "ATP", "ETP", "FBW", "FCB", "FEC", "FRC", "RAW",
+                    "RBW", "RCB", "REC", "RRC", "RWW", "TOL", "WAG" }
+    )
+RETURN
+    SUMMARIZECOLUMNS (
+        'Calendar Inventory Snapshot'[Year],
+        "Rows", CALCULATE ( COUNTROWS ( 'Inventory Snapshot' ), Scope ),
+        "Snapshot Dates",
+            CALCULATE ( DISTINCTCOUNT ( 'Inventory Snapshot'[Calendar Date] ), Scope )
+    )
+ORDER BY 'Calendar Inventory Snapshot'[Year]

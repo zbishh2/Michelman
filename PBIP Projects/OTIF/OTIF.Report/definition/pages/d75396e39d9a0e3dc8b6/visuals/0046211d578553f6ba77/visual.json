@@ -176,7 +176,7 @@
                     "Entity": "FactScheduleChange"
                   }
                 },
-                "Property": "LineNumber"
+                "Property": "ChangeDate"
               }
             },
             "direction": "Ascending"

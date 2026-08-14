@@ -147,3 +147,4 @@ table 'Safety Stock'
 				    Data
 
 	annotation PBI_ResultType = Table
+

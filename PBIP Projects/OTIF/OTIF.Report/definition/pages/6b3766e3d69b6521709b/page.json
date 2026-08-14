@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "6b3766e3d69b6521709b",
   "displayName": "OTIF Backlog (Open Orders)",
   "displayOption": "FitToPage",
@@ -24,7 +24,7 @@
           "Version": 2,
           "From": [
             {
-              "Name": "o",
+              "Name": "f",
               "Entity": "FactSalesDetail",
               "Type": 0
             }
@@ -38,7 +38,7 @@
                       "Column": {
                         "Expression": {
                           "SourceRef": {
-                            "Source": "o"
+                            "Source": "f"
                           }
                         },
                         "Property": "Flag In Population"
@@ -75,45 +75,6 @@
           }
         },
         "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "f",
-              "Entity": "FactScheduleChange",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "f"
-                          }
-                        },
-                        "Property": "Is OTIF Relevant"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "true"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
         "howCreated": "User"
       }
     ],
@@ -161,18 +122,8 @@
   },
   "visualInteractions": [
     {
-      "source": "815b301dd0b260a43618",
-      "target": "e1e58e10322223bbb9a4",
-      "type": "DataFilter"
-    },
-    {
       "source": "acab580543a1ce53411d",
       "target": "8a864966bb30d883e71a",
-      "type": "NoFilter"
-    },
-    {
-      "source": "acab580543a1ce53411d",
-      "target": "e1e58e10322223bbb9a4",
       "type": "NoFilter"
     }
   ]

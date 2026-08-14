@@ -98,6 +98,20 @@
               },
               "queryRef": "Order Lines.2nd Item Number",
               "nativeQueryRef": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Order Lines"
+                    }
+                  },
+                  "Property": "Current Hold Code"
+                }
+              },
+              "queryRef": "Order Lines.Current Hold Code",
+              "nativeQueryRef": "Current Hold Code"
             }
           ]
         }

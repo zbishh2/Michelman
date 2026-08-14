@@ -1,0 +1,210 @@
+table 'Customer Ship To'
+	lineageTag: a5050000-0000-4000-8000-0000000000a1
+
+	column ShipToCustomerSKey
+		dataType: int64
+		lineageTag: a5050000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: ShipToCustomerSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressSKey
+		dataType: int64
+		lineageTag: a5050000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: AddressSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Ship To'
+		dataType: int64
+		lineageTag: a5050000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Customer Ship To
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Ship To Name'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Customer Ship To Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Ship To and Name'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Customer Ship To and Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Business Unit'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Sales Business Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Business Unit Desc'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Sales Business Unit Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Customer Segmentation
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation Desc'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Customer Segmentation Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation Group'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Customer Segmentation Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation Strategic'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Customer Segmentation Strategic
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reporting Region'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Reporting Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reporting Region ANS'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Reporting Region ANS
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Country Desc'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: Country Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'State Desc'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: State Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Type of Customer Desc'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: Type of Customer Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Industry Group Desc'
+		dataType: string
+		lineageTag: a5050000-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: Industry Group Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Customer Ship To' = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				SELECTCOLUMNS (
+				    'Customer Ship To',
+				        ""ShipToCustomerSKey"", 'Customer Ship To'[ShipToCustomerSKey],
+				        ""AddressSKey"", 'Customer Ship To'[AddressSKey],
+				        ""Customer Ship To"", 'Customer Ship To'[Customer Ship To],
+				        ""Customer Ship To Name"", 'Customer Ship To'[Customer Ship To Name],
+				        ""Customer Ship To and Name"", 'Customer Ship To'[Customer Ship To and Name],
+				        ""Sales Business Unit"", 'Customer Ship To'[Sales Business Unit],
+				        ""Sales Business Unit Desc"", 'Customer Ship To'[Sales Business Unit Desc],
+				        ""Customer Segmentation"", 'Customer Ship To'[Customer Segmentation],
+				        ""Customer Segmentation Desc"", 'Customer Ship To'[Customer Segmentation Desc],
+				        ""Customer Segmentation Group"", 'Customer Ship To'[Customer Segmentation Group],
+				        ""Customer Segmentation Strategic"", 'Customer Ship To'[Customer Segmentation Strategic],
+				        ""Reporting Region"", 'Customer Ship To'[Reporting Region],
+				        ""Reporting Region ANS"", 'Customer Ship To'[Reporting Region ANS],
+				        ""Country"", 'Customer Ship To'[Country],
+				        ""Country Desc"", 'Customer Ship To'[Country Desc],
+				        ""State"", 'Customer Ship To'[State],
+				        ""State Desc"", 'Customer Ship To'[State Desc],
+				        ""City"", 'Customer Ship To'[City],
+				        ""Type of Customer Desc"", 'Customer Ship To'[Type of Customer Desc],
+				        ""Industry Group Desc"", 'Customer Ship To'[Industry Group Desc]
+				)
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

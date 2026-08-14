@@ -1,0 +1,390 @@
+table FactForecast
+	lineageTag: a5010000-0000-4000-8000-0000000000a1
+
+	column ItemSKey
+		dataType: int64
+		lineageTag: a5010000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: ItemSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemBranchSKey
+		dataType: int64
+		lineageTag: a5010000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: ItemBranchSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column BusinessUnitSKey
+		dataType: int64
+		lineageTag: a5010000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: BusinessUnitSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderDocumentTypeSKey
+		dataType: int64
+		lineageTag: a5010000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: OrderDocumentTypeSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressSKey
+		dataType: int64
+		lineageTag: a5010000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: AddressSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressNum
+		dataType: int64
+		lineageTag: a5010000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: AddressNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column BusinessUnit
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: BusinessUnit
+
+		annotation SummarizationSetBy = Automatic
+
+	column BypassForcingYN
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: BypassForcingYN
+
+		annotation SummarizationSetBy = Automatic
+
+	column ForecastType
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: ForecastType
+
+		annotation SummarizationSetBy = Automatic
+
+	column ForecastTypeDesc
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: ForecastTypeDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemNumShort
+		dataType: int64
+		lineageTag: a5010000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: ItemNumShort
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemNum2nd
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: ItemNum2nd
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemNum3rd
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: ItemNum3rd
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderType
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: OrderType
+
+		annotation SummarizationSetBy = Automatic
+
+	column RevisedFlag
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: RevisedFlag
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserID
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: UserID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CalendarYear
+		dataType: double
+		lineageTag: a5010000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: CalendarYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column RequestedDate
+		dataType: dateTime
+		lineageTag: a5010000-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: RequestedDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column RequestedDateID
+		dataType: int64
+		lineageTag: a5010000-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: RequestedDateID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RequestedDateSKey
+		dataType: int64
+		lineageTag: a5010000-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: RequestedDateSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column TimeofDay
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-000000000015
+		summarizeBy: none
+		sourceColumn: TimeofDay
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpdatedDate
+		dataType: dateTime
+		lineageTag: a5010000-0000-4000-8000-000000000016
+		summarizeBy: none
+		sourceColumn: UpdatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpdatedDateSKey
+		dataType: int64
+		lineageTag: a5010000-0000-4000-8000-000000000017
+		summarizeBy: none
+		sourceColumn: UpdatedDateSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column AmountExtendedPrice
+		dataType: double
+		lineageTag: a5010000-0000-4000-8000-000000000018
+		summarizeBy: none
+		sourceColumn: AmountExtendedPrice
+
+		annotation SummarizationSetBy = Automatic
+
+	column AmountForecast
+		dataType: double
+		lineageTag: a5010000-0000-4000-8000-000000000019
+		summarizeBy: none
+		sourceColumn: AmountForecast
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityForecast
+		dataType: double
+		lineageTag: a5010000-0000-4000-8000-00000000001a
+		summarizeBy: none
+		sourceColumn: QuantityForecast
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityOrdered
+		dataType: double
+		lineageTag: a5010000-0000-4000-8000-00000000001b
+		summarizeBy: none
+		sourceColumn: QuantityOrdered
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-00000000001c
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk'
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-00000000001d
+		summarizeBy: none
+		sourceColumn: Global Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column DWLoadDate
+		dataType: dateTime
+		lineageTag: a5010000-0000-4000-8000-00000000001e
+		summarizeBy: none
+		sourceColumn: DWLoadDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column Company
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-00000000001f
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column DWSource
+		dataType: int64
+		lineageTag: a5010000-0000-4000-8000-000000000020
+		summarizeBy: none
+		sourceColumn: DWSource
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConversionFactorKG
+		dataType: double
+		lineageTag: a5010000-0000-4000-8000-000000000021
+		summarizeBy: none
+		sourceColumn: ConversionFactorKG
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConversionFactorLB
+		dataType: double
+		lineageTag: a5010000-0000-4000-8000-000000000022
+		summarizeBy: none
+		sourceColumn: ConversionFactorLB
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryManagerSKey
+		dataType: int64
+		lineageTag: a5010000-0000-4000-8000-000000000023
+		summarizeBy: none
+		sourceColumn: TerritoryManagerSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'UOM Primary'
+		dataType: string
+		lineageTag: a5010000-0000-4000-8000-000000000024
+		summarizeBy: none
+		sourceColumn: UOM Primary
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityOrderedLB
+		dataType: double
+		lineageTag: a5010000-0000-4000-8000-000000000025
+		summarizeBy: none
+		sourceColumn: QuantityOrderedLB
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityOrderedKG
+		dataType: double
+		lineageTag: a5010000-0000-4000-8000-000000000026
+		summarizeBy: none
+		sourceColumn: QuantityOrderedKG
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityForecastKG
+		dataType: double
+		lineageTag: a5010000-0000-4000-8000-000000000027
+		summarizeBy: none
+		sourceColumn: QuantityForecastKG
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityForecastLB
+		dataType: double
+		lineageTag: a5010000-0000-4000-8000-000000000028
+		summarizeBy: none
+		sourceColumn: QuantityForecastLB
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactForecast = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				SELECTCOLUMNS (
+				    'FactForecast',
+				        ""ItemSKey"", 'FactForecast'[ItemSKey],
+				        ""ItemBranchSKey"", 'FactForecast'[ItemBranchSKey],
+				        ""BusinessUnitSKey"", 'FactForecast'[BusinessUnitSKey],
+				        ""OrderDocumentTypeSKey"", 'FactForecast'[OrderDocumentTypeSKey],
+				        ""AddressSKey"", 'FactForecast'[AddressSKey],
+				        ""AddressNum"", 'FactForecast'[AddressNum],
+				        ""BusinessUnit"", 'FactForecast'[BusinessUnit],
+				        ""BypassForcingYN"", 'FactForecast'[BypassForcingYN],
+				        ""ForecastType"", 'FactForecast'[ForecastType],
+				        ""ForecastTypeDesc"", 'FactForecast'[ForecastTypeDesc],
+				        ""ItemNumShort"", 'FactForecast'[ItemNumShort],
+				        ""ItemNum2nd"", 'FactForecast'[ItemNum2nd],
+				        ""ItemNum3rd"", 'FactForecast'[ItemNum3rd],
+				        ""OrderType"", 'FactForecast'[OrderType],
+				        ""RevisedFlag"", 'FactForecast'[RevisedFlag],
+				        ""UserID"", 'FactForecast'[UserID],
+				        ""CalendarYear"", 'FactForecast'[CalendarYear],
+				        ""RequestedDate"", 'FactForecast'[RequestedDate],
+				        ""RequestedDateID"", 'FactForecast'[RequestedDateID],
+				        ""RequestedDateSKey"", 'FactForecast'[RequestedDateSKey],
+				        ""TimeofDay"", 'FactForecast'[TimeofDay],
+				        ""UpdatedDate"", 'FactForecast'[UpdatedDate],
+				        ""UpdatedDateSKey"", 'FactForecast'[UpdatedDateSKey],
+				        ""AmountExtendedPrice"", 'FactForecast'[AmountExtendedPrice],
+				        ""AmountForecast"", 'FactForecast'[AmountForecast],
+				        ""QuantityForecast"", 'FactForecast'[QuantityForecast],
+				        ""QuantityOrdered"", 'FactForecast'[QuantityOrdered],
+				        ""Bulk Item"", 'FactForecast'[Bulk Item],
+				        ""Global Bulk"", 'FactForecast'[Global Bulk],
+				        ""DWLoadDate"", 'FactForecast'[DWLoadDate],
+				        ""Company"", 'FactForecast'[Company],
+				        ""DWSource"", 'FactForecast'[DWSource],
+				        ""ConversionFactorKG"", 'FactForecast'[ConversionFactorKG],
+				        ""ConversionFactorLB"", 'FactForecast'[ConversionFactorLB],
+				        ""TerritoryManagerSKey"", 'FactForecast'[TerritoryManagerSKey],
+				        ""UOM Primary"", 'FactForecast'[UOM Primary],
+				        ""QuantityOrderedLB"", 'FactForecast'[QuantityOrderedLB],
+				        ""QuantityOrderedKG"", 'FactForecast'[QuantityOrderedKG],
+				        ""QuantityForecastKG"", 'FactForecast'[QuantityForecastKG],
+				        ""QuantityForecastLB"", 'FactForecast'[QuantityForecastLB]
+				)
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

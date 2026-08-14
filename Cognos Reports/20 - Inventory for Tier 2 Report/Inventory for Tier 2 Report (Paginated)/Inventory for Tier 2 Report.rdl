@@ -1,0 +1,952 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>832846b9-f45f-4df5-8fff-8119021dc856</rd:ReportID>
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>PBIRB</am:Name>
+      <am:Version>15.7.1806.11</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>PBIRB</am:Name>
+      <am:Version>15.7.1819.28</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-08-13T16:55:44.6181647Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
+  <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="SSASPROD_BIQLTabular_ISH">
+      <rd:SecurityType>Integrated</rd:SecurityType>
+      <ConnectionProperties>
+        <DataProvider>OLEDB-MD</DataProvider>
+        <ConnectString>Data Source=SSASPROD;Initial Catalog=BIQLTabular_ISH</ConnectString>
+        <IntegratedSecurity>true</IntegratedSecurity>
+      </ConnectionProperties>
+      <rd:DataSourceID>c7cddc36-48fa-4025-9a07-e656c1ea9d75</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="InventoryDates">
+      <Query>
+        <DataSourceName>SSASPROD_BIQLTabular_ISH</DataSourceName>
+        <CommandText>EVALUATE
+VAR AvailableInventoryDates =
+    SUMMARIZECOLUMNS (
+        'Calendar Inventory Snapshot'[Calendar Date],
+        FILTER (
+            VALUES ( 'Branch'[Branch Plant] ),
+            TRIM ( 'Branch'[Branch Plant] ) IN { "CINC", "CIN2" }
+        ),
+        FILTER (
+            VALUES ( 'Inventory Snapshot'[CostMethod] ),
+            TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07"
+        ),
+        "QuantityOnHandLB", [Qty On Hand LB]
+    )
+RETURN
+SELECTCOLUMNS (
+    FILTER ( AvailableInventoryDates, NOT ISBLANK ( [QuantityOnHandLB] ) ),
+    "InventoryDate", 'Calendar Inventory Snapshot'[Calendar Date],
+    "InventoryDateLabel", FORMAT ( 'Calendar Inventory Snapshot'[Calendar Date], "M/d/yyyy" )
+)
+ORDER BY [InventoryDate] DESC</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="InventoryDate">
+          <rd:TypeName>System.DateTime</rd:TypeName>
+          <DataField>[InventoryDate]</DataField>
+        </Field>
+        <Field Name="InventoryDateLabel">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>[InventoryDateLabel]</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="LatestInventoryDate">
+      <Query>
+        <DataSourceName>SSASPROD_BIQLTabular_ISH</DataSourceName>
+        <CommandText>EVALUATE
+VAR AvailableInventoryDates =
+    SUMMARIZECOLUMNS (
+        'Calendar Inventory Snapshot'[Calendar Date],
+        FILTER (
+            VALUES ( 'Branch'[Branch Plant] ),
+            TRIM ( 'Branch'[Branch Plant] ) IN { "CINC", "CIN2" }
+        ),
+        FILTER (
+            VALUES ( 'Inventory Snapshot'[CostMethod] ),
+            TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07"
+        ),
+        "QuantityOnHandLB", [Qty On Hand LB]
+    )
+RETURN
+TOPN (
+    1,
+    SELECTCOLUMNS (
+        FILTER ( AvailableInventoryDates, NOT ISBLANK ( [QuantityOnHandLB] ) ),
+        "InventoryDate", 'Calendar Inventory Snapshot'[Calendar Date]
+    ),
+    [InventoryDate], DESC
+)</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="InventoryDate">
+          <rd:TypeName>System.DateTime</rd:TypeName>
+          <DataField>[InventoryDate]</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="InventoryTier2">
+      <Query>
+        <DataSourceName>SSASPROD_BIQLTabular_ISH</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="InventoryDate">
+            <Value>=Parameters!InventoryDate.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>EVALUATE
+SUMMARIZECOLUMNS (
+    'Branch'[Branch Plant],
+    'Item Branch'[Item Num 2nd],
+    'Item Branch'[Item Num Bulk],
+    'Item Branch'[Item Num Global Bulk],
+    'Item Branch'[Master Planning Family],
+    'Calendar Inventory Snapshot'[Calendar Date],
+    FILTER (
+        VALUES ( 'Branch'[Branch Plant] ),
+        TRIM ( 'Branch'[Branch Plant] ) IN { "CINC", "CIN2" }
+    ),
+    FILTER (
+        VALUES ( 'Calendar Inventory Snapshot'[Calendar Date] ),
+        'Calendar Inventory Snapshot'[Calendar Date]
+            = DATEVALUE ( @InventoryDate ) + TIMEVALUE ( @InventoryDate )
+    ),
+    FILTER (
+        VALUES ( 'Inventory Snapshot'[CostMethod] ),
+        TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07"
+    ),
+    "Quantity on Hand LBs", [Qty On Hand LB]
+)
+ORDER BY
+    'Branch'[Branch Plant],
+    'Item Branch'[Item Num 2nd],
+    'Item Branch'[Item Num Bulk],
+    'Item Branch'[Item Num Global Bulk]</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Branch_Plant">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Branch[Branch Plant]</DataField>
+        </Field>
+        <Field Name="Item_Num_2nd">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Item Branch[Item Num 2nd]</DataField>
+        </Field>
+        <Field Name="Bulk_Item">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Item Branch[Item Num Bulk]</DataField>
+        </Field>
+        <Field Name="Global_Bulk_Item">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Item Branch[Item Num Global Bulk]</DataField>
+        </Field>
+        <Field Name="Master_Planning_Family">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Item Branch[Master Planning Family]</DataField>
+        </Field>
+        <Field Name="Quantity_on_Hand_LBs">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>[Quantity on Hand LBs]</DataField>
+        </Field>
+        <Field Name="Inventory_Date">
+          <rd:TypeName>System.DateTime</rd:TypeName>
+          <DataField>Calendar Inventory Snapshot[Calendar Date]</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Textbox Name="ReportTitle">
+            <rd:DefaultName>ReportTitle</rd:DefaultName>
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Inventory for Tier 2 Report</Value>
+                    <Style>
+                      <FontFamily>Segoe UI Semibold</FontFamily>
+                      <FontSize>18pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>#1f4e78</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Height>0.34in</Height>
+            <Width>9.29in</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="ReportContext">
+            <rd:DefaultName>ReportContext</rd:DefaultName>
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>= "Inventory Date: " &amp; Format(Parameters!InventoryDate.Value, "M/d/yyyy") &amp; "   |   Branch Plants: CINC, CIN2"</Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                      <Color>#595959</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>0.36in</Top>
+            <Height>0.24in</Height>
+            <Width>10.2in</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Tablix Name="InventoryTable">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>0.78in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.42in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.36in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.48in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.42in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.65in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.18in</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.34in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="HeaderBranchPlant">
+                          <rd:DefaultName>HeaderBranchPlant</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Branch Plant</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#b4c6e7</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#1f4e78</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>3pt</PaddingTop>
+                            <PaddingBottom>3pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="HeaderItemNumber">
+                          <rd:DefaultName>HeaderItemNumber</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>2nd Item Number</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#b4c6e7</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#1f4e78</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>3pt</PaddingTop>
+                            <PaddingBottom>3pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="HeaderBulkItem">
+                          <rd:DefaultName>HeaderBulkItem</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Bulk Item</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#b4c6e7</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#1f4e78</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>3pt</PaddingTop>
+                            <PaddingBottom>3pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="HeaderGlobalBulkItem">
+                          <rd:DefaultName>HeaderGlobalBulkItem</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Global Bulk Item</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#b4c6e7</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#1f4e78</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>3pt</PaddingTop>
+                            <PaddingBottom>3pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="HeaderMasterPlanningFamily">
+                          <rd:DefaultName>HeaderMasterPlanningFamily</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Master Planning Family</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#b4c6e7</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#1f4e78</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>3pt</PaddingTop>
+                            <PaddingBottom>3pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="HeaderQuantityOnHand">
+                          <rd:DefaultName>HeaderQuantityOnHand</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Quantity on Hand LBs</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#b4c6e7</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#1f4e78</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>3pt</PaddingTop>
+                            <PaddingBottom>3pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="HeaderInventoryDate">
+                          <rd:DefaultName>HeaderInventoryDate</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Inventory Date</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#b4c6e7</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#1f4e78</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>3pt</PaddingTop>
+                            <PaddingBottom>3pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.24in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="BranchPlant">
+                          <rd:DefaultName>BranchPlant</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Trim(Fields!Branch_Plant.Value)</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#d9e2f3</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=IIF(RowNumber(Nothing) Mod 2 = 0, "#F5F8FC", "White")</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="ItemNumber">
+                          <rd:DefaultName>ItemNumber</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Trim(Fields!Item_Num_2nd.Value)</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#d9e2f3</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=IIF(RowNumber(Nothing) Mod 2 = 0, "#F5F8FC", "White")</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="BulkItem">
+                          <rd:DefaultName>BulkItem</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIF(IsNothing(Fields!Bulk_Item.Value), "-", Trim(Fields!Bulk_Item.Value))</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#d9e2f3</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=IIF(RowNumber(Nothing) Mod 2 = 0, "#F5F8FC", "White")</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="GlobalBulkItem">
+                          <rd:DefaultName>GlobalBulkItem</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIF(IsNothing(Fields!Global_Bulk_Item.Value), "-", Trim(Fields!Global_Bulk_Item.Value))</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#d9e2f3</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=IIF(RowNumber(Nothing) Mod 2 = 0, "#F5F8FC", "White")</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="MasterPlanningFamily">
+                          <rd:DefaultName>MasterPlanningFamily</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Trim(Fields!Master_Planning_Family.Value)</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#d9e2f3</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=IIF(RowNumber(Nothing) Mod 2 = 0, "#F5F8FC", "White")</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="QuantityOnHand">
+                          <rd:DefaultName>QuantityOnHand</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Quantity_on_Hand_LBs.Value</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                    <Format>#,0.##########;(#,0.##########);0</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#d9e2f3</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=IIF(RowNumber(Nothing) Mod 2 = 0, "#F5F8FC", "White")</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="InventoryDateValue">
+                          <rd:DefaultName>InventoryDateValue</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Inventory_Date.Value</Value>
+                                  <Style>
+                                    <FontSize>8.5pt</FontSize>
+                                    <Format>M/d/yyyy</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>#d9e2f3</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=IIF(RowNumber(Nothing) Mod 2 = 0, "#F5F8FC", "White")</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingRight>4pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <KeepWithGroup>After</KeepWithGroup>
+                  <RepeatOnNewPage>true</RepeatOnNewPage>
+                  <KeepTogether>true</KeepTogether>
+                </TablixMember>
+                <TablixMember>
+                  <Group Name="InventoryDetails" />
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>InventoryTier2</DataSetName>
+            <Top>0.66in</Top>
+            <Height>0.58in</Height>
+            <Width>9.29in</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+          <Textbox Name="NoRowsMessage">
+            <rd:DefaultName>NoRowsMessage</rd:DefaultName>
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>No inventory rows were returned for the selected date.</Value>
+                    <Style>
+                      <FontStyle>Italic</FontStyle>
+                      <Color>#666666</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <Top>0.7in</Top>
+            <Left>0.04in</Left>
+            <Height>0.28in</Height>
+            <Width>5in</Width>
+            <ZIndex>3</ZIndex>
+            <Visibility>
+              <Hidden>=CountRows("InventoryTier2") &gt; 0</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+        </ReportItems>
+        <Height>1.3in</Height>
+        <Style />
+      </Body>
+      <Width>10.2in</Width>
+      <Page>
+        <PageFooter>
+          <Height>0.24in</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="FooterPageNumber">
+              <rd:DefaultName>FooterPageNumber</rd:DefaultName>
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>= "Page " &amp; Globals!PageNumber &amp; " of " &amp; Globals!TotalPages</Value>
+                      <Style>
+                        <FontSize>8pt</FontSize>
+                        <Color>#7f7f7f</Color>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Right</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Left>7.7in</Left>
+              <Height>0.2in</Height>
+              <Width>2.5in</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
+        <PageHeight>8.5in</PageHeight>
+        <PageWidth>11in</PageWidth>
+        <LeftMargin>0.25in</LeftMargin>
+        <RightMargin>0.25in</RightMargin>
+        <TopMargin>0.25in</TopMargin>
+        <BottomMargin>0.25in</BottomMargin>
+        <ColumnSpacing>0.13in</ColumnSpacing>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="InventoryDate">
+      <DataType>DateTime</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>LatestInventoryDate</DataSetName>
+          <ValueField>InventoryDate</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <Prompt>Inventory Date</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>InventoryDates</DataSetName>
+          <ValueField>InventoryDate</ValueField>
+          <LabelField>InventoryDateLabel</LabelField>
+        </DataSetReference>
+      </ValidValues>
+    </ReportParameter>
+  </ReportParameters>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>2</NumberOfColumns>
+      <NumberOfRows>1</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>InventoryDate</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+</Report>

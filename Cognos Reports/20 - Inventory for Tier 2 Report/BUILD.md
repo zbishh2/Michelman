@@ -47,30 +47,54 @@ Two technical findings, both measured, both new:
 
 ---
 
-## 1. Source routing — SSAS → EDW → ODS (per CLAUDE.md §1)
+## 1. Source routing — SSAS Live → SSAS Import → EDW Import → ODS Import
 
-**Decision: EDW.** Fact `dbo.FactInventorySnapshot_History` (SCD2 intervals) joined to a date spine;
-dimension `BIQL.TbItemBranch`; conversion `BIQL.DimItemUOMConversionLBKG`; date spine
-`BIQL.DimCalendarInventorySnapshot`.
+**Primary decision: SSAS Live against `SSASPROD / BIQLTabular_ISH`.** This is Michelman's production
+Inventory Snapshot History model and it exposes every required Cognos field. Inventory quantities
+exist once per cost method. Report 20 uses standard cost method `07` and the model's native
+`Inventory Snapshot[Qty On Hand LB]` measure. The report retains the live connection and avoids
+Power Query, a duplicated fact, or guessed relationships.
 
-### 1.1 SSAS `BIQLTabular_v2` live connection — REJECTED
+The local project is
+`Inventory for Tier 2 Report (SSAS Live)\Inventory for Tier 2 Report (SSAS Live).pbip`. Its report
+connects to the shared Power BI semantic model **Inventory Snapshot History Dataset** in workspace
+**Michelman - Inventory Snapshot History**. That shared semantic model is already bound to the
+production `BIQLTabular_ISH` Analysis Services gateway datasource. Development metadata points to the
+same `BIQLTabular_ISH` model.
 
-On paper the strongest SSAS-live candidate of the batch: one fact, one dimension, one measure, no Power
-Query at all, an `Inventory Snapshot` perspective that exists, and built-in `Conversion KG` /
-`Conversion LB` columns that would have solved §4 outright.
+The validation deployment is report `20 - Inventory for Tier 2 Report (SSAS Live)` in workspace
+**Michelman - Validation (Inventory)**. It is a thin report bound to dataset
+`15dcf8b0-e008-4662-ae33-4c7f432f7173` in the central Inventory Snapshot History workspace; it does
+not own a duplicate semantic model or refresh schedule.
 
-Rejected on the one fact that decides it: **the SSAS inventory fact has no history.** Report 14 probe
-§7a (its §12.1, run 2026-07-22 in SSMS against the **live** `SSASPROD`, not a dump) returned **exactly
-two dates** — the run day and run day + 1 (the company-2 block). A report whose entire purpose is a
-user-picked date range cannot be served by a single-day fact.
+### 1.1 SSAS production models — measured coverage
 
-⚠ Caveat, stated plainly: the local `ssasprod.bim` is a dump of the **stale `BIQLTabular`**, not
-`BIQLTabular_v2`, so the *structural* reading (perspective contents, conversion columns) is provisional
-and must be re-checked on the jumpbox if SSAS is ever revisited. **The rejection itself is not
-provisional** — it rests on a live `BIQLTabular_v2` DAX probe. Reopen only if Michelman historises that
-fact.
+`SSASPROD / BIQLTabular` is the general production model, but its `Inventory Snapshot` table is
+current-only. The production probe returns exactly two snapshot dates: 599,381 rows for 2026-08-12
+and 163,643 rows for 2026-08-13. It cannot satisfy Report 20's user-selected historical range.
 
-### 1.2 EDW — CHOSEN. Which object, and why it matters
+`SSASPROD / BIQLTabular_ISH` is the purpose-built production inventory-history model. Its current
+coverage is:
+
+| Property | Measured value |
+|---|---:|
+| Minimum snapshot date | 2021-06-30 |
+| Maximum snapshot date | 2026-08-12 |
+| Distinct snapshot dates | 133 |
+| Inventory Snapshot rows | 3,482,249 |
+
+The dates are the model's approved snapshot spine: older history is predominantly month-end and the
+recent period is denser. The report date slicer therefore selects only dates that actually exist in
+the production history model.
+
+### 1.2 SSAS Import — valid but unnecessary
+
+An SSAS Import variant could project the same seven fields from `BIQLTabular_ISH`, but it would copy
+the history fact into a report-owned model without adding coverage. The native quantity measure and
+standard-cost filter satisfy the requirement in Live mode. Use Import only if a future requirement
+needs local modeling that the shared semantic model cannot provide.
+
+### 1.3 EDW Import — retained full-daily-depth fallback
 
 | | `BIQL.FactInventorySnapshot_History_Filtered` | `dbo.FactInventorySnapshot_History` |
 |---|---|---|
@@ -99,10 +123,38 @@ company key). Reports 14 and 18 treat the +1-day shift as a regional edge case; 
 of the report's rows.** Omitting it returns the *previous day's* position under the current day's
 label. It will not look wrong.
 
-### 1.3 ODS `PRODDTA.F41021` — REJECTED
+The existing `Inventory for Tier 2 Report\Inventory for Tier 2 Report.pbip` remains the documented
+EDW fallback. It reconstructs about 1,890 daily snapshot dates from SCD2 intervals, compared with the
+133 approved dates exposed by `BIQLTabular_ISH`. Do not mix the EDW fact and SSAS history in one model;
+choose EDW only when the business explicitly requires daily dates absent from the production SSAS
+history model.
+
+### 1.4 ODS `PRODDTA.F41021` — rejected
 
 Current-only: 120,086 rows, no history dimension, only julian stamp columns (`LIUPMJ`, `LIURDT`)
 (**V1**). Cannot serve a date range. Already settled on report 14; nothing has changed.
+
+### 1.5 Paginated Report Builder implementation
+
+`Inventory for Tier 2 Report (Paginated)\Inventory for Tier 2 Report.rdl` is the export-oriented
+implementation. It connects directly to `SSASPROD / BIQLTabular_ISH` with the `OLEDB-MD` provider,
+so it has no report-owned semantic model, refresh schedule, EDW query, or ODS dependency.
+
+The report uses three DAX datasets:
+
+- `InventoryTier2` returns the seven Cognos columns for `CINC` and `CIN2` and the selected inventory
+  date. It filters `Inventory Snapshot[CostMethod]` to standard cost `07` and evaluates the model's
+  native `[Qty On Hand LB]` measure.
+- `InventoryDates` supplies the date parameter list from dates where `[Qty On Hand LB]` is nonblank
+  for the in-scope branches under standard cost method `07`.
+- `LatestInventoryDate` supplies the default as the newest date from the same fact-backed set. Future
+  calendar rows without inventory facts therefore cannot become the default.
+
+The main query uses a scalar `@InventoryDate` dataset parameter and compares the model date with
+`DATEVALUE(@InventoryDate) + TIMEVALUE(@InventoryDate)`. `RSCustomDaxFilter` is not available in this
+direct `OLEDB-MD` execution path and is not used. The landscape tablix repeats its header on every
+page, has no stock total, and formats the inventory date as `M/d/yyyy` for Cognos parity. Report
+Builder renders the current default snapshot as 38 pages of inventory rows.
 
 ---
 
@@ -112,6 +164,22 @@ Cognos reads from three DW objects: `ITEM` (item **×** branch grain — it carr
 `INVENTORY_ON_HAND` (fact header), `INVENTORY_ON_HAND_MEASURES` (fact detail). The native SQL confirms
 `CONVERSION_FACTOR_LB` sits on **`INVENTORY_ON_HAND_MEASURES`** — a measures-table column, not an item
 attribute.
+
+The SSAS Live implementation uses the model's native objects:
+
+| # | Report column | `BIQLTabular_ISH` field |
+|---|---|---|
+| 1 | Branch Plant | `Branch[Branch Plant]` |
+| 2 | 2nd Item Number | `Item Branch[Item Num 2nd]` |
+| 3 | Bulk Item | `Item Branch[Item Num Bulk]` |
+| 4 | Global Bulk Item | `Item Branch[Item Num Global Bulk]` |
+| 5 | Master Planning Family | `Item Branch[Master Planning Family]` |
+| 6 | Quantity on Hand LBs | native `[Qty On Hand LB]` filtered to `Inventory Snapshot[CostMethod] = "07"` |
+| 7 | Inventory Date | `Calendar Inventory Snapshot[Calendar Date]` |
+
+The table total is disabled because on-hand quantity is a stock and must not sum across snapshot
+dates. The page filter locks Branch Plant to `CINC` and `CIN2`; the visible controls are a Between
+date slicer, Branch Plant slicer, and Master Planning Family slicer.
 
 | # | Cognos column | Cognos source | EDW source | Type (measured) | Confidence |
 |---|---|---|---|---|---|

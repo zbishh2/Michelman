@@ -224,14 +224,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Customer Parent"
+                      "Entity": "Customer"
                     }
                   },
-                  "Property": "Customer Parent Name"
+                  "Property": "Global Parent Name"
                 }
               },
-              "queryRef": "Customer Parent.Customer Parent Name",
-              "nativeQueryRef": "Customer Parent Name",
+              "queryRef": "Customer.Global Parent Name",
+              "nativeQueryRef": "Global Parent Name",
               "displayName": "Global Parent Name"
             },
             {

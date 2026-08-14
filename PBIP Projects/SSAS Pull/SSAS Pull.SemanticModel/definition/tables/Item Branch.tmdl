@@ -1,0 +1,390 @@
+table 'Item Branch'
+	lineageTag: a5030000-0000-4000-8000-0000000000a1
+
+	column ItemBranchSKey
+		dataType: int64
+		lineageTag: a5030000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: ItemBranchSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemSKey
+		dataType: int64
+		lineageTag: a5030000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: ItemSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Business Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Num Short'
+		dataType: int64
+		lineageTag: a5030000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Item Num Short
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Num 2nd'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Item Num 2nd
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Num 2nd Desc'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Item Num 2nd Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Num 2nd and Desc'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Item Num 2nd and Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Num 3rd'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Item Num 3rd
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Bulk'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Item Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Global Bulk'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Item Global Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Num Bulk'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Item Num Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Num Global Bulk'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Item Num Global Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk Filter'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Global Bulk Filter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Master Planning Family'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: Master Planning Family
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Master Planning Family Desc'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: Master Planning Family Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stocking Type'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: Stocking Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stocking Type Desc'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: Stocking Type Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Line Type'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: Line Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'UOM Primary'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: UOM Primary
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'UOM Pricing'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: UOM Pricing
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'UOM Shipping'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000015
+		summarizeBy: none
+		sourceColumn: UOM Shipping
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Price Group'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000016
+		summarizeBy: none
+		sourceColumn: Item Price Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Price Group Desc'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000017
+		summarizeBy: none
+		sourceColumn: Item Price Group Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Planner Num'
+		dataType: int64
+		lineageTag: a5030000-0000-4000-8000-000000000018
+		summarizeBy: none
+		sourceColumn: Planner Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Planner Name'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000019
+		summarizeBy: none
+		sourceColumn: Planner Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Buyer Name'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-00000000001a
+		summarizeBy: none
+		sourceColumn: Buyer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Supplier Num'
+		dataType: int64
+		lineageTag: a5030000-0000-4000-8000-00000000001b
+		summarizeBy: none
+		sourceColumn: Branch Supplier Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Supplier Name'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-00000000001c
+		summarizeBy: none
+		sourceColumn: Branch Supplier Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column SafetyStock
+		dataType: double
+		lineageTag: a5030000-0000-4000-8000-00000000001d
+		summarizeBy: none
+		sourceColumn: SafetyStock
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Safety Stock SAFE'
+		dataType: double
+		lineageTag: a5030000-0000-4000-8000-00000000001e
+		summarizeBy: none
+		sourceColumn: Safety Stock SAFE
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReorderPoint
+		dataType: double
+		lineageTag: a5030000-0000-4000-8000-00000000001f
+		summarizeBy: none
+		sourceColumn: ReorderPoint
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReorderQuantity
+		dataType: double
+		lineageTag: a5030000-0000-4000-8000-000000000020
+		summarizeBy: none
+		sourceColumn: ReorderQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReorderQuantityMinimum
+		dataType: double
+		lineageTag: a5030000-0000-4000-8000-000000000021
+		summarizeBy: none
+		sourceColumn: ReorderQuantityMinimum
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReorderQuantityMaximum
+		dataType: double
+		lineageTag: a5030000-0000-4000-8000-000000000022
+		summarizeBy: none
+		sourceColumn: ReorderQuantityMaximum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Qty Order Multiple'
+		dataType: double
+		lineageTag: a5030000-0000-4000-8000-000000000023
+		summarizeBy: none
+		sourceColumn: Qty Order Multiple
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lead Time MFG_BP'
+		dataType: int64
+		lineageTag: a5030000-0000-4000-8000-000000000024
+		summarizeBy: none
+		sourceColumn: Lead Time MFG_BP
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Shelf Life Days'
+		dataType: int64
+		lineageTag: a5030000-0000-4000-8000-000000000025
+		summarizeBy: none
+		sourceColumn: Shelf Life Days
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Active Flag Status'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000026
+		summarizeBy: none
+		sourceColumn: Active Flag Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Reporting Code 01'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000027
+		summarizeBy: none
+		sourceColumn: Sales Reporting Code 01
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Reporting Code 01 Desc'
+		dataType: string
+		lineageTag: a5030000-0000-4000-8000-000000000028
+		summarizeBy: none
+		sourceColumn: Sales Reporting Code 01 Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Item Branch' = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				SELECTCOLUMNS (
+				    'Item Branch',
+				        ""ItemBranchSKey"", 'Item Branch'[ItemBranchSKey],
+				        ""ItemSKey"", 'Item Branch'[ItemSKey],
+				        ""Business Unit"", 'Item Branch'[Business Unit],
+				        ""Item Num Short"", 'Item Branch'[Item Num Short],
+				        ""Item Num 2nd"", 'Item Branch'[Item Num 2nd],
+				        ""Item Num 2nd Desc"", 'Item Branch'[Item Num 2nd Desc],
+				        ""Item Num 2nd and Desc"", 'Item Branch'[Item Num 2nd and Desc],
+				        ""Item Num 3rd"", 'Item Branch'[Item Num 3rd],
+				        ""Item Bulk"", 'Item Branch'[Item Bulk],
+				        ""Item Global Bulk"", 'Item Branch'[Item Global Bulk],
+				        ""Item Num Bulk"", 'Item Branch'[Item Num Bulk],
+				        ""Item Num Global Bulk"", 'Item Branch'[Item Num Global Bulk],
+				        ""Global Bulk Filter"", 'Item Branch'[Global Bulk Filter],
+				        ""Master Planning Family"", 'Item Branch'[Master Planning Family],
+				        ""Master Planning Family Desc"", 'Item Branch'[Master Planning Family Desc],
+				        ""Stocking Type"", 'Item Branch'[Stocking Type],
+				        ""Stocking Type Desc"", 'Item Branch'[Stocking Type Desc],
+				        ""Line Type"", 'Item Branch'[Line Type],
+				        ""UOM Primary"", 'Item Branch'[UOM Primary],
+				        ""UOM Pricing"", 'Item Branch'[UOM Pricing],
+				        ""UOM Shipping"", 'Item Branch'[UOM Shipping],
+				        ""Item Price Group"", 'Item Branch'[Item Price Group],
+				        ""Item Price Group Desc"", 'Item Branch'[Item Price Group Desc],
+				        ""Planner Num"", 'Item Branch'[Planner Num],
+				        ""Planner Name"", 'Item Branch'[Planner Name],
+				        ""Buyer Name"", 'Item Branch'[Buyer Name],
+				        ""Branch Supplier Num"", 'Item Branch'[Branch Supplier Num],
+				        ""Branch Supplier Name"", 'Item Branch'[Branch Supplier Name],
+				        ""SafetyStock"", 'Item Branch'[SafetyStock],
+				        ""Safety Stock SAFE"", 'Item Branch'[Safety Stock SAFE],
+				        ""ReorderPoint"", 'Item Branch'[ReorderPoint],
+				        ""ReorderQuantity"", 'Item Branch'[ReorderQuantity],
+				        ""ReorderQuantityMinimum"", 'Item Branch'[ReorderQuantityMinimum],
+				        ""ReorderQuantityMaximum"", 'Item Branch'[ReorderQuantityMaximum],
+				        ""Qty Order Multiple"", 'Item Branch'[Qty Order Multiple],
+				        ""Lead Time MFG_BP"", 'Item Branch'[Lead Time MFG_BP],
+				        ""Shelf Life Days"", 'Item Branch'[Shelf Life Days],
+				        ""Active Flag Status"", 'Item Branch'[Active Flag Status],
+				        ""Sales Reporting Code 01"", 'Item Branch'[Sales Reporting Code 01],
+				        ""Sales Reporting Code 01 Desc"", 'Item Branch'[Sales Reporting Code 01 Desc]
+				)
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

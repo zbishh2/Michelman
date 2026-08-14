@@ -1,0 +1,22 @@
+EVALUATE
+SELECTCOLUMNS (
+    Inventory,
+    "Branch Plant", Inventory[Branch Plant],
+    "Global Bulk Item", Inventory[Global Bulk Item],
+    "Bulk Item", Inventory[Bulk Item],
+    "2nd Item Number", Inventory[2nd Item Number],
+    "GL Class Code", Inventory[GL Class Code],
+    "Location (Display)", Inventory[Location (Display)],
+    "Lot Number (Display)", Inventory[Lot Number (Display)],
+    "Lot Status (Display)", Inventory[Lot Status (Display)],
+    "Master Planning Family", Inventory[Master Planning Family],
+    "Quantity on Hand", Inventory[Quantity on Hand],
+    "Primary Unit of Measure", Inventory[Primary Unit of Measure],
+    "Quantity on Hand KGs", Inventory[Quantity on Hand KGs],
+    "Quantity on Hand LBs", Inventory[Quantity on Hand LBs],
+    "Stock Type Code", Inventory[Stock Type Code],
+    "On Hand Date", Inventory[On Hand Date],
+    "Lot Expiry Date", Inventory[Lot Expiry Date],
+    "DATE", Inventory[DATE]
+)
+ORDER BY [Global Bulk Item], [Bulk Item], [2nd Item Number], [Branch Plant], [Location (Display)], [Lot Number (Display)]

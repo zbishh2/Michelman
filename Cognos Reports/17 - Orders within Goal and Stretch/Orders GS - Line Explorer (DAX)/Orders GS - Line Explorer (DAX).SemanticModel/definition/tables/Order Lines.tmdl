@@ -238,6 +238,24 @@ table 'Order Lines'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// The order HEADER's hold code right now (F4201.SHHOLD; blank = not held). JDE clears this on release, so it is CURRENT STATE, not history - a line that shipped after a hold shows blank here.
+	column 'Current Hold Code'
+		dataType: string
+		lineageTag: 17da0000-0000-4000-8000-000000000122
+		summarizeBy: none
+		sourceColumn: Current Hold Code
+
+		annotation SummarizationSetBy = Automatic
+
+	/// UDC 42/HC decode of the current hold (C1 = Credit Hold, CX = Held for Cash Advance, FM = Order Entry Hold Code for AUBA, ...).
+	column 'Current Hold Description'
+		dataType: string
+		lineageTag: 17da0000-0000-4000-8000-000000000123
+		summarizeBy: none
+		sourceColumn: Current Hold Description
+
+		annotation SummarizationSetBy = Automatic
+
 	/// Earliest 525 event of THIS line, from the related Revision Ledger rows.
 	column 'First 525' =
 			MINX (
@@ -444,7 +462,9 @@ table 'Order Lines'
 				            LTRIM(RTRIM(o.SDLTTR))                     AS [Current Last Status],
 				            LTRIM(RTRIM(o.SDNXTR))                     AS [Current Next Status],
 				            o.SrcTbl                                   AS [Source Table],
-				            LTRIM(RTRIM(csrw.WWMLNM))                  AS [CSR Name]
+				            LTRIM(RTRIM(csrw.WWMLNM))                  AS [CSR Name],
+				            ISNULL(LTRIM(RTRIM(hh.SHHOLD)),'')         AS [Current Hold Code],
+				            ISNULL(LTRIM(RTRIM(hd.DRDL01)),'')         AS [Current Hold Description]
 				        FROM #ord o
 				        LEFT JOIN PRODDTA.F0010 co   ON LTRIM(RTRIM(co.CCCO)) = o.CompanyCode
 				        LEFT JOIN PRODDTA.F0101 sold ON sold.ABAN8 = o.SDAN8
@@ -456,7 +476,11 @@ table 'Order Lines'
 				                          AND uom.UMUM  = LTRIM(RTRIM(o.SDUOM))
 				                          AND uom.UMRUM = LTRIM(RTRIM(im.IMUOM1))
 				        LEFT JOIN #csr cs ON cs.CMAN8 = o.SDSHAN
-				        LEFT JOIN PRODDTA.F0111 csrw ON csrw.WWAN8 = cs.CSR_AN8 AND csrw.WWIDLN = 0;
+				        LEFT JOIN PRODDTA.F0111 csrw ON csrw.WWAN8 = cs.CSR_AN8 AND csrw.WWIDLN = 0
+				        -- Hold: order HEADER's live hold code; F4201 is unique per (KCOO, DOCO, DCTO), cannot fan the line grain.
+				        LEFT JOIN PRODDTA.F4201 hh ON hh.SHKCOO = o.SDKCOO AND hh.SHDOCO = o.SDDOCO AND hh.SHDCTO = o.SDDCTO
+				        LEFT JOIN PRODCTL.F0005 hd ON LTRIM(RTRIM(hd.DRSY)) = '42' AND LTRIM(RTRIM(hd.DRRT)) = 'HC'
+				                                  AND LTRIM(RTRIM(hd.DRKY)) = LTRIM(RTRIM(hh.SHHOLD));
 				        ",
 				        null,
 				        [EnableFolding = false]
@@ -487,7 +511,9 @@ table 'Order Lines'
 				            {"Current Last Status", type text},
 				            {"Current Next Status", type text},
 				            {"Source Table", type text},
-				            {"CSR Name", type text}
+				            {"CSR Name", type text},
+				            {"Current Hold Code", type text},
+				            {"Current Hold Description", type text}
 				        },
 				        "en-US"
 				    )

@@ -1,0 +1,25 @@
+EVALUATE
+TOPN (
+    25,
+    SELECTCOLUMNS (
+        Inventory,
+        "Branch Plant", Inventory[Branch Plant],
+        "Global Bulk Item", Inventory[Global Bulk Item],
+        "Bulk Item", Inventory[Bulk Item],
+        "2nd Item Number", Inventory[2nd Item Number],
+        "Location Raw", Inventory[Location],
+        "Location Display", Inventory[Location (Display)],
+        "Lot Number Raw", Inventory[Lot Number],
+        "Lot Number Display", Inventory[Lot Number (Display)],
+        "Lot Status Raw", Inventory[Lot Status],
+        "Lot Status Display", Inventory[Lot Status (Display)],
+        "Quantity on Hand", Inventory[Quantity on Hand],
+        "Quantity on Hand KGs", Inventory[Quantity on Hand KGs],
+        "Quantity on Hand LBs", Inventory[Quantity on Hand LBs],
+        "DATE", Inventory[DATE]
+    ),
+    [Branch Plant], ASC,
+    [2nd Item Number], ASC,
+    [Location Display], ASC,
+    [Lot Number Display], ASC
+)

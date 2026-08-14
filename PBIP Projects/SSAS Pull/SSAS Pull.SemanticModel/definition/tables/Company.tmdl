@@ -1,0 +1,75 @@
+table Company
+	lineageTag: a50a0000-0000-4000-8000-0000000000a1
+
+	column CompanySKey
+		dataType: int64
+		lineageTag: a50a0000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: CompanySKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Company
+		dataType: string
+		lineageTag: a50a0000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Company Desc'
+		dataType: string
+		lineageTag: a50a0000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Company Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Company and Desc'
+		dataType: string
+		lineageTag: a50a0000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Company and Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column Currency
+		dataType: string
+		lineageTag: a50a0000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Currency
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Company = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				SELECTCOLUMNS (
+				    'Company',
+				        ""CompanySKey"", 'Company'[CompanySKey],
+				        ""Company"", 'Company'[Company],
+				        ""Company Desc"", 'Company'[Company Desc],
+				        ""Company and Desc"", 'Company'[Company and Desc],
+				        ""Currency"", 'Company'[Currency]
+				)
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,244 @@
+table Calendar
+	lineageTag: a50f0000-0000-4000-8000-0000000000a1
+
+	column CalendarPattern
+		dataType: string
+		lineageTag: a50f0000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: CalendarPattern
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calendar Date'
+		dataType: dateTime
+		lineageTag: a50f0000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Calendar Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateSKey
+		dataType: int64
+		lineageTag: a50f0000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: DateSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Num'
+		dataType: int64
+		lineageTag: a50f0000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Year Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: string
+		lineageTag: a50f0000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Quarter'
+		dataType: string
+		lineageTag: a50f0000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Year Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Period Num'
+		dataType: int64
+		lineageTag: a50f0000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Period Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Period'
+		dataType: string
+		lineageTag: a50f0000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Year Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Period Desc Short'
+		dataType: string
+		lineageTag: a50f0000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Period Desc Short
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calendar Month Num'
+		dataType: int64
+		lineageTag: a50f0000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Calendar Month Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calendar Month'
+		dataType: string
+		lineageTag: a50f0000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Calendar Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calendar Month Short Desc'
+		dataType: string
+		lineageTag: a50f0000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Calendar Month Short Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column Week
+		dataType: string
+		lineageTag: a50f0000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calendar Day Num'
+		dataType: int64
+		lineageTag: a50f0000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: Calendar Day Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Period Begin Date'
+		dataType: dateTime
+		lineageTag: a50f0000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: Period Begin Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Period End Date'
+		dataType: dateTime
+		lineageTag: a50f0000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: Period End Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Relative Year'
+		dataType: int64
+		lineageTag: a50f0000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: Relative Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Relative Quarter'
+		dataType: int64
+		lineageTag: a50f0000-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: Relative Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Relative Period'
+		dataType: int64
+		lineageTag: a50f0000-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: Relative Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Relative Week'
+		dataType: int64
+		lineageTag: a50f0000-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: Relative Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Relative Day'
+		dataType: int64
+		lineageTag: a50f0000-0000-4000-8000-000000000015
+		summarizeBy: none
+		sourceColumn: Relative Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column Holiday
+		dataType: string
+		lineageTag: a50f0000-0000-4000-8000-000000000016
+		summarizeBy: none
+		sourceColumn: Holiday
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsBusinessDay
+		dataType: boolean
+		lineageTag: a50f0000-0000-4000-8000-000000000017
+		summarizeBy: none
+		sourceColumn: IsBusinessDay
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendar = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				VAR PullRows =
+				    FILTER (
+				        'Calendar',
+				        'Calendar'[Calendar Date] >= DATE ( 2019, 1, 1 )
+				            && 'Calendar'[Calendar Date] <= DATE ( 2030, 12, 31 )
+				    )
+				RETURN
+				    SELECTCOLUMNS (
+				        PullRows,
+				        ""CalendarPattern"", 'Calendar'[CalendarPattern],
+				        ""Calendar Date"", 'Calendar'[Calendar Date],
+				        ""DateSKey"", 'Calendar'[DateSKey],
+				        ""Year Num"", 'Calendar'[Year Num],
+				        ""Quarter"", 'Calendar'[Quarter],
+				        ""Year Quarter"", 'Calendar'[Year Quarter],
+				        ""Period Num"", 'Calendar'[Period Num],
+				        ""Year Period"", 'Calendar'[Year Period],
+				        ""Period Desc Short"", 'Calendar'[Period Desc Short],
+				        ""Calendar Month Num"", 'Calendar'[Calendar Month Num],
+				        ""Calendar Month"", 'Calendar'[Calendar Month],
+				        ""Calendar Month Short Desc"", 'Calendar'[Calendar Month Short Desc],
+				        ""Week"", 'Calendar'[Week],
+				        ""Calendar Day Num"", 'Calendar'[Calendar Day Num],
+				        ""Period Begin Date"", 'Calendar'[Period Begin Date],
+				        ""Period End Date"", 'Calendar'[Period End Date],
+				        ""Relative Year"", 'Calendar'[Relative Year],
+				        ""Relative Quarter"", 'Calendar'[Relative Quarter],
+				        ""Relative Period"", 'Calendar'[Relative Period],
+				        ""Relative Week"", 'Calendar'[Relative Week],
+				        ""Relative Day"", 'Calendar'[Relative Day],
+				        ""Holiday"", 'Calendar'[Holiday],
+				        ""IsBusinessDay"", 'Calendar'[IsBusinessDay]
+				    )
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

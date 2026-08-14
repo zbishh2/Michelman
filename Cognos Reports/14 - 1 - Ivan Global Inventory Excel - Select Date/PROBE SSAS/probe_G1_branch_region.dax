@@ -1,0 +1,12 @@
+EVALUATE
+SUMMARIZE (
+    FILTER (
+        'Branch',
+        TRIM ( 'Branch'[Branch Plant] ) IN { "CINC", "CIN2", "CIN4", "AUBA", "AUB2", "SING", "SNG4", "MUM3", "SHAN" }
+    ),
+    'Branch'[Branch Plant],
+    'Branch'[Branch Plant Desc],
+    'Branch'[Region],
+    'Branch'[Region Desc]
+)
+ORDER BY 'Branch'[Branch Plant]

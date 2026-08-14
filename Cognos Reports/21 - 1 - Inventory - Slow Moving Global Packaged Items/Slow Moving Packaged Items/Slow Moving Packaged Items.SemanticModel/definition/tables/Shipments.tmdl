@@ -49,13 +49,7 @@ table Shipments
 
 		annotation SummarizationSetBy = Automatic
 
-	/// DELIBERATELY TRUNCATED TO 5 CHARACTERS to reproduce a known Cognos defect.
-	/// Cognos does substr(ORDER_LINE_ID, 1+instr(...,',',-1), 5) and then GROUPs BY the
-	/// result, so line 10.001 renders as '10.00', collides with 10.000 and the two rows
-	/// MERGE with summed quantities. Measured: 8 rows of the 2026-08-06 capture are such
-	/// merges, and emulating the truncation is what lifts the local match from 17,251 to
-	/// 17,259 of 17,259. Reproduced on Zack's 'build for parity' instruction of 2026-08-06.
-	/// The correct unmerged form is a two-line edit - see Shipments.commented.m. D-21a.
+	/// Full source line number. Decimal sub-lines remain distinct business keys.
 	column 'Line Number'
 		dataType: string
 		lineageTag: 21a10000-0000-4000-8000-000000000207
@@ -80,22 +74,6 @@ table Shipments
 
 		annotation SummarizationSetBy = Automatic
 
-	/// D-21d, resolved by jumpbox probe P1 on 2026-08-06. dbo.FactSalesDetail has no column
-	/// of this name; the answer is Next Status. Over all 17,259 export rows: 'N' <-> 999 on
-	/// 16,363 rows, 'Y' <-> 540/530/560/535/580/525/550/570 on 896. Zero exceptions.
-	/// StatusCodeNext is nchar - the TRIM is required or the = "999" test silently fails.
-	/// DO NOT re-adopt SalesTableSource: BUILD.md 3.5 named it as the structural analog and it
-	/// looked perfect on the 17,253 export-matched rows, but the probe found 252 lines with
-	/// SalesTableSource = 1 AND StatusCodeNext = 999 that it would misclassify. The column has
-	/// been removed from the query so it cannot be reinstated by accident. BUILD.md 7 #18.
-	/// Display-only in this report - do NOT copy report 19's Open Indicator carve-out here.
-	column 'Open Indicator' = IF ( TRIM ( 'Shipments'[Next Status] ) = "999", "N", "Y" )
-		dataType: string
-		lineageTag: 21a10000-0000-4000-8000-00000000020a
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
 	column 'Promised Ship Date'
 		dataType: dateTime
 		formatString: d MMM, yyyy
@@ -105,8 +83,7 @@ table Shipments
 
 		annotation SummarizationSetBy = Automatic
 
-	/// SUM(QuantityOrderedPrimaryUOM), net of cancellation in SQL. NOT
-	/// QuantityOrdered * SalesFactor, which is the transaction quantity. BUILD.md 2.5.
+	/// Ordered quantity in the item's primary unit of measure.
 	column 'Ordered Quantity'
 		dataType: double
 		formatString: #,0
@@ -126,53 +103,6 @@ table Shipments
 
 		annotation SummarizationSetBy = Automatic
 
-	/// KG/LB rule, BUILD.md 2.4. primary UOM = LB -> quantity as-is;
-	/// = KG -> quantity * [KG to LB]; anything else -> KGs * [KG to LB].
-	/// Constants live only in the hidden 'Conversion Constants' table.
-	column 'Ordered Quantity LBs' =
-			VAR KGtoLB = MAXX ( 'Conversion Constants', 'Conversion Constants'[KG to LB] )
-			VAR Qty    = 'Shipments'[Ordered Quantity]
-			VAR UOM    = TRIM ( 'Shipments'[Primary Unit of Measure] )
-			RETURN
-			    SWITCH (
-			        TRUE (),
-			        UOM = "LB", Qty,
-			        UOM = "KG", Qty * KGtoLB,
-			        Qty * 'Shipments'[KG Factor] * KGtoLB
-			    )
-		dataType: double
-		formatString: #,0
-		lineageTag: 21a10000-0000-4000-8000-00000000020e
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isDecimal":true}
-
-	/// KG/LB rule, BUILD.md 2.4 - the report's one real derivation.
-	/// primary UOM = KG -> quantity as-is; = LB -> quantity * [LB to KG];
-	/// anything else -> quantity * the per-item EDW [KG Factor].
-	/// Constants live only in the hidden 'Conversion Constants' table.
-	column 'Ordered Quantity KGs' =
-			VAR LBtoKG = MAXX ( 'Conversion Constants', 'Conversion Constants'[LB to KG] )
-			VAR Qty    = 'Shipments'[Ordered Quantity]
-			VAR UOM    = TRIM ( 'Shipments'[Primary Unit of Measure] )
-			RETURN
-			    SWITCH (
-			        TRUE (),
-			        UOM = "KG", Qty,
-			        UOM = "LB", Qty * LBtoKG,
-			        Qty * 'Shipments'[KG Factor]
-			    )
-		dataType: double
-		formatString: #,0
-		lineageTag: 21a10000-0000-4000-8000-00000000020f
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isDecimal":true}
-
 	column 'Line Type'
 		dataType: string
 		lineageTag: 21a10000-0000-4000-8000-000000000210
@@ -189,8 +119,7 @@ table Shipments
 
 		annotation SummarizationSetBy = Automatic
 
-	/// dbo.DimAddress.AddressDesc. Reproduces the export on 17,251/17,259; the 8 misses
-	/// are one Vietnamese customer differing only in letter case. BUILD.md 3.2.
+	/// Production ship-to customer name from the SSAS customer dimension.
 	column 'Customer Name'
 		dataType: string
 		lineageTag: 21a10000-0000-4000-8000-000000000212
@@ -207,8 +136,8 @@ table Shipments
 
 		annotation SummarizationSetBy = Automatic
 
-	/// Drives the KG/LB rule. Not displayed on this sheet - the displayed UOM is
-	/// 'Ordering Unit of Measure' (the transaction UOM).
+	/// Diagnostic. Not displayed - the displayed UOM is 'Ordering Unit of Measure'
+	/// (the transaction UOM).
 	column 'Primary Unit of Measure'
 		dataType: string
 		isHidden
@@ -218,88 +147,124 @@ table Shipments
 
 		annotation SummarizationSetBy = Automatic
 
-	/// dbo.FactSalesDetail.ConversionFactorKG. Used only by the ELSE branch of the KG/LB
-	/// rule. 676 of 17,253 rows disagree with the Cognos DW, all UOMPrimary = 'EA' - D-21e.
-	column 'KG Factor'
-		dataType: double
+	/// Diagnostic. When proven equivalent to the quantity-net eligibility predicate,
+	/// the predicate becomes a filter on this stored column.
+	column 'Cancelled Flag'
+		dataType: int64
 		isHidden
+		formatString: 0
 		lineageTag: 21a10000-0000-4000-8000-000000000215
 		summarizeBy: none
-		sourceColumn: KG Factor
+		sourceColumn: Cancelled Flag
 
 		annotation SummarizationSetBy = Automatic
+
+	/// The model's stored Open Order Flag. Displayed only; it does not filter the
+	/// Shipments population.
+	column 'Open Indicator'
+		dataType: string
+		lineageTag: 21a10000-0000-4000-8000-00000000020a
+		summarizeBy: none
+		sourceColumn: Open Indicator
+
+		annotation SummarizationSetBy = Automatic
+
+	/// The model's stored QuantityOrderedLB column at source-line grain. The
+	/// Qty Ordered Primary UOM LB/KG pair double-converts TO-UOM lines and is not used.
+	column 'Ordered Quantity LBs'
+		dataType: double
+		formatString: #,0
+		lineageTag: 21a10000-0000-4000-8000-00000000020e
+		summarizeBy: none
+		sourceColumn: Ordered Quantity LBs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// The model's stored QuantityOrderedKG column at source-line grain.
+	column 'Ordered Quantity KGs'
+		dataType: double
+		formatString: #,0
+		lineageTag: 21a10000-0000-4000-8000-00000000020f
+		summarizeBy: none
+		sourceColumn: Ordered Quantity KGs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
 
 	partition Shipments = m
 		mode: import
 		source =
 				let
-				    Source = Sql.Database("EDWPROD", "EDW"),
-				    Data = Value.NativeQuery(
-				        Source,
-				        "
-				        SET NOCOUNT ON;
-				
-				        SELECT
-				            f.OrderCompany                               AS [Order Company],
-				            LTRIM(RTRIM(f.BusinessUnit))                 AS [Branch Plant],
-				            ib.[Item Global Bulk]                        AS [Global Bulk Item],
-				            ib.[Item Bulk]                               AS [Bulk Item],
-				            f.ItemNum2nd                                 AS [2nd Item Number],
-				            CAST(f.OrderNum AS varchar(12))              AS [Order Number],
-				            LEFT(CASE WHEN f.LineNum = FLOOR(f.LineNum)
-				                      THEN CAST(CAST(f.LineNum AS int) AS varchar(12))
-				                      ELSE CAST(CAST(f.LineNum AS decimal(9,3)) AS varchar(12))
-				                 END, 5)                                 AS [Line Number],
-				            LTRIM(RTRIM(f.StatusCodeLast))               AS [Last Status],
-				            LTRIM(RTRIM(f.StatusCodeNext))               AS [Next Status],
-				            f.PromisedShipmentDate                       AS [Promised Ship Date],
-				            SUM(f.QuantityOrderedPrimaryUOM)             AS [Ordered Quantity],
-				            LTRIM(RTRIM(f.UOMTransaction))               AS [Ordering Unit of Measure],
-				            LTRIM(RTRIM(f.LineType))                     AS [Line Type],
-				            CAST(f.AddressNumShipTo AS varchar(12))      AS [Customer Code],
-				            a.AddressDesc                                AS [Customer Name],
-				            LTRIM(RTRIM(f.OrderType))                    AS [Order Type Code],
-				            LTRIM(RTRIM(MIN(f.UOMPrimary)))              AS [Primary Unit of Measure],
-				            MIN(f.ConversionFactorKG)                    AS [KG Factor]
-				        FROM dbo.FactSalesDetail f WITH (NOLOCK)
-				            INNER JOIN BIQL.TbItemBranch ib WITH (NOLOCK)
-				                    ON ib.ItemBranchSKey = f.ItemBranchSKey
-				            INNER JOIN dbo.DimCustomer c WITH (NOLOCK)
-				                    ON c.CustomerSKey = f.ShipToCustomerSKey
-				            INNER JOIN dbo.DimAddress a WITH (NOLOCK)
-				                    ON a.AddressSKey = c.AddressSKey
-				        WHERE f.QuantityOrderedPrimaryUOM > 0
-				          AND (f.QuantityOrdered - f.QuantityCanceledScrapped) > 0
-				          AND f.PromisedShipmentDate >= DATEADD(DAY, -365, CAST(GETDATE() AS date))
-				          AND LTRIM(RTRIM(f.LineType)) = 'S'
-				          AND LTRIM(RTRIM(f.OrderType)) NOT IN ('ST')
-				          AND LTRIM(RTRIM(f.BusinessUnit)) IN ('CINC', 'CIN2', 'CINC', 'AUBA', 'AUB2', 'SING', 'SNG4')
-				          AND LTRIM(RTRIM(ib.[Category GL F4101])) = 'IN32'
-				          AND COALESCE( NULLIF( NULLIF( LTRIM(RTRIM(ISNULL(ib.[Item Global Bulk], ''))), '' ), '-' ),
-				                        LTRIM(RTRIM(f.ItemNum2nd)) )
-				              NOT IN ('IGST', 'CGST', 'SGST', 'CVD', 'ADD')
-				        GROUP BY
-				            f.OrderCompany,
-				            LTRIM(RTRIM(f.BusinessUnit)),
-				            ib.[Item Global Bulk],
-				            ib.[Item Bulk],
-				            f.ItemNum2nd,
-				            CAST(f.OrderNum AS varchar(12)),
-				            LEFT(CASE WHEN f.LineNum = FLOOR(f.LineNum)
-				                      THEN CAST(CAST(f.LineNum AS int) AS varchar(12))
-				                      ELSE CAST(CAST(f.LineNum AS decimal(9,3)) AS varchar(12))
-				                 END, 5),
-				            LTRIM(RTRIM(f.StatusCodeLast)),
-				            LTRIM(RTRIM(f.StatusCodeNext)),
-				            f.PromisedShipmentDate,
-				            LTRIM(RTRIM(f.UOMTransaction)),
-				            LTRIM(RTRIM(f.LineType)),
-				            CAST(f.AddressNumShipTo AS varchar(12)),
-				            a.AddressDesc,
-				            LTRIM(RTRIM(f.OrderType))
-				        ",
-				        null,
-				        [EnableFolding = false]
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				VAR R21EligibleSales =
+				    FILTER (
+				        Sales,
+				        TRIM ( Sales[Record Type] ) = ""Sales Detail""
+				            && Sales[QuantityOrderedPrimaryUOM] > 0
+				            && ( Sales[QuantityOrdered] - Sales[QuantityCanceledScrapped] ) > 0
+				            && Sales[Promised Shipment Date] >= TODAY () - 365
+				            && TRIM ( Sales[Line Type] ) = ""S""
+				            && TRIM ( Sales[Order Type] ) <> ""ST""
+				            && TRIM ( Sales[BusinessUnit] ) IN { ""CINC"", ""CIN2"", ""AUBA"", ""AUB2"", ""SING"", ""SNG4"" }
+				            && TRIM ( RELATED ( 'Item Branch'[Category GL F4101] ) ) = ""IN32""
+				            && VAR GlobalBulk = TRIM ( RELATED ( 'Item Branch'[Item Global Bulk] ) )
+				               VAR EffectiveItem =
+				                    IF (
+				                        ISBLANK ( GlobalBulk ) || GlobalBulk IN { """", ""-"" },
+				                        TRIM ( Sales[Item Num 2nd] ),
+				                        GlobalBulk
+				                    )
+				               RETURN NOT EffectiveItem IN { ""IGST"", ""CGST"", ""SGST"", ""CVD"", ""ADD"" }
+				    )
+				RETURN
+				    SELECTCOLUMNS (
+				        R21EligibleSales,
+				        ""Order Company"", TRIM ( Sales[Order Company] ),
+				        ""Branch Plant"", TRIM ( Sales[BusinessUnit] ),
+				        ""Global Bulk Item"", TRIM ( RELATED ( 'Item Branch'[Item Global Bulk] ) ),
+				        ""Bulk Item"", TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) ),
+				        ""2nd Item Number"", TRIM ( Sales[Item Num 2nd] ),
+				        ""Order Number"", FORMAT ( Sales[Order Num], ""0"" ),
+				        ""Line Number"",
+				            VAR R21LineNumber = Sales[Line Num]
+				            RETURN
+				                IF (
+				                    R21LineNumber = INT ( R21LineNumber ),
+				                    FORMAT ( R21LineNumber, ""0"" ),
+				                    FORMAT ( R21LineNumber, ""0.###"" )
+				                ),
+				        ""Last Status"", TRIM ( Sales[Status Code Last] ),
+				        ""Next Status"", TRIM ( Sales[Status Code Next] ),
+				        ""Open Indicator"", TRIM ( Sales[Open Order Flag] ),
+				        ""Promised Ship Date"", Sales[Promised Shipment Date],
+				        ""Ordered Quantity"", Sales[QuantityOrderedPrimaryUOM],
+				        ""Ordering Unit of Measure"", TRIM ( Sales[UOM] ),
+				        ""Ordered Quantity LBs"", Sales[QuantityOrderedLB],
+				        ""Ordered Quantity KGs"", Sales[QuantityOrderedKG],
+				        ""Primary Unit of Measure"", TRIM ( RELATED ( 'Item Branch'[UOM Primary] ) ),
+				        ""Cancelled Flag"", Sales[Cancelled_Flag],
+				        ""Line Type"", TRIM ( Sales[Line Type] ),
+				        ""Customer Code"", FORMAT ( RELATED ( 'Customer Ship To'[Customer Ship To] ), ""0"" ),
+				        ""Customer Name"", TRIM ( RELATED ( 'Customer Ship To'[Customer Ship To Name] ) ),
+				        ""Order Type Code"", TRIM ( Sales[Order Type] )
+				    )
+				ORDER BY [Global Bulk Item], [Bulk Item], [2nd Item Number], [Branch Plant], [Order Number], [Line Number]
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
 				    )
 				in
 				    Data

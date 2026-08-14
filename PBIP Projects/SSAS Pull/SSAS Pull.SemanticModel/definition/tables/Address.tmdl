@@ -1,0 +1,156 @@
+table Address
+	lineageTag: a5070000-0000-4000-8000-0000000000a1
+
+	column AddressSKey
+		dataType: int64
+		lineageTag: a5070000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: AddressSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Address Num'
+		dataType: int64
+		lineageTag: a5070000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Address Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Address Name'
+		dataType: string
+		lineageTag: a5070000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Address Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Address and Name'
+		dataType: string
+		lineageTag: a5070000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Address and Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Search Type'
+		dataType: string
+		lineageTag: a5070000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Search Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Search Type Desc'
+		dataType: string
+		lineageTag: a5070000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Search Type Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Business Unit'
+		dataType: string
+		lineageTag: a5070000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Sales Business Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Business Unit Desc'
+		dataType: string
+		lineageTag: a5070000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Sales Business Unit Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation'
+		dataType: string
+		lineageTag: a5070000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Customer Segmentation
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation Desc'
+		dataType: string
+		lineageTag: a5070000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Customer Segmentation Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Country Desc'
+		dataType: string
+		lineageTag: a5070000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Country Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'State Desc'
+		dataType: string
+		lineageTag: a5070000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: State Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerYN
+		dataType: int64
+		lineageTag: a5070000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: CustomerYN
+
+		annotation SummarizationSetBy = Automatic
+
+	column SupplierYN
+		dataType: int64
+		lineageTag: a5070000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: SupplierYN
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Address = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				SELECTCOLUMNS (
+				    'Address',
+				        ""AddressSKey"", 'Address'[AddressSKey],
+				        ""Address Num"", 'Address'[Address Num],
+				        ""Address Name"", 'Address'[Address Name],
+				        ""Address and Name"", 'Address'[Address and Name],
+				        ""Search Type"", 'Address'[Search Type],
+				        ""Search Type Desc"", 'Address'[Search Type Desc],
+				        ""Sales Business Unit"", 'Address'[Sales Business Unit],
+				        ""Sales Business Unit Desc"", 'Address'[Sales Business Unit Desc],
+				        ""Customer Segmentation"", 'Address'[Customer Segmentation],
+				        ""Customer Segmentation Desc"", 'Address'[Customer Segmentation Desc],
+				        ""Country Desc"", 'Address'[Country Desc],
+				        ""State Desc"", 'Address'[State Desc],
+				        ""CustomerYN"", 'Address'[CustomerYN],
+				        ""SupplierYN"", 'Address'[SupplierYN]
+				)
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

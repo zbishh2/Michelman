@@ -1,3 +1,4 @@
 relationship 19a1re01-shipments-itembranch
 	fromColumn: Shipments.ItemBranchSKey
 	toColumn: 'Safety Stock'.ItemBranchSKey
+

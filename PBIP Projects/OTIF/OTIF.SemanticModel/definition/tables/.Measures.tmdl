@@ -477,6 +477,16 @@ table '.Measures'
 		displayFolder: OTIF Backlog (Open Orders)
 		lineageTag: 9f2c5a81-3e67-4d09-b48c-a17e6b204d38
 
+	/// Backlog OTIF episodes restricted to revisions whose effective reason is OTIF-relevant. The relevance predicate stays inside the calculation so selecting the result does not filter detail visuals to OTIF-only revision rows.
+	measure 'OTIF Episodes (Backlog, Relevant)' =
+			CALCULATE (
+			    [OTIF Episodes (Backlog)],
+			    KEEPFILTERS ( FactScheduleChange[Is OTIF Relevant] = TRUE () )
+			)
+		formatString: 0
+		displayFolder: OTIF Backlog (Open Orders)
+		lineageTag: 3656c4ad-dfe0-4a5c-8977-60f9cd62a794
+
 	column Value
 		formatString: 0
 		lineageTag: e6e10859-5ea4-47ad-9f2c-07e9e8d55f09

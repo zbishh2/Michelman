@@ -26,8 +26,7 @@
                 }
               },
               "queryRef": "Inventory.Branch Plant",
-              "nativeQueryRef": "Branch Plant",
-              "active": false
+              "nativeQueryRef": "Branch Plant"
             },
             {
               "field": {
@@ -41,8 +40,7 @@
                 }
               },
               "queryRef": "Inventory.Global Bulk Item",
-              "nativeQueryRef": "Global Bulk Item",
-              "active": false
+              "nativeQueryRef": "Global Bulk Item"
             },
             {
               "field": {
@@ -56,8 +54,7 @@
                 }
               },
               "queryRef": "Inventory.Bulk Item",
-              "nativeQueryRef": "Bulk Item",
-              "active": false
+              "nativeQueryRef": "Bulk Item"
             },
             {
               "field": {
@@ -71,8 +68,7 @@
                 }
               },
               "queryRef": "Inventory.2nd Item Number",
-              "nativeQueryRef": "2nd Item Number",
-              "active": false
+              "nativeQueryRef": "2nd Item Number"
             },
             {
               "field": {
@@ -86,8 +82,7 @@
                 }
               },
               "queryRef": "Inventory.GL Class Code",
-              "nativeQueryRef": "GL Class Code",
-              "active": false
+              "nativeQueryRef": "GL Class Code"
             },
             {
               "field": {
@@ -102,7 +97,6 @@
               },
               "queryRef": "Inventory.Location (Display)",
               "nativeQueryRef": "Location (Display)",
-              "active": true,
               "displayName": "Location"
             },
             {
@@ -118,7 +112,6 @@
               },
               "queryRef": "Inventory.Lot Number (Display)",
               "nativeQueryRef": "Lot Number (Display)",
-              "active": true,
               "displayName": "Lot Number"
             },
             {
@@ -134,7 +127,6 @@
               },
               "queryRef": "Inventory.Lot Status (Display)",
               "nativeQueryRef": "Lot Status (Display)",
-              "active": true,
               "displayName": "Lot Status"
             },
             {
@@ -149,8 +141,7 @@
                 }
               },
               "queryRef": "Inventory.Master Planning Family",
-              "nativeQueryRef": "Master Planning Family",
-              "active": false
+              "nativeQueryRef": "Master Planning Family"
             },
             {
               "field": {
@@ -164,8 +155,7 @@
                 }
               },
               "queryRef": "Inventory.Quantity on Hand",
-              "nativeQueryRef": "Quantity on Hand",
-              "active": false
+              "nativeQueryRef": "Quantity on Hand"
             },
             {
               "field": {
@@ -179,8 +169,7 @@
                 }
               },
               "queryRef": "Inventory.Primary Unit of Measure",
-              "nativeQueryRef": "Primary Unit of Measure",
-              "active": false
+              "nativeQueryRef": "Primary Unit of Measure"
             },
             {
               "field": {
@@ -194,8 +183,7 @@
                 }
               },
               "queryRef": "Inventory.Quantity on Hand KGs",
-              "nativeQueryRef": "Quantity on Hand KGs",
-              "active": false
+              "nativeQueryRef": "Quantity on Hand KGs"
             },
             {
               "field": {
@@ -209,8 +197,7 @@
                 }
               },
               "queryRef": "Inventory.Quantity on Hand LBs",
-              "nativeQueryRef": "Quantity on Hand LBs",
-              "active": false
+              "nativeQueryRef": "Quantity on Hand LBs"
             },
             {
               "field": {
@@ -224,8 +211,7 @@
                 }
               },
               "queryRef": "Inventory.Stock Type Code",
-              "nativeQueryRef": "Stock Type Code",
-              "active": false
+              "nativeQueryRef": "Stock Type Code"
             },
             {
               "field": {
@@ -239,8 +225,7 @@
                 }
               },
               "queryRef": "Inventory.On Hand Date",
-              "nativeQueryRef": "On Hand Date",
-              "active": false
+              "nativeQueryRef": "On Hand Date"
             },
             {
               "field": {
@@ -254,8 +239,7 @@
                 }
               },
               "queryRef": "Inventory.Lot Expiry Date",
-              "nativeQueryRef": "Lot Expiry Date",
-              "active": false
+              "nativeQueryRef": "Lot Expiry Date"
             },
             {
               "field": {
@@ -269,8 +253,7 @@
                 }
               },
               "queryRef": "Inventory.DATE",
-              "nativeQueryRef": "DATE",
-              "active": false
+              "nativeQueryRef": "DATE"
             }
           ]
         }

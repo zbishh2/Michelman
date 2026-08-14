@@ -9,10 +9,8 @@ table 'Items - Active'
 
 		annotation SummarizationSetBy = Automatic
 
-	/// D-21c: 382 of 5,286 export rows show '-' here while EDW carries a real derived item
-	/// number, all at branch CINC. NOT the '-'-renders-missing issue - the in-scope population
-	/// has zero NULLs and zero blanks in this column. A source derivation difference that
-	/// cannot be reproduced from EDW; six alternative columns were checked. BUILD.md 4.5 case 2.
+	/// Production SSAS global-bulk attribute. The legacy Cognos warehouse may display a dash
+	/// where this model retains the derived item value.
 	column 'Global Bulk Item'
 		dataType: string
 		lineageTag: 21a10000-0000-4000-8000-000000000302
@@ -21,7 +19,7 @@ table 'Items - Active'
 
 		annotation SummarizationSetBy = Automatic
 
-	/// See 'Global Bulk Item' - same 382 rows, D-21c.
+	/// Production SSAS bulk-item attribute.
 	column 'Bulk Item'
 		dataType: string
 		lineageTag: 21a10000-0000-4000-8000-000000000303
@@ -51,25 +49,37 @@ table 'Items - Active'
 		mode: import
 		source =
 				let
-				    Source = Sql.Database("EDWPROD", "EDW"),
-				    Data = Value.NativeQuery(
-				        Source,
-				        "
-				        SET NOCOUNT ON;
-				
-				        SELECT DISTINCT
-				            LTRIM(RTRIM(ib.[Business Unit]))             AS [Branch Plant],
-				            ib.[Item Global Bulk]                        AS [Global Bulk Item],
-				            ib.[Item Bulk]                               AS [Bulk Item],
-				            ib.[Item Num 2nd]                            AS [2nd Item Number],
-				            LTRIM(RTRIM(ib.[Stocking Type]))             AS [Stock Type Code]
-				        FROM BIQL.TbItemBranch ib WITH (NOLOCK)
-				        WHERE LTRIM(RTRIM(ib.[Category GL F4101])) = 'IN32'
-				          AND LTRIM(RTRIM(ib.[Stocking Type])) NOT IN ('O')
-				          AND LTRIM(RTRIM(ib.[Business Unit])) IN ('CINC', 'CIN2', 'CIN4', 'AUBA', 'AUB2', 'SING', 'SNG4')
-				        ",
-				        null,
-				        [EnableFolding = false]
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				DISTINCT (
+				    SELECTCOLUMNS (
+				        FILTER (
+				            'Item Branch',
+				            TRIM ( 'Item Branch'[Category GL F4101] ) = ""IN32""
+				                && TRIM ( 'Item Branch'[Stocking Type] ) <> ""O""
+				                && TRIM ( 'Item Branch'[Business Unit] )
+				                    IN { ""CINC"", ""CIN2"", ""CIN4"", ""AUBA"", ""AUB2"", ""SING"", ""SNG4"" }
+				        ),
+				        ""Branch Plant"", TRIM ( 'Item Branch'[Business Unit] ),
+				        ""Global Bulk Item"", TRIM ( 'Item Branch'[Item Global Bulk] ),
+				        ""Bulk Item"", TRIM ( 'Item Branch'[Item Bulk] ),
+				        ""2nd Item Number"", TRIM ( 'Item Branch'[Item Num 2nd] ),
+				        ""Stock Type Code"", TRIM ( 'Item Branch'[Stocking Type] )
+				    )
+				)
+				ORDER BY [Global Bulk Item], [Bulk Item], [2nd Item Number], [Branch Plant]
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
 				    )
 				in
 				    Data

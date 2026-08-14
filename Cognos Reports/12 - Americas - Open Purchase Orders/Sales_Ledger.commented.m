@@ -9,7 +9,7 @@
 // COLUMN PREFIX — RESOLVED 2026-07-14: F42199 on this instance uses SL* names
 //   (SLDOCO, SLLNID, SLUPMJ, ...). Proven two ways: the first refresh threw
 //   "Invalid column name 'SH*'" for every SH column, and the repo's validated
-//   `dax queries\F42199_ledger.sql` reads F42199 with SL* throughout.
+//   `edw_schema\F42199_ledger.sql` reads F42199 with SL* throughout.
 //   (JDE-standard SH* was the original guess; F4201 header owns SH*.)
 //
 // FIELD MAPPING NOTES (post-fix):

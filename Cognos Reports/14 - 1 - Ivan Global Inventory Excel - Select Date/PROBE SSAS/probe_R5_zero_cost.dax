@@ -1,0 +1,19 @@
+EVALUATE
+VAR Scope =
+    FILTER (
+        'Inventory Snapshot',
+        TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07"
+            && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+            && TRIM ( RELATED ( 'Branch'[Branch Plant] ) ) IN { "CINC", "CIN2", "CIN4", "AUBA", "AUB2", "SING", "SNG4", "MUM3", "SHAN" }
+            && TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) )
+                IN { "ATP", "ETP", "FBW", "FCB", "FEC", "FRC", "RAW",
+                    "RBW", "RCB", "REC", "RRC", "RWW", "TOL", "WAG" }
+    )
+RETURN
+    ROW (
+        "In Scope Rows", COUNTROWS ( Scope ),
+        "Zero Unit Cost Rows",
+            COUNTROWS ( FILTER ( Scope, 'Inventory Snapshot'[AmountUnitCost_IC] = 0 ) ),
+        "Blank Unit Cost Rows",
+            COUNTROWS ( FILTER ( Scope, ISBLANK ( 'Inventory Snapshot'[AmountUnitCost_IC] ) ) )
+    )

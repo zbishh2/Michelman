@@ -8,11 +8,11 @@ table Customer
 		summarizeBy: none
 		sourceColumn: CustomerSKey
 
-	column 'Customer Sold To Name'
+	column 'Global Parent Name'
 		dataType: string
 		lineageTag: 19d40000-0000-4000-8000-000000000002
 		summarizeBy: none
-		sourceColumn: Customer Sold To Name
+		sourceColumn: Global Parent Name
 
 	partition Customer = m
 		mode: import
@@ -23,7 +23,7 @@ table Customer
 					SELECTCOLUMNS (
 					    Customer,
 					    ""CustomerSKey"", Customer[CustomerSKey],
-					    ""Customer Sold To Name"", TRIM ( Customer[Customer Sold To Name] )
+					    ""Global Parent Name"", TRIM ( Customer[Global Parent Name] )
 					)
 					"]),
 					Data = Table.TransformColumnNames(Raw, each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]") then Text.Middle(_, 1, Text.Length(_) - 2) else _)

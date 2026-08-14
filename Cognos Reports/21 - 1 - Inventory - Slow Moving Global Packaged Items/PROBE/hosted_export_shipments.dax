@@ -1,0 +1,24 @@
+EVALUATE
+SELECTCOLUMNS (
+    Shipments,
+    "Order Company", Shipments[Order Company],
+    "Branch Plant", Shipments[Branch Plant],
+    "Global Bulk Item", Shipments[Global Bulk Item],
+    "Bulk Item", Shipments[Bulk Item],
+    "2nd Item Number", Shipments[2nd Item Number],
+    "Order Number", Shipments[Order Number],
+    "Line Number", Shipments[Line Number],
+    "Last Status", Shipments[Last Status],
+    "Next Status", Shipments[Next Status],
+    "Open Indicator", Shipments[Open Indicator],
+    "Promised Ship Date", Shipments[Promised Ship Date],
+    "Ordered Quantity", Shipments[Ordered Quantity],
+    "Ordering Unit of Measure", Shipments[Ordering Unit of Measure],
+    "Ordered Quantity LBs", Shipments[Ordered Quantity LBs],
+    "Ordered Quantity KGs", Shipments[Ordered Quantity KGs],
+    "Line Type", Shipments[Line Type],
+    "Customer Code", Shipments[Customer Code],
+    "Customer Name", Shipments[Customer Name],
+    "Order Type Code", Shipments[Order Type Code]
+)
+ORDER BY [Global Bulk Item], [Bulk Item], [2nd Item Number], [Branch Plant], [Order Number], [Line Number]

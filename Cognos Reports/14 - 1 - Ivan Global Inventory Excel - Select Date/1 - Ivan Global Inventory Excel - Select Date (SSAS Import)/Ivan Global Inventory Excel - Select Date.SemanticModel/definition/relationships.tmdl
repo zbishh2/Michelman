@@ -1,0 +1,7 @@
+relationship 14bre001-selectdate-inventory
+	fromColumn: Inventory.'Inventory Date'
+	toColumn: 'Select Date'.Date
+
+relationship 14bre002-selectdate-escor
+	fromColumn: 'Escor Inventory'.'Inventory Date'
+	toColumn: 'Select Date'.Date

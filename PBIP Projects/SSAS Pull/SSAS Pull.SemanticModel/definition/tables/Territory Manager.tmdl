@@ -1,0 +1,102 @@
+table 'Territory Manager'
+	lineageTag: a5060000-0000-4000-8000-0000000000a1
+
+	column TerritoryManagerSKey
+		dataType: int64
+		lineageTag: a5060000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: TerritoryManagerSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Territory Manager Num'
+		dataType: int64
+		lineageTag: a5060000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Territory Manager Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Territory Manager'
+		dataType: string
+		lineageTag: a5060000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Territory Manager
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Territory Manager and Name'
+		dataType: string
+		lineageTag: a5060000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Territory Manager and Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TM Sales Rep Type'
+		dataType: string
+		lineageTag: a5060000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: TM Sales Rep Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerCommissionTMSKey
+		dataType: string
+		lineageTag: a5060000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: CustomerCommissionTMSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mailing Name'
+		dataType: string
+		lineageTag: a5060000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Mailing Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TM Sales Rep Type TM1'
+		dataType: string
+		lineageTag: a5060000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: TM Sales Rep Type TM1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Territory Manager' = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				SELECTCOLUMNS (
+				    'Territory Manager',
+				        ""TerritoryManagerSKey"", 'Territory Manager'[TerritoryManagerSKey],
+				        ""Territory Manager Num"", 'Territory Manager'[Territory Manager Num],
+				        ""Territory Manager"", 'Territory Manager'[Territory Manager],
+				        ""Territory Manager and Name"", 'Territory Manager'[Territory Manager and Name],
+				        ""TM Sales Rep Type"", 'Territory Manager'[TM Sales Rep Type],
+				        ""CustomerCommissionTMSKey"", 'Territory Manager'[CustomerCommissionTMSKey],
+				        ""Mailing Name"", 'Territory Manager'[Mailing Name],
+				        ""TM Sales Rep Type TM1"", 'Territory Manager'[TM Sales Rep Type TM1]
+				)
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

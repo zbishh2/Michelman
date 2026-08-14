@@ -1,0 +1,18 @@
+EVALUATE
+VAR Scope =
+    FILTER (
+        'Inventory Snapshot',
+        'Inventory Snapshot'[Calendar Date]
+            IN { DATE ( 2026, 7, 20 ), DATE ( 2026, 7, 21 ), DATE ( 2026, 7, 22 ) }
+            && TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07"
+            && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+            && TRIM ( RELATED ( 'Branch'[Branch Plant] ) ) IN { "CINC", "CIN2", "CIN4" }
+    )
+RETURN
+    SUMMARIZECOLUMNS (
+        'Calendar Inventory Snapshot'[Calendar Date],
+        "Rows", CALCULATE ( COUNTROWS ( 'Inventory Snapshot' ), Scope ),
+        "Qty On Hand",
+            CALCULATE ( SUM ( 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] ), Scope )
+    )
+ORDER BY 'Calendar Inventory Snapshot'[Calendar Date]

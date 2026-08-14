@@ -1,0 +1,906 @@
+table '.Measures'
+	lineageTag: ed18203f-eca1-4302-a05b-062fd66e2fa1
+
+	/// Complaint case count (distinct CaseNumber). Zero-fills empty months INSIDE the selected DateTable window so gap/trailing months render as 0 bars, and returns BLANK outside the window and for the relationship blank member (so out-of-range years and the (Blank) bucket don't draw). REQUIRES the page date slicer to target DateTable, not a Complaints-side auto date hierarchy.
+	measure Complaints =
+			VAR _count = DISTINCTCOUNT ( Complaints[CaseNumber] )
+			VAR _thisDate = MAX ( DateTable[Date] )
+			VAR _firstSelected = CALCULATE ( MIN ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+			VAR _lastSelected = CALCULATE ( MAX ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( _thisDate )
+			            && _thisDate >= _firstSelected
+			            && _thisDate <= _lastSelected,
+			        _count + 0
+			    )
+		formatString: 0
+		displayFolder: Complaints
+		lineageTag: fd33d280-3bd1-43ea-81e3-d53782bbcbd5
+
+	measure 'Orders W/o Complaints' = DIVIDE ( [Orders] - [Complaints], [Orders] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Complaints
+		lineageTag: 7c7fa426-b566-4b60-98b4-f07478ea69e6
+
+	measure 'Clean Orders' = [Orders]-[Complaints]
+		formatString: 0
+		displayFolder: Complaints
+		lineageTag: 5c9ef734-3930-46b5-89b4-5c9f4e194382
+
+	measure 'Order Lines' = COUNT('FactSalesDetail'[OrderKey])
+		formatString: #,0
+		displayFolder: OTIF
+		lineageTag: 9b263b66-0f6e-48e6-8115-b3e453583035
+
+	measure Orders = DISTINCTCOUNT('FactSalesDetail'[Order Num])
+		formatString: #,0
+		displayFolder: OTIF
+		lineageTag: 5aed99d0-0b67-4627-9166-8f1182c05858
+
+	measure 'On Time Orders (Header)' =
+			
+			[Orders] - [Orders (Late)]
+		formatString: #,0
+		displayFolder: OTIF
+		lineageTag: 7f981b0b-d326-4155-905a-0613d2e53815
+
+	measure 'On Time Order % (Header)' =
+			
+			DIVIDE(
+			    [On Time Orders (Header)],
+			    [Orders]
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OTIF
+		lineageTag: f574cf8f-1dd5-4ccb-a313-a1a040649a6c
+
+	measure 'Shipped as Promised % (Lines)' =
+			
+			DIVIDE(
+			    [Order Lines (On Time)],
+			    [Order Lines]
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OTIF
+		lineageTag: ac1e9b22-1f3a-486e-a0e6-20e6b7c5cdc5
+
+	measure 'Orders (Late)' =
+			
+			CALCULATE ( DISTINCTCOUNT ( 'FactSalesDetail'[Order Num] ), 'FactSalesDetail'[On Time] = 0 )
+		formatString: 0
+		displayFolder: OTIF
+		lineageTag: ed5c5566-958d-4038-a8a8-8f90edac022b
+
+	measure 'Order Lines (Late)' = [Order Lines]-[Order Lines (On Time)]
+		formatString: 0
+		displayFolder: OTIF
+		lineageTag: cab8217c-9397-4b26-9eb8-7307c059582f
+
+	measure 'OTIF Episodes (1 per line per reason)' =
+			
+			COUNTROWS (
+			    SUMMARIZE (
+			        FactScheduleChange,
+			        FactScheduleChange[OrderLineID],
+			        FactScheduleChange[RevisionReason]
+			    )
+			)
+		formatString: 0
+		displayFolder: Complaints
+		lineageTag: 2092e637-f40d-4d17-8f5c-bb0f5438fb80
+
+	measure 'Order Lines (On Time)' = SUM('FactSalesDetail'[On Time])
+		formatString: 0
+		displayFolder: OTIF
+		lineageTag: a9463a87-94ba-40d3-8a67-379c3cf13b11
+
+	measure 'Current User' = USERPRINCIPALNAME()
+		displayFolder: Executive Scorecard
+		lineageTag: c8cbe507-743f-4084-be05-8690ce0211ff
+
+	/// Total employee work hours (Hours table). Denominator for TRIR/DACR OSHA rates.
+	measure 'Total Hours' = SUM ( 'Hours'[Hours] )
+		formatString: #,0
+		displayFolder: Safety
+		lineageTag: 9fbc1b1e-c3ff-427b-b8de-517f9abbf137
+
+	/// Sum of recordable injuries (RI). Numerator basis for TRIR.
+	measure 'Total Recordable Injuries' = SUM ( 'Hours'[RI] )
+		formatString: 0
+		displayFolder: Safety
+		lineageTag: 684c6cf4-be89-4d11-806a-35bd45615f4a
+
+	/// Total Recordable Incident Rate = (RI * 200,000) / Hours (OSHA calc). Ratio of sums, so it aggregates correctly at any site/month/year level. Michelman grand total = 0.80.
+	measure TRIR = DIVIDE ( SUM ( 'Hours'[RI] ) * 200000, SUM ( 'Hours'[Hours] ) )
+		formatString: #,0.00
+		displayFolder: Safety
+		lineageTag: aa90196a-2dba-4fb7-95b0-86de9e8d6e41
+
+	/// Sum of days-away injuries (DAI). Numerator basis for DACR.
+	measure 'Total Days Away Injuries' = SUM ( 'Hours'[DAI] )
+		formatString: 0
+		displayFolder: Safety
+		lineageTag: b4aa24a4-9b0f-4177-9e0c-9818246eb4d3
+
+	/// Days Away Case Rate = (DAI * 200,000) / Hours (OSHA calc). Sibling to TRIR on the INJR worksheets.
+	measure DACR = DIVIDE ( SUM ( 'Hours'[DAI] ) * 200000, SUM ( 'Hours'[Hours] ) )
+		formatString: 0.00
+		displayFolder: Safety
+		lineageTag: d3f65aa0-d6c7-4fd0-a46c-2dacc64910b3
+
+	/// Sum of spills. Primary SPR Dashboard metric; Michelman grand total = 143 (2024-2026).
+	measure 'Total Spills' = SUM ( 'Hours'[Spills] )
+		formatString: 0
+		displayFolder: Safety
+		lineageTag: f2baafa7-1d79-4f4c-8a11-89bd14bf5821
+
+	/// Sum of spill volume in kilograms.
+	measure 'Total Spills (kg)' = SUM ( 'Hours'[Spills (kg)] )
+		formatString: #,0
+		displayFolder: Safety
+		lineageTag: 5ee8c617-6c0b-4e0d-a1e8-5225ef973651
+
+	/// Distinct Salesforce cases of the Batch Manufacturing Issue record type, on date of occurrence. THE RTFT NUMERATOR. ⚠ It absorbed [Case Count (All)] on 2026-08-07, which was an EXACT duplicate of this measure -- same DISTINCTCOUNT, same RecordTypeId predicate, same date-window guard. Measured before deleting it: identical in all 216 months and identical in total (4,343 each). The RTFT page had been rendering the same number under two names, a card reading "Batch Mfg Issues" beside a chart titled "# Batch Mfg Issues" whose bars summed to it. The duplicate's name was also actively misleading: "(All)" was documented as meaning every record type, which would have given 26,043 cases and an RTFT of 38% for 2026 rather than 95%. ⚠ DO NOT reintroduce a record-type-free variant without re-deriving the KPI -- see [Batch Mfg Issues (excl Near Miss)], whose retirement rested on that same false premise.
+	measure 'Batch Mfg Issues' =
+			VAR _count =
+			    CALCULATE (
+			        DISTINCTCOUNT ( Complaints[CaseNumber] ),
+			        Complaints[RecordTypeId] = "012f4000000DyF9AAK"   -- Salesforce RecordType 'Batch Mfg Issue'
+			    )
+			VAR _thisDate = MAX ( DateTable[Date] )
+			VAR _firstSelected = CALCULATE ( MIN ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+			VAR _lastSelected = CALCULATE ( MAX ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( _thisDate )
+			            && _thisDate >= _firstSelected
+			            && _thisDate <= _lastSelected,
+			        _count + 0
+			    )
+		formatString: #,0
+		displayFolder: RTFT
+		lineageTag: 19383954-9170-4cd0-9662-91699eb78219
+
+	/// SUPERSEDED 2026-07-30 -- the RTFT numerator is now [Batch Mfg Issues] and the denominator [Batches]. Kept (hidden) because RTFT page visuals still bind it and because it is the only measure that isolates the 'Batch Mfg Issue' record type. Old meaning: [Orders] minus [Batch Mfg Issues], the 'good' form of the order-grain numerator.
+	measure 'Orders W/o Batch Issues' = [Orders] - [Batch Mfg Issues]
+		formatString: 0
+		isHidden
+		displayFolder: RTFT
+		lineageTag: 8d45175d-5bea-4d78-9292-d78cc67af7c4
+
+	/// Right First Time: the share of completed batches that drew no quality case. Blank unless the period completed at least 50 batches. ⚠ WRITTEN AS (batches - cases) / batches, NOT AS 1 - cases/batches, and that is deliberate. The two are identical wherever batches > 0, but they fail differently on an empty period: DIVIDE returns BLANK on a zero denominator, so 1 - DIVIDE(...) evaluates 1 - BLANK() = 1 and plots a FALSE 100%, while this form leaves the numerator blank too and correctly returns BLANK. Measured 2026-08-07 -- Sep to Dec 2026 return exactly 1 under the old shape. Do not simplify it back. ⚠ THE 50-BATCH FLOOR blanks periods whose denominator is not yet meaningful, which is the only job it has left. Measured across every month carrying a batch, the denominators fall into three groups with nothing between them: 24 (Dec 2023, a truncated boundary month -- the batch side is windowed from 2024-01-01 and the case side is not, so it was plotting a junk 25%), 95 (August 2026, seven days in, reading 96.8%) and 458 upwards (every complete month). 50 sits in the gap, so the current month appears from roughly its third day. Re-measure those groups before changing the number -- a change to the batch definition moves the gap. The Executive Scorecard cannot be affected: the [Scorecard Value *] measures window themselves to EOMONTH(TODAY(),-1) and run denominators in the thousands.
+	measure 'RTFT %' =
+			VAR _batches = [Batches]
+			VAR _cases = [Batch Mfg Issues]
+			RETURN
+			    IF ( _batches >= 50, DIVIDE ( _batches - _cases, _batches ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: RTFT
+		lineageTag: 2f9a6b03-7d41-4c85-b0e6-38175caf49d2
+
+	/// SUPERSEDED 2026-07-30. The Near Miss question is moot under the client's definition: ⚠ THE RATIONALE THAT RETIRED THIS WAS WRONG, found 2026-08-07. It read: "[Case Count (All)] counts every record type without a Level_1 predicate, so there is no longer a batch-issue subset to carve Near Miss out of." The numerator has in fact always isolated the 'Batch Mfg Issue' record type (4,343 cases, not the 26,043 that counting every type gives). So a Near Miss subset DOES still sit inside the numerator and could still be excluded -- THE NEAR MISS QUESTION IS NOT MOOT. Reopen it with Jessica/Dave rather than treating it as settled. Kept for the sign-off comparison and in case Jessica/Dave want the exclusion reinstated on top of the new numerator. Old meaning: [Batch Mfg Issues] excluding cases logged as Level_1 = 'Near Miss' (a caught-before-impact event, arguably still a right-first-time batch). Near Misses are ~25-30% of Batch Mfg Issue cases, so the choice moved the old KPI materially.
+	measure 'Batch Mfg Issues (excl Near Miss)' =
+			VAR _count =
+			    CALCULATE (
+			        DISTINCTCOUNT ( Complaints[CaseNumber] ),
+			        Complaints[RecordTypeId] = "012f4000000DyF9AAK",
+			        Complaints[Level_1] <> "Near Miss"
+			    )
+			VAR _thisDate = MAX ( DateTable[Date] )
+			VAR _firstSelected = CALCULATE ( MIN ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+			VAR _lastSelected = CALCULATE ( MAX ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( _thisDate )
+			            && _thisDate >= _firstSelected
+			            && _thisDate <= _lastSelected,
+			        _count + 0
+			    )
+		formatString: 0
+		isHidden
+		displayFolder: RTFT
+		lineageTag: 5ef811ac-3399-4cd7-9fd2-da33cdd3f17a
+
+	/// Last complete month end. Everything on the Executive Scorecard page is YTD (Jan 1 of that year) through this date, regardless of slicers.
+	measure 'Scorecard Period End' = EOMONTH ( TODAY (), -1 )
+		formatString: mmmm yyyy
+		displayFolder: Executive Scorecard
+		lineageTag: 3510330f-0a59-43bf-bb3e-42829fac6a7f
+
+	/// Dynamic page headline; rolls to the new month automatically once the calendar month turns.
+	measure 'Scorecard Title' = "Running a High Performing Organization – YTD Performance through " & FORMAT ( EOMONTH ( TODAY (), -1 ), "MMMM yyyy" )
+		displayFolder: Executive Scorecard
+		lineageTag: 57e094b9-f727-4be9-81bd-462150643757
+
+	/// Numeric YTD figure behind [Scorecard Value] and the pace colour: [Scorecard Basis Value (num)] over 1 January through the last complete month end.
+	measure 'Scorecard Value (num)' =
+			VAR PEnd = EOMONTH ( TODAY (), -1 )
+			VAR PStart = DATE ( YEAR ( PEnd ), 1, 1 )
+			RETURN
+			    CALCULATE ( [Scorecard Basis Value (num)], DATESBETWEEN ( DateTable[Date], PStart, PEnd ) )
+		isHidden
+		displayFolder: Executive Scorecard
+		lineageTag: aecb89e1-8083-4bf2-a794-00e0b43dd778
+
+	/// The 'YTD Global' column on the Executive Scorecard. Text, so each KPI carries its own format. Rows with a Basis no branch matches ('NA' placeholders) fall through to Scorecard[StaticValue].
+	measure 'Scorecard Value' =
+			VAR V = [Scorecard Value (num)]
+			VAR B = SELECTEDVALUE ( Scorecard[Basis] )
+			RETURN
+			    SWITCH (
+			        B,
+			        "TRIR", FORMAT ( V, "0.00" ),
+			        "SPILLS", FORMAT ( V, "#,0" ),
+			        "OTIF", FORMAT ( V, "0.0%" ),
+			        "CLEAN", FORMAT ( V, "0.0%" ),
+			        "RTFT", FORMAT ( V, "0.0%" ),
+			        SELECTEDVALUE ( Scorecard[StaticValue] )
+			    )
+		displayFolder: Executive Scorecard
+		lineageTag: f5297469-23f8-41f7-892e-307cf7ce3f52
+
+	/// The Trend column: the last six completed months, split in half. 'Improving' when the three most recent months read better than the three before them, 'Needs Improvement' when they read worse, 'Steady' on an exact tie — so a KPI flat at zero (Spills, TRIR) reads Steady, not Needs Improvement. Which direction is better comes from Scorecard[Polarity]. Blank when either half has no data. The word itself is the verdict, so it carries no colour; goal-pace colour lives on the YTD figure.
+	measure 'Scorecard Trend' =
+			VAR PEnd = EOMONTH ( TODAY (), -1 )
+			VAR Mid = EOMONTH ( PEnd, -3 )
+			VAR Recent = CALCULATE ( [Scorecard Basis Value (num)], DATESBETWEEN ( DateTable[Date], Mid + 1, PEnd ) )
+			VAR Prior = CALCULATE ( [Scorecard Basis Value (num)], DATESBETWEEN ( DateTable[Date], EOMONTH ( PEnd, -6 ) + 1, Mid ) )
+			VAR Better = IF ( SELECTEDVALUE ( Scorecard[Polarity] ) = "Lower", Recent < Prior, Recent > Prior )
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        ISBLANK ( Recent ) || ISBLANK ( Prior ), BLANK (),
+			        Recent = Prior, "Steady",
+			        Better, "Improving",
+			        "Needs Improvement"
+			    )
+		displayFolder: Executive Scorecard
+		lineageTag: acee4244-0ac0-4988-8aaf-cb1969c504cc
+
+	/// Font colour for the Trend column. Kept as its own name because the report's conditional formatting binds to it; plain black, because the Trend word is its own verdict and takes no colour.
+	measure 'Scorecard Trend Color' = "#000000"
+		isHidden
+		displayFolder: Executive Scorecard
+		lineageTag: 6a2ecb56-64cb-4b1f-9687-908277d12493
+
+	measure 'Lines In Scope' =
+			
+			CALCULATE (
+			    COUNTROWS ( 'FactSalesDetail' ),
+			    'FactSalesDetail'[Actual Ship Date] >= DATE ( 2000, 1, 1 )
+			)
+		formatString: 0
+		displayFolder: OTIF
+		lineageTag: 45a9ece7-c12e-4e4d-a637-9073749c611b
+
+	measure 'Late Lines (reason-filtered)' =
+			VAR SelectedReasons = VALUES ( 'Reason Filter'[Reason Code] )
+			VAR LateLineKeys =
+			    CALCULATETABLE (
+			        DISTINCT ( FactScheduleChange[OrderLineID] ),
+			        FactScheduleChange[Is OTIF Relevant] = TRUE (),
+			        TREATAS ( SelectedReasons, FactScheduleChange[RevisionReason] )
+			    )
+			RETURN
+			    CALCULATE (
+			        COUNTROWS ( 'FactSalesDetail' ),
+			        TREATAS ( LateLineKeys, 'FactSalesDetail'[Order Line ID] ),
+			        'FactSalesDetail'[Actual Ship Date] >= DATE ( 2000, 1, 1 )
+			    )
+		formatString: 0
+		displayFolder: OTIF
+		lineageTag: 32f87ce9-2da4-4ca3-8261-6df5108b0f42
+
+	measure 'Shipped as Promised % (Lines, dynamic)' =
+			
+			DIVIDE ( [Lines In Scope] - [Late Lines (reason-filtered)], [Lines In Scope] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OTIF
+		lineageTag: 8e62079f-1151-4b98-a32a-23072186c2bc
+
+	/// Target rate for the dotted reference line on the OTIF trend charts, taken from the 'OTIF Target' what-if slicer. Returns blank at 0, which removes the line. FALLBACK RAISED 0.96 -> 0.99 on 2026-08-07 (Bryan: "Goal on OTIF on the graph needs to be 99%"). The fallback is what renders -- no page carries the 'OTIF Target' slicer, so the default is the goal in practice. Keep this in step with the OTIF PBIP, which has its own copy of this measure.
+	measure 'OTIF Target Line' =
+			VAR t = SELECTEDVALUE ( 'OTIF Target'[OTIF Target], 0.99 )
+			RETURN
+			    IF ( t <= 0, BLANK (), t )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OTIF
+		lineageTag: 7b2f4c81-9e30-4a6d-b5c7-1d84e0f9a237
+
+	/// One region's line rate. ⚠ THE [Region] TEST IS WHAT MAKES A REGION SLICER WORK ON THESE LINES. The CALCULATE below sets 'Dim Region'[Region] itself, and a filter set inside CALCULATE overrides the one the slicer supplies -- so without the test every line keeps drawing its own region no matter what is picked, which is exactly what a plain region slicer does to this chart (nothing). The test reads the slicer BEFORE CALCULATE rewrites it, so an unpicked region returns blank and drops off the chart. With nothing picked VALUES returns every region and all the lines draw, which is the default view.
+	measure 'Shipped as Promised % — Americas' =
+			IF (
+			    "Americas" IN VALUES ( 'Dim Region'[Region] ),
+			    CALCULATE ( [Shipped as Promised % (Lines, dynamic)], 'Dim Region'[Region] = "Americas" )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OTIF
+		lineageTag: a41e7d92-3c65-4b08-8f27-6e0b91d3c5a4
+
+	measure 'Shipped as Promised % — EMEA' =
+			IF (
+			    "EMEA" IN VALUES ( 'Dim Region'[Region] ),
+			    CALCULATE ( [Shipped as Promised % (Lines, dynamic)], 'Dim Region'[Region] = "EMEA" )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OTIF
+		lineageTag: b52f8e03-4d76-4c19-9038-7f1ca2e4d6b5
+
+	measure 'Shipped as Promised % — Asia' =
+			IF (
+			    "Asia" IN VALUES ( 'Dim Region'[Region] ),
+			    CALCULATE ( [Shipped as Promised % (Lines, dynamic)], 'Dim Region'[Region] = "Asia" )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OTIF
+		lineageTag: c63f9f14-5e87-4d2a-a149-801db3f5e7c6
+
+	/// All-region line rate for the trend charts. Blanks itself when only one region is in play, because the region picker on these pages is the Order Company slicer — that filter sits on FactSalesDetail and REMOVEFILTERS('Dim Region') cannot clear it, so with one company selected Total collapses onto that region's own line and, drawing last, hides it under the orange Total colour (Ivan, 2026-07-30). The Region slicer on the Executive Charts page trips the same guard, because its filter reaches FactSalesDetail through 'Dim Region'. Total follows whatever is picked rather than forcing every region back in, so it always totals the lines actually drawn. Region count is taken over the whole selected date window so Total does not flicker on months where only one region shipped.
+	measure 'Shipped as Promised % — Total' =
+			VAR RegionsInPlay =
+			    CALCULATE ( DISTINCTCOUNT ( 'FactSalesDetail'[Region] ), ALLSELECTED ( DateTable ) )
+			RETURN
+			    IF (
+			        RegionsInPlay <= 1,
+			        BLANK (),
+			        [Shipped as Promised % (Lines, dynamic)]
+			    )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OTIF
+		lineageTag: d74fa025-6f98-4e3b-b25a-912ec406f8d7
+
+	/// Distinct work orders, with no scoping applied. ⚠ NOT the RTFT denominator -- that is [Batches]. This is every work order, batch or not, and it is on the RTFT page as population context only. ⚠ ITS DATE BASIS CHANGED 2026-08-07. The active WorkOrders-to-DateTable relationship moved from [Order Date] to [Completion Date (SOP Basis)], so under a date filter this now counts work orders COMPLETED in the period rather than OPENED in it (2026: 10,514 -> 9,350). That was the point of the flip, not a side effect: this measure sits beside [Batches] on the RTFT page, and completed work orders against completed batches is a like-for-like population where opened-against-completed was not. The 4,933 work orders with no completion date now fall out of any date-filtered context; WO Ledger and WO Parts List carry no date filter, so they still show them. [Order Date] survives as an INACTIVE relationship, so the old basis is one USERELATIONSHIP away if it is ever wanted.
+	measure 'WO Count' =
+			VAR _count = DISTINCTCOUNT ( WorkOrders[WorkOrderSKey] )
+			VAR _thisDate = MAX ( DateTable[Date] )
+			VAR _firstSelected = CALCULATE ( MIN ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+			VAR _lastSelected = CALCULATE ( MAX ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( _thisDate )
+			            && _thisDate >= _firstSelected
+			            && _thisDate <= _lastSelected,
+			        _count + 0
+			    )
+		formatString: #,0
+		displayFolder: RTFT
+		lineageTag: ff78cc67-a344-4f02-8015-2792d1013b05
+
+	/// Cases per batch. The complement of [RTFT %], on the same batch denominator. Carries no floor, so on a part-finished month read it beside [Batches].
+	measure 'Cases per Batch %' = DIVIDE ( [Batch Mfg Issues], [Batches] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: RTFT
+		lineageTag: 6d8b1e34-a052-4c96-83f7-2b45c9e0d7f1
+
+	/// Completed months in the YTD window — 7 when the last complete month is July. The prorating denominator for annual count targets.
+	measure 'Scorecard Months Elapsed' = MONTH ( EOMONTH ( TODAY (), -1 ) )
+		formatString: 0
+		isHidden
+		displayFolder: Executive Scorecard
+		lineageTag: 1f0b6d34-92c7-4e58-8a61-3d5c74e9b012
+
+	/// The goal measured against as of today. Counts (Scorecard[Prorate]=1) prorate by completed months, so the <38/yr spill target is (38/12)×7 = 22.2 through July. Rates keep their annual threshold, because a rate is already period-normalized.
+	measure 'Scorecard Pace Target (num)' =
+			VAR TN = SELECTEDVALUE ( Scorecard[TargetNum] )
+			VAR Pro = SELECTEDVALUE ( Scorecard[Prorate] )
+			RETURN
+			    IF ( Pro = 1, DIVIDE ( TN, 12 ) * [Scorecard Months Elapsed], TN )
+		isHidden
+		displayFolder: Executive Scorecard
+		lineageTag: 8e47c012-5b3a-4f96-a0d7-62c19b4e8f37
+
+	/// TRUE when the YTD figure is on pace to land inside the annual goal. Direction comes from Scorecard[TargetDir]: "Max" targets (Spills) pass at or below the threshold, "Min" targets (OTIF, Complaint-free, Right-first-time) pass at or above it. The current figure is rounded to Scorecard[RoundTo] first, so the verdict is taken on the number the page actually displays — 98.96% prints as "99.0%" and must not read red against a target of ≥99%. The threshold itself is left unrounded. Callers must gate on TargetDir = "None" themselves; this measure cannot return BLANK for it, because its other branches are boolean and DAX would coerce the blank to FALSE.
+	measure 'Scorecard On Pace' =
+			VAR Cur = [Scorecard Value (num)]
+			VAR Thr = [Scorecard Pace Target (num)]
+			VAR Dir = SELECTEDVALUE ( Scorecard[TargetDir] )
+			VAR Places = SELECTEDVALUE ( Scorecard[RoundTo] )
+			VAR Shown = ROUND ( Cur, Places )
+			RETURN
+			    IF ( Dir = "Max", Shown <= Thr, Shown >= Thr )
+		isHidden
+		displayFolder: Executive Scorecard
+		lineageTag: 4a9d1e85-c063-4b27-9f14-8d70e2a35c69
+
+	/// Green / amber / red for anything whose colour means "on pace to hit the annual goal". Bound to BOTH the YTD Global figure and the YOY Trend arrow, so the arrow shows direction of travel and its colour shows goal pace — two independent signals in one glyph. Green is at or past the goal, amber is short of it but inside [Scorecard Within Tolerance], red is everything further out. The branches are ordered, and have to be: the amber test is also satisfied by every green figure, so it can only be reached after [Scorecard On Pace] has answered. Falls back to black where no pace judgement applies: Scorecard[TargetDir] = "None" (TRIR) or a missing figure. NOTE the "None" test lives HERE and not in [Scorecard On Pace]: that measure's other branches return booleans, so a BLANK() branch is coerced to FALSE and ISBLANK() downstream would never fire — it silently rendered TRIR red. The middle band is #B8860B, a dark gold: it has to read as yellow rather than a second shade of red, and it has to stay legible as bold text on a white cell, which a bright yellow does not.
+	measure 'Scorecard Pace Color' =
+			VAR Dir = SELECTEDVALUE ( Scorecard[TargetDir] )
+			VAR Cur = [Scorecard Value (num)]
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        Dir = "None", "#000000",
+			        ISBLANK ( Dir ) || ISBLANK ( Cur ), "#000000",
+			        [Scorecard On Pace], "#2E7D32",
+			        [Scorecard Within Tolerance], "#B8860B",
+			        "#C62828"
+			    )
+		displayFolder: Executive Scorecard
+		lineageTag: 2c7f5a90-1d48-4e63-b8a5-9f06134ce7d2
+
+	/// Body text for the (i) panel on the Executive Scorecard. Built as a measure rather than a static textbox so the prorated thresholds, the month names and the trend halves stay correct as the year rolls.
+	measure 'Scorecard Info Text' =
+			VAR PEnd = EOMONTH ( TODAY (), -1 )
+			VAR Mid = EOMONTH ( PEnd, -3 )
+			VAR M = [Scorecard Months Elapsed]
+			RETURN
+			    "YTD Global covers 1 January " & YEAR ( PEnd ) & " through " & FORMAT ( PEnd, "d MMMM yyyy" )
+			        & ", the last complete month."
+			        & UNICHAR ( 10 ) & UNICHAR ( 10 )
+			        & "Trend reads the last six completed months, split in half: Improving means "
+			        & FORMAT ( Mid + 1, "MMM" ) & "–" & FORMAT ( PEnd, "MMM" ) & " reads better than "
+			        & FORMAT ( EOMONTH ( PEnd, -6 ) + 1, "MMM" ) & "–" & FORMAT ( Mid, "MMM" )
+			        & "; Needs Improvement means it reads worse; Steady means no change."
+			        & UNICHAR ( 10 ) & UNICHAR ( 10 )
+			        & "Green means on pace to meet the annual goal, yellow means short of it but inside a tolerance of "
+			        & "five percentage points (five percent of the threshold for Spills, which is a count), and red means "
+			        & "further out than that. The YTD Global figure carries the colour."
+			        & UNICHAR ( 10 ) & UNICHAR ( 10 )
+			        & "Annual counts are prorated by the " & M & " completed month" & IF ( M = 1, "", "s" )
+			        & " so far, so the <38 spills goal is measured against " & FORMAT ( 38 / 12 * M, "0.0" )
+			        & ". Rate goals (OTIF ≥96%, Complaint-free ≥99%, Right-first-time ≥98%) keep their annual threshold, "
+			        & "since a rate is already period-normalized."
+			        & UNICHAR ( 10 ) & UNICHAR ( 10 )
+			        & "Each figure is rounded to the precision shown here before it is compared with its target, so the colour always agrees with the number on screen."
+			        & UNICHAR ( 10 ) & UNICHAR ( 10 )
+			        & "TRIR is shown in black rather than red or green. Its goal is zero injuries, so a single recordable would hold it red for the rest of the year."
+		displayFolder: Executive Scorecard
+		lineageTag: 9b3e07d1-6f52-4a84-b0c9-517d248ae6f3
+
+	/// Distinct work orders that count as batches, on the S&OP completion date basis. Blank outside the selected date range. Rides the ACTIVE WorkOrders[Completion Date (SOP Basis)] -> DateTable[Date] relationship directly -- the USERELATIONSHIP this measure used to carry was deleted 2026-08-07, when that relationship was made the active one in place of [Order Date]. Nothing in the report was on the old basis: [Order Date] had zero bindings anywhere, and RTFT was the only page referencing both WorkOrders and DateTable, entirely through measures. The one thing the flip did change is [WO Count] -- see its description.
+	measure Batches =
+			VAR _count =
+			    CALCULATE (
+			        DISTINCTCOUNT ( WorkOrders[WorkOrderSKey] ),
+			        WorkOrders[SOP Flag - Counts As Batch] = "Batch"
+			    )
+			VAR _thisDate = MAX ( DateTable[Date] )
+			VAR _firstSelected = CALCULATE ( MIN ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+			VAR _lastSelected = CALCULATE ( MAX ( DateTable[Date] ), ALLSELECTED ( DateTable ) )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( _thisDate )
+			            && _thisDate >= _firstSelected
+			            && _thisDate <= _lastSelected,
+			        _count + 0
+			    )
+		formatString: #,0
+		displayFolder: RTFT
+		lineageTag: 7d2b4e91-06fc-4a37-95c8-e1b3407da562
+
+	/// Batches on the sheet the business measures to today, counting rows exactly as their chart does - repeats included.
+	measure 'Tie-Out - Sheet Batches' =
+			CALCULATE (
+			    COUNTROWS ( 'Quality Database WOs' ),
+			    'Quality Database WOs'[Duplicate Work Order Catch] = "OK"
+			)
+		formatString: #,0
+		displayFolder: RTFT
+		lineageTag: 8d17f4a2-60c3-4e95-b871-2f0946ac5e13
+
+	/// Distinct work orders behind [Tie-Out - Sheet Batches]. Lower than that measure wherever their sheet counts the same batch twice.
+	measure 'Tie-Out - Sheet Work Orders' =
+			CALCULATE (
+			    DISTINCTCOUNT ( 'Quality Database WOs'[WO Number] ),
+			    'Quality Database WOs'[Duplicate Work Order Catch] = "OK"
+			)
+		formatString: #,0
+		displayFolder: RTFT
+		lineageTag: b409c7e5-1d82-4a36-9f04-7ce5183bd260
+
+	/// Rows their chart counts more than once for the same work order.
+	measure 'Tie-Out - Double Counted' = [Tie-Out - Sheet Batches] - [Tie-Out - Sheet Work Orders]
+		formatString: #,0
+		displayFolder: RTFT
+		lineageTag: f52e83b0-46a1-4d79-8c35-90b71ea4c6df
+
+	/// Every row on their sheet, including the ones their own duplicate filter excludes. The denominator for the breakdown by tie-out status.
+	measure 'Tie-Out - Sheet Rows' = COUNTROWS ( 'Quality Database WOs' )
+		formatString: #,0
+		displayFolder: RTFT
+		lineageTag: a3e19f57-2c84-4d06-b715-8f0e63a2c94d
+
+	/// Batches by the S&OP definition, over the months their sheet covers, so both sides are measured across the same ground. The sheet's last month is excluded: it is still being filled in, and counting it would report the whole month as dropped.
+	measure 'Tie-Out - EDW Batches' =
+			VAR _first =
+			    MINX ( ALL ( 'Quality Database WOs'[Sheet Month Start] ), 'Quality Database WOs'[Sheet Month Start] )
+			VAR _last =
+			    MAXX ( ALL ( 'Quality Database WOs'[Sheet Month Start] ), 'Quality Database WOs'[Sheet Month Start] )
+			VAR _sheet =
+			    TREATAS (
+			        CALCULATETABLE (
+			            VALUES ( 'Quality Database WOs'[WO Number] ),
+			            REMOVEFILTERS ( 'Quality Database WOs' ),
+			            'Quality Database WOs'[Duplicate Work Order Catch] = "OK"
+			        ),
+			        WorkOrders[WorkOrderNum]
+			    )
+			VAR _batches =
+			    CALCULATETABLE (
+			        VALUES ( WorkOrders[WorkOrderNum] ),
+			        WorkOrders[SOP Flag - Counts As Batch] = "Batch",
+			        WorkOrders[S&OP Month] >= _first,
+			        WorkOrders[S&OP Month] < _last
+			    )
+			RETURN
+			    COUNTROWS ( _batches )
+		formatString: #,0
+		displayFolder: RTFT
+		lineageTag: 31ca908d-7e64-42fb-b158-e0d29473af05
+
+	/// Work orders both sides count.
+	measure 'Tie-Out - Matched' =
+			VAR _first =
+			    MINX ( ALL ( 'Quality Database WOs'[Sheet Month Start] ), 'Quality Database WOs'[Sheet Month Start] )
+			VAR _last =
+			    MAXX ( ALL ( 'Quality Database WOs'[Sheet Month Start] ), 'Quality Database WOs'[Sheet Month Start] )
+			VAR _sheet =
+			    TREATAS (
+			        CALCULATETABLE (
+			            VALUES ( 'Quality Database WOs'[WO Number] ),
+			            REMOVEFILTERS ( 'Quality Database WOs' ),
+			            'Quality Database WOs'[Duplicate Work Order Catch] = "OK"
+			        ),
+			        WorkOrders[WorkOrderNum]
+			    )
+			VAR _batches =
+			    CALCULATETABLE (
+			        VALUES ( WorkOrders[WorkOrderNum] ),
+			        WorkOrders[SOP Flag - Counts As Batch] = "Batch",
+			        WorkOrders[S&OP Month] >= _first,
+			        WorkOrders[S&OP Month] < _last
+			    )
+			RETURN
+			    COUNTROWS ( INTERSECT ( _batches, _sheet ) )
+		formatString: #,0
+		displayFolder: RTFT
+		lineageTag: 6be0147c-a935-48d2-9071-c384f5e2b09a
+
+	/// Batches the S&OP definition counts that their sheet never picked up.
+	measure 'Tie-Out - Dropped By Old Process' =
+			VAR _first =
+			    MINX ( ALL ( 'Quality Database WOs'[Sheet Month Start] ), 'Quality Database WOs'[Sheet Month Start] )
+			VAR _last =
+			    MAXX ( ALL ( 'Quality Database WOs'[Sheet Month Start] ), 'Quality Database WOs'[Sheet Month Start] )
+			VAR _sheet =
+			    TREATAS (
+			        CALCULATETABLE (
+			            VALUES ( 'Quality Database WOs'[WO Number] ),
+			            REMOVEFILTERS ( 'Quality Database WOs' ),
+			            'Quality Database WOs'[Duplicate Work Order Catch] = "OK"
+			        ),
+			        WorkOrders[WorkOrderNum]
+			    )
+			VAR _batches =
+			    CALCULATETABLE (
+			        VALUES ( WorkOrders[WorkOrderNum] ),
+			        WorkOrders[SOP Flag - Counts As Batch] = "Batch",
+			        WorkOrders[S&OP Month] >= _first,
+			        WorkOrders[S&OP Month] < _last
+			    )
+			RETURN
+			    COUNTROWS ( EXCEPT ( _batches, _sheet ) )
+		formatString: #,0
+		displayFolder: RTFT
+		lineageTag: e7d3260f-8b51-4c9a-a642-1f709853db4e
+
+	/// Rows on their sheet with no matching batch in EDW, whether because the work order is not a batch or because it is counted in a different month.
+	measure 'Tie-Out - Only On Their Sheet' =
+			CALCULATE (
+			    DISTINCTCOUNT ( 'Quality Database WOs'[WO Number] ),
+			    'Quality Database WOs'[Tie-Out Status] IN {
+			        "Work order not in EDW",
+			        "In EDW but not an S&OP batch",
+			        "Counted in a different month"
+			    }
+			)
+		formatString: #,0
+		displayFolder: RTFT
+		lineageTag: 9a4f5c18-3072-4be6-85d3-c60184fa27b9
+
+	/// Share of the work orders their sheet counts that the S&OP definition also counts, in the same month.
+	measure 'Tie-Out - Agreement %' = DIVIDE ( [Tie-Out - Matched], [Tie-Out - Sheet Work Orders] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: RTFT
+		lineageTag: d8106b73-5e29-4f14-a970-3b52c8de10a6
+
+	/// Why the old process missed this batch, in plain language. Blank for anything that is not a dropped batch, which is what prunes the detail grid to exactly those rows. Replaces the calculated column of the same purpose, which could not exist without making WorkOrders and the sheet table depend on each other.
+	measure 'Tie-Out - Drop Reason' =
+			VAR _wo = SELECTEDVALUE ( WorkOrders[WorkOrderNum] )
+			VAR _month = SELECTEDVALUE ( WorkOrders[S&OP Month] )
+			VAR _batch = SELECTEDVALUE ( WorkOrders[SOP Flag - Counts As Batch] )
+			VAR _comp = SELECTEDVALUE ( WorkOrders[Completion Date] )
+			VAR _sop = SELECTEDVALUE ( WorkOrders[Completion Date (SOP Basis)] )
+			VAR _first =
+			    MINX ( ALL ( 'Quality Database WOs'[Sheet Month Start] ), 'Quality Database WOs'[Sheet Month Start] )
+			VAR _last =
+			    MAXX ( ALL ( 'Quality Database WOs'[Sheet Month Start] ), 'Quality Database WOs'[Sheet Month Start] )
+			VAR _onSheet =
+			    CALCULATE (
+			        COUNTROWS ( 'Quality Database WOs' ),
+			        REMOVEFILTERS ( 'Quality Database WOs' ),
+			        'Quality Database WOs'[WO Number] = _wo,
+			        'Quality Database WOs'[Duplicate Work Order Catch] = "OK"
+			    )
+			VAR _dropped =
+			    NOT ISBLANK ( _wo )
+			        && _batch = "Batch"
+			        && NOT ISBLANK ( _month )
+			        && _month >= _first
+			        && _month < _last
+			        && ISBLANK ( _onSheet )
+			RETURN
+			    IF (
+			        NOT _dropped,
+			        BLANK (),
+			        IF (
+			            EOMONTH ( _comp, 0 ) > EOMONTH ( _sop, 0 ),
+			            "Completed " & FORMAT ( _comp, "d mmm yyyy" ) & ", after its "
+			                & FORMAT ( _sop, "mmm yyyy" )
+			                & " month had closed, so that month's extract never saw it.",
+			            "Completed " & FORMAT ( _comp, "d mmm yyyy" )
+			                & ", inside its own month but after that month's extract was taken."
+			        )
+			    )
+		displayFolder: RTFT
+		lineageTag: 4f8b02e6-71d9-4a35-9c08-2e61b3f7a04d
+
+	/// Match when the Quality Database sheet also counts this work order. Blank for anything that is not an S&OP batch inside the months the sheet covers, which is what scopes the EDW grid on the comparison page to the same population as the sheet. A measure and not a column on purpose: a WorkOrders calculated column reading the sheet table makes the two tables depend on each other and the model will not open.
+	measure 'Match Flag (EDW)' =
+			VAR _wo = SELECTEDVALUE ( WorkOrders[WorkOrderNum] )
+			VAR _batch = SELECTEDVALUE ( WorkOrders[SOP Flag - Counts As Batch] )
+			VAR _month = SELECTEDVALUE ( WorkOrders[S&OP Month] )
+			VAR _first =
+			    MINX ( ALL ( 'Quality Database WOs'[Sheet Month Start] ), 'Quality Database WOs'[Sheet Month Start] )
+			VAR _last =
+			    MAXX ( ALL ( 'Quality Database WOs'[Sheet Month Start] ), 'Quality Database WOs'[Sheet Month Start] )
+			VAR _inScope =
+			    NOT ISBLANK ( _wo )
+			        && _batch = "Batch"
+			        && NOT ISBLANK ( _month )
+			        && _month >= _first
+			        && _month < _last
+			VAR _onSheet =
+			    CALCULATE (
+			        COUNTROWS ( 'Quality Database WOs' ),
+			        REMOVEFILTERS ( 'Quality Database WOs' ),
+			        'Quality Database WOs'[WO Number] = _wo,
+			        'Quality Database WOs'[Duplicate Work Order Catch] = "OK"
+			    )
+			RETURN
+			    IF ( _inScope, IF ( ISBLANK ( _onSheet ), "Not Match", "Match" ) )
+		displayFolder: RTFT
+		lineageTag: 2b7e51c9-40d6-4a83-9f15-c8e3072b6d4a
+
+	measure 'Routing Work Centres' =
+			
+			VAR _wo =
+			    COALESCE (
+			        SELECTEDVALUE ( WorkOrders[WorkOrderNum] ),
+			        SELECTEDVALUE ( 'Quality Database WOs'[WO Number] )
+			    )
+			VAR _skey = LOOKUPVALUE ( WorkOrders[WorkOrderSKey], WorkOrders[WorkOrderNum], _wo )
+			VAR _ops =
+			    CALCULATETABLE (
+			        SUMMARIZE (
+			            WorkOrderRouting,
+			            WorkOrderRouting[Operation Seq],
+			            WorkOrderRouting[Work Center],
+			            WorkOrderRouting[Bulk Production Work Center]
+			        ),
+			        REMOVEFILTERS ( WorkOrderRouting ),
+			        WorkOrderRouting[WorkOrderSKey] = _skey
+			    )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( _skey ),
+			        CONCATENATEX (
+			            _ops,
+			            WorkOrderRouting[Work Center]
+			                & IF ( WorkOrderRouting[Bulk Production Work Center] = "RNM", " (RENAME)", "" ),
+			            "  ->  ",
+			            WorkOrderRouting[Operation Seq], ASC
+			        )
+			    )
+		displayFolder: RTFT
+		lineageTag: 18a603ca-df83-488b-9381-1c12681c3fab
+
+	/// Quantity issued for the component item and lot in context, blank where nothing was issued on balance. Blank on purpose: a table visual drops rows where every measure is blank, so putting this in the Collapsed grid leaves exactly the lines the rename rule counts.
+	measure 'Issued Qty' =
+			VAR _q = SUM ( 'WO Parts List'[Qty Issued] )
+			RETURN
+			    IF ( _q > 0, _q )
+		formatString: #,0.00
+		displayFolder: RTFT
+		lineageTag: 5b1c04a9-73ef-4d28-9061-8ac35e2f7bd4
+
+	/// How many distinct component item and lot pairs carry an issued quantity. This is the number the rename rule tests: one means a rename, two or more means a batch. Returns 0 rather than blank on purpose - blank would make a table visual prune the work orders that issued nothing, which are exactly the ones worth looking at.
+	measure 'Counted Component Lines' =
+			COALESCE (
+			    COUNTROWS (
+			        FILTER (
+			            SUMMARIZE (
+			                'WO Parts List',
+			                'WO Parts List'[Component Item],
+			                'WO Parts List'[Lot Num]
+			            ),
+			            CALCULATE ( SUM ( 'WO Parts List'[Qty Issued] ) ) > 0
+			        )
+			    ),
+			    0
+			)
+		formatString: 0
+		displayFolder: RTFT
+		lineageTag: e02d76b3-418a-4c95-b7f0-2639da5178ec
+
+	/// Calendar days a case is open: frozen at ClosedDate once closed, counting to today while open. NULL on closed cases with no ClosedDate, which the average excludes.
+	measure 'Avg Open Days' = AVERAGE ( Complaints[Days_Case_Open] )
+		formatString: 0.0
+		displayFolder: Complaints
+		lineageTag: 87c65e72-1b8c-4c44-b00b-c721f99e67ac
+
+	/// The row's KPI evaluated in whatever date window the caller supplies — the single place a Scorecard[Basis] resolves to a model measure, so a basis can never be repointed on one Scorecard surface (YTD figure, pace colour, Trend) without the others. Each basis is self-scoping, so the page needs no Complaints-side page filter: OTIF forces Customer Tier = Strategic, CLEAN forces the Complaint record type, and RTFT forces Complaints[Level_1] = 'Product Quality' to match the RTFT tab. The RTFT tab's page filter on Complaints[RecordTypeId] = '012f4000000DyF9AAK' is deliberately NOT replicated here because it is inert — [Batch Mfg Issues] already restricts to that exact record type, so the page filter is a no-op and changes nothing on either surface. RTFT's basis is [RTFT %] — the batch denominator, not every work order.
+	measure 'Scorecard Basis Value (num)' =
+			VAR B = SELECTEDVALUE ( Scorecard[Basis] )
+			RETURN
+			    SWITCH (
+			        B,
+			        "TRIR", [TRIR],
+			        "SPILLS", [Total Spills],
+			        "OTIF", CALCULATE ( [On Time Order % (Header)], 'FactSalesDetail'[Customer Tier] = "Strategic" ),
+			        "CLEAN", CALCULATE ( [Orders W/o Complaints], Complaints[RecordTypeId] = "012f4000000DyFEAA0" ),
+			        "RTFT", CALCULATE ( [RTFT %], Complaints[Level_1] = "Product Quality" )
+			    )
+		isHidden
+		displayFolder: Executive Scorecard
+		lineageTag: 556ead78-22fd-4617-add9-d77ce23648a2
+
+	/// The Target column on the Executive Scorecard. Prorated rows (Scorecard[Prorate]=1) show the annual count target scaled to completed months — (38/12)×7 ≈ 22.2 for Spills through July — so the goal on screen is the same one [Scorecard On Pace] colours against. Rate rows show their static Scorecard[Target] text unchanged.
+	measure 'Scorecard Target' =
+			VAR Pro = SELECTEDVALUE ( Scorecard[Prorate] )
+			VAR TN = SELECTEDVALUE ( Scorecard[TargetNum] )
+			RETURN
+			    IF (
+			        Pro = 1,
+			        "< " & FORMAT ( DIVIDE ( TN, 12 ) * [Scorecard Months Elapsed], "0.0" ),
+			        SELECTEDVALUE ( Scorecard[Target] )
+			    )
+		displayFolder: Executive Scorecard
+		lineageTag: 7d2a94c6-3e81-4b5f-a0c9-62e13f8ba745
+
+	/// One region's complaint-free rate, for the region lines on the Executive Charts page. Both halves of [Orders W/o Complaints] follow the filter: orders reach 'Dim Region' through FactSalesDetail[Region] and cases through Complaints[Region Mapped], so numerator and denominator are scoped to the same region.
+	measure 'Orders W/o Complaints — Americas' =
+			IF (
+			    "Americas" IN VALUES ( 'Dim Region'[Region] ),
+			    CALCULATE ( [Orders W/o Complaints], 'Dim Region'[Region] = "Americas" )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Complaints
+		lineageTag: 3ea17c40-8b25-4d69-9f13-6c082a5be741
+
+	measure 'Orders W/o Complaints — EMEA' =
+			IF (
+			    "EMEA" IN VALUES ( 'Dim Region'[Region] ),
+			    CALCULATE ( [Orders W/o Complaints], 'Dim Region'[Region] = "EMEA" )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Complaints
+		lineageTag: 4fb28d51-9c36-4e7a-a024-7d193c6cf852
+
+	measure 'Orders W/o Complaints — Asia' =
+			IF (
+			    "Asia" IN VALUES ( 'Dim Region'[Region] ),
+			    CALCULATE ( [Orders W/o Complaints], 'Dim Region'[Region] = "Asia" )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Complaints
+		lineageTag: 50c39e62-ad47-4f8b-b135-8e2a4d7da963
+
+	/// How many of the three charted regions the current filters leave in play. This is what tells a Total line whether it still has anything to say: with one region picked, Total would land exactly on that region's own line and, drawing last, hide it under the orange Total colour. ⚠ THE THREE NAMES ARE LISTED RATHER THAN EXCLUDING "Unmapped", because VALUES ( 'Dim Region'[Region] ) returns FIVE rows, not four — the three regions, the Unmapped fallback bucket, and the relationship's blank member, which exists because FactSalesDetail carries region values 'Dim Region' has no row for. Excluding only "Unmapped" leaves the blank in, the count never falls to 1, and Total never blanks. Measured 2026-08-14.
+	measure 'Regions In Play' =
+			COUNTROWS (
+			    FILTER ( VALUES ( 'Dim Region'[Region] ), 'Dim Region'[Region] IN { "Americas", "EMEA", "Asia" } )
+			)
+		formatString: 0
+		isHidden
+		displayFolder: OTIF
+		lineageTag: c206b4e9-73da-4f18-8bc5-e41960d7a2f3
+
+	/// The Total line on the complaint-free trend chart. With nothing picked it is the true global rate; with two regions picked it covers those two, matching the lines actually drawn; with one it blanks. See [Regions In Play] for why.
+	measure 'Orders W/o Complaints — Total' = IF ( [Regions In Play] <= 1, BLANK (), [Orders W/o Complaints] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Complaints
+		lineageTag: d317c5fa-84eb-4029-9c76-f52a71e8b304
+
+	/// Target rate for the dotted reference line on the complaint-free trend chart. Read from the Executive Scorecard row rather than restated, so the line on the chart and the goal on the scorecard can never drift apart. Scorecard is a disconnected table, so this is unaffected by anything the page filters.
+	measure 'Complaint-free Target Line' = CALCULATE ( MAX ( Scorecard[TargetNum] ), Scorecard[Basis] = "CLEAN" )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Complaints
+		lineageTag: 61d4af73-be58-4a9c-c246-9f3b5e8eba74
+
+	/// One region's right-first-time rate, for the region lines on the Executive Charts page. Both halves of [RTFT %] follow the filter: batches reach 'Dim Region' through WorkOrders[Region] and cases through Complaints[Region Mapped]. The 50-batch floor inside [RTFT %] now applies per region, so a region blanks out on months where it did not complete 50 batches — that is the floor doing its job on a smaller population, not a gap in the data.
+	measure 'RTFT % — Americas' =
+			IF (
+			    "Americas" IN VALUES ( 'Dim Region'[Region] ),
+			    CALCULATE ( [RTFT %], 'Dim Region'[Region] = "Americas" )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: RTFT
+		lineageTag: 72e5b084-cf69-4ead-d357-a04c6f9dfc85
+
+	measure 'RTFT % — EMEA' =
+			IF (
+			    "EMEA" IN VALUES ( 'Dim Region'[Region] ),
+			    CALCULATE ( [RTFT %], 'Dim Region'[Region] = "EMEA" )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: RTFT
+		lineageTag: 83f6c195-d07a-4fbe-e468-b1570a0e0d96
+
+	measure 'RTFT % — Asia' =
+			IF (
+			    "Asia" IN VALUES ( 'Dim Region'[Region] ),
+			    CALCULATE ( [RTFT %], 'Dim Region'[Region] = "Asia" )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: RTFT
+		lineageTag: 9407d2a6-e18b-40cf-f579-c2681f1e1ea7
+
+	/// The Total line on the right-first-time trend chart. With nothing picked it is the true global rate; with two regions picked it covers those two, matching the lines actually drawn; with one it blanks. See [Regions In Play] for why. Note this is [RTFT %] over the regions in play, not an average of the region lines — the 50-batch floor applies to the pooled denominator here, so Total survives thin months that blank an individual region.
+	measure 'RTFT % — Total' = IF ( [Regions In Play] <= 1, BLANK (), [RTFT %] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: RTFT
+		lineageTag: e4820d6b-1f95-4a37-9d80-3b6c714af025
+
+	/// Target rate for the dotted reference line on the right-first-time trend chart. Read from the Executive Scorecard row rather than restated, so the line on the chart and the goal on the scorecard can never drift apart.
+	measure 'RTFT Target Line' = CALCULATE ( MAX ( Scorecard[TargetNum] ), Scorecard[Basis] = "RTFT" )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: RTFT
+		lineageTag: a518e3b7-f29c-41da-a68a-d3792a2f2fb8
+
+	/// Half-width of the amber band, expressed in the KPI's own units so it can be added to or subtracted from the threshold directly. Scorecard[ToleranceMode] picks how Scorecard[Tolerance] is read: "Points" takes it as a flat amount, which against a rate stored as a fraction makes 0.05 five percentage points; "Relative" takes it as a share of the prorated threshold, which is the only reading that means anything against a count.
+	measure 'Scorecard Tolerance (num)' =
+			VAR Tol = SELECTEDVALUE ( Scorecard[Tolerance] )
+			VAR Mode = SELECTEDVALUE ( Scorecard[ToleranceMode] )
+			RETURN
+			    IF ( Mode = "Relative", [Scorecard Pace Target (num)] * Tol, Tol )
+		isHidden
+		displayFolder: Executive Scorecard
+		lineageTag: 6b40d2f8-1a97-4c53-8e26-c0f39a5b7d14
+
+	/// TRUE when the YTD figure misses the goal but lands inside the amber band — within [Scorecard Tolerance (num)] of the threshold on the wrong side of it. Same rounding contract as [Scorecard On Pace], so both verdicts are taken on the number the page displays. Only meaningful once [Scorecard On Pace] has come back FALSE: anything already on pace also satisfies this test, because the band starts at the threshold and reaches away from it. Callers gate on TargetDir = "None" themselves, for the reason spelled out on [Scorecard On Pace].
+	measure 'Scorecard Within Tolerance' =
+			VAR Cur = [Scorecard Value (num)]
+			VAR Thr = [Scorecard Pace Target (num)]
+			VAR Band = [Scorecard Tolerance (num)]
+			VAR Dir = SELECTEDVALUE ( Scorecard[TargetDir] )
+			VAR Places = SELECTEDVALUE ( Scorecard[RoundTo] )
+			VAR Shown = ROUND ( Cur, Places )
+			RETURN
+			    IF ( Dir = "Max", Shown <= Thr + Band, Shown >= Thr - Band )
+		isHidden
+		displayFolder: Executive Scorecard
+		lineageTag: 9c51e738-2d64-4a80-b7f3-15ae6023d8c7
+
+	/// Spills for the site in context, reading 0 where a site recorded none instead of dropping off the chart. [Total Spills] is a plain SUM, so a site with no spill rows returns BLANK and its bar disappears entirely — which looks like the site is missing when it actually had a clean period, the better result of the two. ⚠ NOT WRITTEN AS [Total Spills] + 0. That never blanks, and with 'Dim Region'[Region] on the chart's series it would draw every site under every region. ISEMPTY blanks the site/region pairs the Hours table has no rows for, so each site still appears exactly once, under its own region. ⚠ CHART-ONLY — [Total Spills] itself is deliberately left blanking, because the Executive Scorecard reads it through [Scorecard Basis Value (num)] and relies on BLANK to fall back to a black figure rather than colouring a spill count that was never reported.
+	measure 'Total Spills (Zero-Filled)' = IF ( NOT ISEMPTY ( 'Hours' ), [Total Spills] + 0 )
+		formatString: 0
+		displayFolder: Safety
+		lineageTag: 3c8b17e0-6d94-4a52-b83f-71e5920cd648
+
+	column Value
+		formatString: 0
+		lineageTag: e6e10859-5ea4-47ad-9f2c-07e9e8d55f09
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '.Measures' = calculated
+		mode: import
+		source = Row("Value", BLANK())
+
+	annotation PBI_Id = c7087739f9914f0eb791e191a4610ddd
+

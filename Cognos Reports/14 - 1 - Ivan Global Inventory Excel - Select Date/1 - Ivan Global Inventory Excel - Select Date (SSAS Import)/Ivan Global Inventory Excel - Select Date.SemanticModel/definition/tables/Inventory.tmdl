@@ -1,0 +1,326 @@
+table Inventory
+	lineageTag: 14b10000-0000-4000-8000-000000000001
+
+	column 'Inventory Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 14b10000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: Inventory Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column REGION
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: REGION
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stock Type Code'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Stock Type Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GL Class Code'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: GL Class Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Number'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Lot Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supplier Lot Number'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Supplier Lot Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Status'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Lot Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Master Planning Family'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: Master Planning Family
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'On Hand'
+		dataType: double
+		formatString: #,0
+		lineageTag: 14b10000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: On Hand
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column UOM
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'OH KGs'
+		dataType: double
+		formatString: #,0
+		lineageTag: 14b10000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: OH KGs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'OH LBs'
+		dataType: double
+		formatString: #,0
+		lineageTag: 14b10000-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: OH LBs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'OH USD'
+		dataType: double
+		formatString: $#,0
+		lineageTag: 14b10000-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: OH USD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'OH EUR'
+		dataType: double
+		formatString: €#,0
+		lineageTag: 14b10000-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: OH EUR
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'On Hand Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 14b10000-0000-4000-8000-000000000015
+		summarizeBy: none
+		sourceColumn: On Hand Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Expiry Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 14b10000-0000-4000-8000-000000000016
+		summarizeBy: none
+		sourceColumn: Lot Expiry Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Memo Lot 1'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000017
+		summarizeBy: none
+		sourceColumn: Memo Lot 1
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Memo Lot 2'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000018
+		summarizeBy: none
+		sourceColumn: Memo Lot 2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Commodity Class Description'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000019
+		summarizeBy: none
+		sourceColumn: Commodity Class Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Commodity Sub Class Description'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-00000000001a
+		summarizeBy: none
+		sourceColumn: Commodity Sub Class Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Bulk Item (F4102)'
+		dataType: string
+		isHidden
+		lineageTag: 14b10000-0000-4000-8000-00000000001b
+		summarizeBy: none
+		sourceColumn: Global Bulk Item (F4102)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item (F4102)'
+		dataType: string
+		isHidden
+		lineageTag: 14b10000-0000-4000-8000-00000000001c
+		summarizeBy: none
+		sourceColumn: Bulk Item (F4102)
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Inventory = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular_ISH",
+				        [
+				            Query = "
+				EVALUATE
+				SELECTCOLUMNS (
+				    FILTER (
+				        'Inventory Snapshot',
+				        TRIM ( 'Inventory Snapshot'[CostMethod] ) = ""07""
+				            && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+				            && TRIM ( RELATED ( 'Branch'[Branch Plant] ) ) IN { ""CINC"", ""CIN2"", ""CIN4"", ""AUBA"", ""AUB2"", ""SING"", ""SNG4"", ""MUM3"", ""SHAN"" }
+				            && TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) )
+				                IN { ""ATP"", ""ETP"", ""FBW"", ""FCB"", ""FEC"", ""FRC"", ""RAW"",
+				                    ""RBW"", ""RCB"", ""REC"", ""RRC"", ""RWW"", ""TOL"", ""WAG"" }
+				    ),
+				    ""Inventory Date"", 'Inventory Snapshot'[Calendar Date],
+				    ""REGION"", SWITCH (
+				            TRIM ( RELATED ( 'Branch'[Branch Plant] ) ),
+				            ""CINC"", ""Americas"",
+				            ""CIN2"", ""Americas"",
+				            ""CIN4"", ""Americas"",
+				            ""AUBA"", ""Aubange"",
+				            ""AUB2"", ""Aubange"",
+				            ""SING"", ""Singapore"",
+				            ""SNG4"", ""Singapore"",
+				            ""MUM3"", ""India"",
+				            ""SHAN"", ""China"",
+				            ""ERROR""
+				        ),
+				    ""Branch Plant"", TRIM ( RELATED ( 'Branch'[Branch Plant] ) ),
+				    ""Global Bulk Item"", TRIM ( RELATED ( 'Item Branch'[Item Num Global Bulk] ) ),
+				    ""Bulk Item"", TRIM ( RELATED ( 'Item Branch'[Item Num Bulk] ) ),
+				    ""2nd Item Number"", TRIM ( RELATED ( 'Item Branch'[Item Num 2nd] ) ),
+				    ""Stock Type Code"", TRIM ( RELATED ( 'Item Branch'[Stocking Type] ) ),
+				    ""GL Class Code"", TRIM ( 'Inventory Snapshot'[CategoryGLF41021] ),
+				    ""Location"", TRIM ( 'Inventory Snapshot'[Location] ),
+				    ""Lot Number"", TRIM ( 'Inventory Snapshot'[LotNum] ),
+				    ""Supplier Lot Number"", TRIM ( RELATED ( 'Lot'[Supplier Lot Num] ) ),
+				    ""Lot Status"", TRIM ( 'Inventory Snapshot'[Lot Status Code] ),
+				    ""Master Planning Family"", TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) ),
+				    ""On Hand"", 'Inventory Snapshot'[QuantityOnHandPrimaryUOM],
+				    ""UOM"", TRIM ( 'Inventory Snapshot'[UOMPrimary] ),
+				    ""OH KGs"", CALCULATE ( [Qty On Hand KG] ),
+				    ""OH LBs"", CALCULATE ( [Qty On Hand LB] ),
+				    ""OH USD"",
+				        VAR SnapDate = 'Inventory Snapshot'[Calendar Date]
+				        RETURN
+				            CALCULATE (
+				                [Total Ext Cost IC USD],
+				                TREATAS ( { SnapDate }, 'Calendar Inventory Snapshot'[Calendar Date] )
+				            ),
+				    ""OH EUR"",
+				        VAR SnapDate = 'Inventory Snapshot'[Calendar Date]
+				        RETURN
+				            CALCULATE (
+				                [Total Ext Cost IC],
+				                TREATAS ( { 3 }, 'Selected Currency Filter'[Selected Currency Code] ),
+				                TREATAS ( { SnapDate }, 'Calendar Inventory Snapshot'[Calendar Date] )
+				            ),
+				    ""On Hand Date"", RELATED ( 'Lot'[On Hand Date] ),
+				    ""Lot Expiry Date"", RELATED ( 'Lot'[Lot Expiration Date] ),
+				    ""Memo Lot 1"", RELATED ( 'Lot'[Memo Lot 1] ),
+				    ""Memo Lot 2"", RELATED ( 'Lot'[Memo Lot 2] ),
+				    ""Commodity Class Description"", RELATED ( 'Item Branch'[Commodity Class Codes Desc] ),
+				    ""Commodity Sub Class Description"", RELATED ( 'Item Branch'[Commodity Sub Class Codes Desc] ),
+				    ""Global Bulk Item (F4102)"", TRIM ( RELATED ( 'Item Branch'[Item Global Bulk] ) ),
+				    ""Bulk Item (F4102)"", TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) )
+				)
+				ORDER BY [REGION], [Global Bulk Item], [Bulk Item], [2nd Item Number]
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table

@@ -15,6 +15,10 @@ export const CSS = `
 
 /* min-height:0 so the scroll pane can shrink below its content (see ARCHITECTURE.md). */
 .sck-scroll { flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden; }
+/* Thin themed scrollbar, never the Windows-native one: the native bar (arrow
+   buttons, 17px gutter) reads as foreign chrome inside the report and renders
+   blurry under Desktop's scaled WebView. */
+.sck-scroll { scrollbar-width:thin; scrollbar-color:#c8c6c4 transparent; }
 
 .sck-table { width:100%; border-collapse:collapse; table-layout:fixed; }
 .sck-table th, .sck-table td {

@@ -219,11 +219,11 @@
                       "Entity": "Shipments"
                     }
                   },
-                  "Property": "Customer Sold To Name"
+                  "Property": "Global Parent Name"
                 }
               },
-              "queryRef": "Shipments.Customer Sold To Name",
-              "nativeQueryRef": "Customer Sold To Name"
+              "queryRef": "Shipments.Global Parent Name",
+              "nativeQueryRef": "Global Parent Name"
             },
             {
               "field": {

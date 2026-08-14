@@ -2239,8 +2239,63 @@
         "howCreated": "User"
       },
       {
-        "name": "7ddef222527df28bde43",
+        "name": "ed0711458b33c889c203",
         "ordinal": 6,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactScheduleChange"
+              }
+            },
+            "Property": "Is OTIF Relevant"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "f",
+              "Entity": "FactScheduleChange",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "f"
+                          }
+                        },
+                        "Property": "Is OTIF Relevant"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "7ddef222527df28bde43",
+        "ordinal": 7,
         "field": {
           "Column": {
             "Expression": {
@@ -2311,6 +2366,77 @@
             }
           ]
         }
+      },
+      {
+        "name": "72086fea6b9c22ab0aec",
+        "ordinal": 8,
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "PropertyVariationSource": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "DateTable"
+                      }
+                    },
+                    "Name": "Variation",
+                    "Property": "Date"
+                  }
+                },
+                "Hierarchy": "Date Hierarchy"
+              }
+            },
+            "Level": "Year"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "23bcc4481e2279d6dd92",
+        "ordinal": 9,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DateTable"
+              }
+            },
+            "Property": "Month MMM"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "d60270710d91e7206e2d",
+        "ordinal": 10,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Reason Codes"
+              }
+            },
+            "Property": "Revision Reason & Description"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "b020b60eb27b080a3494",
+        "ordinal": 11,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": ".Measures"
+              }
+            },
+            "Property": "OTIF Episodes (latest line/reason only)"
+          }
+        },
+        "type": "Advanced"
       }
     ],
     "filterSortOrder": "Custom"

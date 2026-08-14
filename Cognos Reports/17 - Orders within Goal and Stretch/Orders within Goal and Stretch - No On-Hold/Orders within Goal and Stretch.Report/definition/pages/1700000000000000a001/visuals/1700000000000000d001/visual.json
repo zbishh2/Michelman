@@ -1,0 +1,788 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "1700000000000000d001",
+  "position": {
+    "x": 7.7811550151975686,
+    "y": 136.17021276595744,
+    "z": 0,
+    "height": 575.80547112462011,
+    "width": 1264.4376899696049
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Company Code"
+                }
+              },
+              "queryRef": "Orders_GS.Company Code",
+              "nativeQueryRef": "Company Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Company Name"
+                }
+              },
+              "queryRef": "Orders_GS.Company Name",
+              "nativeQueryRef": "Company Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Orders_GS.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Freight Handling Code"
+                }
+              },
+              "queryRef": "Orders_GS.Freight Handling Code",
+              "nativeQueryRef": "Freight Handling Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Order Number"
+                }
+              },
+              "queryRef": "Orders_GS.Order Number",
+              "nativeQueryRef": "Order Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Ordered Quantity"
+                }
+              },
+              "queryRef": "Orders_GS.Ordered Quantity",
+              "nativeQueryRef": "Ordered Quantity"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "Orders_GS.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Sold To Customer Code"
+                }
+              },
+              "queryRef": "Orders_GS.Sold To Customer Code",
+              "nativeQueryRef": "Sold To Customer Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Sold To Customer Name"
+                }
+              },
+              "queryRef": "Orders_GS.Sold To Customer Name",
+              "nativeQueryRef": "Sold To Customer Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Ship To Customer Code"
+                }
+              },
+              "queryRef": "Orders_GS.Ship To Customer Code",
+              "nativeQueryRef": "Ship To Customer Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Ship To Customer Name"
+                }
+              },
+              "queryRef": "Orders_GS.Ship To Customer Name",
+              "nativeQueryRef": "Ship To Customer Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Customer Segmentation"
+                }
+              },
+              "queryRef": "Orders_GS.Customer Segmentation",
+              "nativeQueryRef": "Customer Segmentation"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Customer Segmentation Description"
+                }
+              },
+              "queryRef": "Orders_GS.Customer Segmentation Description",
+              "nativeQueryRef": "Customer Segmentation Description"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Order Date"
+                }
+              },
+              "queryRef": "Orders_GS.Order Date",
+              "nativeQueryRef": "Order Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Confirmation Date"
+                }
+              },
+              "queryRef": "Orders_GS.Confirmation Date",
+              "nativeQueryRef": "Confirmation Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Shipped Date"
+                }
+              },
+              "queryRef": "Orders_GS.Shipped Date",
+              "nativeQueryRef": "Shipped Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Requested Date"
+                }
+              },
+              "queryRef": "Orders_GS.Requested Date",
+              "nativeQueryRef": "Requested Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Goal"
+                }
+              },
+              "queryRef": "Orders_GS.Goal",
+              "nativeQueryRef": "Goal"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "Stretch"
+                }
+              },
+              "queryRef": "Orders_GS.Stretch",
+              "nativeQueryRef": "Stretch"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": ">48h"
+                }
+              },
+              "queryRef": "Orders_GS.>48h",
+              "nativeQueryRef": ">48h"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": "<72h"
+                }
+              },
+              "queryRef": "Orders_GS.<72h",
+              "nativeQueryRef": "<72h"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Orders_GS"
+                    }
+                  },
+                  "Property": ">72h"
+                }
+              },
+              "queryRef": "Orders_GS.>72h",
+              "nativeQueryRef": ">72h"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Orders_GS"
+                  }
+                },
+                "Property": "Order Number"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Orders_GS"
+                  }
+                },
+                "Property": "2nd Item Number"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "107.5814819351454D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Orders_GS.Order Date"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "2661243a3b0ac0b77614",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "<72h"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "da68fc5a67370709db50",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": ">48h"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "0195e56c1ea6347479b0",
+        "ordinal": 2,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": ">72h"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "6088dd79e3ba2e701c6b",
+        "ordinal": 3,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "2nd Item Number"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "4087ca2a7a23b5a20135",
+        "ordinal": 4,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Branch Plant"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a343a511d3ed9a3c261d",
+        "ordinal": 5,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Company Code"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "dca84b6e82849d9a1901",
+        "ordinal": 6,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Company Name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "336d535214116755ca1e",
+        "ordinal": 7,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Confirmation Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "09e7986d0b3c748cd9b5",
+        "ordinal": 8,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Customer Segmentation"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "cdecde6315ab6d40a12e",
+        "ordinal": 9,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Customer Segmentation Description"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "ab92547726b4d8953659",
+        "ordinal": 10,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Freight Handling Code"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "dc4b703278a89c076031",
+        "ordinal": 11,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Goal"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "9990db32dbbb997b4531",
+        "ordinal": 12,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Order Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "70b76ccc774b91c23211",
+        "ordinal": 13,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Order Number"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "39afe94d735679c3beb3",
+        "ordinal": 14,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Ordered Quantity"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "a3b56ea60c5be8d259d1",
+        "ordinal": 15,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Requested Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "d4ede3f631de08450822",
+        "ordinal": 16,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Ship To Customer Code"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "1f52faef2040e5ba6005",
+        "ordinal": 17,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Ship To Customer Name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a7f0e71d402d71332042",
+        "ordinal": 18,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Shipped Date"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "816fbe5e034a85179410",
+        "ordinal": 19,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Sold To Customer Code"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "9d0c679d16aea1ac5648",
+        "ordinal": 20,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Sold To Customer Name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "516371672036a304da4c",
+        "ordinal": 21,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Orders_GS"
+              }
+            },
+            "Property": "Stretch"
+          }
+        },
+        "type": "Advanced"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  }
+}

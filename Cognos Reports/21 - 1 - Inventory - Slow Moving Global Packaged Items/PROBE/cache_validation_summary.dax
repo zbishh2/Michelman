@@ -1,0 +1,37 @@
+EVALUATE
+ROW (
+    "Inventory Rows", COUNTROWS ( Inventory ),
+    "Inventory Snapshot Date", MAX ( Inventory[Inventory Date] ),
+    "Inventory As Of Date", MAX ( Inventory[DATE] ),
+    "Inventory Blank Quantities", COALESCE ( COUNTROWS ( FILTER ( Inventory, ISBLANK ( Inventory[Quantity on Hand] ) ) ), 0 ),
+    "Inventory Blank LBs", COALESCE ( COUNTROWS ( FILTER ( Inventory, ISBLANK ( Inventory[Quantity on Hand LBs] ) ) ), 0 ),
+    "Inventory Blank KGs", COALESCE ( COUNTROWS ( FILTER ( Inventory, ISBLANK ( Inventory[Quantity on Hand KGs] ) ) ), 0 ),
+    "Shipment Rows", COUNTROWS ( Shipments ),
+    "Shipment Distinct Source Keys",
+        COUNTROWS (
+            SUMMARIZE (
+                Shipments,
+                Shipments[Order Company],
+                Shipments[Order Number],
+                Shipments[Line Number]
+            )
+        ),
+    "Shipment Open Indicator Off-Domain",
+        COALESCE ( COUNTROWS ( FILTER ( Shipments, NOT TRIM ( Shipments[Open Indicator] ) IN { "Y", "N" } ) ), 0 ),
+    "Shipment Cancelled Flag Nonzero",
+        COALESCE ( COUNTROWS ( FILTER ( Shipments, Shipments[Cancelled Flag] <> 0 ) ), 0 ),
+    "Shipment Blank LBs", COALESCE ( COUNTROWS ( FILTER ( Shipments, ISBLANK ( Shipments[Ordered Quantity LBs] ) ) ), 0 ),
+    "Shipment Blank KGs", COALESCE ( COUNTROWS ( FILTER ( Shipments, ISBLANK ( Shipments[Ordered Quantity KGs] ) ) ), 0 ),
+    "Shipment Min Promised Date", MIN ( Shipments[Promised Ship Date] ),
+    "Shipment Max Promised Date", MAX ( Shipments[Promised Ship Date] ),
+    "Items Active Rows", COUNTROWS ( 'Items - Active' ),
+    "Items Active Whitespace Values",
+        COALESCE ( COUNTROWS (
+            FILTER (
+                'Items - Active',
+                'Items - Active'[Global Bulk Item] <> TRIM ( 'Items - Active'[Global Bulk Item] )
+                    || 'Items - Active'[Bulk Item] <> TRIM ( 'Items - Active'[Bulk Item] )
+                    || 'Items - Active'[2nd Item Number] <> TRIM ( 'Items - Active'[2nd Item Number] )
+            )
+        ), 0 )
+)

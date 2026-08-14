@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Inventory for Tier 2 Report (SSAS Live)"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d382e426-1fef-4a64-99f3-04bb658d1487"
+  }
+}

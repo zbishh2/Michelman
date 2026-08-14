@@ -346,5 +346,5 @@ nothing to filter and the counts are equivalent.
 | `check_bindings.py` | measure/column binding audit |
 | `work_centres_all.csv` | all 148 JDE work centres with usage counts |
 
-Related: `../edw_schema/` (schema dumps, probe SQL, the snapshot generator),
-`../dax queries/otif_reconciliation.sql`, `../writeback/ARCHITECTURE.md`.
+Related: `../edw_schema/` (schema dumps, probe SQL, the snapshot generator,
+`otif_reconciliation.sql`), `../writeback/ARCHITECTURE.md`.

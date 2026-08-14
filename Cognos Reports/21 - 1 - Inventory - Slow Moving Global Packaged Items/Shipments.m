@@ -1,71 +1,71 @@
 let
-    Source = Sql.Database("EDWPROD", "EDW"),
-    Data = Value.NativeQuery(
-        Source,
-        "
-        SET NOCOUNT ON;
-
-        SELECT
-            f.OrderCompany                               AS [Order Company],
-            LTRIM(RTRIM(f.BusinessUnit))                 AS [Branch Plant],
-            ib.[Item Global Bulk]                        AS [Global Bulk Item],
-            ib.[Item Bulk]                               AS [Bulk Item],
-            f.ItemNum2nd                                 AS [2nd Item Number],
-            CAST(f.OrderNum AS varchar(12))              AS [Order Number],
-            LEFT(CASE WHEN f.LineNum = FLOOR(f.LineNum)
-                      THEN CAST(CAST(f.LineNum AS int) AS varchar(12))
-                      ELSE CAST(CAST(f.LineNum AS decimal(9,3)) AS varchar(12))
-                 END, 5)                                 AS [Line Number],
-            LTRIM(RTRIM(f.StatusCodeLast))               AS [Last Status],
-            LTRIM(RTRIM(f.StatusCodeNext))               AS [Next Status],
-            f.PromisedShipmentDate                       AS [Promised Ship Date],
-            SUM(f.QuantityOrderedPrimaryUOM)             AS [Ordered Quantity],
-            LTRIM(RTRIM(f.UOMTransaction))               AS [Ordering Unit of Measure],
-            LTRIM(RTRIM(f.LineType))                     AS [Line Type],
-            CAST(f.AddressNumShipTo AS varchar(12))      AS [Customer Code],
-            a.AddressDesc                                AS [Customer Name],
-            LTRIM(RTRIM(f.OrderType))                    AS [Order Type Code],
-            LTRIM(RTRIM(MIN(f.UOMPrimary)))              AS [Primary Unit of Measure],
-            MIN(f.ConversionFactorKG)                    AS [KG Factor]
-        FROM dbo.FactSalesDetail f WITH (NOLOCK)
-            INNER JOIN BIQL.TbItemBranch ib WITH (NOLOCK)
-                    ON ib.ItemBranchSKey = f.ItemBranchSKey
-            INNER JOIN dbo.DimCustomer c WITH (NOLOCK)
-                    ON c.CustomerSKey = f.ShipToCustomerSKey
-            INNER JOIN dbo.DimAddress a WITH (NOLOCK)
-                    ON a.AddressSKey = c.AddressSKey
-        WHERE f.QuantityOrderedPrimaryUOM > 0
-          AND (f.QuantityOrdered - f.QuantityCanceledScrapped) > 0
-          AND f.PromisedShipmentDate >= DATEADD(DAY, -365, CAST(GETDATE() AS date))
-          AND LTRIM(RTRIM(f.LineType)) = 'S'
-          AND LTRIM(RTRIM(f.OrderType)) NOT IN ('ST')
-          AND LTRIM(RTRIM(f.BusinessUnit)) IN ('CINC', 'CIN2', 'CINC', 'AUBA', 'AUB2', 'SING', 'SNG4')
-          AND LTRIM(RTRIM(ib.[Category GL F4101])) = 'IN32'
-          AND COALESCE( NULLIF( NULLIF( LTRIM(RTRIM(ISNULL(ib.[Item Global Bulk], ''))), '' ), '-' ),
-                        LTRIM(RTRIM(f.ItemNum2nd)) )
-              NOT IN ('IGST', 'CGST', 'SGST', 'CVD', 'ADD')
-        GROUP BY
-            f.OrderCompany,
-            LTRIM(RTRIM(f.BusinessUnit)),
-            ib.[Item Global Bulk],
-            ib.[Item Bulk],
-            f.ItemNum2nd,
-            CAST(f.OrderNum AS varchar(12)),
-            LEFT(CASE WHEN f.LineNum = FLOOR(f.LineNum)
-                      THEN CAST(CAST(f.LineNum AS int) AS varchar(12))
-                      ELSE CAST(CAST(f.LineNum AS decimal(9,3)) AS varchar(12))
-                 END, 5),
-            LTRIM(RTRIM(f.StatusCodeLast)),
-            LTRIM(RTRIM(f.StatusCodeNext)),
-            f.PromisedShipmentDate,
-            LTRIM(RTRIM(f.UOMTransaction)),
-            LTRIM(RTRIM(f.LineType)),
-            CAST(f.AddressNumShipTo AS varchar(12)),
-            a.AddressDesc,
-            LTRIM(RTRIM(f.OrderType))
-        ",
-        null,
-        [EnableFolding = false]
+    Raw = AnalysisServices.Database(
+        "SSASPROD",
+        "BIQLTabular",
+        [
+            Query = "
+EVALUATE
+VAR R21EligibleSales =
+    FILTER (
+        Sales,
+        TRIM ( Sales[Record Type] ) = ""Sales Detail""
+            && Sales[QuantityOrderedPrimaryUOM] > 0
+            && ( Sales[QuantityOrdered] - Sales[QuantityCanceledScrapped] ) > 0
+            && Sales[Promised Shipment Date] >= TODAY () - 365
+            && TRIM ( Sales[Line Type] ) = ""S""
+            && TRIM ( Sales[Order Type] ) <> ""ST""
+            && TRIM ( Sales[BusinessUnit] ) IN { ""CINC"", ""CIN2"", ""AUBA"", ""AUB2"", ""SING"", ""SNG4"" }
+            && TRIM ( RELATED ( 'Item Branch'[Category GL F4101] ) ) = ""IN32""
+            && VAR GlobalBulk = TRIM ( RELATED ( 'Item Branch'[Item Global Bulk] ) )
+               VAR EffectiveItem =
+                    IF (
+                        ISBLANK ( GlobalBulk ) || GlobalBulk IN { """", ""-"" },
+                        TRIM ( Sales[Item Num 2nd] ),
+                        GlobalBulk
+                    )
+               RETURN NOT EffectiveItem IN { ""IGST"", ""CGST"", ""SGST"", ""CVD"", ""ADD"" }
+    )
+RETURN
+    SELECTCOLUMNS (
+        R21EligibleSales,
+        ""Order Company"", TRIM ( Sales[Order Company] ),
+        ""Branch Plant"", TRIM ( Sales[BusinessUnit] ),
+        ""Global Bulk Item"", TRIM ( RELATED ( 'Item Branch'[Item Global Bulk] ) ),
+        ""Bulk Item"", TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) ),
+        ""2nd Item Number"", TRIM ( Sales[Item Num 2nd] ),
+        ""Order Number"", FORMAT ( Sales[Order Num], ""0"" ),
+        ""Line Number"",
+            VAR R21LineNumber = Sales[Line Num]
+            RETURN
+                IF (
+                    R21LineNumber = INT ( R21LineNumber ),
+                    FORMAT ( R21LineNumber, ""0"" ),
+                    FORMAT ( R21LineNumber, ""0.###"" )
+                ),
+        ""Last Status"", TRIM ( Sales[Status Code Last] ),
+        ""Next Status"", TRIM ( Sales[Status Code Next] ),
+        ""Open Indicator"", TRIM ( Sales[Open Order Flag] ),
+        ""Promised Ship Date"", Sales[Promised Shipment Date],
+        ""Ordered Quantity"", Sales[QuantityOrderedPrimaryUOM],
+        ""Ordering Unit of Measure"", TRIM ( Sales[UOM] ),
+        ""Ordered Quantity LBs"", Sales[QuantityOrderedLB],
+        ""Ordered Quantity KGs"", Sales[QuantityOrderedKG],
+        ""Primary Unit of Measure"", TRIM ( RELATED ( 'Item Branch'[UOM Primary] ) ),
+        ""Cancelled Flag"", Sales[Cancelled_Flag],
+        ""Line Type"", TRIM ( Sales[Line Type] ),
+        ""Customer Code"", FORMAT ( RELATED ( 'Customer Ship To'[Customer Ship To] ), ""0"" ),
+        ""Customer Name"", TRIM ( RELATED ( 'Customer Ship To'[Customer Ship To Name] ) ),
+        ""Order Type Code"", TRIM ( Sales[Order Type] )
+    )
+ORDER BY [Global Bulk Item], [Bulk Item], [2nd Item Number], [Branch Plant], [Order Number], [Line Number]
+"
+        ]
+    ),
+    Data = Table.TransformColumnNames(
+        Raw,
+        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+            then Text.Middle(_, 1, Text.Length(_) - 2)
+            else _
     )
 in
     Data

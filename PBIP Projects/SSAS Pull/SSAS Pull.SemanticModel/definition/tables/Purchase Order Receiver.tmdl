@@ -1,0 +1,523 @@
+table 'Purchase Order Receiver'
+	lineageTag: a50e0000-0000-4000-8000-0000000000a1
+
+	column SupplierSKey
+		dataType: int64
+		lineageTag: a50e0000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: SupplierSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemBranchSKey
+		dataType: int64
+		lineageTag: a50e0000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: ItemBranchSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column BranchSKey
+		dataType: int64
+		lineageTag: a50e0000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: BranchSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Address Num PO'
+		dataType: int64
+		lineageTag: a50e0000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Address Num PO
+
+		annotation SummarizationSetBy = Automatic
+
+	column PurchaseOrderSKey
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: PurchaseOrderSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Company'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Order Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Num'
+		dataType: int64
+		lineageTag: a50e0000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Order Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Suffix'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Order Suffix
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Type'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Order Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Line Num'
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Line Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Line Type'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Line Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Match Record Type'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Match Record Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Document Num'
+		dataType: int64
+		lineageTag: a50e0000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Document Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Document Type'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: Document Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Document Company'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: Document Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Status Code Last'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: Status Code Last
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Status Code Next'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: Status Code Next
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supplier Invoice Num'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: Supplier Invoice Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Description 1'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: Description 1
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GL Date'
+		dataType: dateTime
+		lineageTag: a50e0000-0000-4000-8000-000000000015
+		summarizeBy: none
+		sourceColumn: GL Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Date'
+		dataType: dateTime
+		lineageTag: a50e0000-0000-4000-8000-000000000016
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Received Date'
+		dataType: dateTime
+		lineageTag: a50e0000-0000-4000-8000-000000000017
+		summarizeBy: none
+		sourceColumn: Received Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Received Date Line'
+		dataType: dateTime
+		lineageTag: a50e0000-0000-4000-8000-000000000018
+		summarizeBy: none
+		sourceColumn: Received Date Line
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Transaction Date'
+		dataType: dateTime
+		lineageTag: a50e0000-0000-4000-8000-000000000019
+		summarizeBy: none
+		sourceColumn: Transaction Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Requested Date'
+		dataType: dateTime
+		lineageTag: a50e0000-0000-4000-8000-00000000001a
+		summarizeBy: none
+		sourceColumn: Requested Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Original Promised Delivery Date'
+		dataType: dateTime
+		lineageTag: a50e0000-0000-4000-8000-00000000001b
+		summarizeBy: none
+		sourceColumn: Original Promised Delivery Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityOrdered
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-00000000001c
+		summarizeBy: none
+		sourceColumn: QuantityOrdered
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityReceived
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-00000000001d
+		summarizeBy: none
+		sourceColumn: QuantityReceived
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityOpen
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-00000000001e
+		summarizeBy: none
+		sourceColumn: QuantityOpen
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityReturned
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-00000000001f
+		summarizeBy: none
+		sourceColumn: QuantityReturned
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityRejected
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-000000000020
+		summarizeBy: none
+		sourceColumn: QuantityRejected
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityScrapped
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-000000000021
+		summarizeBy: none
+		sourceColumn: QuantityScrapped
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityStocked
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-000000000022
+		summarizeBy: none
+		sourceColumn: QuantityStocked
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityClosed
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-000000000023
+		summarizeBy: none
+		sourceColumn: QuantityClosed
+
+		annotation SummarizationSetBy = Automatic
+
+	column AmountExtendedCost
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-000000000024
+		summarizeBy: none
+		sourceColumn: AmountExtendedCost
+
+		annotation SummarizationSetBy = Automatic
+
+	column AmountReceived
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-000000000025
+		summarizeBy: none
+		sourceColumn: AmountReceived
+
+		annotation SummarizationSetBy = Automatic
+
+	column AmountOpen
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-000000000026
+		summarizeBy: none
+		sourceColumn: AmountOpen
+
+		annotation SummarizationSetBy = Automatic
+
+	column AmountUnitCost
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-000000000027
+		summarizeBy: none
+		sourceColumn: AmountUnitCost
+
+		annotation SummarizationSetBy = Automatic
+
+	column AmountPaidtoDate
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-000000000028
+		summarizeBy: none
+		sourceColumn: AmountPaidtoDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConversionFactorKG
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-000000000029
+		summarizeBy: none
+		sourceColumn: ConversionFactorKG
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConversionFactorLB
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-00000000002a
+		summarizeBy: none
+		sourceColumn: ConversionFactorLB
+
+		annotation SummarizationSetBy = Automatic
+
+	column USDRate
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-00000000002b
+		summarizeBy: none
+		sourceColumn: USDRate
+
+		annotation SummarizationSetBy = Automatic
+
+	column EURRate
+		dataType: double
+		lineageTag: a50e0000-0000-4000-8000-00000000002c
+		summarizeBy: none
+		sourceColumn: EURRate
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Currency Code Base'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-00000000002d
+		summarizeBy: none
+		sourceColumn: Currency Code Base
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Currency Code From'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-00000000002e
+		summarizeBy: none
+		sourceColumn: Currency Code From
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'UOM Transaction'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-00000000002f
+		summarizeBy: none
+		sourceColumn: UOM Transaction
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'UOM Primary'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-000000000030
+		summarizeBy: none
+		sourceColumn: UOM Primary
+
+		annotation SummarizationSetBy = Automatic
+
+	column OnTimeFlag
+		dataType: int64
+		lineageTag: a50e0000-0000-4000-8000-000000000031
+		summarizeBy: none
+		sourceColumn: OnTimeFlag
+
+		annotation SummarizationSetBy = Automatic
+
+	column InFullFlag
+		dataType: int64
+		lineageTag: a50e0000-0000-4000-8000-000000000032
+		summarizeBy: none
+		sourceColumn: InFullFlag
+
+		annotation SummarizationSetBy = Automatic
+
+	column OnTimeInFullFlag
+		dataType: int64
+		lineageTag: a50e0000-0000-4000-8000-000000000033
+		summarizeBy: none
+		sourceColumn: OnTimeInFullFlag
+
+		annotation SummarizationSetBy = Automatic
+
+	column LateFlag
+		dataType: int64
+		lineageTag: a50e0000-0000-4000-8000-000000000034
+		summarizeBy: none
+		sourceColumn: LateFlag
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Days Off Target'
+		dataType: int64
+		lineageTag: a50e0000-0000-4000-8000-000000000035
+		summarizeBy: none
+		sourceColumn: Days Off Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Delivery Status'
+		dataType: string
+		lineageTag: a50e0000-0000-4000-8000-000000000036
+		summarizeBy: none
+		sourceColumn: Delivery Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Purchase Order Receiver' = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				VAR PullRows =
+				    FILTER (
+				        'Purchase Order Receiver',
+				        'Purchase Order Receiver'[Received Date] >= TODAY () - 1095
+				            || 'Purchase Order Receiver'[GL Date] >= TODAY () - 1095
+				    )
+				RETURN
+				    SELECTCOLUMNS (
+				        PullRows,
+				        ""SupplierSKey"", 'Purchase Order Receiver'[SupplierSKey],
+				        ""ItemBranchSKey"", 'Purchase Order Receiver'[ItemBranchSKey],
+				        ""BranchSKey"", 'Purchase Order Receiver'[BranchSKey],
+				        ""Address Num PO"", 'Purchase Order Receiver'[Address Num PO],
+				        ""PurchaseOrderSKey"", 'Purchase Order Receiver'[PurchaseOrderSKey],
+				        ""Order Company"", 'Purchase Order Receiver'[Order Company],
+				        ""Order Num"", 'Purchase Order Receiver'[Order Num],
+				        ""Order Suffix"", 'Purchase Order Receiver'[Order Suffix],
+				        ""Order Type"", 'Purchase Order Receiver'[Order Type],
+				        ""Line Num"", 'Purchase Order Receiver'[Line Num],
+				        ""Line Type"", 'Purchase Order Receiver'[Line Type],
+				        ""Match Record Type"", 'Purchase Order Receiver'[Match Record Type],
+				        ""Document Num"", 'Purchase Order Receiver'[Document Num],
+				        ""Document Type"", 'Purchase Order Receiver'[Document Type],
+				        ""Document Company"", 'Purchase Order Receiver'[Document Company],
+				        ""Status Code Last"", 'Purchase Order Receiver'[Status Code Last],
+				        ""Status Code Next"", 'Purchase Order Receiver'[Status Code Next],
+				        ""Supplier Invoice Num"", 'Purchase Order Receiver'[Supplier Invoice Num],
+				        ""Location"", 'Purchase Order Receiver'[Location],
+				        ""Description 1"", 'Purchase Order Receiver'[Description 1],
+				        ""GL Date"", 'Purchase Order Receiver'[GL Date],
+				        ""Order Date"", 'Purchase Order Receiver'[Order Date],
+				        ""Received Date"", 'Purchase Order Receiver'[Received Date],
+				        ""Received Date Line"", 'Purchase Order Receiver'[Received Date Line],
+				        ""Transaction Date"", 'Purchase Order Receiver'[Transaction Date],
+				        ""Requested Date"", 'Purchase Order Receiver'[Requested Date],
+				        ""Original Promised Delivery Date"", 'Purchase Order Receiver'[Original Promised Delivery Date],
+				        ""QuantityOrdered"", 'Purchase Order Receiver'[QuantityOrdered],
+				        ""QuantityReceived"", 'Purchase Order Receiver'[QuantityReceived],
+				        ""QuantityOpen"", 'Purchase Order Receiver'[QuantityOpen],
+				        ""QuantityReturned"", 'Purchase Order Receiver'[QuantityReturned],
+				        ""QuantityRejected"", 'Purchase Order Receiver'[QuantityRejected],
+				        ""QuantityScrapped"", 'Purchase Order Receiver'[QuantityScrapped],
+				        ""QuantityStocked"", 'Purchase Order Receiver'[QuantityStocked],
+				        ""QuantityClosed"", 'Purchase Order Receiver'[QuantityClosed],
+				        ""AmountExtendedCost"", 'Purchase Order Receiver'[AmountExtendedCost],
+				        ""AmountReceived"", 'Purchase Order Receiver'[AmountReceived],
+				        ""AmountOpen"", 'Purchase Order Receiver'[AmountOpen],
+				        ""AmountUnitCost"", 'Purchase Order Receiver'[AmountUnitCost],
+				        ""AmountPaidtoDate"", 'Purchase Order Receiver'[AmountPaidtoDate],
+				        ""ConversionFactorKG"", 'Purchase Order Receiver'[ConversionFactorKG],
+				        ""ConversionFactorLB"", 'Purchase Order Receiver'[ConversionFactorLB],
+				        ""USDRate"", 'Purchase Order Receiver'[USDRate],
+				        ""EURRate"", 'Purchase Order Receiver'[EURRate],
+				        ""Currency Code Base"", 'Purchase Order Receiver'[Currency Code Base],
+				        ""Currency Code From"", 'Purchase Order Receiver'[Currency Code From],
+				        ""UOM Transaction"", 'Purchase Order Receiver'[UOM Transaction],
+				        ""UOM Primary"", 'Purchase Order Receiver'[UOM Primary],
+				        ""OnTimeFlag"", 'Purchase Order Receiver'[OnTimeFlag],
+				        ""InFullFlag"", 'Purchase Order Receiver'[InFullFlag],
+				        ""OnTimeInFullFlag"", 'Purchase Order Receiver'[OnTimeInFullFlag],
+				        ""LateFlag"", 'Purchase Order Receiver'[LateFlag],
+				        ""Days Off Target"", 'Purchase Order Receiver'[Days Off Target],
+				        ""Delivery Status"", 'Purchase Order Receiver'[Delivery Status]
+				    )
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

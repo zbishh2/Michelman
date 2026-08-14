@@ -1,0 +1,33 @@
+EVALUATE
+VAR Lines =
+    SELECTCOLUMNS (
+        Shipments,
+        "Order Company", Shipments[Order Company],
+        "Order Number", Shipments[Order Number],
+        "Line Number", Shipments[Line Number],
+        "Legacy Line Number", LEFT ( Shipments[Line Number], 5 )
+    )
+VAR LegacyGroups =
+    GROUPBY (
+        Lines,
+        [Order Company],
+        [Order Number],
+        [Legacy Line Number],
+        "Source Lines", COUNTX ( CURRENTGROUP (), [Line Number] )
+    )
+RETURN
+    ROW (
+        "Source Rows", COUNTROWS ( Lines ),
+        "Distinct Exact Keys",
+            COUNTROWS (
+                GROUPBY (
+                    Lines,
+                    [Order Company],
+                    [Order Number],
+                    [Line Number]
+                )
+            ),
+        "Distinct Legacy Keys", COUNTROWS ( LegacyGroups ),
+        "Legacy Collision Groups", COUNTROWS ( FILTER ( LegacyGroups, [Source Lines] > 1 ) ),
+        "Rows Lost Under Legacy Truncation", COUNTROWS ( Lines ) - COUNTROWS ( LegacyGroups )
+    )

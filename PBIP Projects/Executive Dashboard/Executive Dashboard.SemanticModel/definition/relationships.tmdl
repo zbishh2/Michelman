@@ -1,0 +1,224 @@
+relationship 41238093-dbef-413c-8f8a-040828274102
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Complaints.CreatedDate
+	toColumn: LocalDateTable_649e5e77-eb7e-4431-b085-da03386a0d0a.Date
+
+relationship 52f52cab-771d-3e6f-3310-d055a02457f2
+	fromColumn: FactSalesDetail.Region
+	toColumn: 'Dim Region'.Region
+
+relationship a6908fe5-6525-fd9d-99e6-47f27001d92e
+	fromColumn: Complaints.'Region Mapped'
+	toColumn: 'Dim Region'.Region
+
+relationship db565d02-fba9-44f6-9af8-dd9bf39a7858
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactSalesDetail.'Promised Delivery Date'
+	toColumn: LocalDateTable_d88802b0-b5e3-4797-8662-ad27309d85f5.Date
+
+relationship 9a97c9a8-757b-4f83-8145-bf208c37649d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactSalesDetail.'Requested Date'
+	toColumn: LocalDateTable_4bf7e9d2-8adb-466d-8ac2-fd9f503cf7ac.Date
+
+relationship 68476c34-2555-412e-82da-89df2c38cd2a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactSalesDetail.'Promised Shipment Date'
+	toColumn: LocalDateTable_d4236cc6-26db-4ccf-aa36-b8f9b45bcdcf.Date
+
+relationship 47bd4713-117a-402e-9f98-90829cceddd8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactSalesDetail.'Original Promised Delivery Date'
+	toColumn: LocalDateTable_0eeb6476-51d6-40d1-a1b7-d3b41e9a0cbe.Date
+
+relationship ebc6de70-2c95-43aa-a904-ba36876b539a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactScheduleChange.ChangeDate
+	toColumn: LocalDateTable_d7c46811-2d3d-4b3c-8877-e021009cb7f0.Date
+
+relationship 51eff012-ce28-430f-9fd9-19e7be91248e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactScheduleChange.FromPromisedDate
+	toColumn: LocalDateTable_80ff6d6a-2ee6-41a8-bc28-633b6127c93f.Date
+
+relationship 1c68a5d3-a513-4951-b110-f61ad1d0d97f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactScheduleChange.ToPromisedDate
+	toColumn: LocalDateTable_c1a2bcc3-4a2c-4112-9d48-e414710678dc.Date
+
+relationship ed717b16-4888-518b-39a8-2cee58e42084
+	fromColumn: FactScheduleChange.RevisionReason
+	toColumn: 'Reason Codes'.Code
+
+relationship 1a341cfb-4354-4b34-bbc1-f2397758a159
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactScheduleChange.'Ship Date'
+	toColumn: LocalDateTable_9f1c37b3-6910-4f50-a92c-1ea14253a6b7.Date
+
+relationship 5ff85644-5de7-42fb-8b0c-d9b158b46fda
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DateTable.Date
+	toColumn: LocalDateTable_19504664-740d-4d72-b7c1-a24f41f1f809.Date
+
+relationship f416e306-ac8a-eca4-1854-8b90a2ff312f
+	fromColumn: Complaints.Date_of_Occurrence
+	toColumn: DateTable.Date
+
+relationship ddb0eb11-18e6-4049-a18d-4cc9b258911a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactSalesDetail.'Invoice Date'
+	toColumn: LocalDateTable_e5c26f2e-4779-47cd-b30c-024ab4d9444e.Date
+
+relationship fd35a0cc-6e13-4387-8635-517cb7955585
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactSalesDetail.'Order Date'
+	toColumn: LocalDateTable_e6eec35d-782d-4c61-a7fb-60d04ee0ebaf.Date
+
+relationship 2b54426c-0702-4c0f-9ae6-8d60f4d42b48
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactSalesDetail.'Scheduled Pick Date'
+	toColumn: LocalDateTable_312c60d9-476c-4691-b62c-7ef5ea247995.Date
+
+relationship 7d7eafbf-82fe-43b9-a1f3-2651c573acc9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactSalesDetail.'Cancel Date'
+	toColumn: LocalDateTable_05ed4563-576e-401d-a78b-f21012367a09.Date
+
+relationship ea6bc5a7-c477-44e8-afcb-a36dce4cdb48
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactSalesDetail.'Updated Date'
+	toColumn: LocalDateTable_bbd50264-c981-4764-b26f-0335ae087307.Date
+
+relationship a9d47100-542d-dcc3-3a6b-15eec7db008b
+	fromColumn: FactScheduleChange.OrderLineID
+	toColumn: FactSalesDetail.'Order Line ID'
+
+relationship 286d3aec-659e-ebab-7945-b4bfd7a05f8c
+	fromColumn: FactSalesDetail.ShipToAddressSKey
+	toColumn: Ship-To.AddressSKey
+
+relationship 24abf97a-c702-42a8-b409-e4e6d7b09a8a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactSalesDetail.'GL Date'
+	toColumn: LocalDateTable_72f5362f-44d4-4aee-9670-ad25b3d08d31.Date
+
+relationship d7f3ea4b-58e5-a6a2-8c1b-0e9444befbea
+	fromColumn: FactSalesDetail.'Actual Ship Date'
+	toColumn: DateTable.Date
+
+relationship LineComments_Orders
+	fromColumn: LineComments.'Order Line ID'
+	toColumn: FactSalesDetail.'Order Line ID'
+
+relationship 64f4ca71-de07-42ad-96b2-96e34126100a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: LineComments.'Latest Comment At'
+	toColumn: LocalDateTable_fcef210c-7e8b-409d-b0ee-97b4bb8f30e4.Date
+
+relationship 4e480916-acec-66e1-18cb-756804eeb63a
+	fromColumn: FactSalesDetail.SoldToAddressSKey
+	toColumn: Sold-To.AddressSKey
+
+relationship 8b9bb879-b827-4dad-9df1-23695f6e3558
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Complaints.'Date of Occurence'
+	toColumn: LocalDateTable_fba67149-d28a-43a5-8ad5-f12317641574.Date
+
+relationship 1b49eddf-e286-3de2-7239-e88bd80c4e9e
+	fromColumn: Hours.Date
+	toColumn: DateTable.Date
+
+relationship 1e466f11-eedb-d16c-eee2-b92e9a770a05
+	crossFilteringBehavior: bothDirections
+	fromColumn: DatePeriods.Date
+	toColumn: DateTable.Date
+
+relationship adbc135c-bcdd-025e-2c58-53ab39aed478
+	fromColumn: Complaints.'Customer Tier'
+	toColumn: Segmentation.Segmentation
+
+relationship 8fedecf7-dcc6-d0aa-0634-5ead59d847c2
+	fromColumn: FactSalesDetail.'Customer Tier'
+	toColumn: Segmentation.Segmentation
+
+relationship fecc9b06-1a5a-417d-b121-0bbf9817f8a3
+	isActive: false
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WorkOrders.'Order Date'
+	toColumn: DateTable.Date
+
+relationship f032d0b5-905e-4662-ad9e-6c5d01ba3e34
+	fromColumn: WorkOrders.Region
+	toColumn: 'Dim Region'.Region
+
+relationship 2b7f60c4-91da-4e35-8a06-14c9375be8f1
+	fromColumn: WorkOrderRouting.WorkOrderSKey
+	toColumn: WorkOrders.WorkOrderSKey
+
+relationship 5a3d81e0-4f26-4bc7-9e13-8d70f2b6a95c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WorkOrders.'Completion Date (SOP Basis)'
+	toColumn: DateTable.Date
+
+relationship 49790f47-b18a-49cf-b2ca-6d52c9914d8a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WorkOrders.'S&OP Month'
+	toColumn: LocalDateTable_97203b4d-e1cd-4228-882e-84e28a20acbc.Date
+
+relationship 6e83f214-0ba7-4d59-9c36-51fa082e7d4b
+	fromColumn: 'Item Ledger'.WorkOrderSKey
+	toColumn: WorkOrders.WorkOrderSKey
+
+relationship a5271db0-4e69-4c83-b710-93ea6f58d1c2
+	fromColumn: 'WO Parts List'.WorkOrderSKey
+	toColumn: WorkOrders.WorkOrderSKey
+
+relationship d8a66db1-db09-4aab-b765-4b17513fbc99
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WorkOrders.'Completion Date'
+	toColumn: LocalDateTable_cec2f101-e260-4189-830a-33efa15cb0b4.Date
+
+relationship c715f575-8ab5-403c-9c66-93cf9c71d49f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WorkOrders.'Requested Date'
+	toColumn: LocalDateTable_6637d993-b113-40ab-9310-9e49be2425ca.Date
+
+relationship 4982df1e-87c7-4760-9908-296b97ccd7e2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WorkOrders.'Completion Date (Header Basis)'
+	toColumn: LocalDateTable_05f10de0-d703-45d9-a92f-83de363914d4.Date
+
+relationship 68393d50-9ac5-4a36-810b-e837a0da084a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WorkOrderRouting.'Order Date'
+	toColumn: LocalDateTable_f7701ae0-8af0-45a4-b20d-e4977bde6450.Date
+
+relationship f63ed0a1-35f8-43b9-9732-16144f574b2b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WorkOrderRouting.'Completed Date WO'
+	toColumn: LocalDateTable_0d499bdf-ffa2-4314-9af1-9c2d43a58c28.Date
+
+relationship 9008e733-545b-470a-b4b5-0830c4ccc45b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Item Ledger'.'Transaction Date'
+	toColumn: LocalDateTable_181bd93b-93c6-4b13-95cf-07402ae3a9de.Date
+
+relationship 3a2fe168-3e06-4de1-80de-23d566149994
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Item Ledger'.'GL Date'
+	toColumn: LocalDateTable_5eaa5b48-8683-4227-be85-ea89c33d94f4.Date
+
+relationship 80825c73-04c9-43dc-9ed0-7f7fcac009c9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Item Ledger'.'Created Date'
+	toColumn: LocalDateTable_254c5380-4a79-4111-86d0-ffda116da154.Date
+
+relationship 30c82d4b-a320-4c1a-8459-84b87e3d61c3
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'WO Parts List'.'Requested Date'
+	toColumn: LocalDateTable_0df48de4-08e7-4fe3-9da7-5727fee7492b.Date
+
+relationship 4b7e0c92-a3f1-4d68-95ca-2e07f4b1d836
+	fromColumn: Hours.Region
+	toColumn: 'Dim Region'.Region
+

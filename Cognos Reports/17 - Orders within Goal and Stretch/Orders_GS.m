@@ -131,7 +131,9 @@ let
             MIN(g.[JDE Order Line ID]) AS [JDE Order Line ID],
             MIN(g.[Order Entry Date]) AS [Order Entry Date],
             MIN(g.[Business Group]) AS [Business Group],
-            MIN(g.[CSR Name]) AS [CSR Name]
+            MIN(g.[CSR Name]) AS [CSR Name],
+            MIN(g.[Current Hold Code]) AS [Current Hold Code],
+            MIN(g.[Current Hold Description]) AS [Current Hold Description]
         FROM (
         SELECT
             o.CompanyCode                              AS [Company Code],
@@ -157,7 +159,9 @@ let
             LTRIM(RTRIM(o.SDKCOO)) + '|' + CAST(o.SDDOCO AS varchar(20)) + '|' + LTRIM(RTRIM(o.SDDCTO)) + '|' + CAST(o.SDLNID AS varchar(20)) AS [JDE Order Line ID],
             CASE WHEN o.SDTRDJ > 0 THEN DATEADD(DAY,(o.SDTRDJ%1000)-1,DATEFROMPARTS(1900+(o.SDTRDJ/1000),1,1)) END AS [Order Entry Date],
             o.BusinessGroup                            AS [Business Group],
-            LTRIM(RTRIM(csrw.WWMLNM))                  AS [CSR Name]
+            LTRIM(RTRIM(csrw.WWMLNM))                  AS [CSR Name],
+            ISNULL(LTRIM(RTRIM(hh.SHHOLD)),'')         AS [Current Hold Code],
+            ISNULL(LTRIM(RTRIM(hd.DRDL01)),'')         AS [Current Hold Description]
         FROM #ord o
         JOIN #metric m ON m.SLKCOO = o.SDKCOO AND m.SLDOCO = o.SDDOCO AND m.SLDCTO = o.SDDCTO AND m.SLLNID = o.SDLNID
         LEFT JOIN PRODDTA.F0010 co   ON LTRIM(RTRIM(co.CCCO)) = o.CompanyCode
@@ -172,6 +176,10 @@ let
                           AND uom.UMRUM = LTRIM(RTRIM(im.IMUOM1))
         LEFT JOIN #csr cs ON cs.CMAN8 = o.SDSHAN
         LEFT JOIN PRODDTA.F0111 csrw ON csrw.WWAN8 = cs.CSR_AN8 AND csrw.WWIDLN = 0
+        -- Hold: order HEADER's live hold code; F4201 is unique per (KCOO, DOCO, DCTO), cannot fan the grain.
+        LEFT JOIN PRODDTA.F4201 hh ON hh.SHKCOO = o.SDKCOO AND hh.SHDOCO = o.SDDOCO AND hh.SHDCTO = o.SDDCTO
+        LEFT JOIN PRODCTL.F0005 hd ON LTRIM(RTRIM(hd.DRSY)) = '42' AND LTRIM(RTRIM(hd.DRRT)) = 'HC'
+                                  AND LTRIM(RTRIM(hd.DRKY)) = LTRIM(RTRIM(hh.SHHOLD))
         WHERE ISNULL(LTRIM(RTRIM(ship.ABAC01)),'') <> 'INT'
           AND CASE WHEN ISNULL(LTRIM(RTRIM(tag.IMGBLK)),'-') = '-' THEN o.Item2nd ELSE LTRIM(RTRIM(tag.IMGBLK)) END
               NOT IN ('IGST','CGST','SGST','CVD','ADD')
@@ -211,7 +219,9 @@ let
             {"JDE Order Line ID", type text},
             {"Order Entry Date", type date},
             {"Business Group", type text},
-            {"CSR Name", type text}
+            {"CSR Name", type text},
+            {"Current Hold Code", type text},
+            {"Current Hold Description", type text}
         },
         "en-US"
     )

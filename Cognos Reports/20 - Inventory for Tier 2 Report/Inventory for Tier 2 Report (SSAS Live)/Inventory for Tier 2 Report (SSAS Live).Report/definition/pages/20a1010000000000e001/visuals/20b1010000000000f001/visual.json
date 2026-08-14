@@ -1,0 +1,224 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "20b1010000000000f001",
+  "position": {
+    "x": 8,
+    "y": 96,
+    "z": 0,
+    "height": 608,
+    "width": 1264
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Branch"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Branch.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Item Num 2nd"
+                }
+              },
+              "queryRef": "Item Branch.Item Num 2nd",
+              "nativeQueryRef": "Item Num 2nd",
+              "displayName": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Item Num Bulk"
+                }
+              },
+              "queryRef": "Item Branch.Item Num Bulk",
+              "nativeQueryRef": "Item Num Bulk",
+              "displayName": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Item Num Global Bulk"
+                }
+              },
+              "queryRef": "Item Branch.Item Num Global Bulk",
+              "nativeQueryRef": "Item Num Global Bulk",
+              "displayName": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Branch"
+                    }
+                  },
+                  "Property": "Master Planning Family"
+                }
+              },
+              "queryRef": "Item Branch.Master Planning Family",
+              "nativeQueryRef": "Master Planning Family"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory Snapshot"
+                    }
+                  },
+                  "Property": "Qty On Hand LB"
+                }
+              },
+              "queryRef": "Inventory Snapshot.Qty On Hand LB",
+              "nativeQueryRef": "Qty On Hand LB",
+              "displayName": "Quantity on Hand LBs"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Calendar Inventory Snapshot"
+                    }
+                  },
+                  "Property": "Calendar Date"
+                }
+              },
+              "queryRef": "Calendar Inventory Snapshot.Calendar Date",
+              "nativeQueryRef": "Calendar Date",
+              "displayName": "Inventory Date"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Branch"
+                  }
+                },
+                "Property": "Branch Plant"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Item Branch"
+                  }
+                },
+                "Property": "Item Num 2nd"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Calendar Inventory Snapshot"
+                  }
+                },
+                "Property": "Calendar Date"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "Literal": {
+                "Value": "9D"
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "Literal": {
+                "Value": "9D"
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "Literal": {
+                "Value": "true"
+              }
+            },
+            "text": {
+              "Literal": {
+                "Value": "'Inventory for Tier 2'"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

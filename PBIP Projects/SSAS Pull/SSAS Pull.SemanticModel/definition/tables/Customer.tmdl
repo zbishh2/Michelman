@@ -1,0 +1,255 @@
+table Customer
+	lineageTag: a5040000-0000-4000-8000-0000000000a1
+
+	column CustomerSKey
+		dataType: int64
+		lineageTag: a5040000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: CustomerSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressSKey
+		dataType: int64
+		lineageTag: a5040000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: AddressSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Sold To Num'
+		dataType: int64
+		lineageTag: a5040000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Customer Sold To Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Sold To Name'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Customer Sold To Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Sold To and Name'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Customer Sold To and Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Parent Num'
+		dataType: int64
+		lineageTag: a5040000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Global Parent Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Parent Name'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Global Parent Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Parent and Name'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Global Parent and Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Related Sold to'
+		dataType: int64
+		lineageTag: a5040000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Related Sold to
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Address Num Parent'
+		dataType: int64
+		lineageTag: a5040000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Address Num Parent
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Address Num 4th'
+		dataType: int64
+		lineageTag: a5040000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Address Num 4th
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Customer Segmentation
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segmentation Desc'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Customer Segmentation Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Business Unit'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: Sales Business Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Business Unit Desc'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: Sales Business Unit Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Country Desc'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: Country Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000012
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'State Desc'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000013
+		summarizeBy: none
+		sourceColumn: State Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000014
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Type of Customer Desc'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000015
+		summarizeBy: none
+		sourceColumn: Type of Customer Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Industry Group Desc'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000016
+		summarizeBy: none
+		sourceColumn: Industry Group Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000017
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Status Desc'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000018
+		summarizeBy: none
+		sourceColumn: Customer Status Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Group Description'
+		dataType: string
+		lineageTag: a5040000-0000-4000-8000-000000000019
+		summarizeBy: none
+		sourceColumn: Business Group Description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customer = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				SELECTCOLUMNS (
+				    'Customer',
+				        ""CustomerSKey"", 'Customer'[CustomerSKey],
+				        ""AddressSKey"", 'Customer'[AddressSKey],
+				        ""Customer Sold To Num"", 'Customer'[Customer Sold To Num],
+				        ""Customer Sold To Name"", 'Customer'[Customer Sold To Name],
+				        ""Customer Sold To and Name"", 'Customer'[Customer Sold To and Name],
+				        ""Global Parent Num"", 'Customer'[Global Parent Num],
+				        ""Global Parent Name"", 'Customer'[Global Parent Name],
+				        ""Global Parent and Name"", 'Customer'[Global Parent and Name],
+				        ""Related Sold to"", 'Customer'[Related Sold to],
+				        ""Address Num Parent"", 'Customer'[Address Num Parent],
+				        ""Address Num 4th"", 'Customer'[Address Num 4th],
+				        ""Customer Segmentation"", 'Customer'[Customer Segmentation],
+				        ""Customer Segmentation Desc"", 'Customer'[Customer Segmentation Desc],
+				        ""Sales Business Unit"", 'Customer'[Sales Business Unit],
+				        ""Sales Business Unit Desc"", 'Customer'[Sales Business Unit Desc],
+				        ""Country"", 'Customer'[Country],
+				        ""Country Desc"", 'Customer'[Country Desc],
+				        ""State"", 'Customer'[State],
+				        ""State Desc"", 'Customer'[State Desc],
+				        ""City"", 'Customer'[City],
+				        ""Type of Customer Desc"", 'Customer'[Type of Customer Desc],
+				        ""Industry Group Desc"", 'Customer'[Industry Group Desc],
+				        ""Region"", 'Customer'[Region],
+				        ""Customer Status Desc"", 'Customer'[Customer Status Desc],
+				        ""Business Group Description"", 'Customer'[Business Group Description]
+				)
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

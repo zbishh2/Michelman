@@ -127,11 +127,11 @@ table Shipments
 		annotation SummarizationSetBy = Automatic
 
 	/// Reached via the ship-to address book's FIFTH address number, not the fact's parent SKey - the latter reproduces Cognos on only 20% of rows.
-	column 'Customer Sold To Name'
+	column 'Global Parent Name'
 		dataType: string
 		lineageTag: 19a20000-0000-4000-8000-00000000000f
 		summarizeBy: none
-		sourceColumn: Customer Sold To Name
+		sourceColumn: Global Parent Name
 
 		annotation SummarizationSetBy = Automatic
 
@@ -285,7 +285,7 @@ table Shipments
 				        ""Scheduled Pick Date"", Sales[Scheduled Pick Date],
 				        ""Customer Code"", RELATED ( 'Customer Ship To'[Customer Ship To] ),
 				        ""Customer Name"", TRIM ( RELATED ( 'Customer Ship To'[Customer Ship To Name] ) ),
-				        ""Customer Sold To Name"", TRIM ( RELATED ( 'Customer'[Customer Sold To Name] ) ),
+				        ""Global Parent Name"", TRIM ( RELATED ( 'Customer'[Global Parent Name] ) ),
 				        ""Customer Segmentation Description"", RELATED ( 'Customer Ship To'[Customer Segmentation Desc] ),
 				        ""TM Name"", IF ( ISBLANK ( RELATED ( 'Territory Manager'[Mailing Name] ) ), ""Not Available"", TRIM ( RELATED ( 'Territory Manager'[Mailing Name] ) ) ),
 				        ""Country Name"", RELATED ( 'Customer Ship To'[Country Desc] ),
@@ -307,3 +307,4 @@ table Shipments
 				    Data
 
 	annotation PBI_ResultType = Table
+

@@ -1,0 +1,111 @@
+table Branch
+	lineageTag: a5090000-0000-4000-8000-0000000000a1
+
+	column BranchSKey
+		dataType: int64
+		lineageTag: a5090000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: BranchSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanySKey
+		dataType: int64
+		lineageTag: a5090000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: CompanySKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: a5090000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant Desc'
+		dataType: string
+		lineageTag: a5090000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Branch Plant Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant and Desc'
+		dataType: string
+		lineageTag: a5090000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Branch Plant and Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant Type'
+		dataType: string
+		lineageTag: a5090000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Branch Plant Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant Type Desc'
+		dataType: string
+		lineageTag: a5090000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Branch Plant Type Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Parent'
+		dataType: string
+		lineageTag: a5090000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Branch Parent
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Type'
+		dataType: string
+		lineageTag: a5090000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Branch Type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Branch = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				SELECTCOLUMNS (
+				    'Branch',
+				        ""BranchSKey"", 'Branch'[BranchSKey],
+				        ""CompanySKey"", 'Branch'[CompanySKey],
+				        ""Branch Plant"", 'Branch'[Branch Plant],
+				        ""Branch Plant Desc"", 'Branch'[Branch Plant Desc],
+				        ""Branch Plant and Desc"", 'Branch'[Branch Plant and Desc],
+				        ""Branch Plant Type"", 'Branch'[Branch Plant Type],
+				        ""Branch Plant Type Desc"", 'Branch'[Branch Plant Type Desc],
+				        ""Branch Parent"", 'Branch'[Branch Parent],
+				        ""Branch Type"", 'Branch'[Branch Type]
+				)
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

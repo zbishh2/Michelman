@@ -248,7 +248,7 @@ table Shipments
 		lineageTag: 19d20000-0000-4000-8000-000000000019
 		summarizeBy: none
 
-	column 'Customer Sold To Name' = TRIM ( RELATED ( Customer[Customer Sold To Name] ) )
+	column 'Global Parent Name' = TRIM ( RELATED ( Customer[Global Parent Name] ) )
 		dataType: string
 		lineageTag: 19d20000-0000-4000-8000-00000000001a
 		summarizeBy: none

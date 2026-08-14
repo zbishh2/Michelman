@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Ivan Global Inventory Excel - Select Date"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "14b2f3b8-1400-4d13-ae42-14b2f3b81400"
+  }
+}

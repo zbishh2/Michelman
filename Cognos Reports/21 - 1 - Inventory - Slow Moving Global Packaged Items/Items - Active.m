@@ -1,23 +1,35 @@
 let
-    Source = Sql.Database("EDWPROD", "EDW"),
-    Data = Value.NativeQuery(
-        Source,
-        "
-        SET NOCOUNT ON;
-
-        SELECT DISTINCT
-            LTRIM(RTRIM(ib.[Business Unit]))             AS [Branch Plant],
-            ib.[Item Global Bulk]                        AS [Global Bulk Item],
-            ib.[Item Bulk]                               AS [Bulk Item],
-            ib.[Item Num 2nd]                            AS [2nd Item Number],
-            LTRIM(RTRIM(ib.[Stocking Type]))             AS [Stock Type Code]
-        FROM BIQL.TbItemBranch ib WITH (NOLOCK)
-        WHERE LTRIM(RTRIM(ib.[Category GL F4101])) = 'IN32'
-          AND LTRIM(RTRIM(ib.[Stocking Type])) NOT IN ('O')
-          AND LTRIM(RTRIM(ib.[Business Unit])) IN ('CINC', 'CIN2', 'CIN4', 'AUBA', 'AUB2', 'SING', 'SNG4')
-        ",
-        null,
-        [EnableFolding = false]
+    Raw = AnalysisServices.Database(
+        "SSASPROD",
+        "BIQLTabular",
+        [
+            Query = "
+EVALUATE
+DISTINCT (
+    SELECTCOLUMNS (
+        FILTER (
+            'Item Branch',
+            TRIM ( 'Item Branch'[Category GL F4101] ) = ""IN32""
+                && TRIM ( 'Item Branch'[Stocking Type] ) <> ""O""
+                && TRIM ( 'Item Branch'[Business Unit] )
+                    IN { ""CINC"", ""CIN2"", ""CIN4"", ""AUBA"", ""AUB2"", ""SING"", ""SNG4"" }
+        ),
+        ""Branch Plant"", TRIM ( 'Item Branch'[Business Unit] ),
+        ""Global Bulk Item"", TRIM ( 'Item Branch'[Item Global Bulk] ),
+        ""Bulk Item"", TRIM ( 'Item Branch'[Item Bulk] ),
+        ""2nd Item Number"", TRIM ( 'Item Branch'[Item Num 2nd] ),
+        ""Stock Type Code"", TRIM ( 'Item Branch'[Stocking Type] )
+    )
+)
+ORDER BY [Global Bulk Item], [Bulk Item], [2nd Item Number], [Branch Plant]
+"
+        ]
+    ),
+    Data = Table.TransformColumnNames(
+        Raw,
+        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+            then Text.Middle(_, 1, Text.Length(_) - 2)
+            else _
     )
 in
     Data

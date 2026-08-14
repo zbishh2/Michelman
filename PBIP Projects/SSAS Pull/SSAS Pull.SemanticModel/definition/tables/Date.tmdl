@@ -1,0 +1,48 @@
+table Date
+	lineageTag: a50b0000-0000-4000-8000-0000000000a1
+
+	column CalendarDate
+		dataType: dateTime
+		lineageTag: a50b0000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: CalendarDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateSKey
+		dataType: int64
+		lineageTag: a50b0000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: DateSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Date = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				SELECTCOLUMNS (
+				    'Date',
+				        ""CalendarDate"", 'Date'[CalendarDate],
+				        ""DateSKey"", 'Date'[DateSKey]
+				)
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

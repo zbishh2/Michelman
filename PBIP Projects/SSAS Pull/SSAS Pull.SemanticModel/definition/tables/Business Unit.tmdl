@@ -1,0 +1,183 @@
+table 'Business Unit'
+	lineageTag: a5080000-0000-4000-8000-0000000000a1
+
+	column BusinessUnitSKey
+		dataType: int64
+		lineageTag: a5080000-0000-4000-8000-000000000001
+		summarizeBy: none
+		sourceColumn: BusinessUnitSKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanySKey
+		dataType: int64
+		lineageTag: a5080000-0000-4000-8000-000000000002
+		summarizeBy: none
+		sourceColumn: CompanySKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit'
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-000000000003
+		summarizeBy: none
+		sourceColumn: Business Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit Desc'
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-000000000004
+		summarizeBy: none
+		sourceColumn: Business Unit Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit and Desc'
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-000000000005
+		summarizeBy: none
+		sourceColumn: Business Unit and Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit Type'
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-000000000006
+		summarizeBy: none
+		sourceColumn: Business Unit Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit Type Desc'
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-000000000007
+		summarizeBy: none
+		sourceColumn: Business Unit Type Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit Parent'
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-000000000008
+		summarizeBy: none
+		sourceColumn: Business Unit Parent
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit Parent Desc'
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-000000000009
+		summarizeBy: none
+		sourceColumn: Business Unit Parent Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column Division
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-00000000000a
+		summarizeBy: none
+		sourceColumn: Division
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division Desc'
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-00000000000b
+		summarizeBy: none
+		sourceColumn: Division Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-00000000000c
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Region Desc'
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-00000000000d
+		summarizeBy: none
+		sourceColumn: Region Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column Grouping
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-00000000000e
+		summarizeBy: none
+		sourceColumn: Grouping
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Grouping Desc'
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-00000000000f
+		summarizeBy: none
+		sourceColumn: Grouping Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column Territory
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-000000000010
+		summarizeBy: none
+		sourceColumn: Territory
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Territory Desc'
+		dataType: string
+		lineageTag: a5080000-0000-4000-8000-000000000011
+		summarizeBy: none
+		sourceColumn: Territory Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Business Unit' = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				SELECTCOLUMNS (
+				    'Business Unit',
+				        ""BusinessUnitSKey"", 'Business Unit'[BusinessUnitSKey],
+				        ""CompanySKey"", 'Business Unit'[CompanySKey],
+				        ""Business Unit"", 'Business Unit'[Business Unit],
+				        ""Business Unit Desc"", 'Business Unit'[Business Unit Desc],
+				        ""Business Unit and Desc"", 'Business Unit'[Business Unit and Desc],
+				        ""Business Unit Type"", 'Business Unit'[Business Unit Type],
+				        ""Business Unit Type Desc"", 'Business Unit'[Business Unit Type Desc],
+				        ""Business Unit Parent"", 'Business Unit'[Business Unit Parent],
+				        ""Business Unit Parent Desc"", 'Business Unit'[Business Unit Parent Desc],
+				        ""Division"", 'Business Unit'[Division],
+				        ""Division Desc"", 'Business Unit'[Division Desc],
+				        ""Region"", 'Business Unit'[Region],
+				        ""Region Desc"", 'Business Unit'[Region Desc],
+				        ""Grouping"", 'Business Unit'[Grouping],
+				        ""Grouping Desc"", 'Business Unit'[Grouping Desc],
+				        ""Territory"", 'Business Unit'[Territory],
+				        ""Territory Desc"", 'Business Unit'[Territory Desc]
+				)
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table
+

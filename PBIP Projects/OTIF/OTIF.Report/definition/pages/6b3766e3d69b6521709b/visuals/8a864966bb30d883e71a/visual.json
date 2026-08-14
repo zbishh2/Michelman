@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "8a864966bb30d883e71a",
   "position": {
-    "x": 541,
-    "y": 69.127182044887775,
+    "x": 4.1124497991967868,
+    "y": 67.855421686747,
     "z": 12000,
-    "height": 358.20448877805484,
-    "width": 735,
+    "height": 648.73895582329317,
+    "width": 1272,
     "tabOrder": 8000
   },
   "visual": {
@@ -254,6 +254,25 @@
             },
             {
               "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactSalesDetail"
+                        }
+                      },
+                      "Property": "On Time"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(FactSalesDetail.On Time)",
+              "nativeQueryRef": "Sum of On Time"
+            },
+            {
+              "field": {
                 "Column": {
                   "Expression": {
                     "SourceRef": {
@@ -432,19 +451,31 @@
         "sort": [
           {
             "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": ".Measures"
+                  }
+                },
+                "Property": "Order Lines (Late)"
+              }
+            },
+            "direction": "Descending"
+          },
+          {
+            "field": {
               "Column": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "FactSalesDetail"
+                    "Entity": "Orders from EDW"
                   }
                 },
-                "Property": "Order Company"
+                "Property": "Promised Delivery Date"
               }
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": true
+        ]
       }
     },
     "objects": {
@@ -1125,72 +1156,6 @@
               }
             },
             "Property": "Business Unit Revenue"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "360202790e1a33017095",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "FactSalesDetail"
-                  }
-                },
-                "Property": "Qty Shipped (Family)"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "5fd34ec5bed996e39e80",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "FactSalesDetail"
-                  }
-                },
-                "Property": "Qty Ordered (Family)"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "3d92ed08c709b520edec",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactSalesDetail"
-              }
-            },
-            "Property": "Parent Order Line ID"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "b0eff6f1666a60cb1958",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactSalesDetail"
-              }
-            },
-            "Property": "Status Code Next"
           }
         },
         "type": "Categorical"
