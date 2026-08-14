@@ -88,9 +88,8 @@ only route.
 ## Read on demand
 
 - `Cognos Reports/AUTOMATION_RUNBOOK.md` — authentication handoffs, Cognos export, Fabric CLI,
-  paginated RDL, jumpbox SSMS/Computer Use, hosted DAX, and validation workbook methods. Read this
-  before starting or resuming a Cognos-to-Power BI rebuild. Its probe-handoff guidance ("give Zack
-  a probe to paste and run") is superseded by the production probe method above.
+  paginated RDL, Computer Use, hosted DAX, and validation workbook methods. Read this before
+  starting or resuming a Cognos-to-Power BI rebuild.
 - `DEFINITIONS.md` — what OTIF, TRIR, RTFT, Scorecard, Complaints actually are.
 - `GOTCHAS.md` — grep when something breaks.
 - `writeback/ARCHITECTURE.md` + `writeback/HANDOFF.md` — the writeback system.
