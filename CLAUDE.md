@@ -15,12 +15,19 @@ just right now.
 machine by borrowing the gateway binding of a published semantic model. Do not carry probe PBIPs
 to the jumpbox. Do not write script runners. Do not ask Zack to paste and run a probe.**
 
-Host models to borrow, both in the `Zack (Validation)` workspace (PPU), both Zack-owned:
+The host is the **`Validation`** semantic model in the `Zack (Validation)` workspace (PPU), source
+in `PBIP Projects\Validation\`. It exists only to carry gateway bindings: three anchor tables, one
+row each, one per source. Probes are the only thing that ever refreshes there, so a probe can never
+disturb a deliverable.
 
-| Source | Host model | Connector in its partitions |
+| Source | Anchor table | Connector |
 |---|---|---|
-| `SSASPROD` / `BIQLTabular` | `19 - Safety Stock and Order Size (SSAS Import)` | `AnalysisServices.Database` — arbitrary **DAX** |
-| `EDWPROD` / `EDW` **and** `ODSPROD` / `ODS` | `19 - Safety Stock and Order Size` | `Sql.Database` + `Value.NativeQuery` — arbitrary **T-SQL** |
+| `SSASPROD` / `BIQLTabular` | `Anchor SSAS` | `AnalysisServices.Database` — arbitrary **DAX** |
+| `EDWPROD` / `EDW` | `Anchor EDW` | `Sql.Database` + `Value.NativeQuery` — arbitrary **T-SQL** |
+| `ODSPROD` / `ODS` | `Anchor ODS` | `Sql.Database` + `Value.NativeQuery` — arbitrary **T-SQL** |
+
+**Never delete the anchor tables.** They hold the bindings; without them the model has no
+datasources and nothing can refresh.
 
 The cycle, every time:
 
@@ -43,9 +50,20 @@ Rules that make this safe, all of them mandatory:
 - An XMLA write is a sandbox act. Anything meant to persist goes into the repo PBIP and ships
   through `fab` publish, which overwrites the service copy.
 
-Why borrowing is required: a newly created model needs its own gateway datasource binding, and
-this account gets an empty array from the `gateways` REST endpoint. Only models that are already
-bound can reach production.
+**Rebuilding the host, if it is ever lost.** Publish `PBIP Projects\Validation\` and bind it. The
+tenant-wide `gateways` endpoint returns an empty array for this account, which is not a blocker —
+the dataset-scoped endpoints work without gateway-admin rights:
+
+```powershell
+fab import 'Zack (Validation).Workspace/Validation.SemanticModel' -i '<repo>\PBIP Projects\Validation\Validation.SemanticModel' -f
+fab api -A powerbi "groups/<workspaceId>/datasets/<datasetId>/Default.DiscoverGateways"
+fab api -A powerbi "groups/<workspaceId>/datasets/<datasetId>/Default.BindToGateway" -X post -i bind.json
+```
+
+`bind.json` carries `gatewayObjectId` plus the `datasourceObjectIds` for SSAS, EDW, and ODS; read
+those from any already-bound model's `/datasources`. A freshly published model does **not**
+auto-bind — an unbound refresh fails with `DMTS_MonikerWithUnboundDataSources`. The gateway is
+`MichelmanDataWarehouse`, running on `CORPJUMP01`.
 
 What this does **not** cover, and still belongs to the jumpbox: gateway health, Report Builder and
 Power BI Desktop GUI work, and querying a live-connect SSAS model — `executeQueries` and XMLA both

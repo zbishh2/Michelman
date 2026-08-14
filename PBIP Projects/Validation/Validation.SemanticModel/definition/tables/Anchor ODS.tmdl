@@ -1,0 +1,27 @@
+/// Anchor holding the ODSPROD/ODS gateway binding. Returns one row. Never delete.
+table 'Anchor ODS'
+	lineageTag: 7a11da70-0000-4000-8000-000000000013
+
+	column ok
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a11da70-0000-4000-8000-000000000013-c1
+		summarizeBy: none
+		sourceColumn: ok
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Anchor ODS' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "SET NOCOUNT ON; SELECT 1 AS ok",
+				        null,
+				        [EnableFolding = false]
+				    )
+				in
+				    Data
+
