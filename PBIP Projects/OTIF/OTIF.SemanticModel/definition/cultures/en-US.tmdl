@@ -3352,6 +3352,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.727
 			          }
+			        },
+			        {
+			          "Promised Date": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ],
 			      "SemanticType": "Time"
@@ -26598,19 +26608,7 @@ cultureInfo en-US
 			          "ConceptualProperty": "Order Lines (Backlog)"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Order Lines": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "measures.order_lines_late_backlog": {
 			      "Definition": {
@@ -26619,19 +26617,7 @@ cultureInfo en-US
 			          "ConceptualProperty": "Order Lines (Late, Backlog)"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Order Lines (Late)": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "measures.otif_episodes_backlog": {
 			      "Definition": {
@@ -26649,19 +26635,7 @@ cultureInfo en-US
 			          "ConceptualProperty": "Promised Year"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Year": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "factsalesdetail.promised_month_mmm": {
 			      "Definition": {
@@ -26670,19 +26644,7 @@ cultureInfo en-US
 			          "ConceptualProperty": "Promised Month MMM"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Month MMM": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "measures.otif_episodes_backlog_relevant": {
 			      "Definition": {
@@ -26691,19 +26653,7 @@ cultureInfo en-US
 			          "ConceptualProperty": "OTIF Episodes (Backlog, Relevant)"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "OTIF Episodes (latest line/reason only)": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    }
 			  },
 			  "Relationships": {

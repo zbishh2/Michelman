@@ -119,12 +119,5 @@
         }
       }
     ]
-  },
-  "visualInteractions": [
-    {
-      "source": "acab580543a1ce53411d",
-      "target": "8a864966bb30d883e71a",
-      "type": "NoFilter"
-    }
-  ]
+  }
 }
