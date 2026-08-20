@@ -23,6 +23,7 @@ disturb a deliverable.
 | Source | Anchor table | Connector |
 |---|---|---|
 | `SSASPROD` / `BIQLTabular` | `Anchor SSAS` | `AnalysisServices.Database` — arbitrary **DAX** |
+| `SSASPROD` / `BIQLTabular_ISH` | `Anchor ISH` | `AnalysisServices.Database` — arbitrary **DAX** |
 | `EDWPROD` / `EDW` | `Anchor EDW` | `Sql.Database` + `Value.NativeQuery` — arbitrary **T-SQL** |
 | `ODSPROD` / `ODS` | `Anchor ODS` | `Sql.Database` + `Value.NativeQuery` — arbitrary **T-SQL** |
 

@@ -39,6 +39,8 @@ One line each, present tense. If it needs a story, it doesn't belong here.
 
 ## SQL / Oracle→T-SQL porting
 - EDW is case-sensitive: column names AND string predicates.
+- The schema dumps in `edw_schema/` are not a reliable source for column-name case: `BIQL.DimBillOfMaterial` / `dbo.DimBillOfMaterial` / `BIQL.DimBillOfMaterialExpanded` carry `TypeBillofMaterial` (lower-case "of") where `edw_columns_current.csv` says `TypeBillOfMaterial`. When a column errors as invalid, probe `INFORMATION_SCHEMA.COLUMNS` through the Validation host before guessing.
+- EDW `nchar` branch codes are right-aligned (`'        CIN2'`): `LTRIM(RTRIM(Branch))` before comparing or grouping.
 - Oracle `trim(x) = ''` is NULL-equivalent; T-SQL port needs an explicit `= ''` check.
 - Cognos list panels render DISTINCT implicitly — port needs `SELECT DISTINCT`.
 - `JUL2DATE(x)` → `CASE WHEN x>0 THEN DATEADD(DAY,(x%1000)-1,DATEFROMPARTS(1900+(x/1000),1,1)) END`.
@@ -63,6 +65,8 @@ One line each, present tense. If it needs a story, it doesn't belong here.
 - Tight capture: pull Cognos export and PBI numbers minutes apart or the compare is unfalsifiable.
 - PBI formatted export rounds — round half-up on both sides before comparing.
 - Validation workbooks use live `EXACT()` formulas, never hardcoded TRUE/FALSE.
+
+- After `fab import` republishes a changed partition M, the MCP's `table_operations RefreshWithXMLA` (type Automatic) sees the partition "Ready" and silently keeps the old data — sums don't move, no error. Force it with `partition_operations RefreshWithXMLA` and `refreshType: Full`, then verify a value that must change.
 
 ## Environment
 - Gateway/jumpbox identity is `ZackB@michem.com` — wrong domain looks like a rights problem ("failed to impersonate") but isn't.

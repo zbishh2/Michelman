@@ -1,7 +1,7 @@
 # Cognos → Power BI rebuild — program status
 
-18 numbered reports. This file is current state; each report folder's `BUILD.md` carries the build
-spec and its validation log.
+22 numbered reports. This file is current state; each report folder's `BUILD.md` carries the build
+spec and its validation log. Reports 19–21 are tracked in their own `BUILD.md` / `COLLECTION_NOTES.md`.
 
 Folder contract: `BUILD.md`, `PARITY_TODO.md` (gap list, wins over `BUILD.md` on conflict),
 `COLLECTION_NOTES.md`, `Intake/`, `<Name>.m` + `<Name>.commented.m`, `00_verify_tables.sql`,
@@ -132,6 +132,12 @@ than ~2 months), with a CompanySKey=2 +1-day interval shift, FX via
 `BIQL.DimCurrencyExchangeRatesUSDDaily`, carrier-borrow for `ItemCostSKey = -1`, and KG/LB
 constants for KG/LB-primary rows. *After sign-off:* delete the frozen SQL tables, the `AsOfDate`
 param, and the tie-out measures.
+The **SSAS Import** sibling is published to `Zack (Validation)` and tied out (BUILD.md §14.1):
+Escor Inventory exact, Inventory rows and USD/EUR within the one disclosed cost-basis class,
+Escor Lot Details on ODS `PRODDTA.F4108` per Rohit. Cost requires pinning `Selected UOM Code` to 1
+— the cube defaults to LB and squares the conversion rate — and EUR converts local→EUR directly by
+`CurrencyBSKey`, because the cube's own EUR branch is missing a `CROSSFILTER` and returns blank.
+Both cube defects, plus mismapped `[Exchange Rate]` branches, are the model owner's to fix.
 
 **15 — Open Orders Live – Data** · ODS/PRODDTA · done, accepted. One `Open Orders` page + a
 multi-select CSR Name slicer (replacing five hard-coded per-CSR pages, whose names had gone stale).
@@ -159,6 +165,15 @@ likely intent. The event-pick rule is a legacy-DW nightly-batch artifact and is 
 `dbo.FactInventorySnapshot_History` route as 14, with USD carrier-borrow for `ItemCostSKey = -1`
 lots. The export is a dated snapshot history across Singapore / Americas / Aubange plus a
 cross-region Lot Status sheet, despite the "Singapore" title.
+
+**22 — CM - Information 2020 - Future** · SSAS Import (BOM on EDW) · **PBIP built and tied out,
+awaiting Zack's visual pass and Dave's answers; RDL variant next.** Six flat pages (Receipts,
+Shipments, Forecast, Work Orders, BOM, Item Details) from Dave Bubash's ~80% PBIP, rebuilt on
+`BIQLTabular` native DAX — `BIQLTabular`'s `Bill Of Material Expanded` is empty in production, so
+BOM reads EDW `BIQL.DimBillOfMaterial`. Published to `Zack (Validation)` as
+`22 - CM - Information 2020 - Future (SSAS Import)`. Shipments, BOM, Item Details branch rows and
+WO Issued tie exactly; residuals are legacy-DW-only rows and two columns with no production source
+(Raw Material Margin's A1+freight basis, Forecast Revenue Business Unit) — `BUILD.md` §4–5.
 
 ---
 
