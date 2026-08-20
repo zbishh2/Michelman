@@ -39,6 +39,7 @@ Order lines are read from `F4211` (open) plus `F42119` (purged history) so compl
 | **>48h** | 1 when the interval is **more than 2 business days**. |
 | **<72h** | 1 when the interval is **less than 3 business days**. |
 | **>72h** | 1 when the interval is **more than 3 business days**. |
+| **Ever Held C1/CX** | Y when the order was ever placed on a **C1 (Credit Hold)** or **CX (Held for Cash Advance)** hold, at any point in its life. Read from `F4209`, JDE's held-orders file, which records a release date on the row instead of deleting it — so it carries the full hold history, not just orders held right now. Header-level, so it applies to every line on the order. |
 | Total row / Total Order Lines | The footer sums each flag column; the card counts the rows. |
 
 ## Where the logic lives
@@ -48,6 +49,18 @@ The model is split so the calculation logic is directly readable in Power BI. Th
 ## The business-day calculation
 
 Calendar days between the 525 date and the 540 date, minus the weekends in between, using the same week-anchored formula as the Cognos original. Notable inherited behavior: intervals that start or end on a weekend are handled by the formula's weekend-endpoint rules exactly as Cognos computes them (a same-weekend pair can count as 0). The hour-styled column names (>48h, <72h, >72h) are thresholds expressed in business days (2 and 3), not literal clock hours — again matching the deployed report.
+
+## Excluding held orders
+
+Hold time inflates the 525→540 interval through no fault of Customer Service, so the
+**No On-Hold** copy of the report carries a page filter that drops every line whose order
+was ever on a C1 or CX hold (`Ever Held C1/CX` = Y). The standard copy keeps them and
+leaves the filter open.
+
+The exclusion is deliberately "ever held", not "held while the clock was running": an
+order that went on credit hold *after* it shipped is excluded too. Roughly 22% of scored
+lines carry a C1/CX hold somewhere in their history, and about half of those were held
+during the measured window.
 
 ## Filters
 

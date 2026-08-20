@@ -4,56 +4,88 @@ Nathalie's request: score the report **without the orders that carry a CX or C1 
 code during the order process**, because hold time inflates the 525→540 interval
 through no fault of Customer Service.
 
-## Where hold codes live in ODS/JDE
+## Where hold history lives
 
-Holds at Michelman are **order-header-level, current-state only**:
+**`PRODDTA.F4209` (Held Orders) is the source.** It is replicated to ODS and it is a
+full audit, not a current-state snapshot: releasing a hold stamps the release date and
+time onto the row rather than deleting it. C1 history reaches back to 1999.
+
+| Column | Content |
+|---|---|
+| `HOKCOO` / `HODOCO` / `HODCTO` | Order key. `HOLNID` is 0 on every row — the grain is the order **header**, never the line. |
+| `HOHCOD` | Hold code (UDC 42/HC). |
+| `HORDJ` / `HORDT` | Release date (Julian) and time. Zero on a hold that is still active. |
+| `HORDB` / `HORDC` | Released by, and the release code. |
+| `HOTRDJ` / `HODRQJ` / `HOPDDJ` | Order, requested and promised-delivery dates copied from the order. |
+
+An order can carry several rows — a repeated hold, or two codes at once. C1 alone holds
+45,655 rows over 35,410 orders, of which 45,571 are released and 84 are live; CX holds
+7,709 rows over 3,660 orders.
+
+There is **no hold-applied date**. Only the release stamp is recorded, so the window
+rule below is expressed in terms of when a hold was *released*.
+
+Everywhere else in JDE carries current state only, or nothing at all:
 
 | Location | Content |
 |---|---|
-| `F4201.SHHOLD` | The active hold on an open order header. **Cleared on release.** |
-| `F4211.SDHOLD` / `F42119.SDHOLD` | Line-level hold — **unused (blank everywhere)**. |
-| `F42199.SLHOLD` | Ledger copy of the line hold — **blank on every ledger record**; JDE here does not stamp holds into the ledger. |
-| `F42019.SHHOLD` | Purged-header copy — frozen at purge time; holds are released before close, so effectively blank (probe 5 verifies). |
-| `F4209` (Held Orders file) | **Not replicated to ODS**, and in JDE its rows are deleted on release anyway. |
+| `F4201.SHHOLD` | The active hold on an open order header. Cleared on release. |
+| `F4211.SDHOLD` / `F42119.SDHOLD` | Line-level hold — unused (blank everywhere). |
+| `F42199.SLHOLD` | Ledger copy of the line hold — blank on all 19,570,334 ledger records. The sales ledger keeps **status** history, not hold history, and a hold does not change status: held lines sit at ordinary statuses, and the ledger's 900-series codes are backorder/add/cancel markers (UDC 40/AT). |
+| `F42019.SHHOLD` | Purged-header copy, frozen at purge: 171,060 blank against 61 non-blank. |
+| `F4201_ARCH` | Purge archive spanning 1999–2015, zero key overlap with `F4201`. |
 
 Decode is UDC **42/HC** (`PRODCTL.F0005`): `C1` = Credit Hold, `C2` = Credit Hold – Aging,
 `CX` = Held for Cash Advance, `FM` = Order Entry Hold Code for AUBA. (`PEN`, which the
-ticket also mentions, is not a 42/HC code — probe 8 identifies it.)
+ticket also mentions, is not a 42/HC code.)
 
-## What that means for the request
+## The exclusion rule
 
-1. **Retroactive exclusion ("was this order ever on CX/C1 hold?") is not answerable**
-   from ODS or EDW. Once JDE releases a hold the code is gone everywhere downstream;
-   EDW's `FactSalesDetail.HoldOrdersCode` mirrors the current state each night (local
-   mirror: 101 C1 orders in EDW vs 76 currently held in F4201 — the excess is values
-   frozen at purge, not history).
-2. **A current-hold flag is trivial** (`LEFT JOIN F4201` on the order header — grain-safe,
-   header is unique per KCOO/DOCO/DCTO). But it touches almost nothing that is scored:
-   held orders mostly have not shipped yet, so they are not in the report. Against the
-   2026-07-23 cache × Aug-6 ODS mirror: C1 = 26 scored lines all-year (17 in July, 2 of
-   them >48h), CX = 0.
-3. The orders Nathalie is describing — FM sitting at 525, CX at 530/535, C1 at 525–540 —
-   are **open** orders. The PBI report (like the Cognos original) scores a line only
-   after it reaches BOTH 525 and 540, so those orders are not being counted as failures
-   today; they enter the report only after they ship, at which point the hold time is
-   baked into the interval and the hold code is no longer visible.
-4. **A real exclusion needs hold history captured going forward** — e.g. a nightly
-   snapshot of `F4201` holds (order key, hold code, date) landed in EDW by Michelman's
-   EDW consultant. From the first capture day onward, "ever held CX/C1 between 525 and
-   540" becomes a join.
+**A line is excluded when its order carries a C1 or CX hold anywhere in its history** —
+`Ever Held C1/CX` = Y. That is the rule the business asked for and ratified: ever held,
+full stop.
+
+It is worth knowing what that includes. A hold released *after* the first 540 is a
+post-ship collections hold: it did not delay the shipment, but the order is excluded
+anyway. A hold released *before* the first 525 delayed order entry, which this metric
+does not measure, and is likewise excluded. Scoping the rule to holds released inside the
+525→540 window would exclude roughly half as many lines; the counts below size both.
+
+There is no hold-applied date in F4209, so any window-scoped variant has to be expressed
+against the release stamp.
+
+## What it does to the metric
+
+Against the rolling year (14,054 scored lines):
+
+| | Lines |
+|---|---|
+| **Ever held C1/CX — what the flag excludes** | **3,091** |
+| &nbsp;&nbsp;of which released inside the 525→540 window | 1,799 |
+| &nbsp;&nbsp;of which released after the first 540 (post-ship) | 1,551 |
+| &nbsp;&nbsp;of which released before the first 525 | 65 |
+| &nbsp;&nbsp;of which never released | 29 |
+
+The buckets overlap, because one order can carry several hold rows.
+
+These counts come from a direct ODS probe that approximates the interval in **calendar**
+days. The report scores in **business** days via the DAX flag columns, so the exact effect
+on Goal / Stretch / >48h / <72h / >72h is whatever the refreshed model reports. On the
+probe's calendar-day basis, 919 of 4,449 breaching lines had a hold released inside the
+measured window — indicative of the scale, not a substitute for the model's own numbers.
 
 ## Where this lives now
 
-- **Production (Orders within Goal and Stretch)**: the model fetches `Current Hold Code`
-  / `Current Hold Description` (F4201 header join, MIN() aggregates on the display
-  grain), and the report page carries a visible page filter **excluding C1 and CX** —
-  Nathalie's requested interim behavior. The filter catches holds active at refresh
-  time only; released-then-shipped orders show blank and stay in the metric (the
-  snapshot above is what fixes that). Masters `Orders_GS.m` / `Orders_GS.commented.m`
-  are in sync with the TMDL.
+- **`Orders within Goal and Stretch - No On-Hold`**: carries the page filter that drops
+  `Ever Held C1/CX` = Y. This is the copy that answers the ticket.
+- **`Orders within Goal and Stretch`**: the same model with the filter left open, so the
+  held lines stay visible.
+- Both models fetch `Ever Held C1/CX` from the `#held` step (F4209, GROUP BY-deduped to
+  one row per order key under a unique index, so the join cannot fan the display grain),
+  alongside `Current Hold Code` / `Current Hold Description` (F4201 header join), which
+  remain current-state.
 - **Orders GS - Line Explorer (DAX)**: same hold columns on `Order Lines`, a Current
   Hold Code slicer, and the code in the line grid. Line grain includes OPEN orders, so
-  the held population at 525/530/535 is visible there. No exclusion filter — the
-  explorer shows everything.
-- `_tools\Probes\Probe-R17-Hold-Codes.ps1` — jumpbox probe set verifying the
-  local-mirror findings against live ODSPROD (results → `probe_results_r17holds.txt`).
+  the held population at 525/530/535 is visible there. No exclusion filter.
+- `Hold history probe (ODS).sql` — the SSMS script demonstrating that the sales ledger
+  carries no hold codes.

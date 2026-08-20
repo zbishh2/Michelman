@@ -151,6 +151,16 @@ let
         GROUP BY c.CMAN8;
         CREATE UNIQUE CLUSTERED INDEX ixc ON #csr (CMAN8);
 
+        -- (7) #held : orders ever carrying a C1/CX hold, from the F4209 held-orders
+        --     audit (release stamps the row, never deletes it -- full history).
+        --     Header grain, GROUP BY-deduped to one row per order key.
+        SELECT HOKCOO, HODOCO, HODCTO
+        INTO #held
+        FROM PRODDTA.F4209
+        WHERE LTRIM(RTRIM(HOHCOD)) IN ('C1','CX')
+        GROUP BY HOKCOO, HODOCO, HODCTO;
+        CREATE UNIQUE CLUSTERED INDEX ixh ON #held (HOKCOO, HODOCO, HODCTO);
+
         -- (7) FINAL : #ord INNER JOIN #metric + enrichment, grouped to the Cognos
         --     display tuple (RULE B). The three slicer columns and the two hold
         --     columns are MIN() aggregates, NOT grain members. Ordered Quantity =
@@ -169,7 +179,8 @@ let
             MIN(g.[Business Group]) AS [Business Group],
             MIN(g.[CSR Name]) AS [CSR Name],
             MIN(g.[Current Hold Code]) AS [Current Hold Code],
-            MIN(g.[Current Hold Description]) AS [Current Hold Description]
+            MIN(g.[Current Hold Description]) AS [Current Hold Description],
+            MIN(g.[Ever Held C1/CX]) AS [Ever Held C1/CX]
         FROM (
         SELECT
             o.CompanyCode                              AS [Company Code],
@@ -197,7 +208,8 @@ let
             o.BusinessGroup                            AS [Business Group],
             LTRIM(RTRIM(csrw.WWMLNM))                  AS [CSR Name],
             ISNULL(LTRIM(RTRIM(hh.SHHOLD)),'')         AS [Current Hold Code],
-            ISNULL(LTRIM(RTRIM(hd.DRDL01)),'')         AS [Current Hold Description]
+            ISNULL(LTRIM(RTRIM(hd.DRDL01)),'')         AS [Current Hold Description],
+            CASE WHEN hld.HODOCO IS NULL THEN 'N' ELSE 'Y' END AS [Ever Held C1/CX]
         FROM #ord o
         JOIN #metric m ON m.SLKCOO = o.SDKCOO AND m.SLDOCO = o.SDDOCO AND m.SLDCTO = o.SDDCTO AND m.SLLNID = o.SDLNID
         LEFT JOIN PRODDTA.F0010 co   ON LTRIM(RTRIM(co.CCCO)) = o.CompanyCode
@@ -219,6 +231,8 @@ let
         LEFT JOIN PRODDTA.F4201 hh ON hh.SHKCOO = o.SDKCOO AND hh.SHDOCO = o.SDDOCO AND hh.SHDCTO = o.SDDCTO
         LEFT JOIN PRODCTL.F0005 hd ON LTRIM(RTRIM(hd.DRSY)) = '42' AND LTRIM(RTRIM(hd.DRRT)) = 'HC'
                                   AND LTRIM(RTRIM(hd.DRKY)) = LTRIM(RTRIM(hh.SHHOLD))
+        -- Ever held: #held is one row per order key, so this LEFT JOIN cannot fan the grain.
+        LEFT JOIN #held hld ON hld.HOKCOO = o.SDKCOO AND hld.HODOCO = o.SDDOCO AND hld.HODCTO = o.SDDCTO
         WHERE ISNULL(LTRIM(RTRIM(ship.ABAC01)),'') <> 'INT'
           AND CASE WHEN ISNULL(LTRIM(RTRIM(tag.IMGBLK)),'-') = '-' THEN o.Item2nd ELSE LTRIM(RTRIM(tag.IMGBLK)) END
               NOT IN ('IGST','CGST','SGST','CVD','ADD')
@@ -260,7 +274,8 @@ let
             {"Business Group", type text},
             {"CSR Name", type text},
             {"Current Hold Code", type text},
-            {"Current Hold Description", type text}
+            {"Current Hold Description", type text},
+            {"Ever Held C1/CX", type text}
         },
         "en-US"
     )

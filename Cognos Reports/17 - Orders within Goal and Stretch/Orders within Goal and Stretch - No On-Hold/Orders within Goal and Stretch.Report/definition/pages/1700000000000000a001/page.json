@@ -16,7 +16,7 @@
                 "Entity": "Orders_GS"
               }
             },
-            "Property": "Current Hold Code"
+            "Property": "Ever Held C1/CX"
           }
         },
         "type": "Categorical",
@@ -43,7 +43,7 @@
                                 "Source": "o"
                               }
                             },
-                            "Property": "Current Hold Code"
+                            "Property": "Ever Held C1/CX"
                           }
                         }
                       ],
@@ -51,14 +51,7 @@
                         [
                           {
                             "Literal": {
-                              "Value": "'C1'"
-                            }
-                          }
-                        ],
-                        [
-                          {
-                            "Literal": {
-                              "Value": "'CX'"
+                              "Value": "'Y'"
                             }
                           }
                         ]
