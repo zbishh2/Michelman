@@ -649,16 +649,18 @@ global bulk; the Cognos page carries no branch or family filter, so neither does
 `ItemBranchISKey`, `DISTINCT` per the Cognos `SELECT DISTINCT`), `Select Date` (calculated
 `DISTINCT` of imported `Inventory Date` — the slicer offers only dates the report can render),
 and `Last Refreshed`. No UOM Conversion, FX Rate, Company, or interval-measure machinery: weights
-are the model's `[Qty On Hand KG]`/`[Qty On Hand LB]`, costs are `[Total Ext Cost IC USD]` and
-`[Total Ext Cost IC]` at the EUR selector code, evaluated per row.
+are the model's `[Qty On Hand KG]`/`[Qty On Hand LB]`, `OH USD` is the model's
+`[Total Ext Cost IC USD]` pinned to `Selected UOM Code` 1, and `OH EUR` is `AmountValueAtCost`
+carried by the row's local-to-EUR daily rate, because the cube exposes no EUR cost.
 
 Facts the queries encode:
 
-- The ISH cost measures read `SELECTEDVALUE('Calendar Inventory Snapshot'[Calendar Date])`, and
-  the fact-to-calendar relationship is single-direction — a bare row-context transition leaves the
-  calendar empty and the measures blank. Each cost projection therefore anchors the row's own
-  snapshot date onto the calendar with `TREATAS`. `PROBE SSAS\probe_G4_cost_calendar_context.dax`
-  compares bare vs anchored.
+- `[Total Ext Cost IC USD]` needs one pin and only one: `Selected UOM Code` = 1, Primary. The
+  `SELECTEDVALUE('Calendar Inventory Snapshot'[Calendar Date])` inside it resolves from the query's
+  own date filter, so no `TREATAS` anchor is required — pinned and anchored return the same
+  40,079,703.42 across all 4,286 rows at 8/5.
+- `OH USD` closes with `+ 0`. 74 of those 4,286 positions carry quantity at zero cost, where the
+  measure returns `BLANK` and Cognos prints `0`.
 - `Item Branch` is date-versioned (`ItemBranchISDateKey` grain), so item attributes resolve as of
   the snapshot date. The `Escor Lot Info` join collapses it to distinct `ItemBranchISKey` first,
   and joins with the lineage-strip idiom (`& ""`), because the key is non-unique in the history
@@ -668,20 +670,249 @@ Facts the queries encode:
 - The display bulk items are the F554101 pair (`Item Num Global Bulk`/`Item Num Bulk`); the F4102
   pair is imported hidden for the lineage comparison probe.
 
-Probe gate — run `PROBE SSAS\*.dax` on SSASPROD before the first refresh:
-`probe_G3_currency_codes` (EUR selector literal, built as `3`), `probe_G1_branch_region`
-(retire the SWITCH?), `probe_G2_bulk_pairs` (F554101 vs F4102), `probe_G4_cost_calendar_context`,
+Probe gate — `PROBE SSAS\*.dax`, runnable from this machine through the `Anchor ISH` table on the
+`Validation` model. `probe_G3_currency_codes`, `probe_G4_cost_calendar_context`,
+`probe_R5_zero_cost` and `probe_R6_sizing` are answered in §14.1. Still open:
+`probe_G1_branch_region` (retire the SWITCH?), `probe_G2_bulk_pairs` (F554101 vs F4102),
 `probe_D14a_cost_basis` (`07` vs `CostingSelectionInventory` — can close the §9.7b cost-basis
-disclosure), `probe_R1_day_shift`, `probe_R5_zero_cost` (carrier-borrow need), `probe_R6_sizing`
-(all-dates import volume; the fallback is a date-window predicate in the two fact partitions).
+disclosure), `probe_R1_day_shift`.
 
 Known scope difference to state to Dave/Rohit: ISH retains ~133 approved snapshot dates
 (month-end before 2026-06, daily after) versus the EDW build's ~1,890 reconstructed daily dates.
 Cognos itself retains fewer dates than ISH (§9.2). The slicer only offers real dates, so the
 limit is visible, never silent.
 
-After the first refresh: pick the latest date in the slicer once in Desktop and save (the
-variant ships with no pinned date so it cannot go stale), then tie out against
-`Cognos export (tight capture 2026-07-22, AsOf 2026-07-21).xlsx` at the 7/21 snapshot:
-4,175 / 47 / 1,663 rows, QOH 16,906,508.18, LBs 25,905,366.47, USD 39,188,615.36,
-EUR 34,339,946.71.
+The slicer ships with no pinned date so it cannot go stale; pick the latest date in Desktop once
+and save. The tie-out target is `Cognos export (tight capture 2026-07-22, AsOf 2026-07-21).xlsx`
+at the 7/21 snapshot: 4,175 / 47 / 1,663 rows, QOH 16,906,508.18, LBs 25,905,366.47,
+USD 39,188,615.36, EUR 34,339,946.71.
+
+## 14.1 SSAS IMPORT — PUBLISHED AND VALIDATED
+
+Published to `Zack (Validation)` as `14 - Ivan Global Inventory Excel - Select Date (SSAS Import)`,
+model and report. The gateway carries a `ssasprod / biqltabular_ish` datasource distinct from the
+`biqltabular` one, and `Default.BindToGateway` matches both it and `odsprod / ods` automatically
+from the gateway id alone. Import is 463,968 rows over 137 snapshot dates, 2021-06-30 to
+2026-08-16 — more history than the ~133 dates §14 estimates, and `probe_R6_sizing` is answered:
+a full refresh runs in under three minutes, so the date-window fallback is unnecessary.
+
+Tie-out at 2026-07-21 against tight capture #2:
+
+| | Model | Cognos | Delta |
+|---|---|---|---|
+| Inventory rows | 4,178 | 4,175 | +3, the EDW build's count exactly |
+| QOH | 16,999,216.84 | 16,906,508.18 | +92,708.66 |
+| LBs | 24,416,878.73 | 25,905,366.47 | −1,488,487.74, the `-1`-sentinel class |
+| USD | 39,314,056.78 | 39,188,615.36 | +125,441.42 (0.32%) |
+| EUR | 34,453,965.01 | 34,339,946.71 | +114,018.30 (0.33%) |
+| Escor Inventory rows | 47 | 47 | exact |
+| Escor KGs / LBs / QOH | 679,389.98 / 1,497,782.72 / 716,051.525 | 679,389.80 / 1,497,782.20 / 716,051.53 | rounding |
+| Escor Lot Details rows | 1,588 | 1,668 | −80, retention + one purged lot; see §14.3 |
+
+USD and EUR diverge from Cognos by the same 0.3%, which is the §9.7b cost-basis class behaving as
+a single disclosed difference rather than two independent ones.
+
+**USD reads the cube's measure, EUR reads the stored column** — see §14.2, and Rohit's call for
+one USD number across every report. `[Total Ext Cost IC USD]` pinned to `Selected UOM Code` 1 is
+exact; nothing in the cube returns EUR at any selector setting. For EUR, `AmountValueAtCost` is
+quantity at the elected cost, already extended and already in the position's local currency, so
+`OH EUR` is that column times the row's own local-to-EUR daily rate on `CurrencyBSKey`
+(`BUSDEUR20260721` = 0.8766, `BEUREUR` = 1, `BINREUR` = 0.0091, `BCNYEUR` = 0.1295). That is a
+single hop; the EDW build triangulates only because its dimension carries CHF→EUR alone, and a
+direct rate is what the Oracle source used.
+
+Two cube defects for the model owner. Neither touches this report — `OH USD` calls only
+`[Total Ext Cost IC USD]`, which carries neither — but both are live for anything that does:
+
+- `[Amt Unit Cost IC Input]`'s EUR branch applies `USERELATIONSHIP` to the inactive
+  `Currency Rates[CurrencySKey]` ↔ `Inventory Snapshot[CurrencyBSKey]` relationship without the
+  `CROSSFILTER ( …, BOTH )` that `[Exchange Rate]` pairs with it, so `RELATED` reaches no rate row
+  and every EUR cost is blank. The selector literal `3` is correct and `[Selected Currency]`
+  resolves to it; the failure is downstream.
+- `[Exchange Rate]`'s `SWITCH` branches are mismapped against `Selected Currency Filter`. Code 2 is
+  USD and 3 is EUR, but the measure puts the B-side EUR lookup on branch 2 and the A-side USD
+  lookup on branch 3. Anything driving it returns the other currency's rate.
+
+The UOM selector is a contract, not a defect, and it is the one this report honours.
+`[Amt Unit Cost IC UOM USD]` scales unit cost by the UOM conversion rate while `[FCR Qty On Hand]`
+scales quantity by the same rate, so extended cost carries that rate **squared** — Primary makes
+the rate 1. `DefaultUOM = 1` sits on `Selected UOM Code` 2, LB, so an unpinned query inherits LB
+and reads $536.3M against a $40.08M target at 8/5. LB-primary branches are unaffected because
+their rate is 1, which is why CINC rows read correctly while KG- and GM-primary rows do not, and
+which is what makes an unpinned read easy to miss.
+
+`probe_R5_zero_cost`: 84 of the 4,178 rows at 7/21 carry no cost in either currency, 280,102 KG,
+7,594 rows across all dates. §14.2 identifies them as positions electing `03` No Charge, so zero is
+the elected answer and no carrier-borrow rule applies.
+
+**Escor Lot Details reads ODS.** `PRODDTA.F4108` on ODSPROD, per Rohit — the JDE lot master has no
+EDW or ISH counterpart. `IORLOT` gets `NULLIF(…, 'NULL')`, `IOOHDJ` converts from JDE Julian, and
+`SELECT DISTINCT` reproduces the Cognos query. Bulk item comes from `F554101` pre-aggregated to one
+row per item; `IOAITM` rides along as hidden `Bulk Item (F4108)` for comparison, and the two agree
+on all 1,584 rows. ODS retains 2 lots before 2014 against Cognos's ~79, which is why Rohit scopes
+the comparison to 2024 onward: 473 rows, 1,109 for 2014–2023.
+
+## 14.2 COST AND CONVERSION — PROBED TO GROUND
+
+Four probes against `BIQLTabular_ISH` through the `Anchor ISH` route settle the cost and
+quantity questions without Michelman input. Files in `PROBE SSAS/`: `probe_R7_stored_ext_cost`,
+`probe_R8_uom_rates`, `probe_R9_cost_method`.
+
+**`AmountValueAtCost` and the cube's USD measure are the same number.** Across all 4,178
+positions at 7/21 the stored column carried at the row's own daily rate matches the measure route
+to within 0.0057 USD on the worst single row; no row differs by a cent. Totals are 39,314,056.78 vs
+39,314,055.99 USD and 34,453,965.01 vs 34,453,964.31 EUR. Either route serves USD, so the report
+takes the cube's — one number across every report, per Rohit. EUR has no cube route at any selector
+setting, so it takes the column.
+
+**The predicate is `CostMethod = "07"`, Standard cost.** The fact fans out one row per JDE cost
+method. `CostingSelectionInventory = "I"` — the flag for whichever method the item elects — returns
+byte-identical results: the same 4,286 rows at 8/5, the same quantity, the same USD and EUR. They
+agree because `AmountValueAtCost` carries the *elected* value on every cost-method row rather than
+that row's own method, so the positions electing `03` No Charge value the same either way. `07` is
+the explicit basis and the one the report names, so it is the one the query states.
+
+Methods in scope: `01` Last Price Paid w/ Freight, `03` No Charge, `07` Standard, `08` Last Price
+Paid w/o Freight, `30` Cost Change Alert (for PURCH), `P2` 2026 AOP, `P3` 2027 AOP, `RS` Rate
+simulation. Totals per method are population, not valuation — each carries a different subset of
+positions.
+
+**A cost-method selector cannot be built on `AmountValueAtCost`.** Because that column replicates
+the elected value across every method row, a slicer over it would return Standard cost whatever the
+user picked. Method-specific value is `QuantityOnHandPrimaryUOM × AmountUnitCost_IC`, which agrees
+with the stored column to half a cent at `07` and diverges by millions elsewhere — see §14.5.
+
+**The 79 uncosted positions elect `03` No Charge.** QOH 604,963.60. A zero cost is the elected
+answer, so `probe_R5_zero_cost`'s population needs no carrier-borrow rule; the EDW build's borrow
+has nothing to port to.
+
+**§9.4's largest cost variance is an EDW cost-method error that this variant does not inherit.**
+For the 24 SNG4 `ESC5200.S` positions at 7/21, unit cost by method is `07` Standard **4.09**,
+`01` 4.0659, `08` 3.93, `P2` 3.65, `30` 3.64, `RS` Rate simulation **3.29**. Oracle's `UNIT_COST`
+is 4.09 and EDW's `AmountUnitCost` returns 3.29 — EDW serves the rate simulation. The logged ratio
+1.2432 is exactly 4.09/3.29. The SSAS Import variant reads the elected cost and agrees with Cognos
+on these lots, which means the residual +0.32% is a different and smaller class than the EDW
+build's −$535k, and is consistent with the row-population differences in §9.4 rather than with
+cost basis.
+
+**Quantity conversion is clean.** `ToRateUMA`/`ToRateUMB` carry no `-1` sentinel, and `UOMPrimary`
+is unpadded (`LEN` 2), so the `SWITCH` equality inside `[Qty On Hand LB]` / `[Qty On Hand KG]`
+resolves. By primary UOM at 7/21:
+
+| UOM | rows | QOH | OH LBs | OH KGs | ToRateUMA | ToRateUMB |
+|---|---|---|---|---|---|---|
+| KG | 1,906 | 6,113,953.16 | 13,478,821.14 | 6,113,953.16 | 2.2046 | 1 |
+| LB | 2,206 | 10,843,343.15 | 10,843,343.15 | 4,918,540.45 | 1 | 0.4536 |
+| EA | 56 | 3,209.99 | 94,629.28 | 42,923.23 | 0.0238 – 44.0924 | 0.0108 – 20 |
+| GM | 10 | 38,710.55 | 85.16 | 38.71 | 0.0022 | 0.001 |
+
+The `44.0924` and `20` on EA rows are real factors for drum-grain items (1 EA = 20 KG = 44.09 LB),
+not sentinels. The OH LBs gap is Cognos-side: it renders the 10 GM rows as grams × 44, about
+1.70M LBs against our 85.16. ISH carries 4-decimal constants where the EDW build uses
+2.20462262 / 0.45359237 — roughly 1 ppm, about 138 LB across 13.5M.
+
+**OH KGs total at 7/21 is 11,075,455.55.** No Cognos capture holds a KG grand total for the
+Inventory tab, so the column has no tie-out target; the conversion factors above are its evidence.
+
+## 14.3 ESCOR LOT DETAILS — TIED
+
+Compared against a full-tab Cognos export, key `Branch Plant + 2nd Item Number + Lot Number`:
+**1,588 ours against 1,668 Cognos, every one of ours matched, none of ours unmatched.** On the
+shared keys `Item Short ID`, `Supplier Lot Number`, `Bulk Item` and `On Hand Date` all agree.
+Within Rohit's 2024-onward test scope the counts are **476 against 477**.
+
+**Scope is the item dimension's bulk item.** `F4108.IOAITM` is the item's own third item number,
+not its bulk parent. It agrees with `F554101.IMBULK` on every row it selects, so the two look
+interchangeable — but `IMBULK` additionally reaches child items that roll up to an Escor bulk under
+a different code. `ESC5200-BG` (item 1117041) rolls up to `ESC5200`, carries 4 lots, and is in the
+Cognos output. Filtering on `tag.IMBULK` rather than `lm.IOAITM` is what Rohit's "change to get
+from dimension (standard approach)" means, and it is the difference between 1,584 and 1,588.
+`IOAITM` stays in the projection as hidden `Bulk Item (F4108)` for comparison.
+
+`Escor Inventory` already scopes on `Item Branch[Item Num Global Bulk]`, so it never had the gap.
+
+Two residuals, both understood:
+
+- **79 lots dated 2011–2013 and 1 dated 2025-12-03** exist in Cognos and not in ODS. The pre-2014
+  block is the retention limit Rohit flagged. The 2025 row is `CIN2 / ESC5200 / 616054`, which
+  `PRODDTA.F4108` does not carry at any branch for item 961750 — lot 616054 exists only at
+  AUBA/AUB2 on `ESC5200.E`. A purged lot the legacy warehouse still remembers.
+- **`CIN2 / ESC5200-BG / 604427` has no On Hand Date for us and `1900-01-01` in Cognos.** `IOOHDJ`
+  is 0 on that lot; the query returns null rather than converting a zero Julian date, and Oracle
+  renders it as the epoch. One row, cosmetic, and a parity decision rather than a defect.
+
+## 14.4 TIGHT CAPTURE AT 2026-08-05 — TIED
+
+Full four-tab Cognos export against the published SSAS Import model, same snapshot date.
+
+| | Model | Cognos | Delta | |
+|---|---|---|---|---|
+| Inventory rows | 4,286 | 4,283 | +3 | |
+| On Hand | 16,697,777.68 | 16,725,722.16 | −27,944.48 | −0.167% |
+| OH USD | 40,079,704.14 | 40,110,239.97 | −30,535.83 | **−0.076%** |
+| OH EUR | 34,741,247.54 | 34,739,372.32 | +1,875.22 | **+0.005%** |
+| OH LBs | 23,885,634.47 | 25,149,125.69 | −1,263,491.23 | −5.024% |
+| OH KGs | 10,834,484.37 | 11,408,763.81 | −574,279.43 | −5.034% |
+| OH LBs excluding the two GM lots | 23,885,549.30 | 23,894,223.23 | −8,673.92 | **−0.036%** |
+| OH KGs excluding the two GM lots | 10,834,445.66 | 10,838,353.62 | −3,907.95 | **−0.036%** |
+| Escor Inventory rows | 52 | 52 | exact | |
+| Escor KGs / LBs / QOH | 717,067.66 / 1,580,846.94 / 751,972.525 | 717,067.48 / 1,580,846.39 / 751,972.53 | rounding | |
+
+**The whole weight variance is two lots.** `SING / RM1 / 618258 / ETHAL.S` holds 20,000 GM and
+`SING / RM1 / 615535 / ETHAL.S` holds 8,520 GM. Cognos renders them at 44 LB and 20 KG **per gram**
+— 880,000 and 374,880 LBs, 400,000 and 170,400 KGs — which is the `DW_LEGACY` `-1`-sentinel guard
+applied per unit. 20,000 grams is 20 kilos, which is what the model reports. The other eight GM
+rows agree to the cent, and excluding these two the weight columns tie to 0.036%.
+
+This is the first capture carrying a Cognos KG total for the Inventory tab, so `OH KGs` now has a
+tie-out target. It behaves identically to `OH LBs`: the two deltas differ by a factor of 2.2000
+against a conversion constant of 2.2046, so they are the same rows converted consistently.
+
+**Row population is a location key, not missing data.** Keyed on branch + location + lot + item
+there are 8 rows only in the model and 5 only in Cognos; keyed on branch + lot alone that falls to
+2 and 1. The rest are the same lots snapped either side of a movement — `CINC / 4584463 / DP050`
+carries identical quantity and cost at `C2` for us and `D0110` for Cognos, and
+`SING / 4584881 / ME92040.S` moves out of `OUTGOING` with a quantity and item-suffix change. Same
+load-window skew class as §9.4, now visible as movement rather than absence.
+
+`OH EUR` differs on 2,715 rows and nets to €1,875 — daily-rate precision, applied to every row
+because most positions are USD-functional and only EUR carries a non-identity rate.
+
+The Cognos date prompt returns "No Data Available" for a date with no `DW_LEGACY` snapshot; the
+source is live. Pick a date the legacy warehouse actually holds.
+
+## 14.5 COST-METHOD SELECTOR — WHAT IT WOULD TAKE
+
+A user-facing cost-method dropdown (Standard by default, budget methods available) is buildable,
+but not by adding a slicer to the current query. Three things change.
+
+**Cost must move to `QuantityOnHandPrimaryUOM × AmountUnitCost_IC`.** `AmountValueAtCost` carries
+the elected value on every cost-method row, so a slicer over it returns Standard cost no matter
+what is selected — and looks like it worked. At 2026-08-05, per method:
+
+| Method | | Rows | QOH × unit cost | AmountValueAtCost | Worst row | No unit cost |
+|---|---|---|---|---|---|---|
+| `07` | Standard | 4,286 | 328,584,904.89 | 328,584,905.57 | 0.005 | 74 |
+| `P3` | 2027 AOP | 4,212 | 326,940,904.89 | 326,940,905.57 | 0.005 | 1 |
+| `01` | Last Price Paid w/ Freight | 4,226 | 375,507,530.50 | 328,180,901.72 | 2,708,384 | 197 |
+| `P2` | 2026 AOP | 4,194 | 311,124,172.85 | 326,263,054.50 | 802,200 | 236 |
+| `08` | Last Price Paid w/o Freight | 3,634 | 327,762,297.64 | 325,415,008.68 | 569,819 | 210 |
+| `30` | Cost Change Alert | 4,172 | 52,859,741.67 | 64,450,221.62 | 1,638,000 | 119 |
+| `RS` | Rate simulation | 3,406 | 26,494,929.53 | 28,906,853.38 | 43,624 | 1 |
+| `03` | No Charge | 202 | 41,274.56 | 3,204,338.69 | 89,980 | 200 |
+
+The unit-cost route reproduces the shipped figure at `07` — 40,079,703.42 USD against
+40,079,704.14 — so the swap is safe at the default and is what makes any other selection true.
+
+**Quantity must not follow the selection.** Each method carries a different subset of positions, so
+a fact fanned out by cost method changes On Hand when the user switches basis: 16,697,777.68 at
+`07` against 16,161,186.78 at `P2`. Physical inventory does not depend on how it is valued. That
+means splitting the grain — quantities at position grain, costs at position × method grain, joined
+through a `Cost Method` dimension carrying the code and its description.
+
+**Import grows about 6.6×.** All methods at 8/5 total 28,332 rows against 4,286 at `07` alone, so
+463,968 rows over 137 dates becomes roughly 3.1 million and the refresh moves from under three
+minutes into the ten-to-twenty range.
+
+Blank costs rise under budget methods — 236 positions carry no `P2` unit cost against 74 at `07`.
+That is the source telling the truth about what has been budgeted, not a defect.

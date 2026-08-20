@@ -287,19 +287,15 @@ table Inventory
 				    ""OH KGs"", CALCULATE ( [Qty On Hand KG] ),
 				    ""OH LBs"", CALCULATE ( [Qty On Hand LB] ),
 				    ""OH USD"",
-				        VAR SnapDate = 'Inventory Snapshot'[Calendar Date]
-				        RETURN
-				            CALCULATE (
-				                [Total Ext Cost IC USD],
-				                TREATAS ( { SnapDate }, 'Calendar Inventory Snapshot'[Calendar Date] )
-				            ),
+				        CALCULATE (
+				            [Total Ext Cost IC USD],
+				            'Selected UOM Filter'[Selected UOM Code] = 1
+				        ) + 0,
 				    ""OH EUR"",
-				        VAR SnapDate = 'Inventory Snapshot'[Calendar Date]
-				        RETURN
-				            CALCULATE (
-				                [Total Ext Cost IC],
-				                TREATAS ( { 3 }, 'Selected Currency Filter'[Selected Currency Code] ),
-				                TREATAS ( { SnapDate }, 'Calendar Inventory Snapshot'[Calendar Date] )
+				        'Inventory Snapshot'[AmountValueAtCost]
+				            * LOOKUPVALUE (
+				                'Currency Rates'[ToRateDaily],
+				                'Currency Rates'[CurrencySKey], 'Inventory Snapshot'[CurrencyBSKey]
 				            ),
 				    ""On Hand Date"", RELATED ( 'Lot'[On Hand Date] ),
 				    ""Lot Expiry Date"", RELATED ( 'Lot'[Lot Expiration Date] ),

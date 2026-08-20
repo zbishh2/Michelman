@@ -1,0 +1,140 @@
+table 'Escor Lot Info'
+	lineageTag: 14b10000-0000-4000-8000-000000000032
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000033
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000034
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000035
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Short ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 14b10000-0000-4000-8000-000000000036
+		summarizeBy: none
+		sourceColumn: Item Short ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lot Number'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000037
+		summarizeBy: none
+		sourceColumn: Lot Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supplier Lot Number'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000038
+		summarizeBy: none
+		sourceColumn: Supplier Lot Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Memo Lot 1'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-000000000039
+		summarizeBy: none
+		sourceColumn: Memo Lot 1
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Memo Lot 2'
+		dataType: string
+		lineageTag: 14b10000-0000-4000-8000-00000000003a
+		summarizeBy: none
+		sourceColumn: Memo Lot 2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'On Hand Date'
+		dataType: dateTime
+		formatString: d MMM, yyyy
+		lineageTag: 14b10000-0000-4000-8000-00000000003b
+		summarizeBy: none
+		sourceColumn: On Hand Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bulk Item (F4108)'
+		dataType: string
+		isHidden
+		lineageTag: 14b10000-0000-4000-8000-00000000003e
+		summarizeBy: none
+		sourceColumn: Bulk Item (F4108)
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Escor Lot Info' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("ODSPROD", "ODS"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				        SELECT DISTINCT
+				            LTRIM(RTRIM(lm.IOMCU))                    AS [Branch Plant],
+				            LTRIM(RTRIM(tag.IMBULK))                  AS [Bulk Item],
+				            LTRIM(RTRIM(lm.IOLITM))                   AS [2nd Item Number],
+				            lm.IOITM                                  AS [Item Short ID],
+				            LTRIM(RTRIM(lm.IOLOTN))                   AS [Lot Number],
+				            NULLIF(LTRIM(RTRIM(lm.IORLOT)), 'NULL')   AS [Supplier Lot Number],
+				            LTRIM(RTRIM(lm.IOLOT1))                   AS [Memo Lot 1],
+				            LTRIM(RTRIM(lm.IOLOT2))                   AS [Memo Lot 2],
+				            CASE
+				                WHEN lm.IOOHDJ > 0 THEN
+				                    DATEADD(
+				                        DAY,
+				                        (lm.IOOHDJ % 1000) - 1,
+				                        DATEFROMPARTS((lm.IOOHDJ / 1000) + 1900, 1, 1)
+				                    )
+				            END                                       AS [On Hand Date],
+				            LTRIM(RTRIM(lm.IOAITM))                   AS [Bulk Item (F4108)]
+				        FROM PRODDTA.F4108 lm
+				        LEFT JOIN
+				        (
+				            SELECT IMITM, MIN(IMBULK) AS IMBULK
+				            FROM PRODDTA.F554101
+				            GROUP BY IMITM
+				        ) tag
+				            ON tag.IMITM = lm.IOITM
+				        WHERE LTRIM(RTRIM(tag.IMBULK)) IN ('ESC5200', 'ESC5200.E', 'ESC5200.S')
+				        ",
+				        null,
+				        [EnableFolding = true]
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Data,
+				        {
+				            {"Branch Plant", type text}, {"Bulk Item", type text},
+				            {"2nd Item Number", type text}, {"Item Short ID", Int64.Type},
+				            {"Lot Number", type text}, {"Supplier Lot Number", type text},
+				            {"Memo Lot 1", type text}, {"Memo Lot 2", type text},
+				            {"On Hand Date", type date}, {"Bulk Item (F4108)", type text}
+				        },
+				        "en-US"
+				    )
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

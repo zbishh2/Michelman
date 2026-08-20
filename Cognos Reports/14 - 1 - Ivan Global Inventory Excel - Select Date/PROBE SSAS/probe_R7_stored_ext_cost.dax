@@ -1,0 +1,87 @@
+// SSASPROD / BIQLTabular_ISH
+//
+// Does the stored AmountValueAtCost column reproduce the measure-derived extended
+// cost row for row? Over report 14's scope at the 2026-07-21 snapshot, compares the
+// measure route (Selected UOM pinned to 1, which is what the published SSAS Import
+// variant runs) against AmountValueAtCost carried at the row's own daily rate.
+// A-side currency keys are local->USD, B-side are local->EUR.
+//
+// ANSWER — they are the same number. Across all 4,178 rows the largest single-row
+// difference is 0.0057 USD and 0.0050 EUR, and no row differs by more than a cent:
+//
+//                  stored              measure
+//   USD      39,314,056.78       39,314,055.99
+//   EUR      34,453,965.01       34,453,964.31
+//
+// AmountValueAtCost is quantity at the elected cost, so the measure layer adds
+// nothing the column does not already carry. Reading the column directly drops both
+// cube defects out of the report's path: no UOM pin is needed because no measure
+// scales the quantity, and no EUR workaround is needed because no measure resolves
+// the currency.
+//
+// Cognos at this snapshot: USD 39,188,615.36, EUR 34,339,946.71. The residual 0.32%
+// is not cost basis — see probe_R9_cost_method.
+
+EVALUATE
+VAR D = DATE ( 2026, 7, 21 )
+VAR BaseRows =
+    FILTER (
+        'Inventory Snapshot',
+        'Inventory Snapshot'[Calendar Date] = D
+            && TRIM ( 'Inventory Snapshot'[CostingSelectionInventory] ) = "I"
+            && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+            && TRIM ( RELATED ( 'Branch'[Branch Plant] ) )
+                IN { "CINC", "CIN2", "CIN4", "AUBA", "AUB2", "SING", "SNG4", "MUM3", "SHAN" }
+            && TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) )
+                IN { "ATP", "ETP", "FBW", "FCB", "FEC", "FRC", "RAW",
+                     "RBW", "RCB", "REC", "RRC", "RWW", "TOL", "WAG" }
+    )
+VAR Proj =
+    SELECTCOLUMNS (
+        BaseRows,
+        "k", "all",
+        "storedusd",
+            VAR AKey = 'Inventory Snapshot'[CurrencyASKey]
+            RETURN
+                'Inventory Snapshot'[AmountValueAtCost]
+                    * MAXX ( FILTER ( ALL ( 'Currency Rates' ), 'Currency Rates'[CurrencySKey] = AKey ), 'Currency Rates'[ToRateDaily] ),
+        "storedeur",
+            VAR BKey = 'Inventory Snapshot'[CurrencyBSKey]
+            RETURN
+                'Inventory Snapshot'[AmountValueAtCost]
+                    * MAXX ( FILTER ( ALL ( 'Currency Rates' ), 'Currency Rates'[CurrencySKey] = BKey ), 'Currency Rates'[ToRateDaily] ),
+        "measusd",
+            VAR S = 'Inventory Snapshot'[Calendar Date]
+            RETURN
+                CALCULATE (
+                    [Total Ext Cost IC USD],
+                    TREATAS ( { S }, 'Calendar Inventory Snapshot'[Calendar Date] ),
+                    TREATAS ( { 1 }, 'Selected UOM Filter'[Selected UOM Code] )
+                ),
+        "measeur",
+            VAR S = 'Inventory Snapshot'[Calendar Date]
+            VAR BKey = 'Inventory Snapshot'[CurrencyBSKey]
+            VAR L =
+                CALCULATE (
+                    [Total Ext Cost IC],
+                    TREATAS ( { S }, 'Calendar Inventory Snapshot'[Calendar Date] ),
+                    TREATAS ( { 1 }, 'Selected UOM Filter'[Selected UOM Code] ),
+                    TREATAS ( { 1 }, 'Selected Currency Filter'[Selected Currency Code] )
+                )
+            RETURN
+                L * MAXX ( FILTER ( ALL ( 'Currency Rates' ), 'Currency Rates'[CurrencySKey] = BKey ), 'Currency Rates'[ToRateDaily] )
+    )
+RETURN
+GROUPBY (
+    Proj,
+    [k],
+    "rows", SUMX ( CURRENTGROUP (), 1 ),
+    "maxdusd", MAXX ( CURRENTGROUP (), ABS ( [storedusd] - [measusd] ) ),
+    "maxdeur", MAXX ( CURRENTGROUP (), ABS ( [storedeur] - [measeur] ) ),
+    "offusd", SUMX ( CURRENTGROUP (), IF ( ABS ( [storedusd] - [measusd] ) > 0.01, 1, 0 ) ),
+    "offeur", SUMX ( CURRENTGROUP (), IF ( ABS ( [storedeur] - [measeur] ) > 0.01, 1, 0 ) ),
+    "sumstoredusd", SUMX ( CURRENTGROUP (), [storedusd] ),
+    "summeasusd", SUMX ( CURRENTGROUP (), [measusd] ),
+    "sumstoredeur", SUMX ( CURRENTGROUP (), [storedeur] ),
+    "summeaseur", SUMX ( CURRENTGROUP (), [measeur] )
+)

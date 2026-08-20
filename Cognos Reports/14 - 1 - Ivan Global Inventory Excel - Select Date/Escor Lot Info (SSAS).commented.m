@@ -1,76 +1,71 @@
 // Commented master. The production copy of this query lives in the SSAS Import
 // PBIP's SemanticModel and ships comment-free; the two are otherwise identical.
 //
-// Page 4 (Escor Lot Details). A distinct lot list for the ESC5200 bulk items,
-// independent of any snapshot date and of whether stock is currently on hand.
+// Page 4 (Escor Lot Details). One row per ESC5200-family lot.
+//
+// Source is the JDE lot master, PRODDTA.F4108 on ODSPROD. The lot master is a JDE
+// table with no EDW or ISH counterpart, so this page reads ODS while the other
+// three pages read BIQLTabular_ISH.
 let
-    // AnalysisServices.Database with a Query record issues the DAX verbatim.
-    Raw = AnalysisServices.Database(
-        "SSASPROD",
-        "BIQLTabular_ISH",
-        [
-            Query = "
-EVALUATE
-// The model has no Lot to Item Branch relationship, so the join is written here.
-// Item Branch is a dated dimension: the same item-branch key repeats once per
-// snapshot date, so the projection is made DISTINCT before the join to keep the
-// lot list from fanning out.
-VAR EscorItemBranch =
-    // The outer projection drops the join key; DISTINCT then collapses lots that
-    // differ only by the item-branch rows they matched.
-    DISTINCT (
-        SELECTCOLUMNS (
-            FILTER (
-                'Item Branch',
-                TRIM ( 'Item Branch'[Item Num Bulk] )
-                    IN { ""ESC5200"", ""ESC5200.E"", ""ESC5200.S"" }
-            ),
-            // Concatenating an empty string drops column lineage on both sides so
-            // NATURALINNERJOIN matches them by name.
-            ""@ItemBranchISKey"", 'Item Branch'[ItemBranchISKey] & """",
-            ""Bulk Item"", TRIM ( 'Item Branch'[Item Num Bulk] ),
-            ""2nd Item Number"", TRIM ( 'Item Branch'[Item Num 2nd] )
-        )
-    )
-// Lot master columns the page shows.
-VAR EscorLots =
-    SELECTCOLUMNS (
-        'Lot',
-        ""@ItemBranchISKey"", 'Lot'[ItemBranchISKey] & """",
-        ""Branch Plant"", TRIM ( 'Lot'[Business Unit] ),
-        ""Item Short ID"", 'Lot'[Item Num Short],
-        ""Lot Number"", TRIM ( 'Lot'[Lot Num] ),
-        ""Supplier Lot Number"", TRIM ( 'Lot'[Supplier Lot Num] ),
-        ""Memo Lot 1"", 'Lot'[Memo Lot 1],
-        ""Memo Lot 2"", 'Lot'[Memo Lot 2],
-        ""On Hand Date"", 'Lot'[On Hand Date]
-    )
-RETURN
-    DISTINCT (
-        SELECTCOLUMNS (
-            NATURALINNERJOIN ( EscorItemBranch, EscorLots ),
-            ""Branch Plant"", [Branch Plant],
-            ""Bulk Item"", [Bulk Item],
-            ""2nd Item Number"", [2nd Item Number],
-            ""Item Short ID"", [Item Short ID],
-            ""Lot Number"", [Lot Number],
-            ""Supplier Lot Number"", [Supplier Lot Number],
-            ""Memo Lot 1"", [Memo Lot 1],
-            ""Memo Lot 2"", [Memo Lot 2],
-            ""On Hand Date"", [On Hand Date]
-        )
-    )
-// Cognos list order. Lots with no on-hand date sort first.
-ORDER BY [On Hand Date]
-"
-        ]
+    Source = Sql.Database("ODSPROD", "ODS"),
+    Data = Value.NativeQuery(
+        Source,
+        "
+        -- SELECT DISTINCT reproduces the Cognos query. The F554101 join is
+        -- pre-aggregated to one row per item so it cannot fan the lot grain out.
+        SELECT DISTINCT
+            LTRIM(RTRIM(lm.IOMCU))                    AS [Branch Plant],
+            -- Bulk item comes from the item dimension, not the lot master's own
+            -- denormalised copy. F4108.IOAITM rides along hidden so the two can be
+            -- compared.
+            LTRIM(RTRIM(tag.IMBULK))                  AS [Bulk Item],
+            LTRIM(RTRIM(lm.IOLITM))                   AS [2nd Item Number],
+            lm.IOITM                                  AS [Item Short ID],
+            LTRIM(RTRIM(lm.IOLOTN))                   AS [Lot Number],
+            -- ODS returns the four-character string 'NULL' in IORLOT where JDE holds
+            -- an empty value; Cognos renders those lots blank.
+            NULLIF(LTRIM(RTRIM(lm.IORLOT)), 'NULL')   AS [Supplier Lot Number],
+            LTRIM(RTRIM(lm.IOLOT1))                   AS [Memo Lot 1],
+            LTRIM(RTRIM(lm.IOLOT2))                   AS [Memo Lot 2],
+            -- IOOHDJ is a JDE Julian date: CYYDDD, where the leading digits are years
+            -- since 1900 and the last three are the day of that year.
+            CASE
+                WHEN lm.IOOHDJ > 0 THEN
+                    DATEADD(
+                        DAY,
+                        (lm.IOOHDJ % 1000) - 1,
+                        DATEFROMPARTS((lm.IOOHDJ / 1000) + 1900, 1, 1)
+                    )
+            END                                       AS [On Hand Date],
+            LTRIM(RTRIM(lm.IOAITM))                   AS [Bulk Item (F4108)]
+        FROM PRODDTA.F4108 lm
+        LEFT JOIN
+        (
+            SELECT IMITM, MIN(IMBULK) AS IMBULK
+            FROM PRODDTA.F554101
+            GROUP BY IMITM
+        ) tag
+            ON tag.IMITM = lm.IOITM
+        -- Scope is the item dimension's bulk item, not the lot master's IOAITM. The
+        -- two agree on every row IOAITM selects, but IOAITM is the item's own third
+        -- item number rather than its bulk parent, so it misses child items that roll
+        -- up to an Escor bulk under a different code -- ESC5200-BG rolls up to
+        -- ESC5200 and is in the Cognos output.
+        WHERE LTRIM(RTRIM(tag.IMBULK)) IN ('ESC5200', 'ESC5200.E', 'ESC5200.S')
+        ",
+        null,
+        [EnableFolding = true]
     ),
-    // DAX returns column names wrapped in square brackets; this strips them.
-    Data = Table.TransformColumnNames(
-        Raw,
-        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
-            then Text.Middle(_, 1, Text.Length(_) - 2)
-            else _
+    Typed = Table.TransformColumnTypes(
+        Data,
+        {
+            {"Branch Plant", type text}, {"Bulk Item", type text},
+            {"2nd Item Number", type text}, {"Item Short ID", Int64.Type},
+            {"Lot Number", type text}, {"Supplier Lot Number", type text},
+            {"Memo Lot 1", type text}, {"Memo Lot 2", type text},
+            {"On Hand Date", type date}, {"Bulk Item (F4108)", type text}
+        },
+        "en-US"
     )
 in
-    Data
+    Typed

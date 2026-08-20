@@ -20,8 +20,14 @@ EVALUATE
 SELECTCOLUMNS (
     FILTER (
         'Inventory Snapshot',
-        // Cost method 07 is the single costing row per position. The fact carries one
-        // row per cost method, so omitting this multiplies every quantity.
+        // The fact carries one row per JDE cost method, so omitting this multiplies
+        // every quantity. 07 is Standard cost, the report's basis.
+        //
+        // The alternative predicate is CostingSelectionInventory = "I", the flag for
+        // whichever method the item elects. The two return identical results here --
+        // same rows, same quantity, same cost -- because AmountValueAtCost carries the
+        // elected value on every cost-method row rather than that row's own method.
+        // 07 is the explicit basis and the one the report names.
         TRIM ( 'Inventory Snapshot'[CostMethod] ) = ""07""
             // Positions with no stock on hand are not inventory.
             && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
@@ -70,25 +76,34 @@ SELECTCOLUMNS (
     // value for that single position.
     ""OH KGs"", CALCULATE ( [Qty On Hand KG] ),
     ""OH LBs"", CALCULATE ( [Qty On Hand LB] ),
-    // The cube's cost measures read the snapshot date off the calendar dimension,
-    // which a fact-row filter does not reach on its own. TREATAS puts the row's own
-    // date on the calendar so the measure resolves the rate and cost for that day.
+    // USD comes from the cube's own measure so every report carries one number. The
+    // measure reads 'Selected UOM Filter', and both its unit cost and its quantity
+    // scale by the UOM conversion rate, so extended cost carries that rate squared —
+    // Primary makes the rate 1. The cube's default is LB, so an unpinned query reads
+    // $536.3M against a true $40.08M. The + 0 is parity: 74 of the 4,286 positions
+    // carry quantity at zero cost, where the measure returns BLANK and Cognos prints 0.
+    //
+    // EUR has no cube route — every costed measure returns blank under
+    // 'Selected Currency Filter' = EUR, and there is no EUR-named cost measure. So EUR
+    // reads the column: AmountValueAtCost is quantity at the elected cost, already
+    // extended and already in the position's local currency, needing only the currency
+    // carry. Currency Rates holds the local-to-EUR leg on CurrencyBSKey, keyed per day,
+    // so the conversion is a single hop with no triangulation.
+    //
+    // LOOKUPVALUE rather than RELATED because the cube's currency relationships are
+    // inactive: a relationship-based read returns the other currency's rate, silently.
+    // CurrencySKey is unique across all 191,751 rate rows, so the lookup is
+    // unambiguous.
     ""OH USD"",
-        VAR SnapDate = 'Inventory Snapshot'[Calendar Date]
-        RETURN
-            CALCULATE (
-                [Total Ext Cost IC USD],
-                TREATAS ( { SnapDate }, 'Calendar Inventory Snapshot'[Calendar Date] )
-            ),
-    // The cube switches currency on Selected Currency Code; 3 selects EUR, which the
-    // model quotes directly rather than triangulating through USD.
+        CALCULATE (
+            [Total Ext Cost IC USD],
+            'Selected UOM Filter'[Selected UOM Code] = 1
+        ) + 0,
     ""OH EUR"",
-        VAR SnapDate = 'Inventory Snapshot'[Calendar Date]
-        RETURN
-            CALCULATE (
-                [Total Ext Cost IC],
-                TREATAS ( { 3 }, 'Selected Currency Filter'[Selected Currency Code] ),
-                TREATAS ( { SnapDate }, 'Calendar Inventory Snapshot'[Calendar Date] )
+        'Inventory Snapshot'[AmountValueAtCost]
+            * LOOKUPVALUE (
+                'Currency Rates'[ToRateDaily],
+                'Currency Rates'[CurrencySKey], 'Inventory Snapshot'[CurrencyBSKey]
             ),
     ""On Hand Date"", RELATED ( 'Lot'[On Hand Date] ),
     ""Lot Expiry Date"", RELATED ( 'Lot'[Lot Expiration Date] ),

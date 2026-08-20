@@ -1,0 +1,251 @@
+// =====================================================================================
+// REPORT 14 — INVENTORY  (tabs: Summary, Inventory Data)
+// Source: SSASPROD / BIQLTabular_ISH, native DAX, imported
+// =====================================================================================
+//
+// This is the query text exactly as it runs, with the M-layer quote-doubling removed so
+// it reads normally. The shipped copy lives in the Inventory table's partition.
+//
+// WHAT IT RETURNS
+//   One row per inventory position per snapshot date — branch plant, item, location,
+//   lot — carrying quantity in three units and extended cost in two currencies. No
+//   aggregation: the report's grain and the query's grain are the same thing.
+//
+// WHY THIS SOURCE
+//   BIQLTabular_ISH is the purpose-built inventory-snapshot-history cube. It is the only
+//   production source that can answer "what was on hand as of an arbitrary past date",
+//   which is what the report's date prompt asks. The general BIQLTabular model holds
+//   current positions only.
+//
+// WHY IMPORT AND NOT LIVE
+//   A live connection forbids local tables, and the report needs the REGION decode
+//   below. Import also lets the date prompt become a slicer over pre-loaded dates
+//   rather than a query round-trip.
+//
+// THE THREE DECISIONS A REVIEWER WILL ASK ABOUT
+//   1. CostMethod = "07"                  — why a literal, and why this one
+//   2. AmountValueAtCost, not the cube's cost measures
+//   3. Currency rate looked up by key value, not through a relationship
+//   Each is explained where it appears.
+//
+// =====================================================================================
+
+EVALUATE
+
+// SELECTCOLUMNS over FILTER, not SUMMARIZECOLUMNS.
+//
+// The output grain is the fact's own grain, so there is nothing to group by and nothing
+// to aggregate. SUMMARIZECOLUMNS here would add a shuffle that changes no number.
+SELECTCOLUMNS (
+
+    // -----------------------------------------------------------------------------
+    // ROW ELIGIBILITY
+    //
+    // Every predicate here is stable — it does not depend on what the user clicks. Put
+    // in the native query, SSAS applies it before anything crosses the wire, so the
+    // import moves ~464k rows instead of several million. Interactive filters (the date
+    // slicer, region, family) stay in the Power BI model where the user can change them.
+    // -----------------------------------------------------------------------------
+    FILTER (
+        'Inventory Snapshot',
+
+        // 07 is Standard cost, this report's valuation basis.
+        //
+        // This predicate is NOT optional. The fact carries one row per JDE cost method
+        // per position — 01 Last Price Paid w/ Freight, 03 No Charge, 07 Standard,
+        // 08 Last Price Paid w/o Freight, 30 Cost Change Alert, P2 2026 AOP,
+        // P3 2027 AOP, RS Rate simulation. Omit it and every quantity multiplies by
+        // roughly seven.
+        //
+        // The alternative is CostingSelectionInventory = "I", the flag marking whichever
+        // method each item elects. The two return identical results — same rows, same
+        // quantity, same cost — because AmountValueAtCost carries the elected value on
+        // every cost-method row rather than that row's own method. 07 is named by the
+        // report and is the explicit statement of basis, so it is the one used.
+        TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07"
+
+            // A position with nothing on hand is not inventory.
+            && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+
+            // The nine reporting plants.
+            && TRIM ( RELATED ( 'Branch'[Branch Plant] ) ) IN { "CINC", "CIN2", "CIN4", "AUBA", "AUB2", "SING", "SNG4", "MUM3", "SHAN" }
+
+            // The fourteen packaged-goods planning families.
+            //
+            // Master Planning Family is an item-branch attribute, not an item one — the
+            // same item can plan differently at different plants — and item-branch is
+            // the grain the position lives at, so RELATED reaches it in one hop.
+            && TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) )
+                IN { "ATP", "ETP", "FBW", "FCB", "FEC", "FRC", "RAW",
+                    "RBW", "RCB", "REC", "RRC", "RWW", "TOL", "WAG" }
+    ),
+
+    // -----------------------------------------------------------------------------
+    // KEYS AND ATTRIBUTES
+    //
+    // TRIM everywhere because JDE stores fixed-width character fields space-padded.
+    // Untrimmed values break equality tests and render with trailing gaps.
+    //
+    // Every RELATED below travels a surrogate-key relationship that exists in the model
+    // — checked against edw_schema\ssasprod_ish.bim rather than guessed from a natural
+    // key that happens to look joinable.
+    // -----------------------------------------------------------------------------
+    "Inventory Date", 'Inventory Snapshot'[Calendar Date],
+
+    // The only value this query derives rather than reads.
+    //
+    // The cube has no region attribute on Branch today, so the nine plants are decoded
+    // to the five reporting regions here. "ERROR" is deliberate: a new plant appearing
+    // in the source shows up as a visible bad value rather than silently joining a
+    // region it does not belong to. This SWITCH retires the moment
+    // Branch[Region (Inventory)] lands upstream.
+    "REGION", SWITCH (
+            TRIM ( RELATED ( 'Branch'[Branch Plant] ) ),
+            "CINC", "Americas",
+            "CIN2", "Americas",
+            "CIN4", "Americas",
+            "AUBA", "Aubange",
+            "AUB2", "Aubange",
+            "SING", "Singapore",
+            "SNG4", "Singapore",
+            "MUM3", "India",
+            "SHAN", "China",
+            "ERROR"
+        ),
+    "Branch Plant", TRIM ( RELATED ( 'Branch'[Branch Plant] ) ),
+
+    // Bulk and global-bulk identity. Global bulk is the top of the roll-up; bulk is the
+    // intermediate. Both come from the item dimension, never from a denormalised copy
+    // carried on the fact.
+    "Global Bulk Item", TRIM ( RELATED ( 'Item Branch'[Item Num Global Bulk] ) ),
+    "Bulk Item", TRIM ( RELATED ( 'Item Branch'[Item Num Bulk] ) ),
+    "2nd Item Number", TRIM ( RELATED ( 'Item Branch'[Item Num 2nd] ) ),
+    "Stock Type Code", TRIM ( RELATED ( 'Item Branch'[Stocking Type] ) ),
+
+    // GL class is the POSITION's own F41021 class, not the item's. The same item in two
+    // locations can carry different GL classes, and Cognos reports the position's.
+    "GL Class Code", TRIM ( 'Inventory Snapshot'[CategoryGLF41021] ),
+    "Location", TRIM ( 'Inventory Snapshot'[Location] ),
+    "Lot Number", TRIM ( 'Inventory Snapshot'[LotNum] ),
+    "Supplier Lot Number", TRIM ( RELATED ( 'Lot'[Supplier Lot Num] ) ),
+
+    // Lot status from the POSITION, not the lot master.
+    //
+    // A lot can hold different statuses in different locations, and this page reports
+    // the position's. Note the Escor Inventory query does the opposite and reads the lot
+    // master — because that is what the Cognos original does on that page. The
+    // inconsistency is Cognos's; reproducing it is deliberate.
+    "Lot Status", TRIM ( 'Inventory Snapshot'[Lot Status Code] ),
+    "Master Planning Family", TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) ),
+
+    // -----------------------------------------------------------------------------
+    // QUANTITY
+    // -----------------------------------------------------------------------------
+
+    // Raw quantity in whatever unit the item is stocked in — KG, LB, EA or GM.
+    "On Hand", 'Inventory Snapshot'[QuantityOnHandPrimaryUOM],
+    "UOM", TRIM ( 'Inventory Snapshot'[UOMPrimary] ),
+
+    // Weight conversions, from the cube's own measures.
+    //
+    // CALCULATE performs context transition: it turns the current row into a filter
+    // context so each measure evaluates for that one position.
+    //
+    // These two measures hard-code their target unit — "convert to KG", "convert to LB"
+    // — so they never touch the cube's Selected UOM selector and cannot inherit its
+    // default. That matters, because the cube's COST measures do read that selector and
+    // are wrong when it is left alone (see the OH USD note below).
+    //
+    // Internally each is: if the row is already in the target unit, take the quantity as
+    // is; otherwise multiply by the row's stored conversion factor. The factors are
+    // clean positive values — 2.2046 for KG-primary rows going to LB, 0.4536 the other
+    // way — with no "-1 means no conversion" sentinel of the kind DW_LEGACY carries.
+    "OH KGs", CALCULATE ( [Qty On Hand KG] ),
+    "OH LBs", CALCULATE ( [Qty On Hand LB] ),
+
+    // -----------------------------------------------------------------------------
+    // COST
+    //
+    // The two currencies come from two different places, which is the cube owner's
+    // call: USD from the cube's own measure so every report carries one number, EUR
+    // from the snapshot column because the cube exposes no EUR cost at all.
+    //
+    // USD. [Total Ext Cost IC USD] pinned to 'Selected UOM Filter' = Primary. Unit cost
+    // scales by the UOM conversion rate and quantity scales by the same rate, so
+    // extended cost carries that rate SQUARED. Primary makes the rate 1. The cube's
+    // default is LB, so a query that leaves the selector alone reads $536.3M against a
+    // true $40.08M; LB-primary plants look right either way because their rate is
+    // already 1, which is what makes it easy to miss. The pin is the whole contract —
+    // the Calendar Inventory Snapshot date the measure reads resolves from this query's
+    // own date filter, so it needs no separate pin.
+    //
+    // The + 0 is parity, not arithmetic. 74 of the 4,286 positions carry quantity at
+    // zero cost; the measure returns BLANK on those and Cognos prints 0.
+    //
+    // EUR. Under 'Selected Currency Filter' = EUR every costed measure returns blank —
+    // [Total Ext Cost IC], [Total Ext Cost IC Sum], [Total Ext Cost IS], [Total Ext
+    // Cost] — at every UOM setting, and the cube carries no EUR-named cost measure. The
+    // EUR branch applies USERELATIONSHIP to an inactive currency relationship without
+    // the CROSSFILTER that relationship needs. So EUR comes from the column:
+    // AmountValueAtCost is quantity valued at the elected cost, already extended and
+    // already in the position's own local currency, so it needs only the currency carry.
+    //
+    // WHY THE RATE IS LOOKED UP BY KEY. Currency Rates holds both legs already dated —
+    // CurrencyASKey keys local-to-USD and CurrencyBSKey keys local-to-EUR, one row per
+    // currency per day. So the conversion is a single hop and no triangulation through
+    // USD is needed; the EDW build triangulates only because its dimension carries
+    // CHF-to-EUR alone.
+    //
+    // LOOKUPVALUE rather than RELATED because the cube's currency relationships are
+    // inactive. A relationship-based read does not fail loudly — measured against
+    // production, USERELATIONSHIP on the EUR key returns the USD rate. CurrencySKey is
+    // unique across all 191,751 rate rows, so the lookup cannot be ambiguous.
+    // -----------------------------------------------------------------------------
+    "OH USD",
+        CALCULATE (
+            [Total Ext Cost IC USD],
+            'Selected UOM Filter'[Selected UOM Code] = 1
+        ) + 0,
+    "OH EUR",
+        'Inventory Snapshot'[AmountValueAtCost]
+            * LOOKUPVALUE (
+                'Currency Rates'[ToRateDaily],
+                'Currency Rates'[CurrencySKey], 'Inventory Snapshot'[CurrencyBSKey]
+            ),
+
+    // -----------------------------------------------------------------------------
+    // LOT AND ITEM DESCRIPTIVE COLUMNS
+    // -----------------------------------------------------------------------------
+    "On Hand Date", RELATED ( 'Lot'[On Hand Date] ),
+    "Lot Expiry Date", RELATED ( 'Lot'[Lot Expiration Date] ),
+    "Memo Lot 1", RELATED ( 'Lot'[Memo Lot 1] ),
+    "Memo Lot 2", RELATED ( 'Lot'[Memo Lot 2] ),
+    "Commodity Class Description", RELATED ( 'Item Branch'[Commodity Class Codes Desc] ),
+    "Commodity Sub Class Description", RELATED ( 'Item Branch'[Commodity Sub Class Codes Desc] ),
+
+    // The F4102 bulk pair, hidden in the model. Kept alongside the F554101-sourced
+    // columns above so the two lineages can be compared without another query.
+    "Global Bulk Item (F4102)", TRIM ( RELATED ( 'Item Branch'[Item Global Bulk] ) ),
+    "Bulk Item (F4102)", TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) )
+)
+
+// Cognos's sort. Import order does not bind a Power BI visual, but keeping it makes a
+// raw query result line up against the Cognos export during validation.
+ORDER BY [REGION], [Global Bulk Item], [Bulk Item], [2nd Item Number]
+
+// =====================================================================================
+// NOTE ON COLUMN NAMES
+//
+// The AnalysisServices connector returns DAX column names wrapped in brackets — "[OH
+// USD]", not "OH USD". The M step around this query strips the outer pair so the model's
+// column names are clean. That strip only handles the "[Name]" form, so every column
+// here is projected with an explicit quoted alias; a bare EVALUATE of a table would
+// return "Table[Column]" names it cannot clean.
+//
+// NOTE ON DATE SCOPE
+//
+// There is no date predicate. All 137 snapshot dates import — about 464,000 rows,
+// refreshing in under three minutes — and the report's Select Date prompt becomes a
+// slicer over them. A date-window predicate was evaluated and is unnecessary at this
+// size.
+// =====================================================================================

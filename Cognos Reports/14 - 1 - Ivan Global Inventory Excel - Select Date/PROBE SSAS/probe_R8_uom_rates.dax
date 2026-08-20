@@ -1,0 +1,70 @@
+// SSASPROD / BIQLTabular_ISH
+//
+// Do 'Inventory Snapshot'[ToRateUMA] and [ToRateUMB] carry the -1 "no conversion"
+// sentinel that DW_LEGACY stored in CONVERSION_FACTOR_LB/KG, and is [UOMPrimary]
+// padded such that the SWITCH equality inside [Qty On Hand LB] / [Qty On Hand KG]
+// never fires? Decomposes report 14's scope at the 2026-07-21 snapshot by primary
+// UOM.
+//
+// ANSWER — neither. Rates are positive, real conversion factors throughout, and
+// [UOMPrimary] is unpadded (LEN = 2, zero rows where the raw value differs from its
+// TRIM), so the "LB" / "KG" equality resolves correctly.
+//
+//   UOM  rows   QOH            OH LBs         OH KGs        ToRateUMA        ToRateUMB
+//   KG   1,906   6,113,953.16  13,478,821.14   6,113,953.16  2.2046           1
+//   LB   2,206  10,843,343.15  10,843,343.15   4,918,540.45  1                0.4536
+//   EA       56      3,209.99      94,629.28      42,923.23  0.0238 - 44.0924  0.0108 - 20
+//   GM      10     38,710.55          85.16          38.71   0.0022           0.001
+//
+// Totals reconcile to the published model exactly: 4,178 rows, QOH 16,999,216.84,
+// OH LBs 24,416,878.73.
+//
+// The 44.0924 and 20 on EA rows are genuine factors for drum-grain items (1 EA =
+// 20 KG = 44.09 LB), not sentinels. The Cognos gap on OH LBs is Cognos-side: it
+// renders the 10 GM rows as grams x 44 (~1.70M LBs against our 85.16), which is the
+// disclosed class in BUILD.md §9.4.
+//
+// ISH carries 4-decimal constants (2.2046 / 0.4536) where the EDW build uses
+// 2.20462262 / 0.45359237 — about 1 ppm, ~138 LB across 13.5M.
+
+EVALUATE
+VAR D = DATE ( 2026, 7, 21 )
+VAR BaseRows =
+    FILTER (
+        'Inventory Snapshot',
+        'Inventory Snapshot'[Calendar Date] = D
+            && TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07"
+            && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+            && TRIM ( RELATED ( 'Branch'[Branch Plant] ) )
+                IN { "CINC", "CIN2", "CIN4", "AUBA", "AUB2", "SING", "SNG4", "MUM3", "SHAN" }
+            && TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) )
+                IN { "ATP", "ETP", "FBW", "FCB", "FEC", "FRC", "RAW",
+                     "RBW", "RCB", "REC", "RRC", "RWW", "TOL", "WAG" }
+    )
+VAR Proj =
+    SELECTCOLUMNS (
+        BaseRows,
+        "uom", TRIM ( 'Inventory Snapshot'[UOMPrimary] ),
+        "pad", IF ( 'Inventory Snapshot'[UOMPrimary] = TRIM ( 'Inventory Snapshot'[UOMPrimary] ), 0, 1 ),
+        "plen", LEN ( 'Inventory Snapshot'[UOMPrimary] ),
+        "q", 'Inventory Snapshot'[QuantityOnHandPrimaryUOM],
+        "rA", 'Inventory Snapshot'[ToRateUMA],
+        "rB", 'Inventory Snapshot'[ToRateUMB],
+        "lb", CALCULATE ( [Qty On Hand LB] ),
+        "kg", CALCULATE ( [Qty On Hand KG] )
+    )
+RETURN
+GROUPBY (
+    Proj,
+    [uom],
+    "rows", SUMX ( CURRENTGROUP (), 1 ),
+    "sumqoh", SUMX ( CURRENTGROUP (), [q] ),
+    "sumlb", SUMX ( CURRENTGROUP (), [lb] ),
+    "sumkg", SUMX ( CURRENTGROUP (), [kg] ),
+    "ramin", MINX ( CURRENTGROUP (), [rA] ),
+    "ramax", MAXX ( CURRENTGROUP (), [rA] ),
+    "rbmin", MINX ( CURRENTGROUP (), [rB] ),
+    "rbmax", MAXX ( CURRENTGROUP (), [rB] ),
+    "padrows", SUMX ( CURRENTGROUP (), [pad] ),
+    "lenmax", MAXX ( CURRENTGROUP (), [plen] )
+)

@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource1">
+      <ConnectionProperties>
+        <DataProvider>OLEDB-MD</DataProvider>
+        <ConnectString>Data Source=SSASPROD;Initial Catalog=BIQLTabular_ISH</ConnectString>
+        <IntegratedSecurity>true</IntegratedSecurity>
+      </ConnectionProperties>
+      <rd:SecurityType>Integrated</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="dsMembers">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>EVALUATE
+UNION (
+    SELECTCOLUMNS ( 'Selected UOM Filter',
+        "Selector", "UOM",
+        "Code", FORMAT ( 'Selected UOM Filter'[Selected UOM Code], "0" ),
+        "Label", 'Selected UOM Filter'[Selected UOM Filter],
+        "IsDefault", FORMAT ( 'Selected UOM Filter'[DefaultUOM], "0" ) ),
+    SELECTCOLUMNS ( 'Selected Currency Filter',
+        "Selector", "Currency",
+        "Code", FORMAT ( 'Selected Currency Filter'[Selected Currency Code], "0" ),
+        "Label", 'Selected Currency Filter'[Selected Currency Filter],
+        "IsDefault", FORMAT ( 'Selected Currency Filter'[DefaultCurrency], "0" ) )
+)
+ORDER BY [Selector], [Code]</CommandText>
+        <rd:Aggregates />
+      </Query>
+      <Fields>
+      <Field Name="Selector">
+        <DataField>[Selector]</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Code">
+        <DataField>[Code]</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Label">
+        <DataField>[Label]</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="IsDefault">
+        <DataField>[IsDefault]</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="dsTotals">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>DEFINE
+    VAR Rows_ =
+        FILTER (
+            'Inventory Snapshot',
+            'Inventory Snapshot'[Calendar Date] = DATE ( 2026, 8, 5 )
+        TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07"
+            &amp;&amp; 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] &gt; 0
+            &amp;&amp; TRIM ( RELATED ( 'Branch'[Branch Plant] ) ) IN { "CINC", "CIN2", "CIN4", "AUBA", "AUB2", "SING", "SNG4", "MUM3", "SHAN" }
+            &amp;&amp; TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) )
+                IN { "ATP", "ETP", "FBW", "FCB", "FEC", "FRC", "RAW",
+                    "RBW", "RCB", "REC", "RRC", "RWW", "TOL", "WAG" }
+        )
+    VAR OursUSD =
+        SUMX ( Rows_,
+            'Inventory Snapshot'[AmountValueAtCost]
+                * LOOKUPVALUE ( 'Currency Rates'[ToRateDaily],
+                    'Currency Rates'[CurrencySKey], 'Inventory Snapshot'[CurrencyASKey] ) )
+    VAR OursEUR =
+        SUMX ( Rows_,
+            'Inventory Snapshot'[AmountValueAtCost]
+                * LOOKUPVALUE ( 'Currency Rates'[ToRateDaily],
+                    'Currency Rates'[CurrencySKey], 'Inventory Snapshot'[CurrencyBSKey] ) )
+    VAR UomPrimary =
+        FILTER ( ALL ( 'Selected UOM Filter' ),
+            CONTAINSSTRING ( 'Selected UOM Filter'[Selected UOM Filter], "Primary" ) )
+    VAR CurUSD =
+        FILTER ( ALL ( 'Selected Currency Filter' ),
+            CONTAINSSTRING ( 'Selected Currency Filter'[Selected Currency Filter], "USD" ) )
+    VAR CurEUR =
+        FILTER ( ALL ( 'Selected Currency Filter' ),
+            CONTAINSSTRING ( 'Selected Currency Filter'[Selected Currency Filter], "EUR" ) )
+    VAR Base = CALCULATETABLE ( Rows_ )
+EVALUATE
+UNION (
+    ROW ( "Scenario", "1. Ours - AmountValueAtCost x rate (USD)", "Value", OursUSD ),
+    ROW ( "Scenario", "2. Ours - AmountValueAtCost x rate (EUR)", "Value", OursEUR ),
+    ROW ( "Scenario", "3. Cube [Total Ext Cost IC USD] - nothing pinned",
+        "Value", CALCULATE ( [Total Ext Cost IC USD], Base ) ),
+    ROW ( "Scenario", "4. Cube [Total Ext Cost IC USD] - UOM = Primary",
+        "Value", CALCULATE ( [Total Ext Cost IC USD], Base, UomPrimary ) ),
+    ROW ( "Scenario", "5. Cube [Total Ext Cost IC USD] - UOM = Primary, Currency = USD",
+        "Value", CALCULATE ( [Total Ext Cost IC USD], Base, UomPrimary, CurUSD ) ),
+    ROW ( "Scenario", "6. Cube [Total Ext Cost IC] - UOM = Primary, Currency = EUR",
+        "Value", CALCULATE ( [Total Ext Cost IC], Base, UomPrimary, CurEUR ) ),
+    ROW ( "Scenario", "7. Cube [Total Ext Cost IC] - UOM = Primary, Currency = USD",
+        "Value", CALCULATE ( [Total Ext Cost IC], Base, UomPrimary, CurUSD ) )
+)</CommandText>
+        <rd:Aggregates />
+      </Query>
+      <Fields>
+      <Field Name="Scenario">
+        <DataField>[Scenario]</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Value">
+        <DataField>[Value]</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="dsByBranch">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>DEFINE
+    VAR UomPrimary =
+        FILTER ( ALL ( 'Selected UOM Filter' ),
+            CONTAINSSTRING ( 'Selected UOM Filter'[Selected UOM Filter], "Primary" ) )
+    VAR CurUSD =
+        FILTER ( ALL ( 'Selected Currency Filter' ),
+            CONTAINSSTRING ( 'Selected Currency Filter'[Selected Currency Filter], "USD" ) )
+    VAR Lines =
+        SELECTCOLUMNS (
+            FILTER (
+                'Inventory Snapshot',
+                'Inventory Snapshot'[Calendar Date] = DATE ( 2026, 8, 5 )
+        TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07"
+            &amp;&amp; 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] &gt; 0
+            &amp;&amp; TRIM ( RELATED ( 'Branch'[Branch Plant] ) ) IN { "CINC", "CIN2", "CIN4", "AUBA", "AUB2", "SING", "SNG4", "MUM3", "SHAN" }
+            &amp;&amp; TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) )
+                IN { "ATP", "ETP", "FBW", "FCB", "FEC", "FRC", "RAW",
+                    "RBW", "RCB", "REC", "RRC", "RWW", "TOL", "WAG" }
+            ),
+            "Branch Plant", TRIM ( RELATED ( 'Branch'[Branch Plant] ) ),
+            "Line",
+                'Inventory Snapshot'[AmountValueAtCost]
+                    * LOOKUPVALUE ( 'Currency Rates'[ToRateDaily],
+                        'Currency Rates'[CurrencySKey], 'Inventory Snapshot'[CurrencyASKey] )
+        )
+EVALUATE
+ADDCOLUMNS (
+    GROUPBY ( Lines, [Branch Plant], "Ours", SUMX ( CURRENTGROUP (), [Line] ) ),
+    "Cube",
+        CALCULATE (
+            [Total Ext Cost IC USD],
+            'Inventory Snapshot'[Calendar Date] = DATE ( 2026, 8, 5 ),
+            TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07",
+            'Inventory Snapshot'[QuantityOnHandPrimaryUOM] &gt; 0,
+            UomPrimary,
+            CurUSD
+        )
+)
+ORDER BY [Branch Plant]</CommandText>
+        <rd:Aggregates />
+      </Query>
+      <Fields>
+      <Field Name="Branch_Plant">
+        <DataField>[Branch Plant]</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Ours">
+        <DataField>[Ours]</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Cube">
+        <DataField>[Cube]</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportSections><ReportSection>
+    <Body>
+      <ReportItems>
+        <Textbox Name="h1">
+          <CanGrow>true</CanGrow>
+          <Paragraphs><Paragraph><TextRuns><TextRun>
+            <Value>Selector members</Value>
+            <Style><FontWeight>Bold</FontWeight><FontSize>11pt</FontSize></Style>
+          </TextRun></TextRuns></Paragraph></Paragraphs>
+          <Top>0in</Top><Left>0in</Left><Height>0.25in</Height><Width>7in</Width>
+          <Style />
+        </Textbox>
+        <Tablix Name="tbMembers">
+          <TablixBody>
+          <TablixColumns>
+          <TablixColumn><Width>1.0in</Width></TablixColumn>
+          <TablixColumn><Width>0.7in</Width></TablixColumn>
+          <TablixColumn><Width>2.6in</Width></TablixColumn>
+          <TablixColumn><Width>0.8in</Width></TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+        <TablixRow><Height>0.22in</Height><TablixCells><TablixCell><CellContents>
+          <Textbox Name="tbMembers_h0">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>="Selector"</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <FontWeight>Bold</FontWeight>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbMembers_h1">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>="Code"</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <FontWeight>Bold</FontWeight>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbMembers_h2">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>="Label"</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <FontWeight>Bold</FontWeight>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbMembers_h3">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>="Default"</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <FontWeight>Bold</FontWeight>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell></TablixCells></TablixRow>
+        <TablixRow><Height>0.20in</Height><TablixCells><TablixCell><CellContents>
+          <Textbox Name="tbMembers_d0">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>=Fields!Selector.Value</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbMembers_d1">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>=Fields!Code.Value</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbMembers_d2">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>=Fields!Label.Value</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbMembers_d3">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>=Fields!IsDefault.Value</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell></TablixCells></TablixRow>
+          </TablixRows>
+          </TablixBody>
+          <TablixColumnHierarchy><TablixMembers><TablixMember /><TablixMember /><TablixMember /><TablixMember /></TablixMembers></TablixColumnHierarchy>
+          <TablixRowHierarchy><TablixMembers>
+            <TablixMember><KeepWithGroup>After</KeepWithGroup></TablixMember>
+            <TablixMember><Group Name="tbMembers_Detail" /><TablixMembers><TablixMember /></TablixMembers></TablixMember>
+          </TablixMembers></TablixRowHierarchy>
+          <DataSetName>dsMembers</DataSetName>
+          <Top>0.30in</Top><Left>0in</Left>
+          <Style><Border><Style>None</Style></Border></Style>
+        </Tablix>
+        <Textbox Name="h2">
+          <CanGrow>true</CanGrow>
+          <Paragraphs><Paragraph><TextRuns><TextRun>
+            <Value>Totals - 5 Aug 2026, report 14 filter set</Value>
+            <Style><FontWeight>Bold</FontWeight><FontSize>11pt</FontSize></Style>
+          </TextRun></TextRuns></Paragraph></Paragraphs>
+          <Top>2.60in</Top><Left>0in</Left><Height>0.25in</Height><Width>7in</Width>
+          <Style />
+        </Textbox>
+        <Tablix Name="tbTotals">
+          <TablixBody>
+          <TablixColumns>
+          <TablixColumn><Width>4.6in</Width></TablixColumn>
+          <TablixColumn><Width>1.8in</Width></TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+        <TablixRow><Height>0.22in</Height><TablixCells><TablixCell><CellContents>
+          <Textbox Name="tbTotals_h0">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>="Scenario"</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <FontWeight>Bold</FontWeight>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbTotals_h1">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>="Value"</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <FontWeight>Bold</FontWeight>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell></TablixCells></TablixRow>
+        <TablixRow><Height>0.20in</Height><TablixCells><TablixCell><CellContents>
+          <Textbox Name="tbTotals_d0">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>=Fields!Scenario.Value</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbTotals_d1">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>=CDbl(Fields!Value.Value)</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <Format>#,0.00</Format>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell></TablixCells></TablixRow>
+          </TablixRows>
+          </TablixBody>
+          <TablixColumnHierarchy><TablixMembers><TablixMember /><TablixMember /></TablixMembers></TablixColumnHierarchy>
+          <TablixRowHierarchy><TablixMembers>
+            <TablixMember><KeepWithGroup>After</KeepWithGroup></TablixMember>
+            <TablixMember><Group Name="tbTotals_Detail" /><TablixMembers><TablixMember /></TablixMembers></TablixMember>
+          </TablixMembers></TablixRowHierarchy>
+          <DataSetName>dsTotals</DataSetName>
+          <Top>2.90in</Top><Left>0in</Left>
+          <Style><Border><Style>None</Style></Border></Style>
+        </Tablix>
+        <Textbox Name="h3">
+          <CanGrow>true</CanGrow>
+          <Paragraphs><Paragraph><TextRuns><TextRun>
+            <Value>By branch plant - UOM = Primary, Currency = USD</Value>
+            <Style><FontWeight>Bold</FontWeight><FontSize>11pt</FontSize></Style>
+          </TextRun></TextRuns></Paragraph></Paragraphs>
+          <Top>5.20in</Top><Left>0in</Left><Height>0.25in</Height><Width>7in</Width>
+          <Style />
+        </Textbox>
+        <Tablix Name="tbBranch">
+          <TablixBody>
+          <TablixColumns>
+          <TablixColumn><Width>1.2in</Width></TablixColumn>
+          <TablixColumn><Width>1.6in</Width></TablixColumn>
+          <TablixColumn><Width>1.6in</Width></TablixColumn>
+          <TablixColumn><Width>1.6in</Width></TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+        <TablixRow><Height>0.22in</Height><TablixCells><TablixCell><CellContents>
+          <Textbox Name="tbBranch_h0">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>="Branch Plant"</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <FontWeight>Bold</FontWeight>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbBranch_h1">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>="Ours"</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <FontWeight>Bold</FontWeight>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbBranch_h2">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>="Cube"</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <FontWeight>Bold</FontWeight>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbBranch_h3">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>="Difference"</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <FontWeight>Bold</FontWeight>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell></TablixCells></TablixRow>
+        <TablixRow><Height>0.20in</Height><TablixCells><TablixCell><CellContents>
+          <Textbox Name="tbBranch_d0">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>=Fields!Branch_Plant.Value</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbBranch_d1">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>=CDbl(Fields!Ours.Value)</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <Format>#,0.00</Format>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbBranch_d2">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>=CDbl(Fields!Cube.Value)</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <Format>#,0.00</Format>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell><TablixCell><CellContents>
+          <Textbox Name="tbBranch_d3">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs><Paragraph><TextRuns><TextRun>
+              <Value>=CDbl(Fields!Ours.Value) - CDbl(Fields!Cube.Value)</Value>
+            </TextRun></TextRuns></Paragraph></Paragraphs>
+            <Style>
+              <Format>#,0.00</Format>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+            </Style>
+          </Textbox>
+</CellContents></TablixCell></TablixCells></TablixRow>
+          </TablixRows>
+          </TablixBody>
+          <TablixColumnHierarchy><TablixMembers><TablixMember /><TablixMember /><TablixMember /><TablixMember /></TablixMembers></TablixColumnHierarchy>
+          <TablixRowHierarchy><TablixMembers>
+            <TablixMember><KeepWithGroup>After</KeepWithGroup></TablixMember>
+            <TablixMember><Group Name="tbBranch_Detail" /><TablixMembers><TablixMember /></TablixMembers></TablixMember>
+          </TablixMembers></TablixRowHierarchy>
+          <DataSetName>dsByBranch</DataSetName>
+          <Top>5.50in</Top><Left>0in</Left>
+          <Style><Border><Style>None</Style></Border></Style>
+        </Tablix>
+      </ReportItems>
+      <Height>8.0in</Height>
+      <Style />
+    </Body>
+    <Width>7.5in</Width>
+    <Page>
+      <PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth>
+      <LeftMargin>1in</LeftMargin><RightMargin>1in</RightMargin>
+      <TopMargin>1in</TopMargin><BottomMargin>1in</BottomMargin>
+      <Style />
+    </Page>
+  </ReportSection></ReportSections>
+</Report>

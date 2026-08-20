@@ -1,0 +1,104 @@
+// =====================================================================================
+// REPORT 14 — ESCOR INVENTORY  (tab: Escor Inventory)
+// Source: SSASPROD / BIQLTabular_ISH, native DAX, imported
+// =====================================================================================
+//
+// Same source, same shape and same grain as the Inventory query — one row per position
+// per snapshot date. Three things differ, and each is a deliberate reproduction of what
+// the Cognos original does on this page rather than an inconsistency to tidy up.
+//
+//   1. Scope is one product family, not the branch and planning-family lists.
+//   2. There are no cost columns. This page reports quantity only.
+//   3. Lot Status comes from the LOT MASTER, where the Inventory page reads it from the
+//      position. Cognos sources it differently on the two pages; parity means matching
+//      that, not picking one.
+//
+// This tab ties exactly: 52 rows against 52 at the 2026-08-05 capture, with quantities
+// agreeing to rounding.
+//
+// =====================================================================================
+
+EVALUATE
+SELECTCOLUMNS (
+
+    FILTER (
+        'Inventory Snapshot',
+
+        // Standard cost. Not because this page reports cost — it does not — but because
+        // the fact carries one row per JDE cost method, so without a method predicate
+        // every quantity below multiplies by roughly seven. See the Inventory query for
+        // the full note on cost methods.
+        TRIM ( 'Inventory Snapshot'[CostMethod] ) = "07"
+
+            // A position with nothing on hand is not inventory.
+            && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+
+            // The Escor family, scoped by the item dimension's GLOBAL BULK item.
+            //
+            // Scoping on the dimension rather than on an item code carried elsewhere is
+            // the standard approach, and here it is load-bearing: global bulk is the top
+            // of the roll-up, so it reaches child items whose own item numbers do not
+            // read as "ESC5200". The Escor Lot Info query had to be corrected to this
+            // same principle — see the note in its file.
+            && TRIM ( RELATED ( 'Item Branch'[Item Num Global Bulk] ) ) = "ESC5200"
+    ),
+
+    // -----------------------------------------------------------------------------
+    // KEYS AND ATTRIBUTES
+    //
+    // TRIM throughout because JDE stores fixed-width character fields space-padded.
+    // -----------------------------------------------------------------------------
+    "Inventory Date", 'Inventory Snapshot'[Calendar Date],
+    "Branch Plant", TRIM ( RELATED ( 'Branch'[Branch Plant] ) ),
+    "Global Bulk Item", TRIM ( RELATED ( 'Item Branch'[Item Num Global Bulk] ) ),
+    "Bulk Item", TRIM ( RELATED ( 'Item Branch'[Item Num Bulk] ) ),
+    "2nd Item Number", TRIM ( RELATED ( 'Item Branch'[Item Num 2nd] ) ),
+
+    // Last Receipt Date is a position attribute — when stock last arrived at THIS
+    // location — so it comes off the fact, not off the lot.
+    "Last Receipt Date", 'Inventory Snapshot'[Last Receipt Date],
+    "Location", TRIM ( 'Inventory Snapshot'[Location] ),
+    "Lot Number", TRIM ( 'Inventory Snapshot'[LotNum] ),
+
+    // -----------------------------------------------------------------------------
+    // LOT MASTER ATTRIBUTES
+    //
+    // These are properties of the lot itself, identical wherever that lot sits, so they
+    // all resolve through the one Lot relationship.
+    // -----------------------------------------------------------------------------
+    "On Hand Date", RELATED ( 'Lot'[On Hand Date] ),
+    "Lot Expiry Date", RELATED ( 'Lot'[Lot Expiration Date] ),
+    "Sell by Date", RELATED ( 'Lot'[Sell By Date] ),
+    "Supplier Lot Number", TRIM ( RELATED ( 'Lot'[Supplier Lot Num] ) ),
+    "Memo Lot 1", RELATED ( 'Lot'[Memo Lot 1] ),
+    "Memo Lot 2", RELATED ( 'Lot'[Memo Lot 2] ),
+
+    // Lot status from the LOT MASTER on this page.
+    //
+    // The Inventory query reads 'Inventory Snapshot'[Lot Status Code] instead — the
+    // status at that position. A lot can carry different statuses in different
+    // locations, so the two pages can disagree for the same lot. That is Cognos's
+    // behaviour and reproducing it is the point.
+    "Lot Status", TRIM ( RELATED ( 'Lot'[Lot Status Code] ) ),
+    "Master Planning Family", TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) ),
+
+    // -----------------------------------------------------------------------------
+    // QUANTITY
+    //
+    // Cube measures that hard-code their target unit, so they never read the cube's
+    // Selected UOM selector and cannot inherit its default. CALCULATE does context
+    // transition — it turns the current row into a filter context so each measure
+    // evaluates for that one position.
+    //
+    // Plain conversions here. The Inventory query's source carries a sentinel-guard
+    // quirk on a couple of gram-stocked lots; these Escor items are all KG-stocked and
+    // convert cleanly.
+    // -----------------------------------------------------------------------------
+    "Quantity on Hand KGs", CALCULATE ( [Qty On Hand KG] ),
+    "Quantity on Hand LBs", CALCULATE ( [Qty On Hand LB] ),
+    "Quantity on Hand", 'Inventory Snapshot'[QuantityOnHandPrimaryUOM],
+    "Primary Unit of Measure", TRIM ( 'Inventory Snapshot'[UOMPrimary] )
+)
+
+// Cognos's sort on this page.
+ORDER BY [Branch Plant], [Last Receipt Date]

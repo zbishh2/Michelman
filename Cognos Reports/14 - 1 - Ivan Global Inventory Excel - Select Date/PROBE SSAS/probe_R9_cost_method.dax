@@ -1,0 +1,115 @@
+// SSASPROD / BIQLTabular_ISH
+//
+// The fact fans out one row per JDE cost method. Which method does report 14 want,
+// and which one does Oracle's UNIT_COST correspond to? Two queries: the first splits
+// report 14's scope at 2026-07-21 by CostMethod x CostingSelectionInventory with no
+// cost-method predicate; the second reads unit cost by method for the SNG4
+// ESC5200.S positions BUILD.md §9.4 logs as the largest EDW-vs-Cognos cost variance.
+//
+// ANSWER — [CostingSelectionInventory] = "I" is the elected-cost flag and is the
+// correct predicate. It selects 4,178 positions, the same set CostMethod = "07"
+// selects, with the same QOH (16,999,216.84) and the same cost. "07" coincides
+// rather than means: it resolves to 4,099 elected positions plus 79 that are not
+// elected and carry no value, and those same 79 appear again as CostMethod "03"
+// with the flag set.
+//
+// Methods present in scope: 01 Last Price Paid w/ Freight, 03 No Charge, 07
+// Standard, 08 Last Price Paid w/o Freight, 30 Cost Change Alert (for PURCH),
+// P2 2026 AOP, P3, RS Rate simulation.
+//
+// The 79 uncosted positions (QOH 604,963.60) elect 03 No Charge, so a zero cost is
+// the elected answer and no carrier-borrow rule applies.
+//
+// Totals per method are not a cost-basis comparison — each method carries a
+// different subset of positions, so the spread across methods is population, not
+// valuation.
+//
+// SNG4 ESC5200.S, 24 positions, QOH 503,250, unit cost by method:
+//
+//   07 Standard (elected)          4.09   <- Oracle UNIT_COST
+//   01 Last Price Paid w/ Freight  4.0659
+//   08 Last Price Paid w/o Freight 3.93
+//   P2 2026 AOP                    3.65
+//   30 Cost Change Alert           3.64
+//   RS Rate simulation             3.29   <- what the EDW build reads
+//
+// This identifies §9.4's largest variance class as an EDW cost-method error: EDW's
+// AmountUnitCost serves the rate simulation, Cognos serves Standard, and the ratio
+// 4.09 / 3.29 = 1.2432 is exactly the logged one. The SSAS Import variant reads the
+// elected cost and agrees with Cognos on these lots.
+
+EVALUATE
+VAR D = DATE ( 2026, 7, 21 )
+VAR BaseRows =
+    FILTER (
+        'Inventory Snapshot',
+        'Inventory Snapshot'[Calendar Date] = D
+            && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+            && TRIM ( RELATED ( 'Branch'[Branch Plant] ) )
+                IN { "CINC", "CIN2", "CIN4", "AUBA", "AUB2", "SING", "SNG4", "MUM3", "SHAN" }
+            && TRIM ( RELATED ( 'Item Branch'[Master Planning Family] ) )
+                IN { "ATP", "ETP", "FBW", "FCB", "FEC", "FRC", "RAW",
+                     "RBW", "RCB", "REC", "RRC", "RWW", "TOL", "WAG" }
+    )
+VAR Proj =
+    SELECTCOLUMNS (
+        BaseRows,
+        "cm", TRIM ( 'Inventory Snapshot'[CostMethod] ),
+        "csi", TRIM ( 'Inventory Snapshot'[CostingSelectionInventory] ),
+        "q", 'Inventory Snapshot'[QuantityOnHandPrimaryUOM],
+        "sv", 'Inventory Snapshot'[AmountValueAtCost],
+        "blank", IF ( ISBLANK ( 'Inventory Snapshot'[AmountValueAtCost] ) || 'Inventory Snapshot'[AmountValueAtCost] = 0, 1, 0 ),
+        "rusd",
+            VAR AKey = 'Inventory Snapshot'[CurrencyASKey]
+            RETURN
+                MAXX ( FILTER ( ALL ( 'Currency Rates' ), 'Currency Rates'[CurrencySKey] = AKey ), 'Currency Rates'[ToRateDaily] )
+    )
+RETURN
+GROUPBY (
+    Proj,
+    [cm],
+    [csi],
+    "rows", SUMX ( CURRENTGROUP (), 1 ),
+    "sumqoh", SUMX ( CURRENTGROUP (), [q] ),
+    "storedlocal", SUMX ( CURRENTGROUP (), [sv] ),
+    "storedusd", SUMX ( CURRENTGROUP (), [sv] * [rusd] ),
+    "nostored", SUMX ( CURRENTGROUP (), [blank] )
+)
+
+// -- unit cost by method for the disputed SNG4 positions --
+
+EVALUATE
+VAR D = DATE ( 2026, 7, 21 )
+VAR BaseRows =
+    FILTER (
+        'Inventory Snapshot',
+        'Inventory Snapshot'[Calendar Date] = D
+            && 'Inventory Snapshot'[QuantityOnHandPrimaryUOM] > 0
+            && TRIM ( RELATED ( 'Branch'[Branch Plant] ) ) = "SNG4"
+            && TRIM ( RELATED ( 'Item Branch'[Item Num 2nd] ) ) = "ESC5200.S"
+    )
+VAR Proj =
+    SELECTCOLUMNS (
+        BaseRows,
+        "cm", TRIM ( 'Inventory Snapshot'[CostMethod] ),
+        "cmdesc",
+            VAR C = TRIM ( 'Inventory Snapshot'[CostMethod] )
+            RETURN
+                MAXX ( FILTER ( ALL ( 'Cost Method' ), TRIM ( 'Cost Method'[Cost Method] ) = C ), 'Cost Method'[Cost Method Desc] ),
+        "csi", TRIM ( 'Inventory Snapshot'[CostingSelectionInventory] ),
+        "q", 'Inventory Snapshot'[QuantityOnHandPrimaryUOM],
+        "uc", 'Inventory Snapshot'[AmountUnitCost_IC],
+        "sv", 'Inventory Snapshot'[AmountValueAtCost]
+    )
+RETURN
+GROUPBY (
+    Proj,
+    [cm],
+    [cmdesc],
+    [csi],
+    "rows", SUMX ( CURRENTGROUP (), 1 ),
+    "sumqoh", SUMX ( CURRENTGROUP (), [q] ),
+    "ucmin", MINX ( CURRENTGROUP (), [uc] ),
+    "ucmax", MAXX ( CURRENTGROUP (), [uc] ),
+    "storedlocal", SUMX ( CURRENTGROUP (), [sv] )
+)
