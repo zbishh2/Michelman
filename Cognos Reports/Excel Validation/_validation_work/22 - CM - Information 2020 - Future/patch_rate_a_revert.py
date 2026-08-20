@@ -1,4 +1,4 @@
-# Brings the "- Updated" report-out workbook to the shipped Shipments definition:
+# Brings the report-out workbook to the shipped Shipments definition:
 # USD = the cube's stored net amount, EUR = native cube EUR for EUR-currency
 # companies else USD at the month-end rate A. Rewrites the PBI amount columns
 # (BM/BN) from an executeQueries pull of the refreshed model, then syncs the
@@ -15,13 +15,13 @@ import win32com.client
 from pywintypes import com_error
 
 ROOT = r"C:\Users\Zack\Documents\Code\Michelman"
-WB_PATH = os.path.join(ROOT, r"Cognos Reports\Excel Validation\_report_out\22 - CM - Information 2020 - Future - Updated.xlsx")
+WB_PATH = os.path.join(ROOT, r"Cognos Reports\Excel Validation\_report_out\22 - CM - Information 2020 - Future.xlsx")
 PULL = r"C:\Users\Zack\AppData\Local\Temp\claude\C--Users-Zack-Documents-Code-Michelman\b908b0b3-8fa2-4038-bdc1-8782cac9df0c\scratchpad\eq_out.json"
 SHIPMENTS_M = os.path.join(ROOT, r"Cognos Reports\22 - CM - Information 2020 - Future\Shipments.m")
 
-LOCK = os.path.join(os.path.dirname(WB_PATH), "~$22 - CM - Information 2020 - Future - Updated.xlsx")
+LOCK = os.path.join(os.path.dirname(WB_PATH), "~$22 - CM - Information 2020 - Future.xlsx")
 if os.path.exists(LOCK):
-    sys.exit("ABORT: the Updated workbook is open in Excel (lock file present)")
+    sys.exit("ABORT: the workbook is open in Excel (lock file present)")
 
 FIRST, LAST = 14, 2878
 

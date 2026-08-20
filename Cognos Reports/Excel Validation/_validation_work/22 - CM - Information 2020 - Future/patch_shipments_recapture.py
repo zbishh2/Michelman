@@ -1,11 +1,10 @@
-# Rebuilds the Comparison - Shipments tab of a fresh copy of the report-out workbook
-# from a same-instant capture pair: the Cognos export (Downloads) and the paginated-
+# Rebuilds the Comparison - Shipments tab of the report-out workbook from a
+# same-instant capture pair: the Cognos export (Downloads) and the paginated-
 # report Excel export (report folder). Cognos block A14:Y*, PBI block BA14:BY*, PBI
 # rows key-aligned to the Cognos rows on (Order Company, Order Number, Line Number)
-# by occurrence. Only this tab is touched; the original workbook is not opened.
+# by occurrence. Only this tab is touched.
 import datetime
 import os
-import shutil
 import sys
 import time
 
@@ -15,14 +14,13 @@ import win32com.client
 from pywintypes import com_error
 
 ROOT = r"C:\Users\Zack\Documents\Code\Michelman"
-SRC_WB = os.path.join(ROOT, r"Cognos Reports\Excel Validation\_report_out\22 - CM - Information 2020 - Future.xlsx")
-NEW_WB = os.path.join(ROOT, r"Cognos Reports\Excel Validation\_report_out\22 - CM - Information 2020 - Future - Updated.xlsx")
+WB_PATH = os.path.join(ROOT, r"Cognos Reports\Excel Validation\_report_out\22 - CM - Information 2020 - Future.xlsx")
 COGNOS = r"C:\Users\Zack\Downloads\CM - Information 2020-Future (1).xlsx"
 PBI = os.path.join(ROOT, r"Cognos Reports\22 - CM - Information 2020 - Future\CM - Information 2020 - Future.xlsx")
 
-LOCK = os.path.join(os.path.dirname(SRC_WB), "~$22 - CM - Information 2020 - Future.xlsx")
+LOCK = os.path.join(os.path.dirname(WB_PATH), "~$22 - CM - Information 2020 - Future.xlsx")
 if os.path.exists(LOCK):
-    sys.exit("ABORT: source workbook is open in Excel (lock file present)")
+    sys.exit("ABORT: the workbook is open in Excel (lock file present)")
 
 # ---- load the two captures ---------------------------------------------------
 def parse_num(x):
@@ -118,14 +116,13 @@ def _is_numlike(s):
     except ValueError:
         return False
 
-# ---- edit the copy via Excel COM --------------------------------------------
-shutil.copy2(SRC_WB, NEW_WB)
+# ---- edit via Excel COM ------------------------------------------------------
 pythoncom.CoInitialize()
 xl = win32com.client.DispatchEx("Excel.Application")
 xl.Visible = False
 xl.DisplayAlerts = False
 try:
-    wb = xl.Workbooks.Open(NEW_WB)
+    wb = xl.Workbooks.Open(WB_PATH)
     assert not wb.ReadOnly, "opened read-only"
     xl.Calculation = -4135  # manual
     ws = wb.Worksheets("Comparison - Shipments")
@@ -167,4 +164,4 @@ try:
 finally:
     xl.Quit()
     pythoncom.CoUninitialize()
-print("saved:", NEW_WB)
+print("saved:", WB_PATH)
