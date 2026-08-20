@@ -6,13 +6,14 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["Anchor SSAS", "Anchor EDW", "Anchor ODS"]
+annotation PBI_QueryOrder = ["Anchor SSAS", "Anchor ISH", "Anchor EDW", "Anchor ODS"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_ProTooling = ["DevMode"]
 
 ref table 'Anchor SSAS'
+ref table 'Anchor ISH'
 ref table 'Anchor EDW'
 ref table 'Anchor ODS'
 

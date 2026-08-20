@@ -6,6 +6,7 @@ row each and are the model's entire permanent contents:
 | Anchor table | Binding |
 |---|---|
 | `Anchor SSAS` | `SSASPROD` / `BIQLTabular` |
+| `Anchor ISH` | `SSASPROD` / `BIQLTabular_ISH` |
 | `Anchor EDW` | `EDWPROD` / `EDW` |
 | `Anchor ODS` | `ODSPROD` / `ODS` |
 

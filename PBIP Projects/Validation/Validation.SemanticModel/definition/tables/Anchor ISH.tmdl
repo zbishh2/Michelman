@@ -1,0 +1,31 @@
+/// Anchor holding the SSASPROD/BIQLTabular_ISH gateway binding. Returns one row. Never delete.
+table 'Anchor ISH'
+	lineageTag: 7a11da70-0000-4000-8000-000000000014
+
+	column ok
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a11da70-0000-4000-8000-000000000014-c1
+		summarizeBy: none
+		sourceColumn: ok
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Anchor ISH' = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular_ISH",
+				        [ Query = "EVALUATE ROW ( ""ok"", 1 )" ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
