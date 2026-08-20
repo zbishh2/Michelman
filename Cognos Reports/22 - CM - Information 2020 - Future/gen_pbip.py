@@ -64,17 +64,32 @@ RETURN
 
 DAX["Shipments"] = """EVALUATE
 VAR Bulks = %s
-VAR Lines =
+VAR EurUsdMonthEnd =
     FILTER (
-        Sales,
-        TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) ) IN Bulks
-            && Sales[Promised Shipment Date] >= DATE ( 2020, 1, 1 )
-            && Sales[Cancelled_Flag] = 0
-            && NOT Sales[Order Type] IN { "SB", "SR" }
+        'Currency Rates',
+        'Currency Rates'[CurrencyCodeFrom] = "EUR"
+            && 'Currency Rates'[CurrencyCodeTo] = "USD"
+            && 'Currency Rates'[CalendarDate] = 'Currency Rates'[PeriodEndDate]
+    )
+VAR Lines =
+    ADDCOLUMNS (
+        FILTER (
+            Sales,
+            TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) ) IN Bulks
+                && Sales[Promised Shipment Date] >= DATE ( 2020, 1, 1 )
+                && Sales[Cancelled_Flag] = 0
+                && NOT Sales[Order Type] IN { "SB", "SR" }
+        ),
+        "@RateDate", IF ( Sales[GL Date] <= DATE ( 1900, 12, 31 ), Sales[Order Date], Sales[GL Date] )
+    )
+VAR Rated =
+    ADDCOLUMNS (
+        Lines,
+        "@EurToUsd", MAXX ( FILTER ( EurUsdMonthEnd, 'Currency Rates'[CalendarDate] = EOMONTH ( [@RateDate], 0 ) ), 'Currency Rates'[ToRateA] )
     )
 RETURN
     SELECTCOLUMNS (
-        Lines,
+        Rated,
         "Order Company", Sales[Order Company],
         "Branch Plant", TRIM ( Sales[BusinessUnit] ),
         "Order Number", Sales[Order Num],
@@ -88,7 +103,7 @@ RETURN
         "Freight Handling Code", Sales[Freight Handling Code],
         "Next Status", Sales[Status Code Next],
         "Order Net Amount USD (Line)", Sales[AmountOrderNetUSD],
-        "Order Net Amount EUR (Line)", Sales[AmountOrderNetEUR],
+        "Order Net Amount EUR (Line)", IF ( Sales[LocalCurrency] = "EUR", Sales[AmountOrderNetEUR], DIVIDE ( Sales[AmountOrderNetUSD], [@EurToUsd] ) ),
         "Ordered Quantity LBs (Line)", Sales[QuantityOrderedLB],
         "Ordered Quantity KGs (Line)", Sales[QuantityOrderedKG],
         "Revenue Business Unit", RELATED ( 'Revenue Business Unit'[RBU] ),
@@ -364,7 +379,7 @@ TABLES["Shipments"] = dict(
         C("Description 2", "string", desc="Blank where the sales line carries none (the legacy warehouse shows '-')."),
         C("Freight Handling Code", "string"),
         C("Next Status", "string"),
-        C("Order Net Amount USD (Line)", "double", N0, True, "Line-grain input to [Order Net Amount USD]: net amount USD plus the back-ordered extended amount."),
+        C("Order Net Amount USD (Line)", "double", N0, True, "Line-grain input to [Order Net Amount USD]: the cube's net amount USD."),
         C("Order Net Amount EUR (Line)", "double", N0, True, "Line-grain input to [Order Net Amount EUR]: native EUR for EUR-currency companies, otherwise USD at the month-end EUR/USD rate A of the GL date."),
         C("Ordered Quantity LBs (Line)", "double", N0, True, "Line-grain input to [Ordered Quantity LBs]."),
         C("Ordered Quantity KGs (Line)", "double", N0, True, "Line-grain input to [Ordered Quantity KGs]."),

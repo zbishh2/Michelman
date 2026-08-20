@@ -8,12 +8,14 @@
 // Source here is SSASPROD / BIQLTabular 'Sales'.
 //
 // Tie-out (PROBE/FINDINGS.md): 2,864 display rows = Cognos 2,864, exact.
-// Order Net Amount USD/EUR are the cube measures' numbers, not Cognos's: the
-// legacy report re-converts at its own monthly rate and derives EUR for USD
-// companies; this report matches [Order Net Amt SPD USD] / [Order Net Amt SPD
-// EUR] so amounts agree across every cube-based report. 419 blank TMs
-// = Cognos's 419 'Not Available'. Blanks stay blank - the '-' and
-// 'Not Available' in Cognos are legacy-warehouse defaults, not cube values.
+// Order Net Amount USD is the cube's stored net amount. Order Net Amount
+// EUR is the cube's native EUR for EUR-currency companies; for USD-local
+// companies (00010/00030), which the cube does not rate into EUR, it is
+// USD at the month-end EUR/USD rate A of the GL date - the same monthly
+// conversion the legacy report applies, so the column is populated on
+// every line. 419 blank TMs = Cognos's 419 'Not Available'. Blanks stay
+// blank - the '-' and 'Not Available' in Cognos are legacy-warehouse
+// defaults, not cube values.
 //
 // Cognos's Raw Material Margin columns are not carried (Dave Bubash: the report
 // consumers do not need them). The candidate definitions we tied out are written
@@ -32,17 +34,36 @@ let
 EVALUATE
 // The 70-bulk list, verbatim (COLLECTION_NOTES.md).
 VAR Bulks = { ""161017CX"", ""161190PX"", ""171143PX"", ""171228PX.E"", ""181020CX.E"", ""181136IX"", ""181192IX"", ""181193EU.E"", ""191011CX"", ""191026CX.E"", ""191245PX"", ""23409A"", ""ABEX2525"", ""APT10"", ""APT11"", ""DMAEMA"", ""EMA3065"", ""ET2012.E"", ""ET2022.E"", ""ET4075.E"", ""ET440.E"", ""FERSUL7W"", ""HP1432AT"", ""HP1632"", ""MD4020"", ""MD4020C"", ""MD4020S"", ""MD4021"", ""MD4021C"", ""MD4021S"", ""MD4022"", ""MD4022C"", ""MD4023"", ""MD4023C"", ""MDU20"", ""MDU2012.E"", ""MDU2012B.E"", ""MDU4075.E"", ""MDU4075B.E"", ""MDU440.E"", ""MDU440B.E"", ""MPEG2000"", ""MW40504"", ""MW40514"", ""NP4LF"", ""NP4LF.S"", ""OMS"", ""PUD1.E"", ""STODSO"", ""U1001"", ""U101"", ""U201"", ""U2022"", ""U2022EU.E"", ""U2023"", ""U204"", ""U204EU.E"", ""U470"", ""U501"", ""U501B"", ""U502"", ""U502.E"", ""U502X1.E"", ""U601"", ""U701"", ""U802"", ""U802.E"", ""WAV501"", ""WD40"", ""WD40T"" }
-VAR Lines =
+// One EUR->USD row per month end (rate A), 2005-01..2029-12 - the cube's own
+// month-end rate set, the basis the legacy report converts on.
+VAR EurUsdMonthEnd =
     FILTER (
-        Sales,
-        TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) ) IN Bulks
-            && Sales[Promised Shipment Date] >= DATE ( 2020, 1, 1 )
-            && Sales[Cancelled_Flag] = 0
-            && NOT Sales[Order Type] IN { ""SB"", ""SR"" }
+        'Currency Rates',
+        'Currency Rates'[CurrencyCodeFrom] = ""EUR""
+            && 'Currency Rates'[CurrencyCodeTo] = ""USD""
+            && 'Currency Rates'[CalendarDate] = 'Currency Rates'[PeriodEndDate]
+    )
+VAR Lines =
+    ADDCOLUMNS (
+        FILTER (
+            Sales,
+            TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) ) IN Bulks
+                && Sales[Promised Shipment Date] >= DATE ( 2020, 1, 1 )
+                && Sales[Cancelled_Flag] = 0
+                && NOT Sales[Order Type] IN { ""SB"", ""SR"" }
+        ),
+        // JDE julian 0 arrives as a 1900 date - lines not yet through the GL
+        // rate on the order date instead.
+        ""@RateDate"", IF ( Sales[GL Date] <= DATE ( 1900, 12, 31 ), Sales[Order Date], Sales[GL Date] )
+    )
+VAR Rated =
+    ADDCOLUMNS (
+        Lines,
+        ""@EurToUsd"", MAXX ( FILTER ( EurUsdMonthEnd, 'Currency Rates'[CalendarDate] = EOMONTH ( [@RateDate], 0 ) ), 'Currency Rates'[ToRateA] )
     )
 RETURN
     SELECTCOLUMNS (
-        Lines,
+        Rated,
         // nchar with leading zeros ('00010'); stays text.
         ""Order Company"", Sales[Order Company],
         ""Branch Plant"", TRIM ( Sales[BusinessUnit] ),
@@ -57,11 +78,12 @@ RETURN
         ""Description 2"", Sales[Description 2],
         ""Freight Handling Code"", Sales[Freight Handling Code],
         ""Next Status"", Sales[Status Code Next],
-        // The base columns of the cube's [Order Net Amt SPD USD] / [Order Net Amt SPD EUR], so this
-        // report shows the same numbers as every cube-based report. AmountOrderNetEUR is null for
-        // USD-local companies (00010/00030) - the cube rates only EUR-local companies into EUR.
+        // USD is the cube's stored net amount. EUR is the cube's native EUR where the
+        // cube rates it (EUR-local companies 00020/00034); for USD-local companies the
+        // cube leaves EUR null, so the line converts at the month-end rate A of its GL
+        // date - the same monthly conversion the legacy report applies on every line.
         ""Order Net Amount USD (Line)"", Sales[AmountOrderNetUSD],
-        ""Order Net Amount EUR (Line)"", Sales[AmountOrderNetEUR],
+        ""Order Net Amount EUR (Line)"", IF ( Sales[LocalCurrency] = ""EUR"", Sales[AmountOrderNetEUR], DIVIDE ( Sales[AmountOrderNetUSD], [@EurToUsd] ) ),
         ""Ordered Quantity LBs (Line)"", Sales[QuantityOrderedLB],
         ""Ordered Quantity KGs (Line)"", Sales[QuantityOrderedKG],
         ""Revenue Business Unit"", RELATED ( 'Revenue Business Unit'[RBU] ),

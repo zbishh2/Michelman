@@ -81,13 +81,13 @@ Columns:
   zero when a line is back-ordered — `BackOrderedExtendedAmount` carries that value separately and
   the measure does not include it). Plus 1 sign-flipped line (1581592). Row-level tie-out to the
   cube is exact: same-instant totals 53,799,081.94 USD / 2,867 rows on both sides.
-- **Order Net Amount EUR** = `Sales[AmountOrderNetEUR]` — the base column of
-  `[Order Net Amt SPD EUR]`, same reasoning. Blank for USD-local companies (00010/00030) — the
-  cube only rates EUR-local companies into EUR — so it is not comparable to Cognos's
-  every-line converted EUR column. Same-instant tie-out 14,825,602.97 EUR, 1,829 blank rows.
-  (`Currency Rates` background, kept for reference: ToRateA is one EUR→USD row per month end,
-  300 rows 2005-01..2029-12, `15_uniqueness.dax`; a ToRateA-converted EUR lands within 1% on
-  2,688/2,704 rows, RateM much worse — that derivation is not shipped.)
+- **Order Net Amount EUR** = native `Sales[AmountOrderNetEUR]` for EUR-currency companies;
+  USD-local companies (00010/00030), which the cube leaves blank — it only rates EUR-local
+  companies into EUR — convert as USD ÷ the month-end EUR/USD rate A of the GL date, matching
+  Cognos's every-line converted EUR column. ToRateA is one EUR→USD row per month end, 300 rows
+  2005-01..2029-12 (`15_uniqueness.dax`); the converted EUR lands within 1% of Cognos on
+  2,688/2,704 rows (RateM much worse). Residuals are rate-basis — Cognos converts at its own
+  monthly rate from FIN_CURRENCY_CONVERSION, which no SSAS rate kind matches exactly.
 - **Raw Material Margin USD/EUR is not reproducible** from SSAS or EDW — Cognos needs the A1
   cost per sales line plus PRICE_ORDER_SUMMARY delivery freight / warehouse / additional freight;
   none exists outside the legacy DW. The closest cube definition is the standard-cost margin
