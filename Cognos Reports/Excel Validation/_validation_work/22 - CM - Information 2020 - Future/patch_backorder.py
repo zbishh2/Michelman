@@ -1,8 +1,9 @@
 # Brings the report-out workbook to the shipped Shipments definition:
-# USD = the cube's stored net amount, EUR = native cube EUR for EUR-currency
-# companies else USD at the month-end rate A. Rewrites the PBI amount columns
-# (BM/BN) from an executeQueries pull of the refreshed model, then syncs the
-# Notes results/counts/query listing and the RS Shipments block.
+# USD = the cube's stored net amount plus the back-ordered extended amount,
+# EUR = native cube EUR net + back-order for EUR-currency companies else the
+# USD total at the month-end rate A. Rewrites the PBI amount columns (BM/BN)
+# from an executeQueries pull of the refreshed model, then syncs the Notes
+# results/definitions/query listing and the RS Shipments FALSE explanations.
 import datetime
 import json
 import os
@@ -77,31 +78,20 @@ try:
 
     # ---- Notes ---------------------------------------------------------------
     nt = wb.Worksheets("Notes")
-    c5 = nt.Range("C5").Value
-    nt.Range("C5").Value = c5.replace(
-        "Shipments: 2,864 Cognos rows and 2,864 Power BI rows",
-        "Shipments: 2,865 Cognos rows and 2,867 Power BI rows")
     # query listing: clear the old block, copy the C126 format down, write anew
-    nt.Range("C126:C182").ClearContents()
+    nt.Range("C126:C185").ClearContents()
     nt.Range("C126").Copy()
     nt.Range(f"C126:C{126 + len(dax_lines) - 1}").PasteSpecial(-4122)  # formats
     xl.CutCopyMode = False
     nt.Range(f"C126:C{126 + len(dax_lines) - 1}").Value = [(l,) for l in dax_lines]
-    # derived-column grid: EUR report definition
-    nt.Range("L130").Value = ('IF ( Sales[LocalCurrency] = "EUR", Sales[AmountOrderNetEUR], '
-                              "DIVIDE ( Sales[AmountOrderNetUSD], [@EurToUsd] ) ) - native cube EUR, "
-                              "else USD at the month-end rate A of the GL date")
-
-    # ---- RS ------------------------------------------------------------------
-    rs = wb.Worksheets("RS")
-    rs.Range("A21").Value = ("Cognos 2865 = matched 2865 + Cognos-only 0;  "
-                             "PBI 2867 = matched 2865 + PBI-only 2")
-    # the two PBI-only rows replace the single '(none)' under 'in PBI but not in Cognos'
-    rs.Rows(26).Insert()
-    rs.Range("A25").Value = "00030 | 2770939 | 1"
-    rs.Range("B25").Value = "Order placed after the Cognos export - live drift, not a query difference"
-    rs.Range("A26").Value = "00030 | 2770974 | 1"
-    rs.Range("B26").Value = "Order placed after the Cognos export - live drift, not a query difference"
+    # derived-column grid: USD / EUR report definitions
+    nt.Range("L129").Value = ("Sales[AmountOrderNetUSD] + Sales[BackOrderedExtendedAmount] - the "
+                              "measure's base column plus the back-ordered value, which the cube "
+                              "holds separately from net")
+    nt.Range("L130").Value = ('IF ( Sales[LocalCurrency] = "EUR", Sales[AmountOrderNetEUR] + '
+                              "Sales[BackOrderedExtendedAmountEUR], DIVIDE ( Sales[AmountOrderNetUSD] "
+                              "+ Sales[BackOrderedExtendedAmount], [@EurToUsd] ) ) - native cube EUR "
+                              "net + back-order, else the USD total at the month-end rate A of the GL date")
 
     xl.Calculation = -4105  # automatic
     xl.CalculateFullRebuild()
@@ -127,19 +117,19 @@ try:
     eur_false = false_counts.get("Order Net Amount EUR", 0)
     nt.Range("C9").Value = (
         f"Shipments: 2865 of 2865 Cognos rows matched, 2 Power BI-only rows (orders placed after "
-        f"the Cognos export). Order Net Amount USD is the cube's stored net amount "
-        f"(net variance {usd_net_pct:+.2%}); EUR is the cube's native EUR for EUR-currency companies, "
-        f"otherwise USD at the month-end EUR/USD rate A of the GL date (net variance {eur_net_pct:+.2%}). "
-        f"The {usd_false} USD / {eur_false} EUR row-level FALSEs are rate-basis differences - Cognos "
-        f"re-converts every line at its own monthly rate - plus the two back-ordered lines, which "
-        f"carry 0 in the cube's net columns.")
-    # after the row-26 insert the old USD/EUR explanation rows sit at 28/29
+        f"the Cognos export). Order Net Amount USD is the cube's stored net amount plus the "
+        f"back-ordered extended amount (net variance {usd_net_pct:+.2%}); EUR is the cube's native "
+        f"EUR net plus back-order for EUR-currency companies, otherwise the USD total at the "
+        f"month-end EUR/USD rate A of the GL date (net variance {eur_net_pct:+.2%}). The "
+        f"{usd_false} USD / {eur_false} EUR row-level FALSEs are rate-basis differences - Cognos "
+        f"re-converts every line at its own monthly rate.")
+    rs = wb.Worksheets("RS")
     rs.Range("A28").Value = (f"Order Net Amount USD ({usd_false}): rate basis - Cognos re-converts at its own "
-                             f"monthly rate; the report carries the cube's stored USD. Includes the two "
-                             f"back-ordered lines (2645790-1, 26001448-1), 0 in the cube's net column.")
+                             f"monthly rate; the report carries the cube's stored USD plus back-order. The two "
+                             f"back-ordered lines (2645790-1, 26001448-1) now carry their value.")
     rs.Range("A29").Value = (f"Order Net Amount EUR ({eur_false}): rate basis - the report converts USD-company "
-                             f"lines at the cube's month-end rate A; Cognos uses its own monthly rate. "
-                             f"Includes the two back-ordered lines, 0 in the cube's net column.")
+                             f"lines (net + back-order) at the cube's month-end rate A; Cognos uses its own "
+                             f"monthly rate. EUR-company lines are the cube's native EUR net + back-order.")
     xl.CalculateFullRebuild()
 
     for attempt in range(5):

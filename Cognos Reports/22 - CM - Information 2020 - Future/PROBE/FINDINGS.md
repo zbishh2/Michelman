@@ -73,19 +73,24 @@ remaining Cognos filters are satisfied without being restated. All 2,840 Cognos 
 
 Columns:
 
-- **Order Net Amount USD** = `Sales[AmountOrderNetUSD]` — the base column of the cube's
-  `[Order Net Amt SPD USD]` measure, so this report shows the same numbers as every cube-based
-  report. Differences from Cognos, both accepted: rate basis (JDE order-time rate vs Cognos's
-  monthly `M` rate from its own FIN_CURRENCY_CONVERSION, which no SSAS rate kind matches exactly;
-  exact on ~1,916/2,704), and 2 back-ordered lines where the cube holds 0 (`AmountOrderNetUSD` is
-  zero when a line is back-ordered — `BackOrderedExtendedAmount` carries that value separately and
-  the measure does not include it). Plus 1 sign-flipped line (1581592). Row-level tie-out to the
-  cube is exact: same-instant totals 53,799,081.94 USD / 2,867 rows on both sides.
-- **Order Net Amount EUR** = native `Sales[AmountOrderNetEUR]` for EUR-currency companies;
-  USD-local companies (00010/00030), which the cube leaves blank — it only rates EUR-local
-  companies into EUR — convert as USD ÷ the month-end EUR/USD rate A of the GL date, matching
-  Cognos's every-line converted EUR column. ToRateA is one EUR→USD row per month end, 300 rows
-  2005-01..2029-12 (`15_uniqueness.dax`); the converted EUR lands within 1% of Cognos on
+- **Order Net Amount USD** = `Sales[AmountOrderNetUSD] + Sales[BackOrderedExtendedAmount]` — the
+  base column of the cube's `[Order Net Amt SPD USD]` measure plus the back-ordered value, which
+  the cube holds separately from net (`AmountOrderNetUSD` is zero when a line is back-ordered;
+  Cognos includes the back-ordered value, so the report adds it back — 2 lines carry it, and the
+  USD-local one, 2645790-1, ties Cognos to the cent). Remaining difference from Cognos, accepted:
+  rate basis (JDE order-time rate vs Cognos's monthly `M` rate from its own
+  FIN_CURRENCY_CONVERSION, which no SSAS rate kind matches exactly; exact on ~1,916/2,704). Plus
+  1 sign-flipped line (1581592). Same-instant total with back-order: 53,959,424.32 USD /
+  2,867 rows.
+- **Order Net Amount EUR** = native `Sales[AmountOrderNetEUR] + Sales[BackOrderedExtendedAmountEUR]`
+  for EUR-currency companies (the back-order EUR column is genuine EUR there — the EUR-local
+  back-ordered line 26001448-1 carries 40,500.00, tying Cognos exactly); USD-local companies
+  (00010/00030), which the cube leaves blank — it only rates EUR-local companies into EUR —
+  convert the USD total (net + back-order) ÷ the month-end EUR/USD rate A of the GL date, matching
+  Cognos's every-line converted EUR column. (`BackOrderedExtendedAmountEUR` is NOT trustworthy for
+  USD-local companies — it carries the USD amount there — which is why the USD-local branch
+  converts the USD total instead of touching it.) ToRateA is one EUR→USD row per month end, 300
+  rows 2005-01..2029-12 (`15_uniqueness.dax`); the converted EUR lands within 1% of Cognos on
   2,688/2,704 rows (RateM much worse). Residuals are rate-basis — Cognos converts at its own
   monthly rate from FIN_CURRENCY_CONVERSION, which no SSAS rate kind matches exactly.
 - **Raw Material Margin USD/EUR is not reproducible** from SSAS or EDW — Cognos needs the A1

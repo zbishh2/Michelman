@@ -121,7 +121,7 @@ table Shipments
 
 		annotation SummarizationSetBy = User
 
-	/// Line-grain input to [Order Net Amount USD]: the cube's net amount USD.
+	/// Line-grain input to [Order Net Amount USD]: the cube's net amount USD plus the back-ordered extended amount.
 	column 'Order Net Amount USD (Line)'
 		dataType: double
 		formatString: #,##0
@@ -134,7 +134,7 @@ table Shipments
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
-	/// Line-grain input to [Order Net Amount EUR]: native EUR for EUR-currency companies, otherwise USD at the month-end EUR/USD rate A of the GL date.
+	/// Line-grain input to [Order Net Amount EUR]: native EUR net plus back-order for EUR-currency companies, otherwise the USD total at the month-end EUR/USD rate A of the GL date.
 	column 'Order Net Amount EUR (Line)'
 		dataType: double
 		formatString: #,##0
@@ -299,8 +299,8 @@ table Shipments
 				        ""Description 2"", Sales[Description 2],
 				        ""Freight Handling Code"", Sales[Freight Handling Code],
 				        ""Next Status"", Sales[Status Code Next],
-				        ""Order Net Amount USD (Line)"", Sales[AmountOrderNetUSD],
-				        ""Order Net Amount EUR (Line)"", IF ( Sales[LocalCurrency] = ""EUR"", Sales[AmountOrderNetEUR], DIVIDE ( Sales[AmountOrderNetUSD], [@EurToUsd] ) ),
+				        ""Order Net Amount USD (Line)"", Sales[AmountOrderNetUSD] + Sales[BackOrderedExtendedAmount],
+				        ""Order Net Amount EUR (Line)"", IF ( Sales[LocalCurrency] = ""EUR"", Sales[AmountOrderNetEUR] + Sales[BackOrderedExtendedAmountEUR], DIVIDE ( Sales[AmountOrderNetUSD] + Sales[BackOrderedExtendedAmount], [@EurToUsd] ) ),
 				        ""Ordered Quantity LBs (Line)"", Sales[QuantityOrderedLB],
 				        ""Ordered Quantity KGs (Line)"", Sales[QuantityOrderedKG],
 				        ""Revenue Business Unit"", RELATED ( 'Revenue Business Unit'[RBU] ),

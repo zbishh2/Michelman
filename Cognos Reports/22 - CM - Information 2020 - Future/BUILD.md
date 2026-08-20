@@ -125,15 +125,14 @@ rows, accepted).
 PRICE_ORDER_SUMMARY drops call-in and vendor-return lines; the cube's "active order types" filter
 is **wrong** here — it also drops SA/SD lines Cognos keeps).
 
-Net USD = `AmountOrderNetUSD` — the cube's stored net amount, the base column of the cube's
-`[Order Net Amt SPD USD]` measure. Net EUR is the cube's native `AmountOrderNetEUR` for
+Net USD = `AmountOrderNetUSD + BackOrderedExtendedAmount` — the cube's stored net amount plus
+the back-ordered value, which the cube holds outside the net (2 lines carry it; Cognos includes
+them). Net EUR is the cube's native `AmountOrderNetEUR + BackOrderedExtendedAmountEUR` for
 EUR-currency companies; USD-local companies (00010/00030), which the cube does not rate into
-EUR, convert as USD ÷ the month-end EUR/USD rate A of the GL date (the cube's own
+EUR, convert the USD total ÷ the month-end EUR/USD rate A of the GL date (the cube's own
 `Currency Rates` table, one row per month end) — the same monthly conversion Cognos applies,
-so the column is populated on every line. Consequences, accepted: back-ordered lines show 0 in
-both columns (the cube carries that value in `BackOrderedExtendedAmount`, outside the net;
-2 lines), and amounts differ from Cognos at rate level — Cognos re-converts every line at its
-own monthly rate.
+so the column is populated on every line. Consequence, accepted: amounts differ from Cognos at
+rate level — Cognos re-converts every line at its own monthly rate.
 Cognos's Raw Material Margin USD/EUR columns are **not carried** (Dave Bubash: the
 report consumers do not need them); the candidate definitions are written up in
 `RAW_MATERIAL_MARGIN.md` for Dave / Greg / Rohit to review as cube measures — Cognos subtracts the
@@ -221,8 +220,8 @@ are `SUMMARIZE` over the visual's columns.
 | Item Details | 754 | 615 | −147 item-master `N/A` rows (excluded by decision), +8 CINC item-branches absent from the legacy DW; 607/607 branch rows match |
 
 Totals (Cognos → PBI): Receipts Amount Received 33,320,852 → 33,010,777 (the 10 rows above);
-Shipments Net USD 53,817,847 → 53,793,278 (−0.05%) and Net EUR 48,290,178 → 48,144,097 (−0.30%),
-both the rate/back-order classes in FINDINGS; Forecast
+Shipments Net USD 53,817,847 → 53,953,620 (+0.25%) and Net EUR 48,290,178 → 48,283,201 (−0.01%),
+both the rate class in FINDINGS; Forecast
 944,604 → 952,809 (+28 rows); WO Issued 5,683,534 → 5,683,534 **exact**, Ordered 7,715,170 →
 7,579,106 (legacy inflation); Item Details Safety Stock 26,160 both. Cognos's `-` and
 `Not Available` are legacy-warehouse defaults, not cube values, and PBI leaves those cells blank;
@@ -244,7 +243,7 @@ any refresh or Cognos re-pull.
 ## 5. Known, disclosed differences
 
 1. Receipts: 10 Cognos-only rows (§4). USD/EUR at the JDE transaction rate, not Cognos's monthly rate M.
-2. Shipments: Order Net Amount USD is the cube's stored net (back-ordered lines show 0); EUR is native cube EUR for EUR-currency companies, else USD at the cube's month-end rate A — residual differences vs Cognos are rate-basis (Cognos re-converts every line at its own monthly rate). Raw Material Margin USD/EUR not carried (Dave); definitions handed over in `RAW_MATERIAL_MARGIN.md`.
+2. Shipments: Order Net Amount USD is the cube's stored net plus the back-ordered extended amount; EUR is native cube EUR net + back-order for EUR-currency companies, else the USD total at the cube's month-end rate A — residual differences vs Cognos are rate-basis (Cognos re-converts every line at its own monthly rate). Raw Material Margin USD/EUR not carried (Dave); definitions handed over in `RAW_MATERIAL_MARGIN.md`.
 3. Forecast: first-of-month rows included; Revenue Business Unit omitted; TM Name looked up from EDW `TbTM_Max_Assignment` (FC else CS), the report's second EDW dependency.
 4. Work Orders: 7 legacy-only keys; 16 inflated legacy Ordered values; Year/Month blank (not 0) for open WOs.
 5. Item Details: 147 item-master `N/A` rows excluded; 8 CINC rows added; Planner Name `First Last` with diacritics.

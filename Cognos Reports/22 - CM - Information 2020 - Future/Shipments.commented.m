@@ -8,11 +8,13 @@
 // Source here is SSASPROD / BIQLTabular 'Sales'.
 //
 // Tie-out (PROBE/FINDINGS.md): 2,864 display rows = Cognos 2,864, exact.
-// Order Net Amount USD is the cube's stored net amount. Order Net Amount
-// EUR is the cube's native EUR for EUR-currency companies; for USD-local
-// companies (00010/00030), which the cube does not rate into EUR, it is
-// USD at the month-end EUR/USD rate A of the GL date - the same monthly
-// conversion the legacy report applies, so the column is populated on
+// Order Net Amount USD is the cube's stored net amount plus the back-ordered
+// extended amount, matching the legacy report's inclusion of back-ordered
+// lines. Order Net Amount EUR is the cube's native EUR net plus back-order
+// for EUR-currency companies; for USD-local companies (00010/00030), which
+// the cube does not rate into EUR, it is the USD total at the month-end
+// EUR/USD rate A of the GL date - the same monthly conversion the legacy
+// report applies, so the column is populated on
 // every line. 419 blank TMs = Cognos's 419 'Not Available'. Blanks stay
 // blank - the '-' and 'Not Available' in Cognos are legacy-warehouse
 // defaults, not cube values.
@@ -78,12 +80,14 @@ RETURN
         ""Description 2"", Sales[Description 2],
         ""Freight Handling Code"", Sales[Freight Handling Code],
         ""Next Status"", Sales[Status Code Next],
-        // USD is the cube's stored net amount. EUR is the cube's native EUR where the
-        // cube rates it (EUR-local companies 00020/00034); for USD-local companies the
-        // cube leaves EUR null, so the line converts at the month-end rate A of its GL
+        // USD is the cube's stored net amount plus the back-ordered extended amount -
+        // back-ordered lines carry their value in the BackOrdered columns, 0 in net.
+        // EUR is the cube's native EUR (net + back-order) where the cube rates it
+        // (EUR-local companies 00020/00034); for USD-local companies the cube leaves
+        // EUR null, so the USD total converts at the month-end rate A of its GL
         // date - the same monthly conversion the legacy report applies on every line.
-        ""Order Net Amount USD (Line)"", Sales[AmountOrderNetUSD],
-        ""Order Net Amount EUR (Line)"", IF ( Sales[LocalCurrency] = ""EUR"", Sales[AmountOrderNetEUR], DIVIDE ( Sales[AmountOrderNetUSD], [@EurToUsd] ) ),
+        ""Order Net Amount USD (Line)"", Sales[AmountOrderNetUSD] + Sales[BackOrderedExtendedAmount],
+        ""Order Net Amount EUR (Line)"", IF ( Sales[LocalCurrency] = ""EUR"", Sales[AmountOrderNetEUR] + Sales[BackOrderedExtendedAmountEUR], DIVIDE ( Sales[AmountOrderNetUSD] + Sales[BackOrderedExtendedAmount], [@EurToUsd] ) ),
         ""Ordered Quantity LBs (Line)"", Sales[QuantityOrderedLB],
         ""Ordered Quantity KGs (Line)"", Sales[QuantityOrderedKG],
         ""Revenue Business Unit"", RELATED ( 'Revenue Business Unit'[RBU] ),
