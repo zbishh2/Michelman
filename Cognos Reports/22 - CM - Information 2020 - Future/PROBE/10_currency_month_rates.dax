@@ -1,0 +1,15 @@
+// EUR->USD month-end rows of Currency Rates (one row per month)
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'Currency Rates',
+        'Currency Rates'[CurrencyCodeFrom] = "EUR" && 'Currency Rates'[CurrencyCodeTo] = "USD"
+            && 'Currency Rates'[CalendarDate] = 'Currency Rates'[PeriodEndDate]
+            && 'Currency Rates'[CalendarDate] >= DATE(2019,1,1)
+    ),
+    "PeriodEnd", 'Currency Rates'[PeriodEndDate],
+    "RateDaily", 'Currency Rates'[ToRateDaily],
+    "RateA", 'Currency Rates'[ToRateA],
+    "RateM", 'Currency Rates'[ToRateM],
+    "RateB", 'Currency Rates'[ToRateB]
+)

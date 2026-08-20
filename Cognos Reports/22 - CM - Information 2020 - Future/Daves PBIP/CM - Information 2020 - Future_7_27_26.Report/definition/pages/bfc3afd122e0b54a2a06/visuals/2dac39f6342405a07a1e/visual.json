@@ -1,0 +1,521 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "2dac39f6342405a07a1e",
+  "position": {
+    "x": 0,
+    "y": 64.543524416135881,
+    "z": 1000,
+    "height": 655.62632696390654,
+    "width": 1280,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Branch Company[Company]"
+                }
+              },
+              "queryRef": "Shipments.Branch Company[Company]",
+              "nativeQueryRef": "Company",
+              "displayName": "Company"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Branch[Branch Plant]"
+                }
+              },
+              "queryRef": "Shipments.Branch[Branch Plant]",
+              "nativeQueryRef": "Branch Plant",
+              "displayName": "Branch Plant"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shipments"
+                        }
+                      },
+                      "Property": "Sales[Order Num]"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Shipments.Sales[Order Num])",
+              "nativeQueryRef": "Order Num",
+              "displayName": "Order Num"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shipments"
+                        }
+                      },
+                      "Property": "Sales[Line Num]"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Shipments.Sales[Line Num])",
+              "nativeQueryRef": "Line Num",
+              "displayName": "Line Num"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Sales[Open Order Flag]"
+                }
+              },
+              "queryRef": "Shipments.Sales[Open Order Flag]",
+              "nativeQueryRef": "Open Indicator",
+              "displayName": "Open Indicator"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Item Branch[Item Global Bulk]"
+                }
+              },
+              "queryRef": "Shipments.Item Branch[Item Global Bulk]",
+              "nativeQueryRef": "Item Global Bulk",
+              "displayName": "Item Global Bulk"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Item Branch[Item Num Bulk]"
+                }
+              },
+              "queryRef": "Shipments.Item Branch[Item Num Bulk]",
+              "nativeQueryRef": "Item Num Bulk",
+              "displayName": "Item Num Bulk"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Item Branch[Item Num 2nd]"
+                }
+              },
+              "queryRef": "Shipments.Item Branch[Item Num 2nd]",
+              "nativeQueryRef": "Item Num 2nd",
+              "displayName": "Item Num 2nd"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Item Branch[Item Num 2nd Desc]"
+                }
+              },
+              "queryRef": "Shipments.Item Branch[Item Num 2nd Desc]",
+              "nativeQueryRef": "Description 01",
+              "displayName": "Description 01"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Sales[Freight Handling Code]"
+                }
+              },
+              "queryRef": "Shipments.Sales[Freight Handling Code]",
+              "nativeQueryRef": "Freight Handling Code",
+              "displayName": "Freight Handling Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Sales[Status Code Next]"
+                }
+              },
+              "queryRef": "Shipments.Sales[Status Code Next]",
+              "nativeQueryRef": "Status Next",
+              "displayName": "Status Next"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shipments"
+                        }
+                      },
+                      "Property": "[Order Net Amt SPD]"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Shipments.[Order Net Amt SPD])",
+              "nativeQueryRef": "Order Net Amt Local",
+              "displayName": "Order Net Amt Local"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shipments"
+                        }
+                      },
+                      "Property": "[Order Net Amt SPD USD]"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Shipments.[Order Net Amt SPD USD])",
+              "nativeQueryRef": "Order Net Amt USD",
+              "displayName": "Order Net Amt USD"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shipments"
+                        }
+                      },
+                      "Property": "[Qty Ordered SPD LB]"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Shipments.[Qty Ordered SPD LB])",
+              "nativeQueryRef": "Qty Ordered LB",
+              "displayName": "Qty Ordered LB"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Shipments"
+                        }
+                      },
+                      "Property": "[Qty Ordered SPD KG]"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Shipments.[Qty Ordered SPD KG])",
+              "nativeQueryRef": "Qty Ordered KG",
+              "displayName": "Qty Ordered KG"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Revenue Business Unit[RBU]"
+                }
+              },
+              "queryRef": "Shipments.Revenue Business Unit[RBU]",
+              "nativeQueryRef": "RBU",
+              "displayName": "RBU"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Territory Manager[Territory Manager]"
+                }
+              },
+              "queryRef": "Shipments.Territory Manager[Territory Manager]",
+              "nativeQueryRef": "TM Name",
+              "displayName": "TM Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Customer Ship To[Customer Ship To Name]"
+                }
+              },
+              "queryRef": "Shipments.Customer Ship To[Customer Ship To Name]",
+              "nativeQueryRef": "Customer Name",
+              "displayName": "Customer Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Customer Ship To[Country Desc]"
+                }
+              },
+              "queryRef": "Shipments.Customer Ship To[Country Desc]",
+              "nativeQueryRef": "Country Name",
+              "displayName": "Country Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Address[Global Parent Desc]"
+                }
+              },
+              "queryRef": "Shipments.Address[Global Parent Desc]",
+              "nativeQueryRef": "Global Parent Name",
+              "displayName": "Global Parent Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Sales[Promised Shipment Date]"
+                }
+              },
+              "queryRef": "Shipments.Sales[Promised Shipment Date]",
+              "nativeQueryRef": "Date",
+              "displayName": "Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Year"
+                }
+              },
+              "queryRef": "Shipments.Year",
+              "nativeQueryRef": "Year"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Month"
+                }
+              },
+              "queryRef": "Shipments.Month",
+              "nativeQueryRef": "Month"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Item Branch[Chemist Name]"
+                }
+              },
+              "queryRef": "Shipments.Item Branch[Chemist Name]",
+              "nativeQueryRef": "Chemist Name",
+              "displayName": "Chemist Name"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Shipments"
+                  }
+                },
+                "Property": "Sales[Freight Handling Code]"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "61.5272206303725D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Shipments.Branch[Branch Plant]"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "65.99140401146133D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Shipments.Sales[Open Order Flag]"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "94.90390413516434D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Shipments.Sales[Freight Handling Code]"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "86.52148997134671D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(Shipments.[Order Net Amt SPD])"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "92.05730659025788D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(Shipments.[Order Net Amt SPD USD])"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

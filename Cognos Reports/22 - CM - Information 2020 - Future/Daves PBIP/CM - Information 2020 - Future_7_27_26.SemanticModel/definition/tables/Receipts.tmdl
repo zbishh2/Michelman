@@ -1,0 +1,269 @@
+table Receipts
+	lineageTag: 15c40664-c290-413b-93eb-06773a6e06a6
+
+	column 'Purchase Order Receiver[ItemBranchSKey]'
+		dataType: int64
+		formatString: 0
+		lineageTag: 04fa584c-bd14-4d1a-9133-ab0134034f1c
+		summarizeBy: none
+		sourceColumn: Purchase Order Receiver[ItemBranchSKey]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supplier[Supplier Num]'
+		dataType: int64
+		formatString: 0
+		lineageTag: dcce2c63-3173-41c6-b337-ca15f216fdaa
+		summarizeBy: sum
+		sourceColumn: Supplier[Supplier Num]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supplier[Supplier Name]'
+		dataType: string
+		lineageTag: adb8105f-3d19-4547-a243-b515e0b95ba1
+		summarizeBy: none
+		sourceColumn: Supplier[Supplier Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Purchase Order Receiver[Document Num]'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3a255c3e-1ae2-4bc7-a496-d369f896af9e
+		summarizeBy: sum
+		sourceColumn: Purchase Order Receiver[Document Num]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Address[Global Parent Desc]'
+		dataType: string
+		lineageTag: 8d26acfc-fdf9-4e03-8409-e0df1d368384
+		summarizeBy: none
+		sourceColumn: Address[Global Parent Desc]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Supplier[City]
+		dataType: string
+		lineageTag: e5ed8cae-2091-45e9-b158-fe91f211a2d9
+		summarizeBy: none
+		sourceColumn: Supplier[City]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supplier[State Desc]'
+		dataType: string
+		lineageTag: f6145b97-cba2-483c-bea9-20f2025cc58f
+		summarizeBy: none
+		sourceColumn: Supplier[State Desc]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supplier[Postal Code]'
+		dataType: string
+		lineageTag: b6de3881-7c60-4863-8d49-81f6a0595013
+		summarizeBy: none
+		sourceColumn: Supplier[Postal Code]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supplier[Country Desc]'
+		dataType: string
+		lineageTag: 617a49ef-0d2b-44d0-9def-5bec4e40493c
+		summarizeBy: none
+		sourceColumn: Supplier[Country Desc]
+
+		annotation SummarizationSetBy = Automatic
+
+	column '[PO Rec Qty Received]'
+		dataType: double
+		lineageTag: db181e2a-c5c4-46d9-a544-f76f71ec0068
+		summarizeBy: sum
+		sourceColumn: [PO Rec Qty Received]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column '[PO Rec Amt Received]'
+		dataType: double
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 6cce2741-3193-41af-bbfe-c2477cb9c067
+		summarizeBy: sum
+		sourceColumn: [PO Rec Amt Received]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column 'Purchase Order Receiver[Received Date]'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ef323fb7-22d0-4d9e-86b5-1dbb7b87a269
+		summarizeBy: none
+		sourceColumn: Purchase Order Receiver[Received Date]
+
+		variation Variation
+			isDefault
+			relationship: f59a92f6-2173-4a05-b1f3-dd7c68a4fffb
+			defaultHierarchy: LocalDateTable_fd059faf-54f8-47df-a45b-172b3462c2ff.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: ecc0065b-fe47-4509-8821-8bfe18df388d
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 3f398654-59e6-4b4b-a17b-6b886b6a637a
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Address[Address Num]'
+		dataType: int64
+		formatString: 0
+		lineageTag: 11842b93-dcee-4248-aae2-0a48c02d5612
+		summarizeBy: sum
+		sourceColumn: Address[Address Num]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Purchase Order Receiver[Document Type]'
+		dataType: string
+		lineageTag: 18be7429-253c-4771-bde1-86077526be32
+		summarizeBy: none
+		sourceColumn: Purchase Order Receiver[Document Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Purchase Order Receiver[Address Num PO]'
+		dataType: int64
+		formatString: 0
+		lineageTag: cbd084e8-390b-49b5-ab2d-4ba1044fc7b0
+		summarizeBy: sum
+		sourceColumn: Purchase Order Receiver[Address Num PO]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Purchase Order Receiver[Landed Cost Code]'
+		dataType: string
+		lineageTag: b2623eb4-e2e9-4eb1-99dc-87ef124a0cdd
+		summarizeBy: none
+		sourceColumn: Purchase Order Receiver[Landed Cost Code]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Purchase Order Receiver[Order Type]'
+		dataType: string
+		lineageTag: 64faf2a6-4e68-4b93-9a84-351f8f5e237f
+		summarizeBy: none
+		sourceColumn: Purchase Order Receiver[Order Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Purchase Order Receiver[Order Num]'
+		dataType: int64
+		formatString: 0
+		lineageTag: 6ce8152f-1d95-4864-b4a7-e347b0798889
+		summarizeBy: sum
+		sourceColumn: Purchase Order Receiver[Order Num]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Purchase Order Receiver[UOM Primary]'
+		dataType: string
+		lineageTag: 8281a12d-7829-4e9a-8d3f-234be46e90b9
+		summarizeBy: none
+		sourceColumn: Purchase Order Receiver[UOM Primary]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Purchase Order Receiver[Line Num]'
+		dataType: double
+		lineageTag: 8ae0143c-6f46-46f0-8f85-59f43825e4a5
+		summarizeBy: sum
+		sourceColumn: Purchase Order Receiver[Line Num]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Purchase Order Receiver[Transaction Date]'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d764bc45-2068-4a01-843a-d34519be073d
+		summarizeBy: none
+		sourceColumn: Purchase Order Receiver[Transaction Date]
+
+		variation Variation
+			isDefault
+			relationship: f7f25e65-ac2e-4972-ba5b-01d03d4992b5
+			defaultHierarchy: LocalDateTable_4b2a08fe-15f9-4d6e-b655-e5e2675c16b5.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column '[PO Rec Qty Received LB]'
+		dataType: double
+		lineageTag: 71b9857d-3fa1-4c00-97a1-87e4edd90ea0
+		summarizeBy: sum
+		sourceColumn: [PO Rec Qty Received LB]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column '[PO Rec Qty Received KG]'
+		dataType: double
+		lineageTag: 7630f1a7-a457-40fb-8929-5d192b2c8117
+		summarizeBy: sum
+		sourceColumn: [PO Rec Qty Received KG]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column '[PO Rec Amt Received USD]'
+		dataType: double
+		lineageTag: b07a1603-6e76-48c8-9c4c-3eed8558b418
+		summarizeBy: sum
+		sourceColumn: [PO Rec Amt Received USD]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column '[PO Rec Amt Received EUR]'
+		dataType: double
+		lineageTag: c8379f65-ce2d-42fc-8687-07c7381ebee4
+		summarizeBy: sum
+		sourceColumn: [PO Rec Amt Received EUR]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Receipts = m
+		mode: import
+		source =
+				let
+				    PO = AnalysisServices.Database("ssasdev", "BIQLTabular", [Query="EVALUATE#(lf)SUMMARIZECOLUMNS (#(lf)    'Purchase Order Receiver'[ItemBranchSKey],#(lf)    'Purchase Order Receiver'[Document Type],#(lf)    'Supplier'[Supplier Num],#(lf)    'Supplier'[Supplier Name],#(lf)    'Purchase Order Receiver'[Document Num],#(lf)    'Purchase Order Receiver'[Received Date],#(lf)    'Address'[Global Parent Desc],#(lf)    'Address'[Address Num],#(lf)    'Supplier'[City],#(lf)    'Supplier'[State Desc],#(lf)    'Supplier'[Postal Code],#(lf)    'Supplier'[Country Desc],#(lf)    'Purchase Order Receiver'[Line Num],#(lf)    'Purchase Order Receiver'[Address Num PO],#(lf)    'Purchase Order Receiver'[Landed Cost Code],#(lf)    'Purchase Order Receiver'[Order Type],#(lf)    'Purchase Order Receiver'[Order Num],#(lf)    'Purchase Order Receiver'[UOM Primary],#(lf)    'Purchase Order Receiver'[Transaction Date],#(lf)    #(lf)    KEEPFILTERS( TREATAS( {292788,324808,328211,322114,331380,317501,327516,292774,301843,328143,322976,326444,324962,327267,326095}, 'Supplier'[Supplier Num] )),#(lf)#(tab)#(lf)#(tab)KEEPFILTERS( TREATAS( {""OV"", ""OW""}, 'Purchase Order Receiver'[Document Type] )),#(lf)    KEEPFILTERS( TREATAS( {""OP"",""OD""}, 'Purchase Order Receiver'[Order Type] )),#(lf)    KEEPFILTERS( TREATAS( {1}, 'Purchase Order Receiver'[Match Record Type] )), #(lf)#(lf)    FILTER (#(lf)        VALUES ( 'Purchase Order Receiver'[Received Date] ),#(lf)        'Purchase Order Receiver'[Received Date] >= DATE ( 2020, 1, 1 )#(lf)            && 'Purchase Order Receiver'[Received Date] <= TODAY ()#(lf)    ),#(lf)    #(lf)#(tab)KEEPFILTERS (#(lf)#(tab)    TREATAS (#(lf)#(tab)        VALUES ('Purchase Order Receiver'[Address Num PO] ),#(lf)#(tab)        Supplier[Supplier Num]#(lf)#(tab)    )#(lf)#(tab)),#(lf)#(tab)--KEEPFILTERS( TREATAS( {183928}, 'Purchase Order Receiver'[Document Num] )),#(lf)#(tab)#(lf)    ""PO Rec Qty Received"", [PO Rec Qty Received],#(lf)    ""PO Rec Amt Received"", [PO Rec Amt Received],#(lf)    ""PO Rec Qty Received LB"", [QuantityReceived_LBS_GLD],#(lf)    ""PO Rec Qty Received KG"",[QuantityReceived_KGS_GLD],#(lf)    ""PO Rec Amt Received USD"",[PO Rec Amt Received USD],#(lf)    ""PO Rec Amt Received EUR"",[PO Rec Amt Received EUR]#(lf))", Implementation="2.0"]),
+				    #"Added Custom" = Table.AddColumn(PO, "Year", each Date.Year([#"Purchase Order Receiver[Received Date]"])),
+				    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Month", each Date.Month([#"Purchase Order Receiver[Received Date]"])),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom1",{{"Year", Int64.Type}, {"Month", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

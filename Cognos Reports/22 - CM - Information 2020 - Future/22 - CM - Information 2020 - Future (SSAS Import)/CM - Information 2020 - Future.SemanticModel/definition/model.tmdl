@@ -1,0 +1,24 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Receipts", "Shipments", "Forecast", "TM Assignment", "Work Orders", "BOM", "Item Details", "Last Refreshed"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Receipts
+ref table Shipments
+ref table Forecast
+ref table 'TM Assignment'
+ref table 'Work Orders'
+ref table BOM
+ref table 'Item Details'
+ref table 'Last Refreshed'
+
+ref cultureInfo en-US

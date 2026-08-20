@@ -1,0 +1,130 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "72461238cd853029c943",
+  "position": {
+    "x": 0,
+    "y": 64.550143266475644,
+    "z": 4000,
+    "height": 655.77077363896854,
+    "width": 1280,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "BOM"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "BOM.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "BOM"
+                    }
+                  },
+                  "Property": "Parent 2nd Item Number"
+                }
+              },
+              "queryRef": "BOM.Parent 2nd Item Number",
+              "nativeQueryRef": "Parent 2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "BOM"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "BOM.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "BOM"
+                    }
+                  },
+                  "Property": "Bulk Item"
+                }
+              },
+              "queryRef": "BOM.Bulk Item",
+              "nativeQueryRef": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "BOM"
+                    }
+                  },
+                  "Property": "Global Bulk Item"
+                }
+              },
+              "queryRef": "BOM.Global Bulk Item",
+              "nativeQueryRef": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "BOM"
+                        }
+                      },
+                      "Property": "Component Quantity"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(BOM.Component Quantity)",
+              "nativeQueryRef": "Sum of Component Quantity"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "BOM"
+                  }
+                },
+                "Property": "Parent 2nd Item Number"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

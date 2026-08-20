@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "CM - Information 2020 - Future"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "3aef22cc-7921-580d-a664-f1bb8756fa3d"
+  }
+}

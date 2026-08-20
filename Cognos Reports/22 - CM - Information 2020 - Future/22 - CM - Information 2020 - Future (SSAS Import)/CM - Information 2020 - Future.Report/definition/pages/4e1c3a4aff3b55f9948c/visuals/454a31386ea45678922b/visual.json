@@ -1,0 +1,579 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "454a31386ea45678922b",
+  "position": {
+    "x": 8,
+    "y": 70,
+    "z": 0,
+    "height": 642,
+    "width": 1264
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Company Code"
+                }
+              },
+              "queryRef": "Forecast.Company Code",
+              "nativeQueryRef": "Company Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Forecast.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Global Bulk Item"
+                }
+              },
+              "queryRef": "Forecast.Global Bulk Item",
+              "nativeQueryRef": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Bulk Item"
+                }
+              },
+              "queryRef": "Forecast.Bulk Item",
+              "nativeQueryRef": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "Forecast.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Item Description 1"
+                }
+              },
+              "queryRef": "Forecast.Item Description 1",
+              "nativeQueryRef": "Item Description 1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Item Description 2"
+                }
+              },
+              "queryRef": "Forecast.Item Description 2",
+              "nativeQueryRef": "Item Description 2"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Requested Date"
+                }
+              },
+              "queryRef": "Forecast.Requested Date",
+              "nativeQueryRef": "Requested Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "TM Name"
+                }
+              },
+              "queryRef": "Forecast.TM Name",
+              "nativeQueryRef": "TM Name"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Current Forecast"
+                }
+              },
+              "queryRef": "Forecast.Current Forecast",
+              "nativeQueryRef": "Current Forecast"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Primary UOM"
+                }
+              },
+              "queryRef": "Forecast.Primary UOM",
+              "nativeQueryRef": "Primary UOM"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Current Forecast LB"
+                }
+              },
+              "queryRef": "Forecast.Current Forecast LB",
+              "nativeQueryRef": "Current Forecast LB"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Current Forecast KG"
+                }
+              },
+              "queryRef": "Forecast.Current Forecast KG",
+              "nativeQueryRef": "Current Forecast KG"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Date"
+                }
+              },
+              "queryRef": "Forecast.Date",
+              "nativeQueryRef": "Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Year"
+                }
+              },
+              "queryRef": "Forecast.Year",
+              "nativeQueryRef": "Year"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Month"
+                }
+              },
+              "queryRef": "Forecast.Month",
+              "nativeQueryRef": "Month"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Customer Code"
+                }
+              },
+              "queryRef": "Forecast.Customer Code",
+              "nativeQueryRef": "Customer Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Customer Name"
+                }
+              },
+              "queryRef": "Forecast.Customer Name",
+              "nativeQueryRef": "Customer Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Global Parent Name"
+                }
+              },
+              "queryRef": "Forecast.Global Parent Name",
+              "nativeQueryRef": "Global Parent Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Forecast"
+                    }
+                  },
+                  "Property": "Chemist Name"
+                }
+              },
+              "queryRef": "Forecast.Chemist Name",
+              "nativeQueryRef": "Chemist Name"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Forecast"
+                  }
+                },
+                "Property": "Global Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Forecast"
+                  }
+                },
+                "Property": "Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Forecast"
+                  }
+                },
+                "Property": "2nd Item Number"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnFormatting": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Forecast.Requested Date"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Forecast.Date"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Forecast.Year"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Forecast.Month"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Forecast.Customer Code"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

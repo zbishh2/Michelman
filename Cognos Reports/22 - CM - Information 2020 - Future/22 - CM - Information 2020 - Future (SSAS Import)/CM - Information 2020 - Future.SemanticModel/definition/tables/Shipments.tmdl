@@ -1,0 +1,313 @@
+/// Sales lines for the 70 CM bulk items since 2020, SSASPROD / BIQLTabular 'Sales'.
+table Shipments
+	lineageTag: 8c6563fa-597c-56fa-951d-50a9929ddf9c
+
+	measure 'Order Net Amount USD' = SUM ( Shipments[Order Net Amount USD (Line)] )
+		formatString: #,##0
+		lineageTag: 3584783b-3cb1-5aac-816d-13e4b07a6a8b
+
+	measure 'Order Net Amount EUR' = SUM ( Shipments[Order Net Amount EUR (Line)] )
+		formatString: #,##0
+		lineageTag: 4f3bc9b6-67ca-5a23-9fa8-386dd4d0c2e4
+
+	measure 'Ordered Quantity LBs' = SUM ( Shipments[Ordered Quantity LBs (Line)] )
+		formatString: #,##0
+		lineageTag: b2900b7b-2c3a-5fdd-b2ec-9e8a8595c6b2
+
+	measure 'Ordered Quantity KGs' = SUM ( Shipments[Ordered Quantity KGs (Line)] )
+		formatString: #,##0
+		lineageTag: de77aee2-62c2-5234-8e2b-d0d7d7886f44
+
+	/// Carries leading zeros ('00010'); stays text.
+	column 'Order Company'
+		dataType: string
+		lineageTag: dc41f039-b8d8-562e-906c-1cd41b1737b3
+		summarizeBy: none
+		sourceColumn: Order Company
+
+		annotation SummarizationSetBy = User
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 39d00cf4-5df3-50c5-b7ef-1a6647e80764
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = User
+
+	/// Identifier - never aggregate.
+	column 'Order Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 76f2be28-98f4-5780-87ad-e0a8ea801c3b
+		summarizeBy: none
+		sourceColumn: Order Number
+
+		annotation SummarizationSetBy = User
+
+	/// Identifier - never aggregate.
+	column 'Line Number'
+		dataType: double
+		lineageTag: 6da29ba1-ff4e-5801-9d73-1719f5a3af5c
+		summarizeBy: none
+		sourceColumn: Line Number
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Open Indicator'
+		dataType: string
+		lineageTag: 134b208d-dedc-52cb-947b-99f2a72973d7
+		summarizeBy: none
+		sourceColumn: Open Indicator
+
+		annotation SummarizationSetBy = User
+
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: da794c59-2d15-520e-af2f-1acbec652c05
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = User
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: 220fc6ca-0561-51bf-83af-30654674d96e
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = User
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: ea82b0ef-58e1-53a5-ba76-0795bcc9fb25
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = User
+
+	column 'Description 1'
+		dataType: string
+		lineageTag: 6c7bd1d9-3c90-5080-8766-6c5ef795fd39
+		summarizeBy: none
+		sourceColumn: Description 1
+
+		annotation SummarizationSetBy = User
+
+	/// Blank where the sales line carries none (the legacy warehouse shows '-').
+	column 'Description 2'
+		dataType: string
+		lineageTag: b3cd59fa-0cdb-5570-bc3b-7e69a822418c
+		summarizeBy: none
+		sourceColumn: Description 2
+
+		annotation SummarizationSetBy = User
+
+	column 'Freight Handling Code'
+		dataType: string
+		lineageTag: 35e7d473-2ee6-5f30-9a5c-f603c8a33f84
+		summarizeBy: none
+		sourceColumn: Freight Handling Code
+
+		annotation SummarizationSetBy = User
+
+	column 'Next Status'
+		dataType: string
+		lineageTag: b07b2ca8-3d72-5812-821a-2f97abd32b64
+		summarizeBy: none
+		sourceColumn: Next Status
+
+		annotation SummarizationSetBy = User
+
+	/// Line-grain input to [Order Net Amount USD]: net amount USD plus the back-ordered extended amount.
+	column 'Order Net Amount USD (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: 71b06371-800d-5136-919a-a65bec5fb603
+		summarizeBy: none
+		sourceColumn: Order Net Amount USD (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Line-grain input to [Order Net Amount EUR]: native EUR for EUR-currency companies, otherwise USD at the month-end EUR/USD rate A of the GL date.
+	column 'Order Net Amount EUR (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: 5a6c0fdf-162e-5bf4-ad44-cbf6d77dc3b6
+		summarizeBy: none
+		sourceColumn: Order Net Amount EUR (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Line-grain input to [Ordered Quantity LBs].
+	column 'Ordered Quantity LBs (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: cb559e9a-79ea-5c30-896a-a90ebccd9012
+		summarizeBy: none
+		sourceColumn: Ordered Quantity LBs (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Line-grain input to [Ordered Quantity KGs].
+	column 'Ordered Quantity KGs (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: eb6ea5e0-a6c9-5a08-87e6-407d77c8df9a
+		summarizeBy: none
+		sourceColumn: Ordered Quantity KGs (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Revenue Business Unit'
+		dataType: string
+		lineageTag: c940509a-e5cd-556a-9981-75be92b58a28
+		summarizeBy: none
+		sourceColumn: Revenue Business Unit
+
+		annotation SummarizationSetBy = User
+
+	/// Territory manager on the sales line; blank where it carries none (the legacy warehouse shows 'Not Available').
+	column 'TM Name'
+		dataType: string
+		lineageTag: 3c34cef9-9421-5695-b53b-6b01c2e5eca6
+		summarizeBy: none
+		sourceColumn: TM Name
+
+		annotation SummarizationSetBy = User
+
+	column 'Customer Name'
+		dataType: string
+		lineageTag: 1a7a2dbb-a87d-51a6-9583-dc562ae08383
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+		annotation SummarizationSetBy = User
+
+	column 'Country Name'
+		dataType: string
+		lineageTag: de1cf8bc-c689-58bc-a1c5-ef20228c5210
+		summarizeBy: none
+		sourceColumn: Country Name
+
+		annotation SummarizationSetBy = User
+
+	column 'Global Parent Name'
+		dataType: string
+		lineageTag: b7a3458c-37c4-53cc-9e2d-499ee5729950
+		summarizeBy: none
+		sourceColumn: Global Parent Name
+
+		annotation SummarizationSetBy = User
+
+	/// Promised ship date.
+	column Date
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: 317ca887-9c96-5868-a584-bad875abca9c
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = User
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: b63319ee-3500-5077-bd09-2d025ed5dc51
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = User
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: c7a1dbf4-e1ef-5f6b-8199-40a31958dfdb
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = User
+
+	column 'Chemist Name'
+		dataType: string
+		lineageTag: 6bf4c494-05e0-5a52-b1b4-28edc5591d40
+		summarizeBy: none
+		sourceColumn: Chemist Name
+
+		annotation SummarizationSetBy = User
+
+	partition Shipments = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				VAR Bulks = { ""161017CX"", ""161190PX"", ""171143PX"", ""171228PX.E"", ""181020CX.E"", ""181136IX"", ""181192IX"", ""181193EU.E"", ""191011CX"", ""191026CX.E"", ""191245PX"", ""23409A"", ""ABEX2525"", ""APT10"", ""APT11"", ""DMAEMA"", ""EMA3065"", ""ET2012.E"", ""ET2022.E"", ""ET4075.E"", ""ET440.E"", ""FERSUL7W"", ""HP1432AT"", ""HP1632"", ""MD4020"", ""MD4020C"", ""MD4020S"", ""MD4021"", ""MD4021C"", ""MD4021S"", ""MD4022"", ""MD4022C"", ""MD4023"", ""MD4023C"", ""MDU20"", ""MDU2012.E"", ""MDU2012B.E"", ""MDU4075.E"", ""MDU4075B.E"", ""MDU440.E"", ""MDU440B.E"", ""MPEG2000"", ""MW40504"", ""MW40514"", ""NP4LF"", ""NP4LF.S"", ""OMS"", ""PUD1.E"", ""STODSO"", ""U1001"", ""U101"", ""U201"", ""U2022"", ""U2022EU.E"", ""U2023"", ""U204"", ""U204EU.E"", ""U470"", ""U501"", ""U501B"", ""U502"", ""U502.E"", ""U502X1.E"", ""U601"", ""U701"", ""U802"", ""U802.E"", ""WAV501"", ""WD40"", ""WD40T"" }
+				VAR Lines =
+				    FILTER (
+				        Sales,
+				        TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) ) IN Bulks
+				            && Sales[Promised Shipment Date] >= DATE ( 2020, 1, 1 )
+				            && Sales[Cancelled_Flag] = 0
+				            && NOT Sales[Order Type] IN { ""SB"", ""SR"" }
+				    )
+				RETURN
+				    SELECTCOLUMNS (
+				        Lines,
+				        ""Order Company"", Sales[Order Company],
+				        ""Branch Plant"", TRIM ( Sales[BusinessUnit] ),
+				        ""Order Number"", Sales[Order Num],
+				        ""Line Number"", Sales[Line Num],
+				        ""Open Indicator"", Sales[Open Order Flag],
+				        ""Global Bulk Item"", RELATED ( 'Item Branch'[Item Global Bulk] ),
+				        ""Bulk Item"", RELATED ( 'Item Branch'[Item Bulk] ),
+				        ""2nd Item Number"", Sales[Item Num 2nd],
+				        ""Description 1"", Sales[Description 1],
+				        ""Description 2"", Sales[Description 2],
+				        ""Freight Handling Code"", Sales[Freight Handling Code],
+				        ""Next Status"", Sales[Status Code Next],
+				        ""Order Net Amount USD (Line)"", Sales[AmountOrderNetUSD],
+				        ""Order Net Amount EUR (Line)"", Sales[AmountOrderNetEUR],
+				        ""Ordered Quantity LBs (Line)"", Sales[QuantityOrderedLB],
+				        ""Ordered Quantity KGs (Line)"", Sales[QuantityOrderedKG],
+				        ""Revenue Business Unit"", RELATED ( 'Revenue Business Unit'[RBU] ),
+				        ""TM Name"", RELATED ( 'Territory Manager'[Mailing Name] ),
+				        ""Customer Name"", RELATED ( 'Customer Ship To'[Customer Ship To Name] ),
+				        ""Country Name"", RELATED ( 'Customer Ship To'[Country Desc] ),
+				        ""Global Parent Name"", RELATED ( Customer[Global Parent Name] ),
+				        ""Date"", Sales[Promised Shipment Date],
+				        ""Year"", YEAR ( Sales[Promised Shipment Date] ),
+				        ""Month"", MONTH ( Sales[Promised Shipment Date] ),
+				        ""Chemist Name"", RELATED ( 'Item Branch'[Chemist Name] )
+				    )
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,97 @@
+table ItemBranch
+	lineageTag: fa200241-3494-4c0e-aa95-9320fe5b2182
+
+	column 'Item Branch[Item Global Bulk]'
+		dataType: string
+		lineageTag: 5b040854-1fd3-4938-b418-d5b001363386
+		summarizeBy: none
+		sourceColumn: Item Branch[Item Global Bulk]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Item Bulk]'
+		dataType: string
+		lineageTag: a11881a9-8a45-47b7-a661-d833e9593122
+		summarizeBy: none
+		sourceColumn: Item Branch[Item Bulk]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Item Num 2nd]'
+		dataType: string
+		lineageTag: 2a28f03b-4e18-4576-bee6-fbef030e541f
+		summarizeBy: none
+		sourceColumn: Item Branch[Item Num 2nd]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Stocking Type]'
+		dataType: string
+		lineageTag: afec99c8-60c6-47d2-ad7c-9e0c118a4d5a
+		summarizeBy: none
+		sourceColumn: Item Branch[Stocking Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Commodity Class Codes]'
+		dataType: string
+		lineageTag: fd7ee05c-4216-4b28-bfac-8ab2184631f6
+		summarizeBy: none
+		sourceColumn: Item Branch[Commodity Class Codes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Commodity Class Codes Desc]'
+		dataType: string
+		lineageTag: 36eb952f-4330-40c7-9b00-778cd313a4a0
+		summarizeBy: none
+		sourceColumn: Item Branch[Commodity Class Codes Desc]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Commodity Sub Class Codes]'
+		dataType: string
+		lineageTag: aace5611-f33d-4dd9-9a48-2fb0b78036e7
+		summarizeBy: none
+		sourceColumn: Item Branch[Commodity Sub Class Codes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Commodity Sub Class Codes Desc]'
+		dataType: string
+		lineageTag: 5131499a-ef9f-4667-b180-c03749e07b87
+		summarizeBy: none
+		sourceColumn: Item Branch[Commodity Sub Class Codes Desc]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Master Planning Family]'
+		dataType: string
+		lineageTag: 5b4578ae-3c66-4f40-b6a0-784c1299c277
+		summarizeBy: none
+		sourceColumn: Item Branch[Master Planning Family]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[ItemBranchSKey]'
+		dataType: int64
+		formatString: 0
+		lineageTag: 05601496-d006-4ee7-a80d-4d92e6e3cd4c
+		summarizeBy: none
+		sourceColumn: Item Branch[ItemBranchSKey]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ItemBranch = m
+		mode: import
+		source =
+				let
+				    ItemBranch = AnalysisServices.Database("ssasdev", "BIQLTabular", [Query="EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Item Branch'[Item Global Bulk],#(lf)    'Item Branch'[Item Bulk],#(lf)    'Item Branch'[Item Num 2nd],#(lf)    'Item Branch'[Stocking Type],#(lf)    'Item Branch'[Commodity Class Codes],#(lf)    'Item Branch'[Commodity Class Codes Desc],#(lf)    'Item Branch'[Commodity Sub Class Codes],#(lf)    'Item Branch'[Commodity Sub Class Codes Desc],#(lf)    'Item Branch'[Master Planning Family],#(lf)    'Item Branch'[ItemBranchSKey]#(lf))", Implementation="2.0"]),
+				    #"Filtered Rows" = Table.SelectRows(ItemBranch, each [#"Item Branch[ItemBranchSKey]"] <> null and [#"Item Branch[ItemBranchSKey]"] <> "")
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,38 @@
+// Probe 1 — Receipts: which Purchase Order Receiver rows are the Cognos Receiving rows?
+// Cognos: VENDOR_ID in 15-list, date >= 2020-01-01; sheet shows only OV/OW txn types, OP/OD order types.
+EVALUATE
+VAR V = { 292788, 324808, 328211, 322114, 331380, 317501, 327516, 292774, 301843, 328143, 322976, 326444, 324962, 327267, 326095 }
+VAR R =
+    FILTER (
+        'Purchase Order Receiver',
+        ( RELATED ( Supplier[Supplier Num] ) IN V || 'Purchase Order Receiver'[Address Num PO] IN V )
+            && ( 'Purchase Order Receiver'[Transaction Date] >= DATE ( 2020, 1, 1 )
+                || 'Purchase Order Receiver'[Received Date] >= DATE ( 2020, 1, 1 ) )
+    )
+VAR G =
+    GROUPBY (
+        ADDCOLUMNS (
+            R,
+            "SupInList", IF ( RELATED ( Supplier[Supplier Num] ) IN V, "Y", "N" ),
+            "PoInList", IF ( 'Purchase Order Receiver'[Address Num PO] IN V, "Y", "N" ),
+            "TxnGe2020", IF ( 'Purchase Order Receiver'[Transaction Date] >= DATE ( 2020, 1, 1 ), "Y", "N" ),
+            "TxnEqRecv", IF ( 'Purchase Order Receiver'[Transaction Date] = 'Purchase Order Receiver'[Received Date], "Y", "N" )
+        ),
+        'Purchase Order Receiver'[Match Record Type],
+        'Purchase Order Receiver'[Document Type],
+        'Purchase Order Receiver'[Order Type],
+        [SupInList], [PoInList], [TxnGe2020], [TxnEqRecv],
+        "n", COUNTX ( CURRENTGROUP (), 1 ),
+        "qty", SUMX ( CURRENTGROUP (), 'Purchase Order Receiver'[QuantityReceived] ),
+        "usd", SUMX ( CURRENTGROUP (), 'Purchase Order Receiver'[AmountReceivedUSD] ),
+        "eur", SUMX ( CURRENTGROUP (), 'Purchase Order Receiver'[AmountReceivedEUR] )
+    )
+RETURN
+    SELECTCOLUMNS (
+        G,
+        "MatchType", 'Purchase Order Receiver'[Match Record Type],
+        "DocType", 'Purchase Order Receiver'[Document Type],
+        "OrdType", 'Purchase Order Receiver'[Order Type],
+        "SupInList", [SupInList], "PoInList", [PoInList], "TxnGe2020", [TxnGe2020], "TxnEqRecv", [TxnEqRecv],
+        "n", [n], "qty", [qty], "usd", [usd], "eur", [eur]
+    )

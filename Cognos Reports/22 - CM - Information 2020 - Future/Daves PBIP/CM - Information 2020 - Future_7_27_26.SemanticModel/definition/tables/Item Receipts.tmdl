@@ -1,0 +1,184 @@
+table 'Item Receipts'
+	lineageTag: d2dc0178-e5b9-4cb5-818c-64ebe14bafee
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: a52fd2e1-265b-4029-ac3d-1dc4e73e0d4e
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Global Bulk'
+		dataType: string
+		lineageTag: 16068343-6413-46e4-90b1-8a1939e53daf
+		summarizeBy: none
+		sourceColumn: Item Global Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Bulk'
+		dataType: string
+		lineageTag: 81b89b7c-ed4c-4a9a-899d-314b0f12a467
+		summarizeBy: none
+		sourceColumn: Item Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Num 2nd'
+		dataType: string
+		lineageTag: c86f24a8-b1a2-4348-b007-799cf0bf1ac6
+		summarizeBy: none
+		sourceColumn: Item Num 2nd
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stocking Type'
+		dataType: string
+		lineageTag: 8f856226-0f76-4141-adc0-7ddc54a79914
+		summarizeBy: none
+		sourceColumn: Stocking Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Master Planning Family'
+		dataType: string
+		lineageTag: 6d9bbd3f-d1a2-4b05-aab5-39bf9eb733e0
+		summarizeBy: none
+		sourceColumn: Master Planning Family
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lead time Level'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7b2527be-18f0-47c5-bdd8-1fb8d368d80c
+		summarizeBy: sum
+		sourceColumn: Lead time Level
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Lead Time MFG_BP'
+		dataType: int64
+		formatString: 0
+		lineageTag: 39d9a85a-4bd5-44b3-9499-19964878a43d
+		summarizeBy: sum
+		sourceColumn: Lead Time MFG_BP
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Planning Code'
+		dataType: string
+		lineageTag: 79dc9d58-13e4-45e4-9a95-246ae289ae73
+		summarizeBy: none
+		sourceColumn: Planning Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Planning Time Fence Days'
+		dataType: int64
+		formatString: 0
+		lineageTag: c91a6f5e-c6ea-43ea-b409-6f78e8cc950e
+		summarizeBy: sum
+		sourceColumn: Planning Time Fence Days
+
+		annotation SummarizationSetBy = Automatic
+
+	column SafetyStock
+		dataType: double
+		lineageTag: a85b8507-9d58-4bff-8f66-51503ae7bbfa
+		summarizeBy: sum
+		sourceColumn: SafetyStock
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Shelf Life Days'
+		dataType: int64
+		formatString: 0
+		lineageTag: 60196ae7-c47d-42b6-9e52-c2cdd132874f
+		summarizeBy: sum
+		sourceColumn: Shelf Life Days
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supplier Num'
+		dataType: int64
+		formatString: 0
+		lineageTag: f1bd55d9-aaed-4027-86ef-8f9eb2c865ed
+		summarizeBy: sum
+		sourceColumn: Supplier Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supplier Name'
+		dataType: string
+		lineageTag: b5f1eb66-5ea5-40fd-84ff-a460383f9231
+		summarizeBy: none
+		sourceColumn: Supplier Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Planner Num'
+		dataType: int64
+		formatString: 0
+		lineageTag: 983b1fea-1ca6-47b3-9134-ce915a985830
+		summarizeBy: sum
+		sourceColumn: Planner Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Planner Name'
+		dataType: string
+		lineageTag: 3521bcef-b6d6-48fe-870d-01513289b20a
+		summarizeBy: none
+		sourceColumn: Planner Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Buyer Name'
+		dataType: string
+		lineageTag: dc406459-62a4-4ade-8749-09f608f736b0
+		summarizeBy: none
+		sourceColumn: Buyer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Item Receipts' = m
+		mode: import
+		source =
+				let
+				    #"Item Receipts" = AnalysisServices.Database("ssasprod", "BIQLTabular", [Query="DEFINE#(lf)#(tab)VAR __DS0FilterTable = #(lf)#(tab)#(tab)FILTER(#(lf)#(tab)#(tab)#(tab)KEEPFILTERS(VALUES('Branch'[Branch Plant])),#(lf)#(tab)#(tab)#(tab)NOT(SEARCH(""LAB"", 'Branch'[Branch Plant], 1, 0) >= 1)#(lf)#(tab)#(tab))#(lf)#(lf)#(tab)VAR __DS0FilterTable2 = #(lf)#(tab)#(tab)TREATAS({""161017CX"",""161190PX"",""171143PX"",""171228PX.E"",""181193EU.E"",""181193EU.E"",""181193EU.E"",""191245PX"",""APT10"",""APT11"",""DMAEMA"",""EMA3065"",""FERSUL7W"",""HP1432AT"",""HP1632"",""MD4020"",""MD4020"",""MD4020C"",""MD4021"",""MD4021"",""MD4021C"",""MD4022C"",""MD4023"",""MD4023C"",""MDU2012.E"",""MDU2012B.E"",""MDU2012B.E"",""MDU20"",""MDU4075.E"",""MDU4075.E"",""MDU4075B.E"",""MDU4075B.E"",""MDU440.E"",""MDU440B.E"",""MDU440B.E"",""MW40504"",""MW40514"",""NP4LF.S"",""PUD1.E"",""STODSO"",""U1001"",""U101"",""U201"",""U201"",""U2022"",""U204"",""U470"",""U501B"",""U501"",""U502.E"",""U502.E"",""U502"",""U601"",""U701"",""U802.E"",""WAV501"",""WD40"",""WD40""}, 'Item Branch'[Item Bulk])#(lf)#(lf)#(tab)VAR __DS0Core = #(lf)#(tab)#(tab)SELECTCOLUMNS(#(lf)#(tab)#(tab)#(tab)KEEPFILTERS(#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)KEEPFILTERS(#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)SUMMARIZECOLUMNS(#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Branch'[Branch Plant],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Item Global Bulk],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Item Bulk],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Item Num 2nd],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Stocking Type],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Master Planning Family],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Lead time Level],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Lead Time MFG_BP],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Planning Code],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Planning Time Fence Days],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[SafetyStock],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Shelf Life Days],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Supplier'[Supplier Num],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Supplier'[Supplier Name],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Planner Num],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Planner Name],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Buyer Name],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)__DS0FilterTable,#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)__DS0FilterTable2,#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)""CountRowsPurchase_Order_Detail"", COUNTROWS('Purchase Order Detail'),#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab)""CountRowsPurchase_Order_Receiver"", COUNTROWS('Purchase Order Receiver')#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(tab))#(lf)#(tab)#(tab)#(tab)#(tab)#(tab))#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)#(lf)#(tab)#(tab)#(tab)),#(lf)#(tab)#(tab)#(tab)""'Branch'[Branch Plant]"", 'Branch'[Branch Plant],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Item Global Bulk]"", 'Item Branch'[Item Global Bulk],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Item Bulk]"", 'Item Branch'[Item Bulk],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Item Num 2nd]"", 'Item Branch'[Item Num 2nd],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Stocking Type]"", 'Item Branch'[Stocking Type],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Master Planning Family]"", 'Item Branch'[Master Planning Family],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Lead time Level]"", 'Item Branch'[Lead time Level],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Lead Time MFG_BP]"", 'Item Branch'[Lead Time MFG_BP],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Planning Code]"", 'Item Branch'[Planning Code],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Planning Time Fence Days]"", 'Item Branch'[Planning Time Fence Days],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[SafetyStock]"", 'Item Branch'[SafetyStock],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Shelf Life Days]"", 'Item Branch'[Shelf Life Days],#(lf)#(tab)#(tab)#(tab)""'Supplier'[Supplier Num]"", 'Supplier'[Supplier Num],#(lf)#(tab)#(tab)#(tab)""'Supplier'[Supplier Name]"", 'Supplier'[Supplier Name],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Planner Num]"", 'Item Branch'[Planner Num],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Planner Name]"", 'Item Branch'[Planner Name],#(lf)#(tab)#(tab)#(tab)""'Item Branch'[Buyer Name]"", 'Item Branch'[Buyer Name]#(lf)#(tab)#(tab))#(lf)#(lf)#(tab)VAR __DS0PrimaryWindowed = #(lf)#(tab)#(tab)TOPN(#(lf)#(tab)#(tab)#(tab)501,#(lf)#(tab)#(tab)#(tab)__DS0Core,#(lf)#(tab)#(tab)#(tab)'Branch'[Branch Plant],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Item Global Bulk],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Item Bulk],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Item Num 2nd],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Stocking Type],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Master Planning Family],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Lead time Level],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Lead Time MFG_BP],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Planning Code],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Planning Time Fence Days],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[SafetyStock],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Shelf Life Days],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Supplier'[Supplier Num],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Supplier'[Supplier Name],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Planner Num],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Planner Name],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Buyer Name],#(lf)#(tab)#(tab)#(tab)1#(lf)#(tab)#(tab))#(lf)#(lf)EVALUATE#(lf)#(tab)__DS0PrimaryWindowed#(lf)#(lf)ORDER BY#(lf)#(tab)'Branch'[Branch Plant],#(lf)#(tab)'Item Branch'[Item Global Bulk],#(lf)#(tab)'Item Branch'[Item Bulk],#(lf)#(tab)'Item Branch'[Item Num 2nd],#(lf)#(tab)'Item Branch'[Stocking Type],#(lf)#(tab)'Item Branch'[Master Planning Family],#(lf)#(tab)'Item Branch'[Lead time Level],#(lf)#(tab)'Item Branch'[Lead Time MFG_BP],#(lf)#(tab)'Item Branch'[Planning Code],#(lf)#(tab)'Item Branch'[Planning Time Fence Days],#(lf)#(tab)'Item Branch'[SafetyStock],#(lf)#(tab)'Item Branch'[Shelf Life Days],#(lf)#(tab)'Supplier'[Supplier Num],#(lf)#(tab)'Supplier'[Supplier Name],#(lf)#(tab)'Item Branch'[Planner Num],#(lf)#(tab)'Item Branch'[Planner Name],#(lf)#(tab)'Item Branch'[Buyer Name]", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(
+				    #"Item Receipts",
+				    {
+				        {"Branch[Branch Plant]", "Branch Plant"},
+				        {"Item Branch[Item Global Bulk]", "Item Global Bulk"},
+				        {"Item Branch[Item Bulk]", "Item Bulk"},
+				        {"Item Branch[Item Num 2nd]", "Item Num 2nd"},
+				        {"Item Branch[Stocking Type]", "Stocking Type"},
+				        {"Item Branch[Master Planning Family]", "Master Planning Family"},
+				        {"Item Branch[Lead time Level]", "Lead time Level"},
+				        {"Item Branch[Lead Time MFG_BP]", "Lead Time MFG_BP"},
+				        {"Item Branch[Planning Code]", "Planning Code"},
+				        {"Item Branch[Planning Time Fence Days]", "Planning Time Fence Days"},
+				        {"Item Branch[SafetyStock]", "SafetyStock"},
+				        {"Item Branch[Shelf Life Days]", "Shelf Life Days"},
+				        {"Supplier[Supplier Num]", "Supplier Num"},
+				        {"Supplier[Supplier Name]", "Supplier Name"},
+				        {"Item Branch[Planner Num]", "Planner Num"},
+				        {"Item Branch[Planner Name]", "Planner Name"},
+				        {"Item Branch[Buyer Name]", "Buyer Name"},
+				        {"CountRowsPurchase_Order_Detail", "CountRowsPurchase_Order_Detail"},
+				        {"CountRowsPurchase_Order_Receiver", "CountRowsPurchase_Order_Receiver"}
+				    },
+				    MissingField.Ignore
+				)
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

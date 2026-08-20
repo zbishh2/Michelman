@@ -1,0 +1,205 @@
+Sch,Tbl,Ord,Col,Typ
+BIQL,DimBillOfMaterial,1,BillOfMaterialSKey,int
+BIQL,DimBillOfMaterial,2,ParentItemSKey,int
+BIQL,DimBillOfMaterial,3,ParentCompanySKey,int
+BIQL,DimBillOfMaterial,4,ParentBusinessUnitSKey,int
+BIQL,DimBillOfMaterial,5,ParentItemBranchSKey,int
+BIQL,DimBillOfMaterial,6,ComponentItemSKey,int
+BIQL,DimBillOfMaterial,7,ComponentCompanySKey,int
+BIQL,DimBillOfMaterial,8,ComponentBusinessUnitSKey,int
+BIQL,DimBillOfMaterial,9,ComponentItemBranchSKey,int
+BIQL,DimBillOfMaterial,10,UOMSKey,int
+BIQL,DimBillOfMaterial,11,UOMTransactionSKey,int
+BIQL,DimBillOfMaterial,12,TypeBillofMaterial,nchar
+BIQL,DimBillOfMaterial,13,TypeBillofMaterialDesc,nvarchar
+BIQL,DimBillOfMaterial,14,ParentItemNumShort,int
+BIQL,DimBillOfMaterial,15,Branch,nchar
+BIQL,DimBillOfMaterial,16,SubstituteItemSequenceNum,decimal
+BIQL,DimBillOfMaterial,17,CoByProductsIntermediate,nchar
+BIQL,DimBillOfMaterial,18,ComponentLineNumBOM,decimal
+BIQL,DimBillOfMaterial,19,BillRevisionLevel,nchar
+BIQL,DimBillOfMaterial,20,ComponentBranch,nchar
+BIQL,DimBillOfMaterial,21,ComponentCostingMethod,nchar
+BIQL,DimBillOfMaterial,22,ComponentCostingMethodPurch,nchar
+BIQL,DimBillOfMaterial,23,ComponentItemNumShort,int
+BIQL,DimBillOfMaterial,24,ComponentLineNum,decimal
+BIQL,DimBillOfMaterial,25,ComponentType,nchar
+BIQL,DimBillOfMaterial,26,ComponentTypeDesc,nvarchar
+BIQL,DimBillOfMaterial,27,Description1,nvarchar
+BIQL,DimBillOfMaterial,28,ECONum,nchar
+BIQL,DimBillOfMaterial,29,EngineeringChangeReason,nchar
+BIQL,DimBillOfMaterial,30,FixedorVariableBatchSize,nchar
+BIQL,DimBillOfMaterial,31,IssueTypeCode,nchar
+BIQL,DimBillOfMaterial,32,ItemNumUseUpGoTo,int
+BIQL,DimBillOfMaterial,33,LastRevisionNo,nchar
+BIQL,DimBillOfMaterial,34,LineType,nchar
+BIQL,DimBillOfMaterial,35,PartialsAllowedYN,nchar
+BIQL,DimBillOfMaterial,36,SequenceNumOperations,decimal
+BIQL,DimBillOfMaterial,37,UOM,nchar
+BIQL,DimBillOfMaterial,38,UOMTransaction,nchar
+BIQL,DimBillOfMaterial,39,EffectiveFromDate,date
+BIQL,DimBillOfMaterial,40,EffectiveFromDateID,int
+BIQL,DimBillOfMaterial,41,EffectiveThruDate,date
+BIQL,DimBillOfMaterial,42,EffectiveThruDateID,int
+BIQL,DimBillOfMaterial,43,EngineeringChangeDate,date
+BIQL,DimBillOfMaterial,44,EngineeringChangeDateID,int
+BIQL,DimBillOfMaterial,45,AmountUnitCost,decimal
+BIQL,DimBillOfMaterial,46,AmountUnitPricePerPrimary,decimal
+BIQL,DimBillOfMaterial,47,PercentAsIs,decimal
+BIQL,DimBillOfMaterial,48,PercentCumulativePlannedYield,decimal
+BIQL,DimBillOfMaterial,49,PercentOfScrap,decimal
+BIQL,DimBillOfMaterial,50,PercentOperationScrap,decimal
+BIQL,DimBillOfMaterial,51,PercentResource,decimal
+BIQL,DimBillOfMaterial,52,PercentRework,decimal
+BIQL,DimBillOfMaterial,53,QuantityBatch,decimal
+BIQL,DimBillOfMaterial,54,QuantityStandardRequired,decimal
+BIQL,DimBillOfMaterial,55,DWEffectiveFromDateDW,date
+BIQL,DimBillOfMaterial,56,DWEffectiveThruDateDW,date
+BIQL,DimBillOfMaterial,57,ParentItemNum2nd,nvarchar
+BIQL,DimBillOfMaterial,58,ParentItemNum3rd,nvarchar
+BIQL,DimBillOfMaterial,59,QuantityStandardRequired_TM1,decimal
+BIQL,DimBillOfMaterial,60,DWIsCurrent,int
+BIQL,DimBillOfMaterial,61,DWLoadDate,datetime
+BIQL,DimBillOfMaterial,62,DWSource,int
+dbo,DimBillOfMaterial,1,BillOfMaterialSKey,int
+dbo,DimBillOfMaterial,2,ParentItemSKey,int
+dbo,DimBillOfMaterial,3,ParentCompanySKey,int
+dbo,DimBillOfMaterial,4,ParentBusinessUnitSKey,int
+dbo,DimBillOfMaterial,5,ParentItemBranchSKey,int
+dbo,DimBillOfMaterial,6,ComponentItemSKey,int
+dbo,DimBillOfMaterial,7,ComponentCompanySKey,int
+dbo,DimBillOfMaterial,8,ComponentBusinessUnitSKey,int
+dbo,DimBillOfMaterial,9,ComponentItemBranchSKey,int
+dbo,DimBillOfMaterial,10,UOMSKey,int
+dbo,DimBillOfMaterial,11,UOMTransactionSKey,int
+dbo,DimBillOfMaterial,12,TypeBillofMaterial,nchar
+dbo,DimBillOfMaterial,13,TypeBillofMaterialDesc,nvarchar
+dbo,DimBillOfMaterial,14,ParentItemNumShort,int
+dbo,DimBillOfMaterial,15,Branch,nchar
+dbo,DimBillOfMaterial,16,SubstituteItemSequenceNum,decimal
+dbo,DimBillOfMaterial,17,QuantityBatch,decimal
+dbo,DimBillOfMaterial,18,CoByProductsIntermediate,nchar
+dbo,DimBillOfMaterial,19,ComponentLineNumBOM,decimal
+dbo,DimBillOfMaterial,20,BillRevisionLevel,nchar
+dbo,DimBillOfMaterial,21,ComponentBranch,nchar
+dbo,DimBillOfMaterial,22,ComponentCostingMethod,nchar
+dbo,DimBillOfMaterial,23,ComponentCostingMethodPurch,nchar
+dbo,DimBillOfMaterial,24,ComponentItemNumShort,int
+dbo,DimBillOfMaterial,25,ComponentLineNum,decimal
+dbo,DimBillOfMaterial,26,ComponentType,nchar
+dbo,DimBillOfMaterial,27,ComponentTypeDesc,nvarchar
+dbo,DimBillOfMaterial,28,Description1,nvarchar
+dbo,DimBillOfMaterial,29,ECONum,nchar
+dbo,DimBillOfMaterial,30,EngineeringChangeReason,nchar
+dbo,DimBillOfMaterial,31,FixedorVariableBatchSize,nchar
+dbo,DimBillOfMaterial,32,IssueTypeCode,nchar
+dbo,DimBillOfMaterial,33,ItemNumUseUpGoTo,int
+dbo,DimBillOfMaterial,34,LastRevisionNo,nchar
+dbo,DimBillOfMaterial,35,LineType,nchar
+dbo,DimBillOfMaterial,36,PartialsAllowedYN,nchar
+dbo,DimBillOfMaterial,37,SequenceNumOperations,decimal
+dbo,DimBillOfMaterial,38,UOM,nchar
+dbo,DimBillOfMaterial,39,UOMTransaction,nchar
+dbo,DimBillOfMaterial,40,EffectiveFromDate,date
+dbo,DimBillOfMaterial,41,EffectiveFromDateID,int
+dbo,DimBillOfMaterial,42,EffectiveThruDate,date
+dbo,DimBillOfMaterial,43,EffectiveThruDateID,int
+dbo,DimBillOfMaterial,44,EngineeringChangeDate,date
+dbo,DimBillOfMaterial,45,EngineeringChangeDateID,int
+dbo,DimBillOfMaterial,46,AmountUnitCost,decimal
+dbo,DimBillOfMaterial,47,AmountUnitPricePerPrimary,decimal
+dbo,DimBillOfMaterial,48,PercentAsIs,decimal
+dbo,DimBillOfMaterial,49,PercentCumulativePlannedYield,decimal
+dbo,DimBillOfMaterial,50,PercentOfScrap,decimal
+dbo,DimBillOfMaterial,51,PercentOperationScrap,decimal
+dbo,DimBillOfMaterial,52,PercentResource,decimal
+dbo,DimBillOfMaterial,53,PercentRework,decimal
+dbo,DimBillOfMaterial,54,QuantityStandardRequired,decimal
+dbo,DimBillOfMaterial,55,EffectiveFromDateDW,date
+dbo,DimBillOfMaterial,56,EffectiveThruDateDW,date
+dbo,DimBillOfMaterial,57,IsCurrent,int
+dbo,DimBillOfMaterial,58,LoadDate,datetime
+dbo,DimBillOfMaterial,59,Source,int
+dbo,DimBillOfMaterial,60,ParentItemNum2nd,nvarchar
+dbo,DimBillOfMaterial,61,ParentItemNum3rd,nvarchar
+dbo,DimBillOfMaterial,62,QuantityStandardRequired_TM1,decimal
+dbo,DimBillOfMaterial,63,Identifier2nd_Item,nvarchar
+BIQL,DimBillOfMaterialExpanded,1,TypeBillofMaterial,nchar
+BIQL,DimBillOfMaterialExpanded,2,ParentCompanySKey,int
+BIQL,DimBillOfMaterialExpanded,3,ParentBusinessUnitSKey,int
+BIQL,DimBillOfMaterialExpanded,4,ParentItemSKey,int
+BIQL,DimBillOfMaterialExpanded,5,ParentItemBranchSKey,int
+BIQL,DimBillOfMaterialExpanded,6,ParentInterimItemSKey,int
+BIQL,DimBillOfMaterialExpanded,7,InterimItemSKey,int
+BIQL,DimBillOfMaterialExpanded,8,InterimItemBranchSKey,int
+BIQL,DimBillOfMaterialExpanded,9,ComponentBusinessUnitSKey,int
+BIQL,DimBillOfMaterialExpanded,10,ComponentItemSKey,int
+BIQL,DimBillOfMaterialExpanded,11,ComponentItemBranchSKey,int
+BIQL,DimBillOfMaterialExpanded,12,ChildUOM,nchar
+BIQL,DimBillOfMaterialExpanded,13,OriginalQuantity,numeric
+BIQL,DimBillOfMaterialExpanded,14,ParentQuantity,numeric
+BIQL,DimBillOfMaterialExpanded,15,ComponentQuantity,numeric
+BIQL,DimBillOfMaterialExpanded,16,RollingMultiplierParent,decimal
+BIQL,DimBillOfMaterialExpanded,17,AmountUnitCost,decimal
+BIQL,DimBillOfMaterialExpanded,18,BOMEffectiveFromDate,date
+BIQL,DimBillOfMaterialExpanded,19,BOMEffectiveThruDate,date
+BIQL,DimBillOfMaterialExpanded,20,ChildBOMLevel,int
+BIQL,DimBillOfMaterialExpanded,21,CalendarDate,date
+BIQL,DimBillOfMaterialExpanded,22,IsInterimItem,int
+BIQL,TbBillOfMaterialExpanded,1,Type Bill of Material,nchar
+BIQL,TbBillOfMaterialExpanded,2,ParentCompanySKey,int
+BIQL,TbBillOfMaterialExpanded,3,ParentBusinessUnitSKey,int
+BIQL,TbBillOfMaterialExpanded,4,ParentItemSKey,int
+BIQL,TbBillOfMaterialExpanded,5,ParentItemBranchSKey,int
+BIQL,TbBillOfMaterialExpanded,6,InterimItemSKey,int
+BIQL,TbBillOfMaterialExpanded,7,InterimItemBranchSKey,int
+BIQL,TbBillOfMaterialExpanded,8,ComponentBusinessUnitSKey,int
+BIQL,TbBillOfMaterialExpanded,9,ComponentItemSKey,int
+BIQL,TbBillOfMaterialExpanded,10,ComponentItemBranchSKey,int
+BIQL,TbBillOfMaterialExpanded,11,Child UOM,nchar
+BIQL,TbBillOfMaterialExpanded,12,BOM Effective From Date,date
+BIQL,TbBillOfMaterialExpanded,13,BOM Effective Thru Date,date
+BIQL,TbBillOfMaterialExpanded,14,Component BOM Level,int
+BIQL,TbBillOfMaterialExpanded,15,CalendarDate,date
+BIQL,TbBillOfMaterialExpanded,16,Parent Item,nvarchar
+BIQL,TbBillOfMaterialExpanded,17,Item Num 2nd,nvarchar
+BIQL,TbBillOfMaterialExpanded,18,Parent Item Desc,nvarchar
+BIQL,TbBillOfMaterialExpanded,19,Parent Stocking Type,nchar
+BIQL,TbBillOfMaterialExpanded,20,Parent Stocking Type Desc,nvarchar
+BIQL,TbBillOfMaterialExpanded,21,Parent Branch,nvarchar
+BIQL,TbBillOfMaterialExpanded,22,Parent Branch Desc,nvarchar
+BIQL,TbBillOfMaterialExpanded,23,Business Unit from Item Master,nchar
+BIQL,TbBillOfMaterialExpanded,24,Business Unit from Item Master Desc,nvarchar
+BIQL,TbBillOfMaterialExpanded,25,Interim Item,nvarchar
+BIQL,TbBillOfMaterialExpanded,26,Component Item Num 2nd,nvarchar
+BIQL,TbBillOfMaterialExpanded,27,Component Item Desc,nvarchar
+BIQL,TbBillOfMaterialExpanded,28,Component Stocking Type,nchar
+BIQL,TbBillOfMaterialExpanded,29,Component Stocking Type Desc,nvarchar
+BIQL,TbBillOfMaterialExpanded,30,Component Branch,nvarchar
+BIQL,TbBillOfMaterialExpanded,31,Component Branch Desc,nvarchar
+BIQL,TbBillOfMaterialExpanded,32,OriginalQuantity,numeric
+BIQL,TbBillOfMaterialExpanded,33,ParentQuantity,numeric
+BIQL,TbBillOfMaterialExpanded,34,ComponentQuantity,numeric
+BIQL,TbBillOfMaterialExpanded,35,ComponentCost,decimal
+BIQL,TbBillOfMaterialExpanded,36,PurchasingCost,decimal
+BIQL,TbBillOfMaterialExpanded,37,WeightedAvgCost,decimal
+BIQL,TbBillOfMaterialExpanded,38,StandardCost,decimal
+BIQL,TbBillOfMaterialExpanded,39,CostChanges,decimal
+BIQL,TbBillOfMaterialExpanded,40,ComponentPurchasingCostValue,numeric
+BIQL,TbBillOfMaterialExpanded,41,ComponentWeightedAvgCostValue,numeric
+BIQL,TbBillOfMaterialExpanded,42,ComponentStandardCostValue,numeric
+BIQL,TbBillOfMaterialExpanded,43,ComponentCostChangesValue,numeric
+BIQL,TbBillOfMaterialExpanded,44,LaborUnitCost,numeric
+BIQL,TbBillOfMaterialExpanded,45,MachineUnitCost,numeric
+BIQL,TbBillOfMaterialExpanded,46,OverheadUnitCost,numeric
+BIQL,TbBillOfMaterialExpanded,47,TotalCost,numeric
+BIQL,TbBillOfMaterialExpanded,48,A1_Cost,numeric
+BIQL,TbBillOfMaterialExpanded,49,B1_Cost,numeric
+BIQL,TbBillOfMaterialExpanded,50,C1_Cost,numeric
+BIQL,TbBillOfMaterialExpanded,51,C2_Cost,numeric
+BIQL,TbBillOfMaterialExpanded,52,A1_B1_C1_C2_Cost,numeric
+BIQL,TbBillOfMaterialExpanded,53,CostComponent,nchar
+BIQL,TbBillOfMaterialExpanded,54,AmountFrozenCost,numeric
+BIQL,TbBillOfMaterialExpanded,55,CostMethod,nchar
+BIQL,TbBillOfMaterialExpanded,56,AmountUnitCost,decimal
+BIQL,TbBillOfMaterialExpanded,57,IsInterimItem,int

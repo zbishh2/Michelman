@@ -1,0 +1,11 @@
+// Customer rows for a handful of forecast customers, plus the RBU dimension rows Cognos reported.
+EVALUATE
+UNION(
+SELECTCOLUMNS(FILTER(Customer, RELATED('Address'[Address Num]) IN {301301, 26449, 321432, 342667, 342996, 316392}),
+  "Kind", "Customer", "K1", RELATED('Address'[Address Num]), "K2", Customer[Company], "A", Customer[AddressSKey], "B", Customer[Sales Business Unit], "C", Customer[Business Unit], "D", Customer[Primary Sales Rep Code], "E", Customer[Primary Sales Rep Name], "F", Customer[Primary Sales Rep], "G", Customer[Region], "H", Customer[Sales Business], "I", Customer[Business Group Description], "J", Customer[Account Owner], "L", Customer[Mailing Name]),
+SELECTCOLUMNS(FILTER('Revenue Business Unit', 'Revenue Business Unit'[RBU] IN {"10220","10240","20220","20240","30240","34240"}),
+  "Kind", "RBU", "K1", 'Revenue Business Unit'[BusinessUnitHeaderSKey], "K2", 'Revenue Business Unit'[RBU], "A", 0, "B", 'Revenue Business Unit'[RBU Desc], "C", 'Revenue Business Unit'[RBU Type], "D", 'Revenue Business Unit'[RBU Company], "E", 'Revenue Business Unit'[RBU Division], "F", 'Revenue Business Unit'[RBU Territory], "G", 'Revenue Business Unit'[RBU Grouping], "H", "", "I", "", "J", "", "L", ""),
+SELECTCOLUMNS(FILTER('Business Unit', 'Business Unit'[Business Unit] IN {"10220","10240","20220","20240","30240","34240"} || 'Business Unit'[BusinessUnitSKey] IN {2,6,14,18}),
+  "Kind", "BU", "K1", 'Business Unit'[BusinessUnitSKey], "K2", 'Business Unit'[Business Unit], "A", 0, "B", 'Business Unit'[Business Unit Desc], "C", 'Business Unit'[Business Unit Type], "D", 'Business Unit'[Level of Detail], "E", 'Business Unit'[Division], "F", 'Business Unit'[Territory], "G", 'Business Unit'[Grouping], "H", 'Business Unit'[Business Unit Parent], "I", 'Business Unit'[Region], "J", 'Business Unit'[Bulk Production Work Center], "L", 'Business Unit'[Supervisor Name]),
+SELECTCOLUMNS(ROW("x",1), "Kind", "Count", "K1", COUNTROWS(Customer), "K2", "", "A", COUNTROWS('Revenue Business Unit'), "B", "", "C", "", "D", "", "E", "", "F", "", "G", "", "H", "", "I", "", "J", "", "L", "")
+)

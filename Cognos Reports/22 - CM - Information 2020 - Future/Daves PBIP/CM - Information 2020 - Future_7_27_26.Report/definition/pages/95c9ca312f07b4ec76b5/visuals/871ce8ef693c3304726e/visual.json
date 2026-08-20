@@ -1,0 +1,509 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "871ce8ef693c3304726e",
+  "position": {
+    "x": 0,
+    "y": 64.543524416135881,
+    "z": 1000,
+    "height": 655.62632696390654,
+    "width": 1280,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ItemBranch"
+                    }
+                  },
+                  "Property": "Item Branch[Item Global Bulk]"
+                }
+              },
+              "queryRef": "ItemBranch.Item Branch[Item Global Bulk]",
+              "nativeQueryRef": "Item Global Bulk",
+              "displayName": "Item Global Bulk"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ItemBranch"
+                    }
+                  },
+                  "Property": "Item Branch[Item Bulk]"
+                }
+              },
+              "queryRef": "ItemBranch.Item Branch[Item Bulk]",
+              "nativeQueryRef": "Item Bulk",
+              "displayName": "Item Bulk"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ItemBranch"
+                    }
+                  },
+                  "Property": "Item Branch[Item Num 2nd]"
+                }
+              },
+              "queryRef": "ItemBranch.Item Branch[Item Num 2nd]",
+              "nativeQueryRef": "Item Num 2nd",
+              "displayName": "Item Num 2nd"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Supplier[Supplier Name]"
+                }
+              },
+              "queryRef": "PO.Supplier[Supplier Name]",
+              "nativeQueryRef": "Supplier",
+              "displayName": "Supplier"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Supplier[Supplier Num]"
+                }
+              },
+              "queryRef": "Sum(PO.Supplier[Supplier Num])",
+              "nativeQueryRef": "Supplier #",
+              "displayName": "Supplier #"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "[PO Rec Qty Received]"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(PO.[PO Rec Qty Received])",
+              "nativeQueryRef": "Qty Received",
+              "displayName": "Qty Received"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "[PO Rec Qty Received KG]"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(PO.[PO Rec Qty Received KG])",
+              "nativeQueryRef": "Qty Received KG",
+              "displayName": "Qty Received KG"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "[PO Rec Qty Received LB]"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(PO.[PO Rec Qty Received LB])",
+              "nativeQueryRef": "Qty Received LB",
+              "displayName": "Qty Received LB"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Purchase Order Receiver[Document Type]"
+                }
+              },
+              "queryRef": "PO.Purchase Order Receiver[Document Type]",
+              "nativeQueryRef": "Receipt Transaction Type",
+              "displayName": "Receipt Transaction Type"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Purchase Order Receiver[Transaction Date]"
+                }
+              },
+              "queryRef": "PO.Purchase Order Receiver[Transaction Date]",
+              "nativeQueryRef": "Receipt Transaction Date",
+              "displayName": "Receipt Transaction Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Purchase Order Receiver[Order Type]"
+                }
+              },
+              "queryRef": "PO.Purchase Order Receiver[Order Type]",
+              "nativeQueryRef": "Order Type",
+              "displayName": "Order Type"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Purchase Order Receiver[Document Num]"
+                }
+              },
+              "queryRef": "Sum(PO.Purchase Order Receiver[Document Num])",
+              "nativeQueryRef": "Purchase Order Receiver[Document Num]",
+              "displayName": "Document #"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "[PO Rec Amt Received]"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(PO.[PO Rec Amt Received])",
+              "nativeQueryRef": "Amt Received",
+              "displayName": "Amt Received"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "[PO Rec Amt Received USD]"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(PO.[PO Rec Amt Received USD])",
+              "nativeQueryRef": "Amt Received USD",
+              "displayName": "Amt Received USD"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "[PO Rec Amt Received EUR]"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(PO.[PO Rec Amt Received EUR])",
+              "nativeQueryRef": "Amt Received EUR",
+              "displayName": "Amt Received EUR"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Purchase Order Receiver[Received Date]"
+                }
+              },
+              "queryRef": "PO.Purchase Order Receiver[Received Date]",
+              "nativeQueryRef": "Purchase Order Receiver[Received Date]"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Year"
+                }
+              },
+              "queryRef": "PO.Year",
+              "nativeQueryRef": "Year"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Month"
+                }
+              },
+              "queryRef": "PO.Month",
+              "nativeQueryRef": "Month"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Receipts"
+                  }
+                },
+                "Property": "Year"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Receipts"
+                  }
+                },
+                "Property": "Month"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "ItemBranch"
+                  }
+                },
+                "Property": "Item Branch[Item Global Bulk]"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "ItemBranch"
+                  }
+                },
+                "Property": "Item Branch[Item Bulk]"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "ItemBranch"
+                  }
+                },
+                "Property": "Item Branch[Item Num 2nd]"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {},
+          "selector": {
+            "metadata": "ItemBranch.Item Branch[Item Global Bulk]"
+          }
+        },
+        {
+          "properties": {},
+          "selector": {
+            "metadata": "ItemBranch.Item Branch[Item Num 2nd]"
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "b5380f4d03698703fa62",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "ItemBranch"
+              }
+            },
+            "Property": "Item Branch[Item Global Bulk]"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "i",
+              "Entity": "ItemBranch",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "i"
+                              }
+                            },
+                            "Property": "Item Branch[Item Global Bulk]"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'#BASEB'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'¿ 231005FX'"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "CM - Information 2020 - Future_7_27_26"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "71d77192-350f-498a-99e1-4116a272c1db"
+  }
+}

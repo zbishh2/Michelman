@@ -1,0 +1,21 @@
+// Probe 3a — the 7 Cognos receipt rows absent from the supplier-filtered pull: any supplier, any match type.
+EVALUATE
+SELECTCOLUMNS (
+    FILTER (
+        'Purchase Order Receiver',
+        'Purchase Order Receiver'[Document Num] IN { 228157, 228158, 223259, 223260, 216534, 214584, 26001558 }
+            || 'Purchase Order Receiver'[Order Num] IN { 228157, 228158, 223259, 223260, 216534, 214584, 26001558 }
+    ),
+    "MatchType", 'Purchase Order Receiver'[Match Record Type],
+    "DocType", 'Purchase Order Receiver'[Document Type],
+    "OrdType", 'Purchase Order Receiver'[Order Type],
+    "OrderNum", 'Purchase Order Receiver'[Order Num],
+    "DocNum", 'Purchase Order Receiver'[Document Num],
+    "LineNum", 'Purchase Order Receiver'[Line Num],
+    "RecvDate", 'Purchase Order Receiver'[Received Date],
+    "SupplierNum", RELATED ( Supplier[Supplier Num] ),
+    "AddrPO", 'Purchase Order Receiver'[Address Num PO],
+    "Item2nd", RELATED ( 'Item Branch'[Item Num 2nd] ),
+    "Qty", 'Purchase Order Receiver'[QuantityReceived],
+    "USD", 'Purchase Order Receiver'[AmountReceivedUSD]
+)

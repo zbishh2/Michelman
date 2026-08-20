@@ -1,0 +1,58 @@
+// Probe 3 — Receipts residuals: the 7 Cognos rows absent from the supplier-filtered pull, any supplier / any match type,
+// plus the UOM picture for every Match Type 1 row of the 15 suppliers (is Cognos "Received Quantity" the primary-UOM quantity?).
+EVALUATE
+VAR V = { 292788, 324808, 328211, 322114, 331380, 317501, 327516, 292774, 301843, 328143, 322976, 326444, 324962, 327267, 326095 }
+VAR Missing =
+    SELECTCOLUMNS (
+        FILTER (
+            'Purchase Order Receiver',
+            'Purchase Order Receiver'[Document Num] IN { 228157, 228158, 223259, 223260, 216534, 214584, 26001558 }
+                || 'Purchase Order Receiver'[Order Num] IN { 228157, 228158, 223259, 223260, 216534, 214584, 26001558 }
+        ),
+        "Kind", "missing",
+        "MatchType", 'Purchase Order Receiver'[Match Record Type],
+        "DocType", 'Purchase Order Receiver'[Document Type],
+        "OrdType", 'Purchase Order Receiver'[Order Type],
+        "OrderNum", 'Purchase Order Receiver'[Order Num],
+        "DocNum", 'Purchase Order Receiver'[Document Num],
+        "LineNum", 'Purchase Order Receiver'[Line Num],
+        "RecvDate", 'Purchase Order Receiver'[Received Date],
+        "SupplierNum", RELATED ( Supplier[Supplier Num] ),
+        "AddrPO", 'Purchase Order Receiver'[Address Num PO],
+        "Item2nd", RELATED ( 'Item Branch'[Item Num 2nd] ),
+        "UOMTxn", 'Purchase Order Receiver'[UOM Transaction],
+        "UOMPrim", 'Purchase Order Receiver'[UOM Primary],
+        "UOMPurch", 'Purchase Order Receiver'[UOM Purchasing],
+        "IBUOMPrim", RELATED ( 'Item Branch'[UOM Primary] ),
+        "Qty", 'Purchase Order Receiver'[QuantityReceived],
+        "QtyLB", 'Purchase Order Receiver'[QuantityReceivedLB],
+        "QtyKG", 'Purchase Order Receiver'[QuantityReceivedKG],
+        "USD", 'Purchase Order Receiver'[AmountReceivedUSD],
+        "n", 1
+    )
+VAR UOM =
+    SELECTCOLUMNS (
+        GROUPBY (
+            FILTER (
+                'Purchase Order Receiver',
+                RELATED ( Supplier[Supplier Num] ) IN V
+                    && 'Purchase Order Receiver'[Received Date] >= DATE ( 2020, 1, 1 )
+                    && 'Purchase Order Receiver'[Match Record Type] = "1"
+            ),
+            'Purchase Order Receiver'[UOM Transaction],
+            'Purchase Order Receiver'[UOM Primary],
+            'Purchase Order Receiver'[UOM Purchasing],
+            "cnt", COUNTX ( CURRENTGROUP (), 1 )
+        ),
+        "Kind", "uom",
+        "MatchType", "", "DocType", "", "OrdType", "", "OrderNum", 0, "DocNum", 0, "LineNum", 0.0, "RecvDate", BLANK (),
+        "SupplierNum", 0, "AddrPO", 0, "Item2nd", "",
+        "UOMTxn", 'Purchase Order Receiver'[UOM Transaction],
+        "UOMPrim", 'Purchase Order Receiver'[UOM Primary],
+        "UOMPurch", 'Purchase Order Receiver'[UOM Purchasing],
+        "IBUOMPrim", "",
+        "Qty", 0.0, "QtyLB", 0.0, "QtyKG", 0.0, "USD", 0.0,
+        "n", [cnt]
+    )
+RETURN
+    UNION ( Missing, UOM )

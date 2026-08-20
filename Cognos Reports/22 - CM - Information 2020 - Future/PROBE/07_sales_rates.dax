@@ -1,0 +1,38 @@
+// Sales currency / type decode columns for the 4 SSAS-only lines plus Jan-2020 samples
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        Sales,
+        TRIM(Sales[Record Type]) = "Sales Detail"
+            && Sales[Cancelled_Flag] = 0
+            && (
+                Sales[Order Num] IN { 1112576, 2404315, 2408832, 1193, 19001973, 19002384, 19002622, 20000017, 1028630, 1057757, 1058396, 2755409, 2732783, 2645790, 26001448 }
+            )
+    ),
+    "OrderCo", Sales[Order Company],
+    "OrderNum", Sales[Order Num],
+    "LineNum", Sales[Line Num],
+    "Item2nd", Sales[Item Num 2nd],
+    "OrderType", Sales[Order Type],
+    "OrderTypeDesc", Sales[Order Type Desc],
+    "LineType", Sales[Line Type],
+    "ActiveOT", Sales[Filter - Active Order Types],
+    "ExclBudget", Sales[Exclude Budget Data],
+    "CcyBase", Sales[Currency Code Base],
+    "CcyFrom", Sales[Currency Code From],
+    "LocalCcy", Sales[LocalCurrency],
+    "CcyMode", Sales[Currency Mode],
+    "XRateUSD", Sales[Exchange Rate USD],
+    "XRateEUR", Sales[Exchange Rate EUR],
+    "CFUSD", Sales[ConversionFactorUSD],
+    "CFEUR", Sales[ConversionFactorEUR],
+    "CFLC", Sales[ConversionFactorLC],
+    "SpotRate", Sales[Currency Conversion Spot Rate],
+    "Net", Sales[AmountOrderNet],
+    "NetUSD", Sales[AmountOrderNetUSD],
+    "NetEUR", Sales[AmountOrderNetEUR],
+    "BOAmt", Sales[BackOrderedExtendedAmount],
+    "BOAmtEUR", Sales[BackOrderedExtendedAmountEUR],
+    "ExtPriceNet", Sales[AmountExtendedPriceNet],
+    "PromDate", Sales[Promised Shipment Date]
+)

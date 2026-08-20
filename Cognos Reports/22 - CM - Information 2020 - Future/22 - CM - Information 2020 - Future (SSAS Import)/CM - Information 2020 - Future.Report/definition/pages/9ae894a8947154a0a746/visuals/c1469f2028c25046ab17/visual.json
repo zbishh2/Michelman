@@ -1,0 +1,606 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "c1469f2028c25046ab17",
+  "position": {
+    "x": 8,
+    "y": 70,
+    "z": 0,
+    "height": 642,
+    "width": 1264
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Item Details.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Global Bulk Item"
+                }
+              },
+              "queryRef": "Item Details.Global Bulk Item",
+              "nativeQueryRef": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Bulk Item"
+                }
+              },
+              "queryRef": "Item Details.Bulk Item",
+              "nativeQueryRef": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "Item Details.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Stock Type Code"
+                }
+              },
+              "queryRef": "Item Details.Stock Type Code",
+              "nativeQueryRef": "Stock Type Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Master Planning Family"
+                }
+              },
+              "queryRef": "Item Details.Master Planning Family",
+              "nativeQueryRef": "Master Planning Family"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Lead Time Level"
+                }
+              },
+              "queryRef": "Item Details.Lead Time Level",
+              "nativeQueryRef": "Lead Time Level"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Lead Time Order to Ship"
+                }
+              },
+              "queryRef": "Item Details.Lead Time Order to Ship",
+              "nativeQueryRef": "Lead Time Order to Ship"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Planning Code"
+                }
+              },
+              "queryRef": "Item Details.Planning Code",
+              "nativeQueryRef": "Planning Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Planning Time Fence Days"
+                }
+              },
+              "queryRef": "Item Details.Planning Time Fence Days",
+              "nativeQueryRef": "Planning Time Fence Days"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Safety Stock"
+                }
+              },
+              "queryRef": "Item Details.Safety Stock",
+              "nativeQueryRef": "Safety Stock"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Shelf Life Days"
+                }
+              },
+              "queryRef": "Item Details.Shelf Life Days",
+              "nativeQueryRef": "Shelf Life Days"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Supplier Number"
+                }
+              },
+              "queryRef": "Item Details.Supplier Number",
+              "nativeQueryRef": "Supplier Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Supplier Name"
+                }
+              },
+              "queryRef": "Item Details.Supplier Name",
+              "nativeQueryRef": "Supplier Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Planner Number"
+                }
+              },
+              "queryRef": "Item Details.Planner Number",
+              "nativeQueryRef": "Planner Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Planner Name"
+                }
+              },
+              "queryRef": "Item Details.Planner Name",
+              "nativeQueryRef": "Planner Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Buyer Number"
+                }
+              },
+              "queryRef": "Item Details.Buyer Number",
+              "nativeQueryRef": "Buyer Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Details"
+                    }
+                  },
+                  "Property": "Buyer Name"
+                }
+              },
+              "queryRef": "Item Details.Buyer Name",
+              "nativeQueryRef": "Buyer Name"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Item Details"
+                  }
+                },
+                "Property": "Global Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Item Details"
+                  }
+                },
+                "Property": "Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Item Details"
+                  }
+                },
+                "Property": "2nd Item Number"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Item Details"
+                  }
+                },
+                "Property": "Branch Plant"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnFormatting": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Item Details.Lead Time Level"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Item Details.Lead Time Order to Ship"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Item Details.Planning Time Fence Days"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Item Details.Safety Stock"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Item Details.Shelf Life Days"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Item Details.Supplier Number"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Item Details.Planner Number"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Item Details.Buyer Number"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

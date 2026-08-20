@@ -1,0 +1,34 @@
+// Probe 2 — Receipts at line grain, all match types, for line-by-line reconciliation with the Cognos sheet.
+EVALUATE
+VAR V = { 292788, 324808, 328211, 322114, 331380, 317501, 327516, 292774, 301843, 328143, 322976, 326444, 324962, 327267, 326095 }
+VAR R =
+    FILTER (
+        'Purchase Order Receiver',
+        RELATED ( Supplier[Supplier Num] ) IN V
+            && 'Purchase Order Receiver'[Transaction Date] >= DATE ( 2020, 1, 1 )
+    )
+RETURN
+    SELECTCOLUMNS (
+        R,
+        "MatchType", 'Purchase Order Receiver'[Match Record Type],
+        "DocType", 'Purchase Order Receiver'[Document Type],
+        "OrdType", 'Purchase Order Receiver'[Order Type],
+        "OrderCo", 'Purchase Order Receiver'[Order Company],
+        "OrderNum", 'Purchase Order Receiver'[Order Num],
+        "DocNum", 'Purchase Order Receiver'[Document Num],
+        "LineNum", 'Purchase Order Receiver'[Line Num],
+        "TxnDate", 'Purchase Order Receiver'[Transaction Date],
+        "RecvDate", 'Purchase Order Receiver'[Received Date],
+        "GLDate", 'Purchase Order Receiver'[GL Date],
+        "SupplierNum", RELATED ( Supplier[Supplier Num] ),
+        "SupplierName", RELATED ( Supplier[Supplier Name] ),
+        "Item2nd", RELATED ( 'Item Branch'[Item Num 2nd] ),
+        "Bulk", RELATED ( 'Item Branch'[Item Num Bulk] ),
+        "GlobalBulk", RELATED ( 'Item Branch'[Item Num Global Bulk] ),
+        "Qty", 'Purchase Order Receiver'[QuantityReceived],
+        "QtyLB", 'Purchase Order Receiver'[QuantityReceivedLB],
+        "QtyKG", 'Purchase Order Receiver'[QuantityReceivedKG],
+        "Amt", 'Purchase Order Receiver'[AmountReceived],
+        "USD", 'Purchase Order Receiver'[AmountReceivedUSD],
+        "EUR", 'Purchase Order Receiver'[AmountReceivedEUR]
+    )

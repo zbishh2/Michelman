@@ -1,0 +1,575 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Sorting",
+  "name": "89869cafb4b5a6249a16",
+  "options": {
+    "targetVisualNames": []
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "95c9ca312f07b4ec76b5",
+    "sections": {
+      "95c9ca312f07b4ec76b5": {
+        "visualContainers": {
+          "871ce8ef693c3304726e": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "b5380f4d03698703fa62",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "i",
+                        "Entity": "ItemBranch",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "In": {
+                                "Expressions": [
+                                  {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "i"
+                                        }
+                                      },
+                                      "Property": "Item Branch[Item Global Bulk]"
+                                    }
+                                  }
+                                ],
+                                "Values": [
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "null"
+                                      }
+                                    }
+                                  ],
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "'#BASEB'"
+                                      }
+                                    }
+                                  ],
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "'¿ 231005FX'"
+                                      }
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ItemBranch"
+                        }
+                      },
+                      "Property": "Item Branch[Item Global Bulk]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1785b1cfd50e3bd644b2",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Branch[Branch Plant]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c515067c94981b354e48",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Receipts"
+                            }
+                          },
+                          "Property": "[PO Rec Qty Received]"
+                        }
+                      },
+                      "Function": 0
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e66f0643c14d9a9c9f77",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ItemBranch"
+                        }
+                      },
+                      "Property": "Item Branch[Item Bulk]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "2c30dc32e6050e55a1c9",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ItemBranch"
+                        }
+                      },
+                      "Property": "Item Branch[Item Num 2nd]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "96a3e7d5072bd9e6ee0e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Supplier[Supplier Num]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "4c7e9f7e5cde09aa1d44",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Supplier[Supplier Name]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "fcd1fe659412f78846e6",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ItemBranch"
+                        }
+                      },
+                      "Property": "Item Branch[Stocking Type]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "856d4aa93858e5cea6f7",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Purchase Order Receiver[Document Num]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "727541bc5e289ef95d6d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Receipts"
+                            }
+                          },
+                          "Property": "[PO Rec Amt Received]"
+                        }
+                      },
+                      "Function": 0
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c57499dbf7d4d62c4b88",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ItemBranch"
+                        }
+                      },
+                      "Property": "Item Branch[Commodity Class Codes]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "492b830654968e94a5d4",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ItemBranch"
+                        }
+                      },
+                      "Property": "Item Branch[Commodity Class Codes Desc]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "15850d42e09f9aff4ad8",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ItemBranch"
+                        }
+                      },
+                      "Property": "Item Branch[Commodity Sub Class Codes]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e256689855c63c63d38b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ItemBranch"
+                        }
+                      },
+                      "Property": "Item Branch[Commodity Sub Class Codes Desc]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "f44d83bf2ad9dbc4cdc2",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ItemBranch"
+                        }
+                      },
+                      "Property": "Item Branch[Master Planning Family]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e45952685e523de2182d",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Supplier[City]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "2483249fae63669034d7",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Supplier[State Desc]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "437b8248fa3acd104fbd",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Supplier[Postal Code]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e4bd6424100be40d6e87",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Supplier[Country Desc]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "77f48bbd172ed0ab1aba",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Year"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "0c23ec518b9823aefcc3",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Month"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ab325ec6174a9294c7e6",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Purchase Order Receiver[Order Company]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "f3ca3d553012a624ff4f",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Purchase Order Receiver[Order Company Desc]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c7ec5cc21e7d0617ccaa",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Address[Global Parent Desc]"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "6a1b5a57912cff424594",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "QtyReceived (KG)"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Year"
+                    }
+                  }
+                },
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Month"
+                    }
+                  }
+                },
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ItemBranch"
+                        }
+                      },
+                      "Property": "Item Branch[Item Global Bulk]"
+                    }
+                  }
+                },
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ItemBranch"
+                        }
+                      },
+                      "Property": "Item Branch[Item Bulk]"
+                    }
+                  }
+                },
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ItemBranch"
+                        }
+                      },
+                      "Property": "Item Branch[Item Num 2nd]"
+                    }
+                  }
+                },
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Receipts"
+                        }
+                      },
+                      "Property": "Purchase Order Receiver[Order Company]"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "e99ed62a553f95cc725b": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "7f812a22a0342fad70a0": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "226bb1c33e08cf3c8c3a": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "b2cc754db8c64bb5f033": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          }
+        }
+      }
+    },
+    "objects": {}
+  }
+}

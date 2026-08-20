@@ -1,0 +1,15 @@
+// Uniqueness checks that decide whether LOOKUPVALUE is safe in the Receipts and Shipments native queries.
+EVALUATE
+VAR R = FILTER ( 'Currency Rates', 'Currency Rates'[CurrencyCodeFrom] = "EUR" && 'Currency Rates'[CurrencyCodeTo] = "USD" && 'Currency Rates'[CalendarDate] = 'Currency Rates'[PeriodEndDate] )
+RETURN
+ROW (
+    "AddressRows", COUNTROWS ( 'Address' ),
+    "AddressNums", DISTINCTCOUNT ( 'Address'[Address Num] ),
+    "AddrNameVariants", COUNTROWS ( SUMMARIZE ( 'Address', 'Address'[Address Num], 'Address'[Address Name] ) ),
+    "RateRows", COUNTROWS ( R ),
+    "RateMonths", COUNTROWS ( SUMMARIZE ( R, 'Currency Rates'[PeriodEndDate] ) ),
+    "RateMonthEnds", COUNTROWS ( FILTER ( R, 'Currency Rates'[CalendarDate] = EOMONTH ( 'Currency Rates'[CalendarDate], 0 ) ) ),
+    "RateMin", MIN ( 'Currency Rates'[PeriodEndDate] ),
+    "RateMax", MAXX ( R, 'Currency Rates'[PeriodEndDate] ),
+    "POR322976Name", MAXX ( FILTER ( 'Address', 'Address'[Address Num] = 322976 ), 'Address'[Address Name] )
+)

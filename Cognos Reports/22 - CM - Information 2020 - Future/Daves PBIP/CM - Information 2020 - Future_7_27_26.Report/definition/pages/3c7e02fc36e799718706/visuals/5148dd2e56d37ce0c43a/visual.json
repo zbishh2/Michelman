@@ -1,0 +1,518 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "5148dd2e56d37ce0c43a",
+  "position": {
+    "x": 0,
+    "y": 64.550143266475644,
+    "z": 4000,
+    "height": 655.77077363896854,
+    "width": 1280,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Item Receipts.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Item Global Bulk"
+                }
+              },
+              "queryRef": "Item Receipts.Item Global Bulk",
+              "nativeQueryRef": "Item Global Bulk"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Item Bulk"
+                }
+              },
+              "queryRef": "Item Receipts.Item Bulk",
+              "nativeQueryRef": "Item Bulk"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Item Num 2nd"
+                }
+              },
+              "queryRef": "Item Receipts.Item Num 2nd",
+              "nativeQueryRef": "Item Num 2nd"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Stocking Type"
+                }
+              },
+              "queryRef": "Item Receipts.Stocking Type",
+              "nativeQueryRef": "Stocking Type"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Master Planning Family"
+                }
+              },
+              "queryRef": "Item Receipts.Master Planning Family",
+              "nativeQueryRef": "Master Planning Family"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Lead time Level"
+                }
+              },
+              "queryRef": "Sum(Item Receipts.Lead time Level)",
+              "nativeQueryRef": "Lead time Level"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Lead Time MFG_BP"
+                }
+              },
+              "queryRef": "Sum(Item Receipts.Lead Time MFG_BP)",
+              "nativeQueryRef": "Lead Time MFG_BP"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Planning Code"
+                }
+              },
+              "queryRef": "Item Receipts.Planning Code",
+              "nativeQueryRef": "Planning Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Planning Time Fence Days"
+                }
+              },
+              "queryRef": "Sum(Item Receipts.Planning Time Fence Days)",
+              "nativeQueryRef": "Planning Time Fence Days"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "SafetyStock"
+                }
+              },
+              "queryRef": "Sum(Item Receipts.SafetyStock)",
+              "nativeQueryRef": "SafetyStock"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Shelf Life Days"
+                }
+              },
+              "queryRef": "Sum(Item Receipts.Shelf Life Days)",
+              "nativeQueryRef": "Shelf Life Days"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Supplier Num"
+                }
+              },
+              "queryRef": "Sum(Item Receipts.Supplier Num)",
+              "nativeQueryRef": "Supplier Num"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Supplier Name"
+                }
+              },
+              "queryRef": "Item Receipts.Supplier Name",
+              "nativeQueryRef": "Supplier Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Planner Num"
+                }
+              },
+              "queryRef": "Sum(Item Receipts.Planner Num)",
+              "nativeQueryRef": "Planner Num"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Planner Name"
+                }
+              },
+              "queryRef": "Item Receipts.Planner Name",
+              "nativeQueryRef": "Planner Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Buyer Name"
+                }
+              },
+              "queryRef": "Item Receipts.Buyer Name",
+              "nativeQueryRef": "Buyer Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Item Receipts"
+                    }
+                  },
+                  "Property": "Buyer Name"
+                }
+              },
+              "queryRef": "Item Receipts.Buyer Name",
+              "nativeQueryRef": "Buyer Name"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "e71a4e9c93fe8860ffd1",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Branch Plant"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "da3b020fadc8d56b1435",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Item Global Bulk"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "236087bb41e86df7d76b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Item Num 2nd"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "b896e7b7aeaa8c71a7aa",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Stocking Type"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "d1d38874bf80dc78bff0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Master Planning Family"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a0191f87239bd926d3dc",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Lead time Level"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "8265b3038775ed4b24d0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Lead Time MFG_BP"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "7deeda752518457bfb4e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Planning Code"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "2df9bb57b32cdc814d75",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Planning Time Fence Days"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "110496702d6133162ca8",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "SafetyStock"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "97d5c506799915c619fb",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Shelf Life Days"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "40ba6c2191be543f5e7f",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Supplier Num"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "2735893e288b4f79bff1",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Supplier Name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "c13eb22675966b5eccee",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Planner Num"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "2ab6794b4c61132cc2f0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Planner Name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "e1180c223b2cc52e0aad",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Buyer Name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "1a337e5390290c719f12",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Item Receipts"
+              }
+            },
+            "Property": "Item Bulk"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

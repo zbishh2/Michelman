@@ -1,0 +1,291 @@
+/// Purchase-order receipt lines for the 15 CM vendors, SSASPROD / BIQLTabular 'Purchase Order Receiver'.
+table Receipts
+	lineageTag: 4d89a4dd-c403-5dd0-bb93-72a05349f4bd
+
+	/// SUM of the primary-UOM received quantity.
+	measure 'Received Quantity' = SUM ( Receipts[Received Quantity (Line)] )
+		formatString: #,##0
+		lineageTag: b3a5afd0-a59c-5b20-8396-d78ce59a77fb
+
+	measure 'Received Quantity LBs' = SUM ( Receipts[Received Quantity LBs (Line)] )
+		formatString: #,##0
+		lineageTag: 41aa6dca-ee3d-5179-9220-6eb6eaa293c3
+
+	measure 'Received Quantity KGs' = SUM ( Receipts[Received Quantity KGs (Line)] )
+		formatString: #,##0
+		lineageTag: 7bf60a1a-544c-5e19-8187-6de3e485507d
+
+	measure 'Amount Received' = SUM ( Receipts[Amount Received (Line)] )
+		formatString: #,##0
+		lineageTag: 426028c7-ad30-50ce-986f-76d81e48ddfb
+
+	measure 'Amount Received USD' = SUM ( Receipts[Amount Received USD (Line)] )
+		formatString: #,##0
+		lineageTag: 3664058c-3387-5583-9d63-139c2d323ee2
+
+	measure 'Amount Received EUR' = SUM ( Receipts[Amount Received EUR (Line)] )
+		formatString: #,##0
+		lineageTag: fc6cd434-c926-5ff3-bba6-fe4cf44efa41
+
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 1d9fd003-25c7-582e-a9c5-7b753fc5321f
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = User
+
+	/// '-' where the item branch carries no bulk item, which is how Cognos renders it.
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: a5413394-bd15-5695-8e6a-b9a0d5085efe
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = User
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 7cf47a6d-90f3-526e-bcb3-40277586fea5
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = User
+
+	/// Supplier name; falls back to the address book name when the receipt's supplier key is unresolved.
+	column 'Vendor Name'
+		dataType: string
+		lineageTag: ab438b49-c51a-5f7e-83b6-1df2e04800f5
+		summarizeBy: none
+		sourceColumn: Vendor Name
+
+		annotation SummarizationSetBy = User
+
+	/// PO address number. Identifier - never aggregate.
+	column 'Vendor ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 1caa772d-751f-5a55-9d34-5cf75c28e823
+		summarizeBy: none
+		sourceColumn: Vendor ID
+
+		annotation SummarizationSetBy = User
+
+	/// Line-grain input to [Received Quantity]: the quantity in the item's primary UOM (LB or KG line, otherwise transaction).
+	column 'Received Quantity (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: 749f1d69-2f2f-554d-9664-24518f858822
+		summarizeBy: none
+		sourceColumn: Received Quantity (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Line-grain input to [Received Quantity LBs].
+	column 'Received Quantity LBs (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: af09b5ce-f9f4-5198-8a66-e4ebe7d014a9
+		summarizeBy: none
+		sourceColumn: Received Quantity LBs (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Line-grain input to [Received Quantity KGs].
+	column 'Received Quantity KGs (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: a0b091db-cd25-50b1-b286-9328dee3f5ae
+		summarizeBy: none
+		sourceColumn: Received Quantity KGs (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// JDE document type (OV receipt / OW return).
+	column 'Receipt Transaction Type'
+		dataType: string
+		lineageTag: 66195411-4a28-5d4f-affd-0acd4dde8b03
+		summarizeBy: none
+		sourceColumn: Receipt Transaction Type
+
+		annotation SummarizationSetBy = User
+
+	/// Received date.
+	column 'Receipt Transaction Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: a916176d-8f62-5f99-a575-523ec453f02b
+		summarizeBy: none
+		sourceColumn: Receipt Transaction Date
+
+		annotation SummarizationSetBy = User
+
+	column 'Order Type'
+		dataType: string
+		lineageTag: a30adcbb-49a2-58a8-be3c-8668c6583ad4
+		summarizeBy: none
+		sourceColumn: Order Type
+
+		annotation SummarizationSetBy = User
+
+	/// Identifier - never aggregate.
+	column 'Document Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: a55f0869-d2c4-537a-98ea-42ad08c2a742
+		summarizeBy: none
+		sourceColumn: Document Number
+
+		annotation SummarizationSetBy = User
+
+	/// Identifier - never aggregate.
+	column 'Line Number'
+		dataType: double
+		lineageTag: 73f85d90-0650-55c7-992f-9ff3784178d7
+		summarizeBy: none
+		sourceColumn: Line Number
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Document Type'
+		dataType: string
+		lineageTag: 87b27208-5a70-5957-a4bd-c2b9b25d83b8
+		summarizeBy: none
+		sourceColumn: Document Type
+
+		annotation SummarizationSetBy = User
+
+	/// Line-grain input to [Amount Received], transaction currency.
+	column 'Amount Received (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: e5b7bdb0-86a9-5a31-9a20-8146240e2975
+		summarizeBy: none
+		sourceColumn: Amount Received (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Line-grain input to [Amount Received USD], at the JDE transaction rate.
+	column 'Amount Received USD (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: 442a3323-295c-505b-b113-16df11af3bbe
+		summarizeBy: none
+		sourceColumn: Amount Received USD (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Line-grain input to [Amount Received EUR], at the JDE transaction rate.
+	column 'Amount Received EUR (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: ef4fe175-b9fe-5d9d-b279-d3fcd475039f
+		summarizeBy: none
+		sourceColumn: Amount Received EUR (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Received date.
+	column Date
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: b66ce988-6050-5057-9896-1bf46d273c28
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = User
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: dbacffe4-7865-58e0-b791-a08347ca4c77
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = User
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: ea038844-568b-5e7e-9db9-3545c69570da
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = User
+
+	partition Receipts = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				VAR Vendors = { 292788, 324808, 328211, 322114, 331380, 317501, 327516, 292774, 301843, 328143, 322976, 326444, 324962, 327267, 326095 }
+				VAR Receipts =
+				    FILTER (
+				        'Purchase Order Receiver',
+				        'Purchase Order Receiver'[Match Record Type] = ""1""
+				            && 'Purchase Order Receiver'[Address Num PO] IN Vendors
+				            && 'Purchase Order Receiver'[Received Date] >= DATE ( 2020, 1, 1 )
+				            && RELATED ( 'Item Branch'[Item Num 2nd] ) <> ""??????""
+				    )
+				RETURN
+				    SELECTCOLUMNS (
+				        Receipts,
+				        ""Global Bulk Item"", RELATED ( 'Item Branch'[Item Num Global Bulk] ),
+				        ""Bulk Item"", RELATED ( 'Item Branch'[Item Num Bulk] ),
+				        ""2nd Item Number"", RELATED ( 'Item Branch'[Item Num 2nd] ),
+				        ""Vendor Name"", IF ( TRIM ( RELATED ( Supplier[Supplier Name] ) ) = """", LOOKUPVALUE ( 'Address'[Address Name], 'Address'[Address Num], 'Purchase Order Receiver'[Address Num PO] ), RELATED ( Supplier[Supplier Name] ) ),
+				        ""Vendor ID"", 'Purchase Order Receiver'[Address Num PO],
+				        ""Received Quantity (Line)"", IF ( 'Purchase Order Receiver'[UOM Primary] = ""LB"", 'Purchase Order Receiver'[QuantityReceivedLB], IF ( 'Purchase Order Receiver'[UOM Primary] = ""KG"", 'Purchase Order Receiver'[QuantityReceivedKG], 'Purchase Order Receiver'[QuantityReceived] ) ),
+				        ""Received Quantity LBs (Line)"", 'Purchase Order Receiver'[QuantityReceivedLB],
+				        ""Received Quantity KGs (Line)"", 'Purchase Order Receiver'[QuantityReceivedKG],
+				        ""Receipt Transaction Type"", 'Purchase Order Receiver'[Document Type],
+				        ""Receipt Transaction Date"", 'Purchase Order Receiver'[Received Date],
+				        ""Order Type"", 'Purchase Order Receiver'[Order Type],
+				        ""Document Number"", 'Purchase Order Receiver'[Document Num],
+				        ""Line Number"", 'Purchase Order Receiver'[Line Num],
+				        ""Document Type"", 'Purchase Order Receiver'[Document Type],
+				        ""Amount Received (Line)"", 'Purchase Order Receiver'[AmountReceived],
+				        ""Amount Received USD (Line)"", 'Purchase Order Receiver'[AmountReceivedUSD],
+				        ""Amount Received EUR (Line)"", 'Purchase Order Receiver'[AmountReceivedEUR],
+				        ""Date"", 'Purchase Order Receiver'[Received Date],
+				        ""Year"", YEAR ( 'Purchase Order Receiver'[Received Date] ),
+				        ""Month"", MONTH ( 'Purchase Order Receiver'[Received Date] )
+				    )
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table

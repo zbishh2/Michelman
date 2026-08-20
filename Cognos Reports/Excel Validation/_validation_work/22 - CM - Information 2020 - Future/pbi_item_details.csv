@@ -1,0 +1,616 @@
+Branch Plant,Global Bulk Item,Bulk Item,2nd Item Number,Stock Type Code,Master Planning Family,Lead Time Level,Lead Time Order to Ship,Planning Code,Planning Time Fence Days,Safety Stock,Shelf Life Days,Supplier Number,Supplier Name,Planner Number,Planner Name,Buyer Number,Buyer Name
+DALL,U601,U601,U601-KP,O,TOL,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U601,U601,U601-KP,O,TOL,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,U501,U501,U501,O,ETP,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,U601,U601,U601,O,TOL,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,U1001,U1001,U1001,O,ETP,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,U2022,U2022,U2022,O,TOL,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,U2022,U2022,U2022-PL,O,TOL,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U501,U501,U501,O,ETP,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U601,U601,U601,O,TOL,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U1001,U1001,U1001,O,ETP,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U2022,U2022,U2022,O,TOL,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U2022,U2022,U2022-PL,O,TOL,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN3,U2022,U2022,U2022-PL,O,TOL,0,0,2,8,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN4,U2022,U2022,U2022-PL,O,TOL,0,0,2,365,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN3,U601,U601,U601-KP,O,TOL,0,0,2,8,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN4,U601,U601,U601-KP,O,TOL,0,0,2,365,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN3,U101,U101,U101-PL,O,TOL,0,0,2,8,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN4,U101,U101,U101-PL,O,TOL,0,0,2,365,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,U101,U101,U101,O,ETP,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,U101,U101,U101-PL,O,TOL,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,U101,U101,U101-KP,O,ETP,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U101,U101,U101,O,ETP,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U101,U101,U101-PL,O,TOL,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U101,U101,U101-KP,O,ETP,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,WD40,WD40,WD40-PL,O,ETP,0,0,2,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,WD40,WD40,WD40-UP,O,ETP,0,0,1,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,WD40,WD40,WD40-PL,O,ETP,0,0,2,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,WD40,WD40,WD40-UP,O,ETP,0,0,1,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,U201,U201,U201,O,TOL,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U201,U201,U201,O,TOL,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN2,WD40,WD40,WD40-PL,O,ETP,0,0,2,15,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CIN3,WD40,WD40,WD40-PL,O,ETP,0,0,2,8,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CIN3,WD40,WD40,WD40-UP,O,ETP,0,0,2,8,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CIN4,WD40,WD40,WD40-PL,O,ETP,0,0,2,365,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CIN4,WD40,WD40,WD40-UP,O,ETP,0,0,1,365,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CINC,WD40,WD40,WD40-PL,O,ETP,0,0,2,15,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CIN3,U101,U101,U101,O,ETP,0,0,2,8,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN3,U201,U201,U201,O,TOL,0,0,2,8,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN3,U501,U501,U501,O,ETP,0,0,2,8,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN3,U1001,U1001,U1001,O,ETP,0,0,2,8,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN3,U2022,U2022,U2022,O,TOL,0,0,2,8,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN4,U101,U101,U101,O,ETP,0,0,2,365,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN4,U201,U201,U201,O,TOL,0,0,2,365,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN4,U501,U501,U501,O,ETP,0,0,2,365,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN4,U601,U601,U601,O,TOL,0,0,2,365,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN4,U1001,U1001,U1001,O,ETP,0,0,2,365,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN4,U2022,U2022,U2022,O,TOL,0,0,2,365,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN3,U101,U101,U101-KP,O,ETP,0,0,2,8,0.0,365,0,Not Available,291802,Dena Stevens,0,Not Available
+CIN4,U101,U101,U101-KP,O,ETP,0,0,2,365,0.0,365,0,Not Available,291802,Dena Stevens,0,Not Available
+CIN3,HP1632,HP1632,HP1632,O,TOL,0,0,2,8,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN4,HP1632,HP1632,HP1632,O,TOL,0,0,2,365,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN4,HP1632,HP1632,HP1632-PL,O,FEC,0,0,2,365,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,HP1632,HP1632,HP1632,O,ETP,0,0,2,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,HP1632,HP1632,HP1632-PL,O,FEC,0,0,2,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,HP1632,HP1632,HP1632,O,ETP,0,0,2,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,HP1632,HP1632,HP1632-PL,O,FEC,0,0,2,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN3,U701,U701,U701-PL,O,ETP,0,0,2,8,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN4,U701,U701,U701-PL,O,ETP,0,0,2,365,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,U701,U701,U701-PL,O,ETP,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U701,U701,U701,O,ETP,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U701,U701,U701-PL,O,ETP,0,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN2,WD40,WD40,WD40-SH,O,ETP,0,0,1,15,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CIN3,WD40,WD40,WD40-SH,O,ETP,0,0,1,8,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CIN4,WD40,WD40,WD40-SH,O,ETP,0,0,1,365,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CINC,WD40,WD40,WD40-SH,O,ETP,0,0,1,15,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+DALL,WD40,WD40,WD40-SH,O,ETP,0,0,1,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,WD40,WD40,WD40-SH,O,ETP,0,0,1,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+DANC,HP1632,HP1632,HP1632-PL,O,FEC,0,0,1,30,0.0,730,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U601,U601,U601-PL,O,FEC,0,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U1001,U1001,U1001-OP,O,TOL,0,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U501,U501,U501,O,FEC,0,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U601,U601,U601,O,FEC,0,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U101,U101,U101-PL,O,TOL,0,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U101,U101,U101-T2,O,TOL,0,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U101,U101,U101-KP,O,FEC,0,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U2022,U2022,U2022-PL,O,TOL,0,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U1001,U1001,U1001,O,FEC,0,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CIN4,HP1632,HP1632,HP1632-OP,O,TOL,0,0,2,365,0.0,730,292774,"Ascent Chemicals Danville, Inc.",335951,Lance Murphy,0,Not Available
+CIN3,U601,U601,U601-OP,O,TOL,0,0,2,8,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN3,U701,U701,U701-OP,O,TOL,0,0,2,8,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN3,U601,U601,U601-PL,O,ETP,0,0,2,8,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN4,U601,U601,U601-OP,O,TOL,0,0,2,365,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN4,U701,U701,U701-OP,O,TOL,0,0,2,365,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN4,U601,U601,U601-PL,O,ETP,0,0,2,365,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+DALL,U601,U601,U601-OP,O,TOL,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+DALL,U701,U701,U701-OP,O,TOL,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+DALL,U601,U601,U601-PL,O,ETP,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+SANF,U601,U601,U601-OP,O,TOL,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+SANF,U701,U701,U701-OP,O,TOL,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+SANF,U601,U601,U601-PL,O,ETP,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN3,U101,U101,U101-T2,O,TOL,0,0,2,8,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN3,U501,U501,U501-OP,O,TOL,0,0,2,8,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN3,U1001,U1001,U1001-OP,O,TOL,0,0,2,8,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN4,U101,U101,U101-T2,O,TOL,0,0,2,365,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN4,U1001,U1001,U1001-OP,O,TOL,0,0,2,365,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+DALL,HP1632,HP1632,HP1632-OP,O,TOL,0,0,2,4,0.0,730,292774,"Ascent Chemicals Danville, Inc.",20440,Roger Niehaus,0,Not Available
+DALL,U101,U101,U101-T2,O,TOL,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+DALL,U501,U501,U501-OP,O,TOL,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+DALL,U1001,U1001,U1001-OP,O,TOL,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+DALL,U2022,U2022,U2022-OP,O,TOL,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+SANF,HP1632,HP1632,HP1632-OP,O,TOL,0,0,2,4,0.0,730,292774,"Ascent Chemicals Danville, Inc.",20440,Roger Niehaus,0,Not Available
+SANF,U101,U101,U101-T2,O,TOL,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+SANF,U501,U501,U501-OP,O,TOL,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+SANF,U1001,U1001,U1001-OP,O,TOL,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+SANF,U2022,U2022,U2022-OP,O,TOL,0,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+SHAN,U802,U802.E,U802.E-PD,O,TOL,1,0,1,8,0.0,365,301843,BIP (Oldbury) Limited,301526,Rose-Anne Body,0,Not Available
+SHAN,U802,U802.E,U802.E-TO,O,TOL,30,0,1,8,0.0,365,301843,BIP (Oldbury) Limited,301526,Rose-Anne Body,0,Not Available
+BPIP,MD4021,MD4021,MD4021-C2,O,TOL,112,0,2,15,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,0,Not Available
+DALL,U101,U101,U101-OP,O,TOL,13,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+SANF,U101,U101,U101-OP,O,TOL,13,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN3,U1001,U1001,U1001-PL,O,ETP,4,0,2,8,0.0,365,292788,Ortec Inc.,291802,Dena Stevens,0,Not Available
+CIN4,U1001,U1001,U1001-PL,O,ETP,4,0,2,365,0.0,365,292788,Ortec Inc.,291802,Dena Stevens,0,Not Available
+USCM,MD4021,MD4021,MD4021,X,TOL,1,0,1,15,0.0,365,322976,Granite Branch Plant,0,Not Available,0,Not Available
+CIN3,STODSO,STODSO,STODSO,O,RAW,16,0,2,8,0.0,730,20047,"Nexeo Solutions, LLC",20416,Charleen Wichman,0,Not Available
+CIN4,STODSO,STODSO,STODSO,O,RAW,16,0,2,365,0.0,730,20047,"Nexeo Solutions, LLC",20416,Charleen Wichman,0,Not Available
+CIN3,WD40,WD40,WD40-SP,O,ETP,16,0,1,8,0.0,730,20094,Cinci Blue Ash Manufacturing,20416,Charleen Wichman,0,Not Available
+CIN3,WD40,WD40,WD40-UN,O,ETP,1,0,2,8,0.0,730,20094,Cinci Blue Ash Manufacturing,20416,Charleen Wichman,0,Not Available
+CIN4,WD40,WD40,WD40-SP,O,ETP,16,0,1,365,0.0,730,20094,Cinci Blue Ash Manufacturing,20416,Charleen Wichman,0,Not Available
+CIN4,WD40,WD40,WD40-UN,O,ETP,16,0,1,365,0.0,730,20094,Cinci Blue Ash Manufacturing,20416,Charleen Wichman,0,Not Available
+DALL,STODSO,STODSO,STODSO,O,RAW,16,0,2,4,0.0,730,20047,"Nexeo Solutions, LLC",20440,Roger Niehaus,0,Not Available
+SANF,STODSO,STODSO,STODSO,O,RAW,16,0,2,4,0.0,730,20047,"Nexeo Solutions, LLC",20440,Roger Niehaus,0,Not Available
+DALL,WD40,WD40,WD40-SP,O,ETP,16,0,1,4,0.0,730,20094,Cinci Blue Ash Manufacturing,20440,Roger Niehaus,0,Not Available
+DALL,WD40,WD40,WD40-UN,O,ETP,16,0,1,4,0.0,730,288176,DC - Haz Stock Warehouse,20440,Roger Niehaus,0,Not Available
+SANF,WD40,WD40,WD40-SP,O,ETP,16,0,1,4,0.0,730,20094,Cinci Blue Ash Manufacturing,20440,Roger Niehaus,0,Not Available
+SANF,WD40,WD40,WD40-UN,O,ETP,16,0,1,4,0.0,730,288176,DC - Haz Stock Warehouse,20440,Roger Niehaus,0,Not Available
+CIN3,U101,U101,U101-OP,O,TOL,13,0,2,8,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN3,U201,U201,U201-OP,O,TOL,13,0,2,8,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN3,U501,U501,U501-T2,O,TOL,6,0,2,8,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN4,U101,U101,U101-OP,O,TOL,13,0,2,365,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN4,U201,U201,U201-OP,O,TOL,13,0,2,365,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN4,U501,U501,U501-OP,O,TOL,1,0,2,365,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CIN4,U501,U501,U501-T2,O,TOL,6,0,2,365,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+DALL,U201,U201,U201-OP,O,TOL,13,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+DALL,U1001,U1001,U1001-PL,O,ETP,4,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+DALL,U501,U501,U501-T2,O,TOL,6,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+SANF,U201,U201,U201-OP,O,TOL,13,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+SANF,U1001,U1001,U1001-PL,O,ETP,4,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+SANF,U501,U501,U501-T2,O,TOL,6,0,2,4,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,0,Not Available
+CINC,U502,U502.E,U502.E,O,TOL,60,0,1,31,0.0,365,301843,BIP (Oldbury) Limited,324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,171143PX,171143PX,171143PX,O,TOL,1,0,1,15,0.0,180,326444,Essential Polymers,328907,James Massie,319235,"Webber, Ashley"
+AUB2,PUD1,PUD1.E,PUD1.E,O,RCB,120,0,2,15,0.0,365,327516,ERCA Advanced Polymer Solutions SRL,340941,Lise Jacquet,317713,"Hays, Isabelle"
+BPIP,MD4020,MD4020,MD4020-C2,P,TOL,112,0,2,15,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,324287,"Harris, Brent"
+BPIP,MD4021,MD4021,MD4021-C1,O,TOL,112,0,2,15,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,324287,"Harris, Brent"
+BPIP,MD4023,MD4023,MD4023-C2,O,TOL,112,0,2,15,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,324287,"Harris, Brent"
+BPIP,MD4020C,MD4020C,MD4020C-C2,O,TOL,112,0,2,15,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,324287,"Harris, Brent"
+BPIP,MD4021C,MD4021C,MD4021C-C2,O,TOL,112,0,2,15,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,324287,"Harris, Brent"
+BPIP,MD4022C,MD4022C,MD4022C-C2,O,TOL,112,0,2,15,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,324287,"Harris, Brent"
+BPIP,MD4023C,MD4023C,MD4023C-C2,O,TOL,112,0,2,15,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,324287,"Harris, Brent"
+CIN2,MD4020,MD4020,MD4020-C1,O,TOL,112,0,2,140,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,MD4021,MD4021,MD4021-C1,O,TOL,112,0,2,140,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,MD4020C,MD4020C,MD4020C-C2,O,TOL,112,0,2,140,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+GRAN,MD4020,MD4020,MD4020,O,TOL,1,0,1,15,0.0,730,322976,Granite Branch Plant,328907,James Massie,328907,"Massie, James"
+GRAN,MD4021,MD4021,MD4021,O,TOL,1,0,1,15,0.0,365,322976,Granite Branch Plant,328907,James Massie,328907,"Massie, James"
+GRAN,MD4020C,MD4020C,MD4020C-C2,O,TOL,60,0,2,15,0.0,730,322114,"Granite Packaging, LLC",328907,James Massie,328907,"Massie, James"
+GRAN,MD4021C,MD4021C,MD4021C-C2,O,TOL,60,0,2,15,0.0,365,322976,Granite Branch Plant,324287,Brent Harris,324287,"Harris, Brent"
+GRAN,MD4022C,MD4022C,MD4022C-C2,O,TOL,60,0,1,15,0.0,365,322976,Granite Branch Plant,328907,James Massie,328907,"Massie, James"
+GRAN,MD4023C,MD4023C,MD4023C-C2,O,TOL,60,0,1,15,0.0,365,322976,Granite Branch Plant,324287,Brent Harris,324287,"Harris, Brent"
+USCM,MD4020,MD4020,MD4020,X,TOL,1,0,1,15,0.0,730,322976,Granite Branch Plant,328907,James Massie,328907,"Massie, James"
+AUBA,PUD1,PUD1.E,PUD1.E,O,RCB,120,0,2,15,0.0,365,327516,ERCA Advanced Polymer Solutions SRL,340941,Lise Jacquet,317713,"Hays, Isabelle"
+GRAN,MD4023,MD4023,MD4023,O,TOL,1,0,1,15,0.0,365,322976,Granite Branch Plant,328907,James Massie,328907,"Massie, James"
+CRC0,STODSO,STODSO,STODSO,O,REC,7,0,2,15,0.0,730,20047,"Nexeo Solutions, LLC",328907,James Massie,328907,"Massie, James"
+INCH,STODSO,STODSO,STODSO,O,REC,9,0,2,15,0.0,730,20683,Univar USA Inc.,328907,James Massie,328907,"Massie, James"
+DALL,U201,U201,U201-PL,O,TOL,4,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U201,U201,U201-PL,O,TOL,4,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN3,U201,U201,U201-PL,O,TOL,4,0,2,8,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN4,U201,U201,U201-PL,O,TOL,4,0,2,365,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN2,U601,U601,U601-KP,O,TOL,1,0,1,15,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CINC,U601,U601,U601-KP,O,TOL,1,0,1,15,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SHAN,U601,U601,U601-PD,O,TOL,1,0,2,365,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN3,U601,U601,U601,O,TOL,1,0,2,8,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN2,MDU4075B,MDU4075B.E,MDU4075B.E-T3,O,TOL,60,0,1,15,0.0,365,0,Not Available,0,Not Available,0,Not Available
+USCM,161190PX,161190PX,161190PX,O,RCB,1,0,2,8,0.0,365,0,Not Available,0,Not Available,0,Not Available
+USCM,MD4023,MD4023,MD4023,X,TOL,1,0,1,15,0.0,365,0,Not Available,0,Not Available,0,Not Available
+AUBA,U2022,U2022,U2022,O,TOL,1,0,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+CIN2,U201,U201,U201-CC,O,TOL,6,0,1,15,0.0,365,0,Not Available,20445,Steve Laurence,0,Not Available
+CIN3,HP1632,HP1632,HP1632-OP,O,TOL,1,0,1,8,0.0,730,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN3,U501,U501,U501-PL,O,ETP,11,0,2,8,0.0,365,0,Not Available,293380,Greg Matzinger,0,Not Available
+CIN4,U501,U501,U501-PL,O,ETP,11,0,2,365,0.0,365,0,Not Available,293380,Greg Matzinger,0,Not Available
+DALL,WD40,WD40,WD40,O,ETP,16,0,1,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,WD40,WD40,WD40,O,ETP,16,0,1,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+DALL,U501,U501,U501-PL,O,ETP,11,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,U501,U501,U501-PL,O,ETP,11,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN3,WD40,WD40,WD40,O,ETP,16,0,2,8,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CIN4,WD40,WD40,WD40,O,ETP,16,0,1,365,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CIN3,HP1632,HP1632,HP1632-PL,O,FEC,1,0,2,8,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN3,U701,U701,U701,O,ETP,6,0,2,8,0.0,365,0,Not Available,0,Not Available,0,Not Available
+CIN4,U701,U701,U701,O,ETP,6,0,2,365,0.0,365,0,Not Available,0,Not Available,0,Not Available
+DALL,U701,U701,U701,O,ETP,6,0,2,4,0.0,365,0,Not Available,20440,Roger Niehaus,0,Not Available
+EUCM,U502,U502.E,U502.E,X,TOL,1,0,1,8,0.0,365,0,Not Available,0,Not Available,0,Not Available
+AUBA,MDU2012,MDU2012.E,MDU2012.E,O,TOL,30,0,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,MDU4075,MDU4075.E,MDU4075.E,O,TOL,60,0,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,MDU440,MDU440.E,MDU440.E,O,TOL,60,0,1,8,0.0,365,0,Not Available,340941,Lise Jacquet,0,Not Available
+CIN2,MDU2012,MDU2012.E,MDU2012.E,O,TOL,30,0,1,15,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+SHAN,U502,U502.E,U502.E-PL,P,TOL,1,0,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+CIN2,WD40,WD40,WD40-NS,O,ETP,6,0,1,15,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CIN3,WD40,WD40,WD40-NS,O,ETP,6,0,1,8,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CIN4,WD40,WD40,WD40-NS,O,ETP,6,0,1,365,0.0,730,0,Not Available,20416,Charleen Wichman,0,Not Available
+CINC,WD40,WD40,WD40-NS,O,ETP,6,0,1,15,0.0,360,0,Not Available,20416,Charleen Wichman,0,Not Available
+DALL,WD40,WD40,WD40-NS,O,ETP,6,0,1,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+SANF,WD40,WD40,WD40-NS,O,ETP,6,0,1,4,0.0,730,0,Not Available,20440,Roger Niehaus,0,Not Available
+CIN2,171143PX,171143PX,171143PX,O,TOL,1,0,1,15,0.0,180,0,Not Available,335951,Lance Murphy,0,Not Available
+ORTC,HP1632,HP1632,HP1632,O,ETP,1,0,1,8,0.0,730,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U601,U601,U601-OP,O,TOL,42,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U601,U601,U601-OP,X,TOL,42,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+BIPP,U502,U502.E,U502.E,O,TOL,1,0,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,306439,"Hansen, Charlotte"
+CIN2,MDU4075,MDU4075.E,MDU4075.E,O,TOL,30,0,1,10,0.0,365,0,Not Available,333530,Kyle Davis,333530,"Davis, Kyle"
+CINC,MDU4075,MDU4075.E,MDU4075.E,O,TOL,30,0,1,10,0.0,365,0,Not Available,333530,Kyle Davis,333530,"Davis, Kyle"
+DANC,HP1632,HP1632,HP1632,O,TOL,1,0,1,30,0.0,730,0,Not Available,324287,Brent Harris,324287,"Harris, Brent"
+JAIN,HP1632,HP1632,HP1632,O,FEC,1,0,1,365,0.0,730,0,Not Available,0,Not Available,319235,"Webber, Ashley"
+USCM,HP1632,HP1632,HP1632,X,TOL,1,0,1,30,0.0,730,0,Not Available,324287,Brent Harris,324287,"Harris, Brent"
+USCM,HP1632,HP1632,HP1632-PL,O,FEC,1,0,1,30,0.0,730,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U601,U601,U601-PL,X,FEC,1,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U101,U101,U101-OP,O,TOL,42,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U201,U201,U201-OP,O,TOL,42,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U501,U501,U501-OP,O,TOL,30,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U502,U502,U502-OP,O,TOL,30,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U204,U204,U204-OP,O,TOL,42,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U101,U101,U101-OP,X,TOL,42,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U201,U201,U201-OP,X,TOL,42,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U501,U501,U501-OP,X,TOL,112,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U1001,U1001,U1001-OP,O,TOL,1,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U502,U502,U502-OP,X,TOL,30,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,MW40514,MW40514,MW40514,P,TOL,1,0,1,10,0.0,365,0,Not Available,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CINC,MW40504,MW40504,MW40504,P,TOL,1,0,1,10,0.0,365,0,Not Available,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+DANC,HP1432AT,HP1432AT,HP1432AT,O,FEC,1,0,1,30,0.0,540,0,Not Available,328907,James Massie,328907,"Massie, James"
+DANC,HP1432AT,HP1432AT,HP1432AT-OP,O,TOL,20,0,1,4,0.0,540,0,Not Available,328907,James Massie,328907,"Massie, James"
+GRAN,MD4020,MD4020,MD4020-C1,O,TOL,60,0,2,15,0.0,730,0,Not Available,328907,James Massie,328907,"Massie, James"
+GRAN,MD4020,MD4020,MD4020-C2,O,TOL,60,0,2,15,0.0,730,0,Not Available,324287,Brent Harris,324287,"Harris, Brent"
+GRAN,MD4021,MD4021,MD4021-C2,O,TOL,60,0,2,15,0.0,365,0,Not Available,324287,Brent Harris,324287,"Harris, Brent"
+GRAN,MD4021,MD4021,MD4021-C1,O,TOL,60,0,2,15,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+GRAN,MD4023,MD4023,MD4023-C2,O,TOL,60,0,1,15,0.0,365,0,Not Available,324287,Brent Harris,324287,"Harris, Brent"
+ORTC,U101,U101,U101,O,FEC,1,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U201,U201,U201,O,TOL,42,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U2022,U2022,U2022,O,TOL,30,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U201,U201,U201-PL,O,TOL,4,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U501,U501,U501-T2,O,TOL,6,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U501,U501,U501-PL,O,FEC,11,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U502,U502,U502,O,FEC,1,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U204,U204,U204,O,FEC,1,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U470,U470,U470,O,TOL,1,0,1,8,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U101,U101,U101,X,FEC,1,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U201,U201,U201,X,TOL,42,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U501,U501,U501,X,FEC,1,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U601,U601,U601,X,FEC,1,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U101,U101,U101-PL,X,TOL,1,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U2022,U2022,U2022,X,TOL,30,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U101,U101,U101-T2,O,TOL,1,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U201,U201,U201-PL,X,TOL,4,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U501,U501,U501-T2,O,TOL,6,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U501,U501,U501-PL,X,FEC,11,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U2022,U2022,U2022-PL,X,TOL,1,0,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,HP1432AT,HP1432AT,HP1432AT,X,FEC,1,0,1,30,0.0,540,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,HP1432AT,HP1432AT,HP1432AT-OP,X,TOL,20,0,1,4,0.0,540,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U502,U502,U502,X,FEC,1,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U470,U470,U470,X,TOL,1,0,1,8,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+GRAN,MD4023,MD4023,MD4023-C1,O,TOL,60,0,1,15,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+JAIN,HP1632,HP1632,HP1632-OP,O,FEC,1,0,1,365,0.0,730,0,Not Available,302796,Dave Howe,319235,"Webber, Ashley"
+ORTC,U1001,U1001,U1001-PL,O,FEC,4,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U1001,U1001,U1001,O,FEC,1,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U1001,U1001,U1001-PL,O,FEC,4,0,1,30,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+AUB2,MDU4075B,MDU4075B.E,MDU4075B.E-TO,P,TOL,75,7,1,15,4000.0,365,324808,Cromogenia,291244,Joël Bertrand,317713,"Hays, Isabelle"
+AUB2,MDU2012B,MDU2012B.E,MDU2012B.E-TO,P,TOL,75,7,1,15,2000.0,365,324808,Cromogenia,291244,Joël Bertrand,317713,"Hays, Isabelle"
+CIN2,161190PX,161190PX,161190PX-T2,P,TOL,28,22,2,42,18600.0,365,317501,EPS,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+SNG4,NP4LF,NP4LF.S,NP4LF.S,P,REC,164,18,2,14,1560.0,730,356227,Ascent Industries Co.,333572,Vernon Lee,335738,"Sim, Helen"
+AUBA,U204,U204,U204-PL,O,ATP,90,30,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,191245PX,191245PX,191245PX-OP,O,FCB,90,100,1,250,0.0,545,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUB2,181193EU,181193EU.E,181193EU.E,O,RCB,75,75,2,15,0.0,365,0,Not Available,340941,Lise Jacquet,0,Not Available
+AUBA,181193EU,181193EU.E,181193EU.E,O,RCB,75,75,2,15,0.0,365,0,Not Available,340941,Lise Jacquet,0,Not Available
+AUBA,191245PX,191245PX,191245PX-PL,O,FCB,90,75,1,250,0.0,545,0,Not Available,340941,Lise Jacquet,0,Not Available
+CIN2,191245PX,191245PX,191245PX-FD,S,FCB,5,78,1,112,0.0,545,0,Not Available,335951,Lance Murphy,0,Not Available
+CINC,191245PX,191245PX,191245PX-PL,2,FCB,90,75,1,250,0.0,545,0,Not Available,340941,Lise Jacquet,0,Not Available
+CINC,191245PX,191245PX,191245PX-FD,2,FCB,5,78,1,112,0.0,545,0,Not Available,335951,Lance Murphy,0,Not Available
+USCM,191245PX,191245PX,191245PX,X,FCB,365,375,1,10,0.0,545,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,WD40,WD40,WD40-UP,O,FEC,42,16,1,10,0.0,730,0,Not Available,302796,Dave Howe,0,Not Available
+CINC,WD40,WD40,WD40-UP,O,FEC,42,16,1,10,0.0,730,0,Not Available,302796,Dave Howe,0,Not Available
+CIN2,STODSO,STODSO,STODSO-UN,O,REC,11,21,1,10,0.0,730,0,Not Available,302796,Dave Howe,0,Not Available
+CINC,STODSO,STODSO,STODSO-UN,O,REC,11,21,1,10,0.0,730,0,Not Available,302796,Dave Howe,0,Not Available
+CIN2,U2022,U2022,U2022-PL,S,FCB,5,48,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+SHAN,U502,U502,U502-OP,O,FEC,42,42,1,4,0.0,365,0,Not Available,20445,Steve Laurence,0,Not Available
+USCM,STODSO,STODSO,STODSO,X,REC,11,18,2,10,0.0,730,20047,"Nexeo Solutions, LLC",0,Not Available,0,Not Available
+AUBA,191245PX,191245PX,191245PX-T2,O,FCB,150,115,1,180,0.0,545,45235,MICHELMAN INC.,340941,Lise Jacquet,0,Not Available
+SHAN,HP1632,HP1632,HP1632-PL,O,FEC,180,180,1,8,0.0,730,306961,"Michelman, Inc.",20440,Roger Niehaus,0,Not Available
+SHAN,U2022,U2022,U2022-OP,O,FEC,90,30,1,8,0.0,365,306961,"Michelman, Inc.",20440,Roger Niehaus,0,Not Available
+SHAN,U470,U470,U470-PL,O,FCB,181,136,1,8,0.0,365,306961,"Michelman, Inc.",309690,Jollene Li,329143,"Min,Jialing (Emily )"
+AUBA,U601,U601,U601-PL,O,FEC,90,75,1,105,0.0,365,45235,MICHELMAN INC.,340941,Lise Jacquet,317713,"Hays, Isabelle"
+SHAN,U601,U601,U601-OP,P,FEC,116,89,1,180,0.0,365,306961,"Michelman, Inc.",309690,Jollene Li,329143,"Min,Jialing (Emily )"
+CIN2,161190PX,161190PX,161190PX-PL,O,FCB,14,21,2,10,0.0,365,0,Not Available,335951,Lance Murphy,319235,"Webber, Ashley"
+CINC,161190PX,161190PX,161190PX-PL,O,RCB,14,21,2,10,0.0,365,0,Not Available,302796,Dave Howe,319235,"Webber, Ashley"
+CIN2,U204,U204,U204-OP,S,FCB,5,48,1,70,0.0,365,292788,Ortec Inc.,335951,Lance Murphy,300328,"Lye, May Leng (Josephine)"
+CRC0,WD40,WD40,WD40,O,FEC,10,16,1,15,0.0,730,326423,Capital Resin Branch Plant,328907,James Massie,328907,"Massie, James"
+CRC0,WD40,WD40,WD40-UN,O,FEC,10,16,1,15,0.0,730,326423,Capital Resin Branch Plant,328907,James Massie,328907,"Massie, James"
+INCH,WD40,WD40,WD40,O,FEC,3,16,1,15,0.0,730,324847,Inchem Branch Plant,328907,James Massie,328907,"Massie, James"
+ORTC,U201,U201,U201-T2,O,FCB,42,4,2,15,0.0,365,292788,Ortec Inc.,324287,Brent Harris,324287,"Harris, Brent"
+SHAN,U501,U501,U501-PL,P,FEC,181,136,1,8,0.0,365,0,Not Available,309690,Jollene Li,329143,"Min,Jialing (Emily )"
+SHAN,U204,U204,U204-PL,P,FEC,160,121,1,4,0.0,365,0,Not Available,309690,Jollene Li,329143,"Min,Jialing (Emily )"
+USCM,U201,U201,U201-T2,X,FCB,42,4,2,15,0.0,365,292788,Ortec Inc.,324287,Brent Harris,324287,"Harris, Brent"
+CIN2,STODSO,STODSO,STODSO,O,REC,9,18,2,10,0.0,730,20047,"Nexeo Solutions, LLC",324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,STODSO,STODSO,STODSO,O,REC,11,18,2,10,0.0,730,20047,"Nexeo Solutions, LLC",302796,Dave Howe,337883,"Keevan, Joseph"
+SING,NP4LF,NP4LF.S,NP4LF.S,P,REC,164,18,2,14,0.0,730,356227,Ascent Industries Co.,333572,Vernon Lee,335738,"Sim, Helen"
+AUB2,HP1432AT,HP1432AT,HP1432AT-PL,O,TOL,90,180,1,8,0.0,540,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,HP1432AT,HP1432AT,HP1432AT-PL,O,TOL,90,180,1,8,0.0,540,0,Not Available,301526,Rose-Anne Body,0,Not Available
+CINC,HP1432AT,HP1432AT,HP1432AT-PL,2,TOL,90,180,1,8,0.0,540,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUB2,171228PX,171228PX.E,171228PX.E,O,TOL,45,75,1,8,0.0,180,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,171228PX,171228PX.E,171228PX.E,O,TOL,45,75,1,8,0.0,180,0,Not Available,301526,Rose-Anne Body,0,Not Available
+CIN2,191245PX,191245PX,191245PX-OP,O,TOL,5,78,1,112,0.0,545,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,HP1432AT,HP1432AT,HP1432AT-PL,S,TOL,5,98,1,140,0.0,540,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,191245PX,191245PX,191245PX-PL,S,TOL,5,78,1,112,0.0,545,0,Not Available,335951,Lance Murphy,0,Not Available
+CINR,HP1432AT,HP1432AT,HP1432AT-PL,P,TOL,5,90,1,135,0.0,540,0,Not Available,335951,Lance Murphy,0,Not Available
+AUBA,HP1632,HP1632,HP1632,P,TOL,180,140,1,170,0.0,730,0,Not Available,340941,Lise Jacquet,0,Not Available
+CIN2,HP1632,HP1632,HP1632-PL,S,TOL,5,118,1,126,0.0,730,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,HP1632,HP1632,HP1632-OP,S,TOL,5,118,1,126,0.0,730,0,Not Available,335951,Lance Murphy,0,Not Available
+CINC,HP1632,HP1632,HP1632-OP,2,TOL,5,90,1,10,0.0,730,0,Not Available,335951,Lance Murphy,0,Not Available
+DANC,WD40,WD40,WD40-UN,O,TOL,42,49,2,42,0.0,730,324962,Ascent Industries Co.,324287,Brent Harris,0,Not Available
+USCM,WD40,WD40,WD40-UN,O,TOL,42,49,2,42,0.0,730,324962,Ascent Industries Co.,324287,Brent Harris,0,Not Available
+AUB2,HP1632,HP1632,HP1632-T2,P,TOL,225,170,2,200,0.0,730,45235,MICHELMAN INC.,291244,Joël Bertrand,317713,"Hays, Isabelle"
+CIN2,HP1632,HP1632,HP1632-T2,P,TOL,98,72,2,126,0.0,730,292774,"Ascent Chemicals Danville, Inc.",324287,Brent Harris,20345,"Meyers, Jill"
+CINC,HP1632,HP1632,HP1632-PL,2,TOL,5,90,1,10,0.0,730,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,HP1632,HP1632,HP1632-T2,P,TOL,119,87,2,30,0.0,730,292774,"Ascent Chemicals Danville, Inc.",324287,Brent Harris,20345,"Meyers, Jill"
+SING,HP1632,HP1632,HP1632-PL,O,TOL,180,18,1,14,0.0,730,0,Not Available,333572,Vernon Lee,335738,"Sim, Helen"
+SNG4,HP1632,HP1632,HP1632-PL,O,TOL,180,18,1,14,0.0,730,0,Not Available,333572,Vernon Lee,335738,"Sim, Helen"
+AUBA,HP1632,HP1632,HP1632-PL,P,TOL,225,170,1,200,0.0,730,45235,MICHELMAN INC.,291244,Joël Bertrand,317713,"Hays, Isabelle"
+AUBA,HP1632,HP1632,HP1632-T2,P,TOL,225,170,2,200,0.0,730,45235,MICHELMAN INC.,291244,Joël Bertrand,317713,"Hays, Isabelle"
+DANC,HP1632,HP1632,HP1632-T2,O,TOL,90,4,2,30,0.0,730,0,Not Available,324287,Brent Harris,324287,"Harris, Brent"
+USCM,HP1632,HP1632,HP1632-T2,X,TOL,90,4,2,30,0.0,730,0,Not Available,324287,Brent Harris,324287,"Harris, Brent"
+CIN2,WD40,WD40,WD40-SP,O,TOL,42,16,2,10,0.0,730,331380,Ascent Industries Co.,324287,Brent Harris,333530,"Davis, Kyle"
+CIN2,HP1432AT,HP1432AT,HP1432AT-OP,P,TOL,126,92,1,140,0.0,540,292774,"Ascent Chemicals Danville, Inc.",324287,Brent Harris,20345,"Meyers, Jill"
+CIN2,191245PX,191245PX,191245PX-T2,P,TOL,98,72,2,112,0.0,545,328143,Coatings & Adhesives Corporation,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CINC,WD40,WD40,WD40,O,TOL,42,16,2,56,0.0,730,0,Not Available,324287,Brent Harris,324287,"Harris, Brent"
+CINC,WD40,WD40,WD40-SP,O,TOL,42,16,2,10,0.0,730,331380,Ascent Industries Co.,324287,Brent Harris,333530,"Davis, Kyle"
+CINC,WD40,WD40,WD40-UN,O,TOL,42,56,2,30,0.0,730,324962,Ascent Industries Co.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CINC,HP1432AT,HP1432AT,HP1432AT-OP,P,TOL,75,180,1,10,0.0,540,0,Not Available,328907,James Massie,20345,"Meyers, Jill"
+CINC,191245PX,191245PX,191245PX-T2,P,TOL,98,72,2,112,0.0,545,328143,Coatings & Adhesives Corporation,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+DANC,HP1632,HP1632,HP1632-OP,O,TOL,133,140,1,4,0.0,730,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,HP1632,HP1632,HP1632-OP,O,TOL,133,140,1,4,0.0,730,0,Not Available,328907,James Massie,328907,"Massie, James"
+AUB2,HP1632,HP1632,HP1632-OP,P,TOL,206,155,1,185,0.0,730,45235,MICHELMAN INC.,291244,Joël Bertrand,317713,"Hays, Isabelle"
+AUBA,HP1632,HP1632,HP1632-OP,P,TOL,206,155,1,185,0.0,730,45235,MICHELMAN INC.,291244,Joël Bertrand,317713,"Hays, Isabelle"
+BPIP,MD4020,MD4020,MD4020-C1,O,TOL,100,145,2,90,0.0,730,328211,"BPI Packaging, LLC",324287,Brent Harris,324287,"Harris, Brent"
+CIN2,WD40,WD40,WD40-UN,O,TOL,42,32,2,56,0.0,730,331380,Ascent Industries Co.,324287,Brent Harris,333530,"Davis, Kyle"
+DANC,WD40,WD40,WD40,O,TOL,42,16,2,10,0.0,730,0,Not Available,324287,Brent Harris,324287,"Harris, Brent"
+USCM,WD40,WD40,WD40,O,TOL,42,16,2,10,0.0,730,0,Not Available,324287,Brent Harris,324287,"Harris, Brent"
+CIN2,EMA3065,EMA3065,EMA3065,O,TOL,180,187,2,10,0.0,180,326444,Essential Polymers,324287,Brent Harris,337883,"Keevan, Joseph"
+CIN2,WAV501,WAV501,WAV501,O,TOL,180,187,1,10,0.0,180,326445,Essential Polymers,324287,Brent Harris,337883,"Keevan, Joseph"
+CIN2,DMAEMA,DMAEMA,DMAEMA,O,TOL,180,187,1,10,0.0,180,326444,Essential Polymers,324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,EMA3065,EMA3065,EMA3065,O,TOL,180,187,2,10,0.0,180,326444,Essential Polymers,324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,WAV501,WAV501,WAV501,O,TOL,180,187,1,10,0.0,180,326444,Essential Polymers,324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,DMAEMA,DMAEMA,DMAEMA,O,TOL,180,187,1,10,0.0,180,326444,Essential Polymers,324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,FERSUL7W,FERSUL7W,FERSUL7W,O,TOL,180,187,1,10,0.0,180,326444,Essential Polymers,324287,Brent Harris,337883,"Keevan, Joseph"
+USCM,EMA3065,EMA3065,EMA3065,X,TOL,180,187,2,10,0.0,180,326444,Essential Polymers,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+USCM,WAV501,WAV501,WAV501,X,TOL,180,187,1,10,0.0,180,326445,Essential Polymers,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+USCM,DMAEMA,DMAEMA,DMAEMA,X,TOL,180,187,1,10,0.0,180,326444,Essential Polymers,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN3,MDU20,MDU20,MDU20-OP,O,TOL,42,30,1,4,0.0,365,0,Not Available,20445,Steve Laurence,0,Not Available
+CIN3,MDU20,MDU20,MDU20-T2,O,TOL,42,30,1,4,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+EUCM,MDU4075B,MDU4075B.E,MDU4075B.E,X,TOL,75,10,1,8,0.0,365,0,Not Available,291266,Laurent Desjardin,0,Not Available
+AUB2,MDU2012B,MDU2012B.E,MDU2012B.E-LP,D,TOL,75,7,1,15,0.0,365,0,Not Available,291266,Laurent Desjardin,0,Not Available
+AUBA,MDU2012B,MDU2012B.E,MDU2012B.E-LP,S,TOL,75,7,1,15,0.0,365,0,Not Available,291266,Laurent Desjardin,0,Not Available
+EUCM,MDU2012B,MDU2012B.E,MDU2012B.E,X,TOL,75,10,1,8,0.0,365,0,Not Available,0,Not Available,0,Not Available
+AUB2,MDU440,MDU440.E,MDU440.E-LP,O,TOL,30,40,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUB2,181193EU,181193EU.E,181193EU.E-TO,O,TOL,75,50,1,365,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,U502,U502.E,U502.E-PD,O,TOL,77,75,1,250,0.0,365,0,Not Available,291266,Laurent Desjardin,0,Not Available
+AUBA,MDU440,MDU440.E,MDU440.E-LP,O,TOL,30,40,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,MDU440,MDU440.E,MDU440.E-TO,O,TOL,90,40,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,181193EU,181193EU.E,181193EU.E-TO,O,TOL,75,50,1,365,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,181193EU,181193EU.E,181193EU.E-PL,O,TOL,45,50,1,365,0.0,365,0,Not Available,291266,Laurent Desjardin,0,Not Available
+CIN2,MDU2012,MDU2012.E,MDU2012.E-TO,O,TOL,30,45,2,15,0.0,365,0,Not Available,20445,Steve Laurence,0,Not Available
+CIN2,MDU4075,MDU4075.E,MDU4075.E-TO,O,TOL,30,45,2,10,0.0,365,0,Not Available,328907,James Massie,0,Not Available
+AUB2,MDU2012,MDU2012.E,MDU2012.E-LP,O,TOL,30,40,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUB2,MDU2012,MDU2012.E,MDU2012.E-TO,O,TOL,30,40,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUB2,MDU4075,MDU4075.E,MDU4075.E-LP,O,TOL,30,40,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUB2,MDU4075,MDU4075.E,MDU4075.E-TO,O,TOL,30,40,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,MDU2012,MDU2012.E,MDU2012.E-LP,O,TOL,30,40,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,MDU2012,MDU2012.E,MDU2012.E-TO,O,TOL,30,40,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,MDU4075,MDU4075.E,MDU4075.E-LP,O,TOL,60,40,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,MDU4075,MDU4075.E,MDU4075.E-TO,O,TOL,60,40,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,181193EU,181193EU.E,181193EU.E-PD,O,TOL,45,50,1,365,0.0,365,0,Not Available,291266,Laurent Desjardin,0,Not Available
+AUBA,181193EU,181193EU.E,181193EU.E-LP,O,TOL,45,50,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUB2,MDU440,MDU440.E,MDU440.E-TO,O,TOL,90,40,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+CIN2,U701,U701,U701-PL,D,TOL,5,48,1,70,0.0,365,0,Not Available,20445,Steve Laurence,0,Not Available
+CIN2,U601,U601,U601-PL,S,TOL,5,48,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U470,U470,U470-PL,O,TOL,5,65,1,150,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U101,U101,U101-PL,S,TOL,5,48,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U201,U201,U201-OP,S,TOL,5,48,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U201,U201,U201-PL,S,TOL,5,48,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U501,U501,U501-PL,S,TOL,5,48,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U204,U204,U204-PL,S,TOL,5,48,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U502,U502,U502-PL,S,TOL,5,65,1,196,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,MDU4075B,MDU4075B.E,MDU4075B.E-PL,O,TOL,120,10,1,30,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CINC,161017CX,161017CX,161017CX,O,TOL,12,14,1,10,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+AUB2,MDU440B,MDU440B.E,MDU440B.E-TO,O,TOL,75,75,1,180,0.0,365,324808,Cromogenia,291244,Joël Bertrand,0,Not Available
+AUB2,MDU440B,MDU440B.E,MDU440B.E-LP,O,TOL,90,75,1,180,0.0,365,324808,Cromogenia,340941,Lise Jacquet,0,Not Available
+AUBA,MDU440B,MDU440B.E,MDU440B.E-TO,O,TOL,75,65,1,180,0.0,365,324808,Cromogenia,291244,Joël Bertrand,0,Not Available
+AUBA,MDU440B,MDU440B.E,MDU440B.E-LP,O,TOL,90,75,1,250,0.0,365,324808,Cromogenia,291244,Joël Bertrand,0,Not Available
+SHAN,MDU4075B,MDU4075B.E,MDU4075B.E-LP,P,TOL,60,10,1,8,0.0,365,324808,Cromogenia,301526,Rose-Anne Body,0,Not Available
+AUBA,U802,U802.E,U802.E-PD,O,TOL,60,10,1,250,0.0,365,301843,BIP (Oldbury) Limited,291244,Joël Bertrand,0,Not Available
+CINC,U201,U201,U201-T2,P,TOL,42,56,2,10,0.0,365,292788,Ortec Inc.,324287,Brent Harris,0,Not Available
+ORTC,APT10,APT10,APT10,O,TOL,56,2,2,10,0.0,365,292788,Ortec Inc.,324287,Brent Harris,0,Not Available
+USCM,APT10,APT10,APT10,O,TOL,56,70,2,10,0.0,365,292788,Ortec Inc.,324287,Brent Harris,0,Not Available
+USCM,APT10,APT10,APT10-T2,O,TOL,56,3,2,15,0.0,365,292788,Ortec Inc.,324287,Brent Harris,0,Not Available
+AUB2,U601,U601,U601-OP,O,TOL,196,140,1,180,0.0,365,45235,MICHELMAN INC.,301526,Rose-Anne Body,0,Not Available
+AUB2,U470,U470,U470-PL,O,TOL,75,85,1,365,0.0,365,45235,MICHELMAN INC.,301526,Rose-Anne Body,0,Not Available
+AUBA,U470,U470,U470-PL,O,TOL,75,85,1,365,0.0,365,45235,MICHELMAN INC.,301526,Rose-Anne Body,0,Not Available
+SHAN,MDU2012B,MDU2012B.E,MDU2012B.E-LP,S,TOL,75,7,1,15,0.0,365,309362,Michelman Int'l Belgium SRL,291266,Laurent Desjardin,0,Not Available
+AUB2,U501,U501,U501-OP,O,TOL,90,42,1,8,0.0,365,45235,MICHELMAN INC.,301526,Rose-Anne Body,0,Not Available
+AUB2,U2022,U2022,U2022-OP,O,TOL,90,42,1,8,0.0,365,45235,MICHELMAN INC.,301526,Rose-Anne Body,0,Not Available
+AUB2,U204,U204,U204-T2,O,TOL,90,30,1,8,0.0,365,292788,Ortec Inc.,301526,Rose-Anne Body,0,Not Available
+AUBA,U501,U501,U501-OP,O,TOL,90,42,1,8,0.0,365,45235,MICHELMAN INC.,301526,Rose-Anne Body,0,Not Available
+AUBA,U2022,U2022,U2022-OP,O,TOL,90,42,1,8,0.0,365,45235,MICHELMAN INC.,301526,Rose-Anne Body,0,Not Available
+AUBA,U204,U204,U204-T2,O,TOL,90,30,1,8,0.0,365,292788,Ortec Inc.,301526,Rose-Anne Body,0,Not Available
+AUBA,U701,U701,U701-PL,O,TOL,115,90,2,180,0.0,365,45235,MICHELMAN INC.,340941,Lise Jacquet,317713,"Hays, Isabelle"
+AUBA,U502,U502.E,U502.E-PL,P,TOL,77,10,1,15,0.0,365,327516,ERCA Advanced Polymer Solutions SRL,340941,Lise Jacquet,317713,"Hays, Isabelle"
+AUBA,U802,U802.E,U802.E-PL,P,TOL,60,55,1,90,0.0,365,327516,ERCA Advanced Polymer Solutions SRL,340941,Lise Jacquet,317713,"Hays, Isabelle"
+CINC,MW40504,MW40504,MW40504-C2,O,TOL,60,6,1,10,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+SHAN,U802,U802.E,U802.E-PL,S,TOL,60,55,1,90,0.0,365,327516,ERCA Advanced Polymer Solutions SRL,340941,Lise Jacquet,317713,"Hays, Isabelle"
+AUB2,U502,U502.E,U502.E,P,TOL,60,10,1,15,0.0,365,327516,ERCA Advanced Polymer Solutions SRL,291244,Joël Bertrand,306439,"Hansen, Charlotte"
+AUB2,U502,U502.E,U502.E-TO,P,TOL,77,10,1,15,0.0,365,327516,ERCA Advanced Polymer Solutions SRL,340941,Lise Jacquet,317713,"Hays, Isabelle"
+AUBA,U701,U701,U701-OP,O,TOL,115,90,1,180,0.0,365,45235,MICHELMAN INC.,340941,Lise Jacquet,317713,"Hays, Isabelle"
+AUBA,U502,U502.E,U502.E,P,TOL,60,10,1,15,0.0,365,327516,ERCA Advanced Polymer Solutions SRL,291244,Joël Bertrand,306439,"Hansen, Charlotte"
+CIN2,U601,U601,U601-OP,P,TOL,56,42,2,70,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,U701,U701,U701-OP,P,TOL,56,42,2,70,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,U502,U502.E,U502.E-TO,O,TOL,42,42,1,15,0.0,365,301843,BIP (Oldbury) Limited,20445,Steve Laurence,306439,"Hansen, Charlotte"
+CINC,U601,U601,U601-OP,P,TOL,42,42,1,10,0.0,365,292788,Ortec Inc.,324287,Brent Harris,337883,"Keevan, Joseph"
+CINR,U601,U601,U601-OP,P,TOL,42,42,1,10,0.0,365,292788,Ortec Inc.,324287,Brent Harris,337883,"Keevan, Joseph"
+ORTC,U701,U701,U701-OP,O,TOL,42,56,1,15,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+SING,U601,U601,U601-OP,P,TOL,145,18,2,14,0.0,365,292450,"Michelman, Inc.",333572,Vernon Lee,335738,"Sim, Helen"
+SNG4,U601,U601,U601-OP,O,TOL,145,18,2,14,0.0,365,292450,"Michelman, Inc.",333572,Vernon Lee,335738,"Sim, Helen"
+USCM,U701,U701,U701-OP,X,TOL,42,56,1,15,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+AUB2,U802,U802.E,U802.E-TO,P,TOL,60,55,1,90,0.0,365,327516,ERCA Advanced Polymer Solutions SRL,291244,Joël Bertrand,317713,"Hays, Isabelle"
+AUBA,U601,U601,U601-OP,P,TOL,196,150,1,180,0.0,365,45235,MICHELMAN INC.,340941,Lise Jacquet,317713,"Hays, Isabelle"
+AUBA,U502,U502.E,U502.E-TO,P,TOL,77,10,1,15,0.0,365,327516,ERCA Advanced Polymer Solutions SRL,340941,Lise Jacquet,317713,"Hays, Isabelle"
+AUBA,U802,U802.E,U802.E,P,TOL,60,55,1,90,0.0,365,301843,BIP (Oldbury) Limited,340941,Lise Jacquet,317713,"Hays, Isabelle"
+AUBA,U802,U802.E,U802.E-TO,P,TOL,60,55,1,90,0.0,365,327516,ERCA Advanced Polymer Solutions SRL,291244,Joël Bertrand,317713,"Hays, Isabelle"
+AUBA,MDU2012B,MDU2012B.E,MDU2012B.E,P,TOL,75,7,1,15,0.0,365,324808,Cromogenia,291266,Laurent Desjardin,317713,"Hays, Isabelle"
+AUBA,MDU2012B,MDU2012B.E,MDU2012B.E-TO,P,TOL,75,7,1,15,0.0,365,324808,Cromogenia,291244,Joël Bertrand,317713,"Hays, Isabelle"
+CIN2,U802,U802.E,U802.E,P,TOL,191,137,2,10,0.0,365,24886,"Michelman  Interl. - (FG) - Aubange, BE",334927,Tammy Hanlon,300328,"Lye, May Leng (Josephine)"
+CIN2,U802,U802.E,U802.E-TO,P,TOL,191,140,2,10,0.0,365,24886,"Michelman  Interl. - (FG) - Aubange, BE",334927,Tammy Hanlon,300328,"Lye, May Leng (Josephine)"
+CINC,U802,U802.E,U802.E,P,TOL,191,137,2,10,0.0,365,24886,"Michelman  Interl. - (FG) - Aubange, BE",334927,Tammy Hanlon,300328,"Lye, May Leng (Josephine)"
+CINC,U802,U802.E,U802.E-TO,P,TOL,191,140,2,10,0.0,365,24886,"Michelman  Interl. - (FG) - Aubange, BE",334927,Tammy Hanlon,300328,"Lye, May Leng (Josephine)"
+SHAN,U601,U601,U601-PL,P,TOL,111,86,1,30,0.0,365,306961,"Michelman, Inc.",309690,Jollene Li,329143,"Min,Jialing (Emily )"
+SING,U601,U601,U601-PL,P,TOL,90,18,1,14,0.0,365,292450,"Michelman, Inc.",316375,Bhavesh Shukla,335738,"Sim, Helen"
+SNG4,U601,U601,U601-PL,O,TOL,90,18,1,14,0.0,365,292450,"Michelman, Inc.",333572,Vernon Lee,335738,"Sim, Helen"
+CIN2,161190PX,161190PX,161190PX-T3,O,TOL,28,22,2,28,0.0,365,317501,EPS,324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,161190PX,161190PX,161190PX,P,TOL,28,35,2,10,0.0,365,317501,EPS,335951,Lance Murphy,300328,"Lye, May Leng (Josephine)"
+CINC,161190PX,161190PX,161190PX-T2,P,TOL,28,22,2,42,0.0,365,317501,EPS,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,U101,U101,U101-OP,P,TOL,56,42,2,70,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,U501,U501,U501-OP,P,TOL,56,42,2,70,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,U1001,U1001,U1001-OP,O,TOL,42,180,2,10,0.0,365,292788,Ortec Inc.,324287,Brent Harris,324287,"Harris, Brent"
+CIN2,U2022,U2022,U2022-OP,P,TOL,56,42,1,70,0.0,365,292788,Ortec Inc.,324287,Brent Harris,20345,"Meyers, Jill"
+CIN2,U502,U502,U502-OP,P,TOL,56,42,2,70,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,MDU20,MDU20,MDU20-T2,P,TOL,56,42,2,70,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,161017CX,161017CX,161017CX-FD,O,TOL,12,14,1,10,0.0,365,0,Not Available,324287,Brent Harris,337883,"Keevan, Joseph"
+CIN2,U470,U470,U470-OP,P,TOL,56,42,2,70,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,U201,U201,U201-T2,P,TOL,56,42,2,70,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,MDU4075B,MDU4075B.E,MDU4075B.E-TO,O,TOL,146,105,1,10,0.0,365,24886,"Michelman  Interl. - (FG) - Aubange, BE",335951,Lance Murphy,300328,"Lye, May Leng (Josephine)"
+CIN2,APT10,APT10,APT10-T2,O,TOL,84,60,2,98,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,U501B,U501B,U501B-OP,P,TOL,56,42,2,70,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,APT11,APT11,APT11-T2,O,TOL,84,60,2,20,0.0,365,292788,Ortec Inc.,324287,Brent Harris,337883,"Keevan, Joseph"
+CIN2,U2022,U2022,U2022-T2,S,TOL,5,48,2,70,0.0,365,292788,Ortec Inc.,335951,Lance Murphy,300328,"Lye, May Leng (Josephine)"
+CINC,U101,U101,U101-OP,P,TOL,70,84,1,28,0.0,365,296239,"Ortec, Inc - Easley, US",324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,U201,U201,U201-OP,2,TOL,42,42,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,U501,U501,U501-OP,P,TOL,30,42,1,10,0.0,365,292788,Ortec Inc.,324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,U1001,U1001,U1001-OP,O,TOL,42,30,1,15,0.0,365,0,Not Available,328907,James Massie,319235,"Webber, Ashley"
+CINC,U2022,U2022,U2022-OP,P,TOL,56,70,1,30,0.0,365,292788,Ortec Inc.,324287,Brent Harris,20345,"Meyers, Jill"
+CINC,U502,U502,U502-OP,P,TOL,42,42,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,U204,U204,U204-OP,2,TOL,42,42,1,10,0.0,365,292788,Ortec Inc.,324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,MDU20,MDU20,MDU20-T2,P,TOL,56,42,2,70,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CINC,161017CX,161017CX,161017CX-FD,O,TOL,12,14,1,10,0.0,365,0,Not Available,328907,James Massie,333530,"Davis, Kyle"
+CINC,U470,U470,U470-OP,P,TOL,56,42,2,70,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CINC,MW40514,MW40514,MW40514-C2,O,TOL,60,6,1,10,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CINC,APT10,APT10,APT10-T2,O,TOL,56,1,2,20,0.0,365,0,Not Available,324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,APT11,APT11,APT11-T2,O,TOL,56,70,2,20,0.0,365,292788,Ortec Inc.,324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,U2022,U2022,U2022-T2,2,TOL,5,48,2,70,0.0,365,292788,Ortec Inc.,335951,Lance Murphy,300328,"Lye, May Leng (Josephine)"
+ORTC,U2022,U2022,U2022-OP,O,TOL,30,42,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,MDU20,MDU20,MDU20-T2,O,TOL,30,42,1,8,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U470,U470,U470-OP,O,TOL,42,42,1,8,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+SHAN,U204,U204,U204-OP,P,TOL,109,84,1,10,0.0,365,292788,Ortec Inc.,309690,Jollene Li,329143,"Min,Jialing (Emily )"
+SHAN,U501B,U501B,U501B-OP,O,TOL,30,44,1,10,0.0,365,292788,Ortec Inc.,328907,James Massie,328907,"Massie, James"
+SING,U501,U501,U501-PL,P,TOL,135,18,1,14,0.0,365,292450,"Michelman, Inc.",316375,Bhavesh Shukla,335738,"Sim, Helen"
+SING,U2022,U2022,U2022-OP,P,TOL,115,42,2,21,0.0,365,292450,"Michelman, Inc.",333572,Vernon Lee,335738,"Sim, Helen"
+SING,U204,U204,U204-PL,P,TOL,100,50,1,20,0.0,365,292450,"Michelman, Inc.",335951,Lance Murphy,335738,"Sim, Helen"
+SNG4,U501,U501,U501-PL,O,TOL,135,18,1,14,0.0,365,292450,"Michelman, Inc.",333572,Vernon Lee,335738,"Sim, Helen"
+SNG4,U2022,U2022,U2022-OP,P,TOL,115,1,2,21,0.0,365,292450,"Michelman, Inc.",333572,Vernon Lee,335738,"Sim, Helen"
+USCM,U2022,U2022,U2022-OP,X,TOL,30,42,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U470,U470,U470-OP,X,TOL,42,42,1,8,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+AUB2,MDU4075B,MDU4075B.E,MDU4075B.E-LP,P,TOL,75,7,1,15,0.0,365,324808,Cromogenia,291244,Joël Bertrand,317713,"Hays, Isabelle"
+AUBA,U2022,U2022,U2022-PL,O,TOL,90,75,1,105,0.0,365,45235,MICHELMAN INC.,340941,Lise Jacquet,317713,"Hays, Isabelle"
+AUBA,MDU4075B,MDU4075B.E,MDU4075B.E,P,TOL,75,7,1,15,0.0,365,324808,Cromogenia,291266,Laurent Desjardin,317713,"Hays, Isabelle"
+AUBA,MDU4075B,MDU4075B.E,MDU4075B.E-TO,P,TOL,75,7,1,15,0.0,365,324808,Cromogenia,291244,Joël Bertrand,317713,"Hays, Isabelle"
+AUBA,MDU4075B,MDU4075B.E,MDU4075B.E-LP,P,TOL,75,7,1,15,0.0,365,324808,Cromogenia,291244,Joël Bertrand,317713,"Hays, Isabelle"
+CIN2,MD4020,MD4020,MD4020-C2,D,TOL,112,112,2,140,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,MD4021,MD4021,MD4021-C2,O,TOL,112,112,2,140,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,MD4023,MD4023,MD4023-C2,O,TOL,112,112,2,140,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,MD4021C,MD4021C,MD4021C-C2,O,TOL,112,112,2,140,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,MD4022C,MD4022C,MD4022C-C2,O,TOL,112,112,2,140,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,MD4023C,MD4023C,MD4023C-C2,O,TOL,112,112,2,140,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CINC,MD4023,MD4023,MD4023-C2,O,TOL,112,112,2,15,0.0,365,328211,"BPI Packaging, LLC",324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CINC,APT10,APT10,APT10,O,TOL,56,1,2,20,0.0,365,0,Not Available,324287,Brent Harris,337883,"Keevan, Joseph"
+SHAN,U501,U501,U501-OP,P,TOL,116,89,2,8,0.0,365,306961,"Michelman, Inc.",309690,Jollene Li,329143,"Min,Jialing (Emily )"
+SHAN,U470,U470,U470-OP,P,TOL,116,89,1,8,0.0,365,306961,"Michelman, Inc.",309690,Jollene Li,329143,"Min,Jialing (Emily )"
+SING,U2022,U2022,U2022,P,TOL,115,1,1,21,0.0,365,292450,"Michelman, Inc.",335951,Lance Murphy,335738,"Sim, Helen"
+SNG4,U2022,U2022,U2022,P,TOL,115,1,1,21,0.0,365,292450,"Michelman, Inc.",335951,Lance Murphy,335738,"Sim, Helen"
+ORTC,U601,U601,U601-KP,O,TOL,42,42,1,8,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+SNG4,U2022,U2022,U2022-PL,D,TOL,1,115,1,21,0.0,365,26227,Singapore Manufacturing,335951,Lance Murphy,0,Not Available
+USCM,APT11,APT11,APT11,O,TOL,1,6,1,10,0.0,365,292788,Ortec Inc.,324287,Brent Harris,0,Not Available
+CIN2,171143PX,171143PX,171143PX-T2,O,TOL,1,180,2,15,0.0,180,328143,Coatings & Adhesives Corporation,324287,Brent Harris,333530,"Davis, Kyle"
+CIN2,APT10,APT10,APT10,O,TOL,1,60,2,60,0.0,365,292788,Ortec Inc.,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CINC,171143PX,171143PX,171143PX-T2,O,TOL,1,6,2,15,0.0,180,328143,Coatings & Adhesives Corporation,328907,James Massie,319235,"Webber, Ashley"
+INCH,WD40,WD40,WD40-UN,O,FEC,1,16,1,15,0.0,730,324847,Inchem Branch Plant,328907,James Massie,328907,"Massie, James"
+CIN2,U501,U501,U501-T2,O,TOL,1,44,1,10,0.0,365,292788,Ortec Inc.,328907,James Massie,328907,"Massie, James"
+CIN2,161017CX,161017CX,161017CX-OP,O,TOL,1,6,2,30,0.0,365,324962,Ascent Industries Co.,324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,161017CX,161017CX,161017CX-OP,O,TOL,1,6,1,30,0.0,365,324962,Ascent Industries Co.,324287,Brent Harris,337883,"Keevan, Joseph"
+CIN3,U2022,U2022,U2022-OP,O,TOL,1,42,2,8,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,20345,"Meyers, Jill"
+CIN4,U2022,U2022,U2022-OP,O,TOL,1,42,2,365,0.0,365,292788,Ortec Inc.,20440,Roger Niehaus,20345,"Meyers, Jill"
+CIN2,FERSUL7W,FERSUL7W,FERSUL7W,O,TOL,1,187,1,10,0.0,180,326444,Essential Polymers,324287,Brent Harris,337883,"Keevan, Joseph"
+USCM,FERSUL7W,FERSUL7W,FERSUL7W,X,TOL,1,187,1,10,0.0,180,326444,Essential Polymers,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CIN2,U1001,U1001,U1001-KN,O,ETP,1,30,1,15,0.0,365,0,Not Available,20445,Steve Laurence,0,Not Available
+CINC,U1001,U1001,U1001,O,ETP,1,6,1,15,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+SHAN,U502,U502,U502-PL,P,FEC,1,4,1,8,0.0,365,0,Not Available,20445,Steve Laurence,0,Not Available
+CIN2,U1001,U1001,U1001-PL,O,ETP,1,4,1,15,0.0,365,0,Not Available,20445,Steve Laurence,0,Not Available
+CINC,U1001,U1001,U1001-PL,O,ETP,1,4,1,15,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+CINC,U701,U701,U701,1,ETP,1,6,1,15,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+CINC,U701,U701,U701-PL,D,ETP,1,6,1,15,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+CIN2,U201,U201,U201,M,FCB,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,161017CX,161017CX,161017CX-PL,O,FEC,1,74,1,10,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+CINC,161017CX,161017CX,161017CX-PL,O,FEC,1,74,1,10,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+ORTC,U701,U701,U701,O,FEC,1,56,1,15,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+USCM,U701,U701,U701,X,FEC,1,56,1,15,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,MD4023,MD4023,MD4023,O,FEC,1,6,1,10,0.0,365,0,Not Available,324287,Brent Harris,337883,"Keevan, Joseph"
+CIN2,HP1432AT,HP1432AT,HP1432AT,M,TOL,1,93,1,140,0.0,540,0,Not Available,335951,Lance Murphy,0,Not Available
+AUB2,171143PX,171143PX,171143PX-OP,O,TOL,1,6,2,30,0.0,180,0,Not Available,328907,James Massie,0,Not Available
+AUBA,171143PX,171143PX,171143PX-OP,O,TOL,1,6,2,30,0.0,180,0,Not Available,328907,James Massie,0,Not Available
+CIN2,171143PX,171143PX,171143PX-OP,O,TOL,1,6,2,15,0.0,180,0,Not Available,20445,Steve Laurence,0,Not Available
+CINC,HP1432AT,HP1432AT,HP1432AT,1,TOL,1,88,1,10,0.0,540,0,Not Available,302796,Dave Howe,0,Not Available
+CINC,MD4020,MD4020,MD4020,O,TOL,1,6,1,10,0.0,730,0,Not Available,328907,James Massie,0,Not Available
+CINC,171143PX,171143PX,171143PX-OP,O,TOL,1,6,2,15,0.0,180,0,Not Available,20445,Steve Laurence,0,Not Available
+CIN2,HP1632,HP1632,HP1632,M,TOL,1,113,1,126,0.0,730,0,Not Available,335951,Lance Murphy,0,Not Available
+AUBA,191245PX,191245PX,191245PX,O,TOL,1,75,1,15,0.0,545,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,191245PX,191245PX,191245PX,M,TOL,1,75,1,112,0.0,545,0,Not Available,335951,Lance Murphy,0,Not Available
+CINC,191245PX,191245PX,191245PX,1,TOL,1,75,1,15,0.0,545,0,Not Available,335951,Lance Murphy,0,Not Available
+CINC,HP1632,HP1632,HP1632,D,TOL,1,88,1,10,0.0,730,0,Not Available,328907,James Massie,328907,"Massie, James"
+SING,HP1632,HP1632,HP1632,O,TOL,1,18,1,14,0.0,730,0,Not Available,333572,Vernon Lee,335738,"Sim, Helen"
+SNG4,HP1632,HP1632,HP1632,O,TOL,1,18,1,14,0.0,730,0,Not Available,333572,Vernon Lee,335738,"Sim, Helen"
+ORTC,HP1632,HP1632,HP1632-T2,O,TOL,1,4,2,30,0.0,730,0,Not Available,328907,James Massie,328907,"Massie, James"
+CIN2,WD40,WD40,WD40,O,TOL,1,33,2,56,0.0,730,0,Not Available,324287,Brent Harris,324287,"Harris, Brent"
+SING,HP1632,HP1632,HP1632-OP,O,TOL,1,18,2,14,0.0,730,0,Not Available,333572,Vernon Lee,335738,"Sim, Helen"
+SNG4,HP1632,HP1632,HP1632-OP,O,TOL,1,18,2,14,0.0,730,0,Not Available,333572,Vernon Lee,335738,"Sim, Helen"
+CIN2,U1001,U1001,U1001,O,TOL,1,180,1,10,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CINC,U2022,U2022,U2022,1,TOL,1,43,1,60,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+CINC,APT11,APT11,APT11-FD,O,TOL,1,6,1,30,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+EUCM,U802,U802.E,U802.E,X,TOL,1,10,1,8,0.0,365,0,Not Available,0,Not Available,0,Not Available
+AUBA,MDU440B,MDU440B.E,MDU440B.E,O,TOL,1,65,1,180,0.0,365,0,Not Available,291266,Laurent Desjardin,0,Not Available
+AUB2,171228PX,171228PX.E,171228PX.E-TO,O,TOL,1,10,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUB2,171228PX,171228PX.E,171228PX.E-LP,O,TOL,1,30,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,171228PX,171228PX.E,171228PX.E-TO,O,TOL,1,10,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,171228PX,171228PX.E,171228PX.E-LP,O,TOL,1,30,1,8,0.0,365,0,Not Available,301526,Rose-Anne Body,0,Not Available
+AUBA,171228PX,171228PX.E,171228PX.E-PL,O,TOL,1,10,1,8,0.0,365,0,Not Available,291266,Laurent Desjardin,0,Not Available
+CIN2,U470,U470,U470,M,TOL,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CINC,U470,U470,U470,1,TOL,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+AUBA,U701,U701,U701,O,TOL,1,45,1,70,0.0,365,0,Not Available,340941,Lise Jacquet,0,Not Available
+CIN2,U601,U601,U601,M,TOL,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U701,U701,U701,M,TOL,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U101,U101,U101-KP,O,TOL,1,56,1,10,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U204,U204,U204,M,TOL,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,MDU20,MDU20,MDU20,M,TOL,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CINC,U201,U201,U201,1,TOL,1,42,2,10,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+CINC,MDU20,MDU20,MDU20,1,TOL,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,MDU2012,MDU2012.E,MDU2012.E-OP,O,TOL,1,45,1,15,0.0,365,0,Not Available,20445,Steve Laurence,0,Not Available
+CIN2,MDU4075B,MDU4075B.E,MDU4075B.E-OP,O,TOL,1,10,1,10,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,MDU4075,MDU4075.E,MDU4075.E-OP,O,TOL,1,45,1,10,0.0,365,0,Not Available,328907,James Massie,0,Not Available
+CINC,U701,U701,U701-OP,P,TOL,1,42,1,15,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+CINC,U470,U470,U470-PL,O,TOL,1,4,2,10,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+CIN2,U101,U101,U101,M,TOL,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,161190PX,161190PX,161190PX,P,TOL,1,23,2,14,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,161017CX,161017CX,161017CX,O,TOL,1,20,1,10,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U501,U501,U501,M,TOL,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U2022,U2022,U2022,M,TOL,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,MDU20,MDU20,MDU20-PL,O,TOL,1,44,1,10,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,MDU20,MDU20,MDU20-OP,O,TOL,1,44,1,10,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,U204,U204,U204-T2,O,TOL,1,43,1,70,0.0,365,0,Not Available,324287,Brent Harris,0,Not Available
+CIN2,MDU4075B,MDU4075B.E,MDU4075B.E,O,TOL,1,10,1,10,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,APT11,APT11,APT11,O,TOL,1,50,1,20,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CIN2,APT11,APT11,APT11-FD,O,TOL,1,50,1,20,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+SING,U2022,U2022,U2022-PL,S,TOL,1,115,1,21,0.0,365,0,Not Available,335951,Lance Murphy,0,Not Available
+CINC,U204,U204,U204-PL,2,TOL,1,30,1,10,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+CINC,U502,U502,U502-PL,2,TOL,1,42,1,10,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+CINC,APT11,APT11,APT11,O,TOL,1,6,1,10,0.0,365,0,Not Available,302796,Dave Howe,0,Not Available
+CINC,U601,U601,U601-PL,2,TOL,1,30,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,MDU4075,MDU4075.E,MDU4075.E-PL,O,TOL,1,6,1,10,0.0,365,0,Not Available,333530,Kyle Davis,333530,"Davis, Kyle"
+CIN2,MDU4075,MDU4075.E,MDU4075.E-PL,O,TOL,1,6,2,10,0.0,365,0,Not Available,333530,Kyle Davis,333530,"Davis, Kyle"
+CINC,U101,U101,U101-PL,2,TOL,1,42,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,U201,U201,U201-PL,2,TOL,1,42,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,U501,U501,U501-PL,2,TOL,1,11,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,U2022,U2022,U2022-PL,2,TOL,1,42,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CIN2,U101,U101,U101-T2,O,TOL,1,56,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CIN2,U502,U502,U502,P,TOL,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,20345,"Meyers, Jill"
+CIN2,U501B,U501B,U501B,M,TOL,1,43,2,70,0.0,365,0,Not Available,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+CINC,U101,U101,U101,1,TOL,1,42,2,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,U501,U501,U501,S,TOL,1,6,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,U601,U601,U601,1,TOL,1,6,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,U101,U101,U101-T2,O,TOL,1,30,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,U101,U101,U101-KP,O,TOL,1,30,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,U501,U501,U501-T2,O,TOL,1,30,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,U502,U502,U502,P,TOL,1,43,1,70,0.0,365,0,Not Available,335951,Lance Murphy,20345,"Meyers, Jill"
+CINC,U204,U204,U204,1,TOL,1,1,1,10,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+CINC,MD4021,MD4021,MD4021,O,TOL,1,8,1,10,0.0,365,0,Not Available,324287,Brent Harris,337883,"Keevan, Joseph"
+CINC,U501B,U501B,U501B,1,TOL,1,43,2,70,0.0,365,0,Not Available,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"
+ORTC,MDU20,MDU20,MDU20,O,TOL,1,1,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U204,U204,U204-T2,O,TOL,1,30,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+SING,U501,U501,U501,O,TOL,1,18,2,14,0.0,365,0,Not Available,333572,Vernon Lee,335738,"Sim, Helen"
+SING,U601,U601,U601,O,TOL,1,18,2,14,0.0,365,0,Not Available,333572,Vernon Lee,335738,"Sim, Helen"
+SING,U501,U501,U501-OP,O,TOL,1,18,2,14,0.0,365,0,Not Available,333572,Vernon Lee,335738,"Sim, Helen"
+SNG4,U501,U501,U501,O,TOL,1,18,2,14,0.0,365,0,Not Available,333572,Vernon Lee,335738,"Sim, Helen"
+SNG4,U601,U601,U601,O,TOL,1,18,2,14,0.0,365,0,Not Available,333572,Vernon Lee,335738,"Sim, Helen"
+SNG4,U501,U501,U501-OP,O,TOL,1,18,2,14,0.0,365,0,Not Available,333572,Vernon Lee,335738,"Sim, Helen"
+USCM,MDU20,MDU20,MDU20,X,TOL,1,1,1,4,0.0,365,0,Not Available,328907,James Massie,328907,"Massie, James"
+ORTC,U501B,U501B,U501B,O,TOL,1,44,2,10,0.0,365,0,Not Available,324287,Brent Harris,337883,"Keevan, Joseph"
+USCM,U501B,U501B,U501B,X,TOL,1,44,2,10,0.0,365,0,Not Available,324287,Brent Harris,300328,"Lye, May Leng (Josephine)"

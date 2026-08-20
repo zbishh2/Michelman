@@ -1,0 +1,51 @@
+let
+    Raw = AnalysisServices.Database(
+        "SSASPROD",
+        "BIQLTabular",
+        [
+            Query = "
+EVALUATE
+VAR Vendors = { 292788, 324808, 328211, 322114, 331380, 317501, 327516, 292774, 301843, 328143, 322976, 326444, 324962, 327267, 326095 }
+VAR Receipts =
+    FILTER (
+        'Purchase Order Receiver',
+        'Purchase Order Receiver'[Match Record Type] = ""1""
+            && 'Purchase Order Receiver'[Address Num PO] IN Vendors
+            && 'Purchase Order Receiver'[Received Date] >= DATE ( 2020, 1, 1 )
+            && RELATED ( 'Item Branch'[Item Num 2nd] ) <> ""??????""
+    )
+RETURN
+    SELECTCOLUMNS (
+        Receipts,
+        ""Global Bulk Item"", RELATED ( 'Item Branch'[Item Num Global Bulk] ),
+        ""Bulk Item"", RELATED ( 'Item Branch'[Item Num Bulk] ),
+        ""2nd Item Number"", RELATED ( 'Item Branch'[Item Num 2nd] ),
+        ""Vendor Name"", IF ( TRIM ( RELATED ( Supplier[Supplier Name] ) ) = """", LOOKUPVALUE ( 'Address'[Address Name], 'Address'[Address Num], 'Purchase Order Receiver'[Address Num PO] ), RELATED ( Supplier[Supplier Name] ) ),
+        ""Vendor ID"", 'Purchase Order Receiver'[Address Num PO],
+        ""Received Quantity (Line)"", IF ( 'Purchase Order Receiver'[UOM Primary] = ""LB"", 'Purchase Order Receiver'[QuantityReceivedLB], IF ( 'Purchase Order Receiver'[UOM Primary] = ""KG"", 'Purchase Order Receiver'[QuantityReceivedKG], 'Purchase Order Receiver'[QuantityReceived] ) ),
+        ""Received Quantity LBs (Line)"", 'Purchase Order Receiver'[QuantityReceivedLB],
+        ""Received Quantity KGs (Line)"", 'Purchase Order Receiver'[QuantityReceivedKG],
+        ""Receipt Transaction Type"", 'Purchase Order Receiver'[Document Type],
+        ""Receipt Transaction Date"", 'Purchase Order Receiver'[Received Date],
+        ""Order Type"", 'Purchase Order Receiver'[Order Type],
+        ""Document Number"", 'Purchase Order Receiver'[Document Num],
+        ""Line Number"", 'Purchase Order Receiver'[Line Num],
+        ""Document Type"", 'Purchase Order Receiver'[Document Type],
+        ""Amount Received (Line)"", 'Purchase Order Receiver'[AmountReceived],
+        ""Amount Received USD (Line)"", 'Purchase Order Receiver'[AmountReceivedUSD],
+        ""Amount Received EUR (Line)"", 'Purchase Order Receiver'[AmountReceivedEUR],
+        ""Date"", 'Purchase Order Receiver'[Received Date],
+        ""Year"", YEAR ( 'Purchase Order Receiver'[Received Date] ),
+        ""Month"", MONTH ( 'Purchase Order Receiver'[Received Date] )
+    )
+"
+        ]
+    ),
+    Data = Table.TransformColumnNames(
+        Raw,
+        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+            then Text.Middle(_, 1, Text.Length(_) - 2)
+            else _
+    )
+in
+    Data

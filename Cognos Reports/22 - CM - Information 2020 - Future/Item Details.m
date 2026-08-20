@@ -1,0 +1,48 @@
+let
+    Raw = AnalysisServices.Database(
+        "SSASPROD",
+        "BIQLTabular",
+        [
+            Query = "
+EVALUATE
+VAR Bulks = { ""161017CX"", ""161190PX"", ""171143PX"", ""171228PX.E"", ""181193EU.E"", ""191245PX"", ""APT10"", ""APT11"", ""DMAEMA"", ""EMA3065"", ""FERSUL7W"", ""HP1432AT"", ""HP1632"", ""MD4020"", ""MD4020C"", ""MD4021"", ""MD4021C"", ""MD4022C"", ""MD4023"", ""MD4023C"", ""MDU20"", ""MDU2012.E"", ""MDU2012B.E"", ""MDU4075.E"", ""MDU4075B.E"", ""MDU440.E"", ""MDU440B.E"", ""MW40504"", ""MW40514"", ""NP4LF.S"", ""PUD1.E"", ""STODSO"", ""U1001"", ""U101"", ""U201"", ""U2022"", ""U204"", ""U470"", ""U501"", ""U501B"", ""U502"", ""U502.E"", ""U601"", ""U701"", ""U802.E"", ""WAV501"", ""WD40"" }
+VAR ItemBranches =
+    FILTER (
+        'Item Branch',
+        TRIM ( 'Item Branch'[Item Bulk] ) IN Bulks
+            && TRIM ( 'Item Branch'[Business Unit] ) <> """"
+            && NOT CONTAINSSTRING ( 'Item Branch'[Business Unit], ""LAB"" )
+    )
+RETURN
+    SELECTCOLUMNS (
+        ItemBranches,
+        ""Branch Plant"", TRIM ( 'Item Branch'[Business Unit] ),
+        ""Global Bulk Item"", 'Item Branch'[Item Global Bulk],
+        ""Bulk Item"", 'Item Branch'[Item Bulk],
+        ""2nd Item Number"", 'Item Branch'[Item Num 2nd],
+        ""Stock Type Code"", 'Item Branch'[Stocking Type],
+        ""Master Planning Family"", 'Item Branch'[Master Planning Family],
+        ""Lead Time Level"", 'Item Branch'[Lead time Level],
+        ""Lead Time Order to Ship"", 'Item Branch'[Lead Time MFG_BP],
+        ""Planning Code"", 'Item Branch'[Planning Code],
+        ""Planning Time Fence Days"", 'Item Branch'[Planning Time Fence Days],
+        ""Safety Stock"", IF ( ISBLANK ( 'Item Branch'[SafetyStock] ), 0, 'Item Branch'[SafetyStock] ),
+        ""Shelf Life Days"", 'Item Branch'[Shelf Life Days],
+        ""Supplier Number"", 'Item Branch'[Branch Supplier Num],
+        ""Supplier Name"", 'Item Branch'[Branch Supplier Name],
+        ""Planner Number"", 'Item Branch'[Planner Num],
+        ""Planner Name"", 'Item Branch'[Planner Name],
+        ""Buyer Number"", 'Item Branch'[Buyer Num],
+        ""Buyer Name"", 'Item Branch'[Buyer Name]
+    )
+"
+        ]
+    ),
+    Data = Table.TransformColumnNames(
+        Raw,
+        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+            then Text.Middle(_, 1, Text.Length(_) - 2)
+            else _
+    )
+in
+    Data

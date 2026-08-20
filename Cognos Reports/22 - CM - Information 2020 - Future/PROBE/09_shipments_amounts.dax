@@ -1,0 +1,35 @@
+// Shipments line set (final predicates) with the amount components needed to settle USD/EUR/margin
+EVALUATE
+VAR B = { "161017CX","161190PX","171143PX","171228PX.E","181020CX.E","181136IX","181192IX","181193EU.E","191011CX","191026CX.E","191245PX","23409A","ABEX2525","APT10","APT11","DMAEMA","EMA3065","ET2012.E","ET2022.E","ET4075.E","ET440.E","FERSUL7W","HP1432AT","HP1632","MD4020","MD4020C","MD4020S","MD4021","MD4021C","MD4021S","MD4022","MD4022C","MD4023","MD4023C","MDU20","MDU2012.E","MDU2012B.E","MDU4075.E","MDU4075B.E","MDU440.E","MDU440B.E","MPEG2000","MW40504","MW40514","NP4LF","NP4LF.S","OMS","PUD1.E","STODSO","U1001","U101","U201","U2022","U2022EU.E","U2023","U204","U204EU.E","U470","U501","U501B","U502","U502.E","U502X1.E","U601","U701","U802","U802.E","WAV501","WD40","WD40T" }
+RETURN
+SELECTCOLUMNS(
+    FILTER(
+        Sales,
+        TRIM(RELATED('Item Branch'[Item Bulk])) IN B
+            && Sales[Promised Shipment Date] >= DATE(2020,1,1)
+            && Sales[Cancelled_Flag] = 0
+            && Sales[Filter - Active Order Types] = "Yes"
+    ),
+    "OrderCo", Sales[Order Company],
+    "OrderNum", Sales[Order Num],
+    "LineNum", Sales[Line Num],
+    "LocalCcy", Sales[LocalCurrency],
+    "OrderDate", Sales[Order Date],
+    "GLDate", Sales[GL Date],
+    "Net", Sales[AmountOrderNet],
+    "NetUSD", Sales[AmountOrderNetUSD],
+    "NetEUR", Sales[AmountOrderNetEUR],
+    "BOAmt", Sales[BackOrderedExtendedAmount],
+    "BOAmtEUR", Sales[BackOrderedExtendedAmountEUR],
+    "BOAmtLC", Sales[BackOrderedExtendedAmountLC],
+    "QtyBO", Sales[QuantityBackordered],
+    "QtyOrd", Sales[QuantityOrdered],
+    "QtyShip", Sales[QuantityShipped],
+    "ExtCost", Sales[AmountExtendedCost],
+    "ExtCostUSD", Sales[AmountExtendedCostUSD],
+    "ExtCostEUR", Sales[AmountExtendedCostEUR],
+    "BOCost", Sales[BackOrderedExtendedCost],
+    "BOCostEUR", Sales[BackOrderedExtendedCostEUR],
+    "XRateUSD", Sales[Exchange Rate USD],
+    "CFUSD", Sales[ConversionFactorUSD]
+)

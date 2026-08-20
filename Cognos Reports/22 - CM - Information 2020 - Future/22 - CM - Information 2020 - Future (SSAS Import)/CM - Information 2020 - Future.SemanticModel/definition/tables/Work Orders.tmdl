@@ -1,0 +1,253 @@
+/// Work-order parts-list lines whose component is a CM bulk item, with the WO header and parent item, SSASPROD / BIQLTabular 'Work Order Parts List'.
+table 'Work Orders'
+	lineageTag: 49059da7-577c-560c-b24d-b0f0c6bc0b12
+
+	measure 'Issued Quantity' = SUM ( 'Work Orders'[Issued Quantity (Line)] )
+		formatString: #,##0
+		lineageTag: c7ae2417-4ebd-5788-a9d1-a10cf4929d67
+
+	measure 'Quantity Ordered' = SUM ( 'Work Orders'[Quantity Ordered (Line)] )
+		formatString: #,##0
+		lineageTag: eb83c734-7a8d-5bd3-8dde-3003de683522
+
+	/// Work order (parent) branch.
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 333b3f26-8b85-500b-ba34-4b69a61822dd
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = User
+
+	/// Parent item.
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 08bee033-edd2-5599-8f0f-f4b4e9a65ee0
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = User
+
+	/// Parent item.
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: ff4346f2-928c-5555-b9c3-58520e63199f
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = User
+
+	/// Parent item.
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 892fbd31-2c97-5802-9ba5-3b5c67989056
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = User
+
+	/// Identifier - never aggregate.
+	column 'WO Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 022f8716-3a9c-53ba-aef9-64651b20f7c4
+		summarizeBy: none
+		sourceColumn: WO Number
+
+		annotation SummarizationSetBy = User
+
+	column 'Start Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: cc817bda-1715-5369-9516-da3539507f08
+		summarizeBy: none
+		sourceColumn: Start Date
+
+		annotation SummarizationSetBy = User
+
+	/// Blank while the work order is open.
+	column 'Completion Date'
+		dataType: dateTime
+		formatString: MMM d, yyyy
+		lineageTag: e10eb3bd-f72d-56e1-8c1f-42ab62f11df9
+		summarizeBy: none
+		sourceColumn: Completion Date
+
+		annotation SummarizationSetBy = User
+
+	/// Of the completion date; blank while open.
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 04336b91-c9b5-540b-98a7-21f4a1c1eebb
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = User
+
+	/// Of the completion date; blank while open.
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 55023ccd-e888-5b7c-9121-4b7c6a6d65e0
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = User
+
+	column 'WO Status'
+		dataType: string
+		lineageTag: 6751ac4d-5689-52af-abb5-0ada7a561392
+		summarizeBy: none
+		sourceColumn: WO Status
+
+		annotation SummarizationSetBy = User
+
+	/// Parts-list branch. Displayed as 'Branch Plant'.
+	column 'Component Branch Plant'
+		dataType: string
+		lineageTag: 6c8ae06c-7ce8-5048-b2e6-0169215fb291
+		summarizeBy: none
+		sourceColumn: Component Branch Plant
+
+		annotation SummarizationSetBy = User
+
+	/// Parts-list component item.
+	column 'Component 2nd Item Number'
+		dataType: string
+		lineageTag: 2d27e3a3-dda6-5c8d-ab6a-b1e82d053da0
+		summarizeBy: none
+		sourceColumn: Component 2nd Item Number
+
+		annotation SummarizationSetBy = User
+
+	column 'Component UOM'
+		dataType: string
+		lineageTag: 6b4a3d8a-0022-5cd3-9fc3-84b3fc73f37f
+		summarizeBy: none
+		sourceColumn: Component UOM
+
+		annotation SummarizationSetBy = User
+
+	/// Line-grain input to [Issued Quantity]: the parts-list transaction quantity.
+	column 'Issued Quantity (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: e7bbd0f8-0485-5273-bd1f-e780221340a4
+		summarizeBy: none
+		sourceColumn: Issued Quantity (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Line-grain input to [Quantity Ordered].
+	column 'Quantity Ordered (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: 692b80d8-5d47-5fd8-a638-fd510f164016
+		summarizeBy: none
+		sourceColumn: Quantity Ordered (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Component item branch. Displayed as 'Global Bulk Item'.
+	column 'Component Global Bulk Item'
+		dataType: string
+		lineageTag: f9b6f684-f3db-52fa-b184-b85a8aeab1f6
+		summarizeBy: none
+		sourceColumn: Component Global Bulk Item
+
+		annotation SummarizationSetBy = User
+
+	/// Component item branch. Displayed as 'Bulk Item'.
+	column 'Component Bulk Item'
+		dataType: string
+		lineageTag: 0345d262-9a60-5770-9906-33cfbe36de96
+		summarizeBy: none
+		sourceColumn: Component Bulk Item
+
+		annotation SummarizationSetBy = User
+
+	/// Component item branch. Displayed as '2nd Item Number'.
+	column 'Component Item 2nd Item Number'
+		dataType: string
+		lineageTag: 35a99428-4d39-5101-8559-0887f7d4ac61
+		summarizeBy: none
+		sourceColumn: Component Item 2nd Item Number
+
+		annotation SummarizationSetBy = User
+
+	/// Component item branch.
+	column 'Stock Type Code'
+		dataType: string
+		lineageTag: 777e8983-eb90-5bfb-b6f1-426b54e01b3d
+		summarizeBy: none
+		sourceColumn: Stock Type Code
+
+		annotation SummarizationSetBy = User
+
+	partition 'Work Orders' = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				VAR Bulks = { ""161017CX"", ""161190PX"", ""171143PX"", ""171228PX.E"", ""181020CX.E"", ""181136IX"", ""181192IX"", ""181193EU.E"", ""191011CX"", ""191026CX.E"", ""191245PX"", ""23409A"", ""ABEX2525"", ""APT10"", ""APT11"", ""DMAEMA"", ""EMA3065"", ""ET2012.E"", ""ET2022.E"", ""ET4075.E"", ""ET440.E"", ""FERSUL7W"", ""HP1432AT"", ""HP1632"", ""MD4020"", ""MD4020C"", ""MD4020S"", ""MD4021"", ""MD4021C"", ""MD4021S"", ""MD4022"", ""MD4022C"", ""MD4023"", ""MD4023C"", ""MDU20"", ""MDU2012.E"", ""MDU2012B.E"", ""MDU4075.E"", ""MDU4075B.E"", ""MDU440.E"", ""MDU440B.E"", ""MPEG2000"", ""MW40504"", ""MW40514"", ""NP4LF"", ""NP4LF.S"", ""OMS"", ""PUD1.E"", ""STODSO"", ""U1001"", ""U101"", ""U201"", ""U2022"", ""U2022EU.E"", ""U2023"", ""U204"", ""U204EU.E"", ""U470"", ""U501"", ""U501B"", ""U502"", ""U502.E"", ""U502X1.E"", ""U601"", ""U701"", ""U802"", ""U802.E"", ""WAV501"", ""WD40"", ""WD40T"" }
+				VAR PartsLines =
+				    ADDCOLUMNS (
+				        FILTER (
+				            'Work Order Parts List',
+				            TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) ) IN Bulks
+				                && 'Work Order Parts List'[QuantityOrdered] + 'Work Order Parts List'[QuantityTransaction] > 0
+				                && ( RELATED ( 'Work Order'[Start Date] ) >= DATE ( 2020, 1, 1 ) || RELATED ( 'Work Order'[Completed Date] ) >= DATE ( 2020, 1, 1 ) )
+				                && RELATED ( 'Work Order'[Work Order Type] ) = ""WO""
+				        ),
+				        ""@ParentItemBranchSKey"", LOOKUPVALUE ( 'Work Order Detail'[ItemBranchSKey], 'Work Order Detail'[WorkOrderSKey], 'Work Order Parts List'[WorkOrderSKey] ),
+				        ""@ParentBranchSKey"", LOOKUPVALUE ( 'Work Order Detail'[BranchSKey], 'Work Order Detail'[WorkOrderSKey], 'Work Order Parts List'[WorkOrderSKey] ),
+				        ""@CompletionDate"", IF ( RELATED ( 'Work Order'[Completed Date] ) <= DATE ( 1900, 12, 31 ), BLANK (), RELATED ( 'Work Order'[Completed Date] ) )
+				    )
+				RETURN
+				    SELECTCOLUMNS (
+				        PartsLines,
+				        ""Branch Plant"", LOOKUPVALUE ( Branch[Branch Plant], Branch[BranchSKey], [@ParentBranchSKey] ),
+				        ""Global Bulk Item"", LOOKUPVALUE ( 'Item Branch'[Item Global Bulk], 'Item Branch'[ItemBranchSKey], [@ParentItemBranchSKey] ),
+				        ""Bulk Item"", LOOKUPVALUE ( 'Item Branch'[Item Bulk], 'Item Branch'[ItemBranchSKey], [@ParentItemBranchSKey] ),
+				        ""2nd Item Number"", RELATED ( 'Work Order'[Parent Item Num 2nd] ),
+				        ""WO Number"", RELATED ( 'Work Order'[Work Order Num] ),
+				        ""Start Date"", RELATED ( 'Work Order'[Start Date] ),
+				        ""Completion Date"", [@CompletionDate],
+				        ""Year"", YEAR ( [@CompletionDate] ),
+				        ""Month"", MONTH ( [@CompletionDate] ),
+				        ""WO Status"", RELATED ( 'Work Order'[Work Order Status] ),
+				        ""Component Branch Plant"", TRIM ( 'Work Order Parts List'[BusinessUnit] ),
+				        ""Component 2nd Item Number"", 'Work Order Parts List'[Component Item Num 2nd],
+				        ""Component UOM"", 'Work Order Parts List'[UOM],
+				        ""Issued Quantity (Line)"", 'Work Order Parts List'[QuantityTransaction],
+				        ""Quantity Ordered (Line)"", 'Work Order Parts List'[QuantityOrdered],
+				        ""Component Global Bulk Item"", RELATED ( 'Item Branch'[Item Global Bulk] ),
+				        ""Component Bulk Item"", RELATED ( 'Item Branch'[Item Bulk] ),
+				        ""Component Item 2nd Item Number"", RELATED ( 'Item Branch'[Item Num 2nd] ),
+				        ""Stock Type Code"", RELATED ( 'Item Branch'[Stocking Type] )
+				    )
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table

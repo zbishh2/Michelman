@@ -1,0 +1,269 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "0f21e954097d197ee87a",
+  "position": {
+    "x": 0,
+    "y": 74.819484240687686,
+    "z": 4000,
+    "height": 645.50143266475641,
+    "width": 1280,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "WO.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO"
+                    }
+                  },
+                  "Property": "Item Global Bulk"
+                }
+              },
+              "queryRef": "WO.Item Global Bulk",
+              "nativeQueryRef": "Item Global Bulk"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO"
+                    }
+                  },
+                  "Property": "Item Bulk"
+                }
+              },
+              "queryRef": "WO.Item Bulk",
+              "nativeQueryRef": "Item Bulk"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO"
+                    }
+                  },
+                  "Property": "Item Num 2nd"
+                }
+              },
+              "queryRef": "WO.Item Num 2nd",
+              "nativeQueryRef": "Item Num 2nd"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO"
+                    }
+                  },
+                  "Property": "Work Order Num"
+                }
+              },
+              "queryRef": "Sum(WO.Work Order Num)",
+              "nativeQueryRef": "WO Num",
+              "displayName": "WO Num"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO"
+                    }
+                  },
+                  "Property": "Start Date"
+                }
+              },
+              "queryRef": "WO.Start Date",
+              "nativeQueryRef": "Start Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO"
+                    }
+                  },
+                  "Property": "Completion Date"
+                }
+              },
+              "queryRef": "WO.Completion Date",
+              "nativeQueryRef": "Completion Date"
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "PropertyVariationSource": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "WO"
+                            }
+                          },
+                          "Name": "Variation",
+                          "Property": "Completion Date"
+                        }
+                      },
+                      "Hierarchy": "Date Hierarchy"
+                    }
+                  },
+                  "Level": "Year"
+                }
+              },
+              "queryRef": "WO.Completion Date.Variation.Date Hierarchy.Year",
+              "nativeQueryRef": "Completion Date Year"
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "PropertyVariationSource": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "WO"
+                            }
+                          },
+                          "Name": "Variation",
+                          "Property": "Completion Date"
+                        }
+                      },
+                      "Hierarchy": "Date Hierarchy"
+                    }
+                  },
+                  "Level": "Month"
+                }
+              },
+              "queryRef": "WO.Completion Date.Variation.Date Hierarchy.Month",
+              "nativeQueryRef": "Completion Date Month"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO"
+                    }
+                  },
+                  "Property": "Work Order Status"
+                }
+              },
+              "queryRef": "WO.Work Order Status",
+              "nativeQueryRef": "Work Order Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO"
+                    }
+                  },
+                  "Property": "Component Item Num 2nd"
+                }
+              },
+              "queryRef": "WO.Component Item Num 2nd",
+              "nativeQueryRef": "Component Item Num 2nd"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO"
+                    }
+                  },
+                  "Property": "UOM"
+                }
+              },
+              "queryRef": "WO.UOM",
+              "nativeQueryRef": "UOM"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "WO"
+                        }
+                      },
+                      "Property": "WO_Parts_Qty_Shipped"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(WO.WO_Parts_Qty_Shipped)",
+              "nativeQueryRef": "Issued Qty",
+              "displayName": "Issued Qty"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "WO"
+                        }
+                      },
+                      "Property": "WO_Parts_Qty_Ordered"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(WO.WO_Parts_Qty_Ordered)",
+              "nativeQueryRef": "Quantity Ordered",
+              "displayName": "Quantity Ordered"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WO"
+                    }
+                  },
+                  "Property": "Stocking Type"
+                }
+              },
+              "queryRef": "WO.Stocking Type",
+              "nativeQueryRef": "Stocking Type"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

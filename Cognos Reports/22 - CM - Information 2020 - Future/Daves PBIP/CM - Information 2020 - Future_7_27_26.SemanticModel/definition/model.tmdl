@@ -1,0 +1,29 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["ItemBranch","Receipts","Shipments","WO","Item Receipts","BOM"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table ItemBranch
+ref table Receipts
+ref table DateTableTemplate_03501e90-d6b5-45c5-838e-f1877d2e229f
+ref table LocalDateTable_fd059faf-54f8-47df-a45b-172b3462c2ff
+ref table LocalDateTable_4b2a08fe-15f9-4d6e-b655-e5e2675c16b5
+ref table Shipments
+ref table LocalDateTable_403248fe-8355-4dba-bbde-d502d8540c55
+ref table WO
+ref table LocalDateTable_5d036401-35c7-4c4c-ae39-016613bd7ddb
+ref table LocalDateTable_3de5689f-cc46-4cac-bca4-9704a0437ac0
+ref table 'Item Receipts'
+ref table BOM
+
+ref cultureInfo en-US
+

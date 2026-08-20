@@ -1,0 +1,219 @@
+/// Item-branch attributes for the 47-item CM list outside the LAB branches, SSASPROD / BIQLTabular 'Item Branch'.
+table 'Item Details'
+	lineageTag: 6d31da25-7ff6-5c15-b9f4-f4783cb7ba9b
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 120a5703-a807-5aaf-af8b-6ce43de6be3e
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = User
+
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 944396bf-1d65-5358-81e0-5e5e4dfc84f1
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = User
+
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: cbf99aa5-5b03-5b99-b4cd-e01fcc1ae8b7
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = User
+
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: 9ec96299-8d56-521e-be8e-4861f80bf101
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = User
+
+	column 'Stock Type Code'
+		dataType: string
+		lineageTag: 1a95f1c8-67f5-5ff4-9c2f-8fb1713f0412
+		summarizeBy: none
+		sourceColumn: Stock Type Code
+
+		annotation SummarizationSetBy = User
+
+	column 'Master Planning Family'
+		dataType: string
+		lineageTag: 9f23bb3f-6a82-5b6a-9b1c-e0e54a9563e3
+		summarizeBy: none
+		sourceColumn: Master Planning Family
+
+		annotation SummarizationSetBy = User
+
+	column 'Lead Time Level'
+		dataType: int64
+		formatString: 0
+		lineageTag: 256a2649-85fa-5be3-b863-d48e914406ad
+		summarizeBy: none
+		sourceColumn: Lead Time Level
+
+		annotation SummarizationSetBy = User
+
+	/// Item branch manufacturing lead time.
+	column 'Lead Time Order to Ship'
+		dataType: int64
+		formatString: 0
+		lineageTag: 48d53232-e3c1-574d-a163-57212ab4893a
+		summarizeBy: none
+		sourceColumn: Lead Time Order to Ship
+
+		annotation SummarizationSetBy = User
+
+	column 'Planning Code'
+		dataType: string
+		lineageTag: 49c38f58-ffef-5f55-b2e3-0e29627158db
+		summarizeBy: none
+		sourceColumn: Planning Code
+
+		annotation SummarizationSetBy = User
+
+	column 'Planning Time Fence Days'
+		dataType: int64
+		formatString: 0
+		lineageTag: fe0f23fc-ca23-53a7-bf10-7683b98ffe50
+		summarizeBy: none
+		sourceColumn: Planning Time Fence Days
+
+		annotation SummarizationSetBy = User
+
+	/// 0 where the item branch carries none, which is how Cognos renders it.
+	column 'Safety Stock'
+		dataType: double
+		formatString: #,##0
+		lineageTag: 26517a8b-398e-550b-aae0-97ca9c03a567
+		summarizeBy: none
+		sourceColumn: Safety Stock
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Shelf Life Days'
+		dataType: int64
+		formatString: 0
+		lineageTag: 53edbf86-8aae-5dbf-8d4a-05e0dbb13aba
+		summarizeBy: none
+		sourceColumn: Shelf Life Days
+
+		annotation SummarizationSetBy = User
+
+	/// Identifier - never aggregate.
+	column 'Supplier Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7bd1f07b-870a-5191-be22-a03ca1ca9669
+		summarizeBy: none
+		sourceColumn: Supplier Number
+
+		annotation SummarizationSetBy = User
+
+	/// Blank where the item branch has no supplier (the legacy warehouse shows 'Not Available').
+	column 'Supplier Name'
+		dataType: string
+		lineageTag: c2f84be6-2af7-5c19-8cde-0a4c52b170a3
+		summarizeBy: none
+		sourceColumn: Supplier Name
+
+		annotation SummarizationSetBy = User
+
+	/// Identifier - never aggregate.
+	column 'Planner Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0aa6e0b8-e4ba-5b22-9230-a68007e9a419
+		summarizeBy: none
+		sourceColumn: Planner Number
+
+		annotation SummarizationSetBy = User
+
+	/// Blank where the item branch has no planner (the legacy warehouse shows 'Not Available').
+	column 'Planner Name'
+		dataType: string
+		lineageTag: 06d2b69f-5b0b-53b5-8d27-25e8e35fda88
+		summarizeBy: none
+		sourceColumn: Planner Name
+
+		annotation SummarizationSetBy = User
+
+	/// Identifier - never aggregate.
+	column 'Buyer Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: e63d04cc-c220-5d49-8056-e92b608dcfa0
+		summarizeBy: none
+		sourceColumn: Buyer Number
+
+		annotation SummarizationSetBy = User
+
+	/// Blank where the item branch has no buyer (the legacy warehouse shows 'Not Available').
+	column 'Buyer Name'
+		dataType: string
+		lineageTag: 839a5f24-4d81-58ce-b0ad-bd67fd783b8f
+		summarizeBy: none
+		sourceColumn: Buyer Name
+
+		annotation SummarizationSetBy = User
+
+	partition 'Item Details' = m
+		mode: import
+		source =
+				let
+				    Raw = AnalysisServices.Database(
+				        "SSASPROD",
+				        "BIQLTabular",
+				        [
+				            Query = "
+				EVALUATE
+				VAR Bulks = { ""161017CX"", ""161190PX"", ""171143PX"", ""171228PX.E"", ""181193EU.E"", ""191245PX"", ""APT10"", ""APT11"", ""DMAEMA"", ""EMA3065"", ""FERSUL7W"", ""HP1432AT"", ""HP1632"", ""MD4020"", ""MD4020C"", ""MD4021"", ""MD4021C"", ""MD4022C"", ""MD4023"", ""MD4023C"", ""MDU20"", ""MDU2012.E"", ""MDU2012B.E"", ""MDU4075.E"", ""MDU4075B.E"", ""MDU440.E"", ""MDU440B.E"", ""MW40504"", ""MW40514"", ""NP4LF.S"", ""PUD1.E"", ""STODSO"", ""U1001"", ""U101"", ""U201"", ""U2022"", ""U204"", ""U470"", ""U501"", ""U501B"", ""U502"", ""U502.E"", ""U601"", ""U701"", ""U802.E"", ""WAV501"", ""WD40"" }
+				VAR ItemBranches =
+				    FILTER (
+				        'Item Branch',
+				        TRIM ( 'Item Branch'[Item Bulk] ) IN Bulks
+				            && TRIM ( 'Item Branch'[Business Unit] ) <> """"
+				            && NOT CONTAINSSTRING ( 'Item Branch'[Business Unit], ""LAB"" )
+				    )
+				RETURN
+				    SELECTCOLUMNS (
+				        ItemBranches,
+				        ""Branch Plant"", TRIM ( 'Item Branch'[Business Unit] ),
+				        ""Global Bulk Item"", 'Item Branch'[Item Global Bulk],
+				        ""Bulk Item"", 'Item Branch'[Item Bulk],
+				        ""2nd Item Number"", 'Item Branch'[Item Num 2nd],
+				        ""Stock Type Code"", 'Item Branch'[Stocking Type],
+				        ""Master Planning Family"", 'Item Branch'[Master Planning Family],
+				        ""Lead Time Level"", 'Item Branch'[Lead time Level],
+				        ""Lead Time Order to Ship"", 'Item Branch'[Lead Time MFG_BP],
+				        ""Planning Code"", 'Item Branch'[Planning Code],
+				        ""Planning Time Fence Days"", 'Item Branch'[Planning Time Fence Days],
+				        ""Safety Stock"", IF ( ISBLANK ( 'Item Branch'[SafetyStock] ), 0, 'Item Branch'[SafetyStock] ),
+				        ""Shelf Life Days"", 'Item Branch'[Shelf Life Days],
+				        ""Supplier Number"", 'Item Branch'[Branch Supplier Num],
+				        ""Supplier Name"", 'Item Branch'[Branch Supplier Name],
+				        ""Planner Number"", 'Item Branch'[Planner Num],
+				        ""Planner Name"", 'Item Branch'[Planner Name],
+				        ""Buyer Number"", 'Item Branch'[Buyer Num],
+				        ""Buyer Name"", 'Item Branch'[Buyer Name]
+				    )
+				"
+				        ]
+				    ),
+				    Data = Table.TransformColumnNames(
+				        Raw,
+				        each if Text.StartsWith(_, "[") and Text.EndsWith(_, "]")
+				            then Text.Middle(_, 1, Text.Length(_) - 2)
+				            else _
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table

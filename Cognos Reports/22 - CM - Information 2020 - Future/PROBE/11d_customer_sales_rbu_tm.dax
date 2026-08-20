@@ -1,0 +1,18 @@
+// Per forecast customer: what RBU / TM their actual sales lines carry (latest line, and the distinct set since 2024).
+EVALUATE
+VAR C = { 21734, 23602, 23604, 26449, 49066, 164613, 287919, 291821, 292708, 292709, 292724, 292816, 292974, 293281, 294095, 295623, 300027, 301242, 301301, 303740, 316392, 321432, 321883, 324089, 324809, 324937, 324952, 325203, 327093, 327232, 327458, 327709, 331172, 336441, 340374, 342667, 342996, 348391, 350232, 352524, 355893 }
+VAR S = FILTER(Sales, Sales[AddressNum] IN C)
+VAR A = SUMMARIZE(S, Sales[AddressNum])
+RETURN
+SELECTCOLUMNS(
+  ADDCOLUMNS(A,
+    "@n", COUNTROWS(FILTER(S, Sales[AddressNum] = EARLIER(Sales[AddressNum]))),
+    "@last", MAXX(FILTER(S, Sales[AddressNum] = EARLIER(Sales[AddressNum])), Sales[Order Date]),
+    "@lastrbu", MAXX(TOPN(1, FILTER(S, Sales[AddressNum] = EARLIER(Sales[AddressNum])), Sales[Order Date], DESC), RELATED('Revenue Business Unit'[RBU])),
+    "@lasttm", MAXX(TOPN(1, FILTER(S, Sales[AddressNum] = EARLIER(Sales[AddressNum])), Sales[Order Date], DESC), RELATED('Territory Manager'[Mailing Name])),
+    "@rbus", CONCATENATEX(DISTINCT(SELECTCOLUMNS(FILTER(S, Sales[AddressNum] = EARLIER(Sales[AddressNum]) && Sales[Order Date] >= DATE(2024,1,1)), "r", RELATED('Revenue Business Unit'[RBU]))), [r], ","),
+    "@tms", CONCATENATEX(DISTINCT(SELECTCOLUMNS(FILTER(S, Sales[AddressNum] = EARLIER(Sales[AddressNum]) && Sales[Order Date] >= DATE(2024,1,1)), "r", RELATED('Territory Manager'[Mailing Name]))), [r], ","),
+    "@soldto", MAXX(TOPN(1, FILTER(S, Sales[AddressNum] = EARLIER(Sales[AddressNum])), Sales[Order Date], DESC), RELATED('Address'[Address Num]))
+  ),
+  "AddressNum", Sales[AddressNum], "N", [@n], "LastDate", [@last], "LastRBU", [@lastrbu], "LastTM", [@lasttm], "RBUs", [@rbus], "TMs", [@tms], "SoldTo", [@soldto]
+)

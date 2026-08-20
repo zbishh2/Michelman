@@ -1,0 +1,649 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "1305a2e871e35e47b92f",
+  "position": {
+    "x": 8,
+    "y": 70,
+    "z": 0,
+    "height": 642,
+    "width": 1264
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Order Company"
+                }
+              },
+              "queryRef": "Shipments.Order Company",
+              "nativeQueryRef": "Order Company"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Branch Plant"
+                }
+              },
+              "queryRef": "Shipments.Branch Plant",
+              "nativeQueryRef": "Branch Plant"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Order Number"
+                }
+              },
+              "queryRef": "Shipments.Order Number",
+              "nativeQueryRef": "Order Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Line Number"
+                }
+              },
+              "queryRef": "Shipments.Line Number",
+              "nativeQueryRef": "Line Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Open Indicator"
+                }
+              },
+              "queryRef": "Shipments.Open Indicator",
+              "nativeQueryRef": "Open Indicator"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Global Bulk Item"
+                }
+              },
+              "queryRef": "Shipments.Global Bulk Item",
+              "nativeQueryRef": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Bulk Item"
+                }
+              },
+              "queryRef": "Shipments.Bulk Item",
+              "nativeQueryRef": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "Shipments.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Description 1"
+                }
+              },
+              "queryRef": "Shipments.Description 1",
+              "nativeQueryRef": "Description 1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Description 2"
+                }
+              },
+              "queryRef": "Shipments.Description 2",
+              "nativeQueryRef": "Description 2"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Freight Handling Code"
+                }
+              },
+              "queryRef": "Shipments.Freight Handling Code",
+              "nativeQueryRef": "Freight Handling Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Next Status"
+                }
+              },
+              "queryRef": "Shipments.Next Status",
+              "nativeQueryRef": "Next Status"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Order Net Amount USD"
+                }
+              },
+              "queryRef": "Shipments.Order Net Amount USD",
+              "nativeQueryRef": "Order Net Amount USD"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Order Net Amount EUR"
+                }
+              },
+              "queryRef": "Shipments.Order Net Amount EUR",
+              "nativeQueryRef": "Order Net Amount EUR"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Ordered Quantity LBs"
+                }
+              },
+              "queryRef": "Shipments.Ordered Quantity LBs",
+              "nativeQueryRef": "Ordered Quantity LBs"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Ordered Quantity KGs"
+                }
+              },
+              "queryRef": "Shipments.Ordered Quantity KGs",
+              "nativeQueryRef": "Ordered Quantity KGs"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Revenue Business Unit"
+                }
+              },
+              "queryRef": "Shipments.Revenue Business Unit",
+              "nativeQueryRef": "Revenue Business Unit"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "TM Name"
+                }
+              },
+              "queryRef": "Shipments.TM Name",
+              "nativeQueryRef": "TM Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Customer Name"
+                }
+              },
+              "queryRef": "Shipments.Customer Name",
+              "nativeQueryRef": "Customer Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Country Name"
+                }
+              },
+              "queryRef": "Shipments.Country Name",
+              "nativeQueryRef": "Country Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Global Parent Name"
+                }
+              },
+              "queryRef": "Shipments.Global Parent Name",
+              "nativeQueryRef": "Global Parent Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Date"
+                }
+              },
+              "queryRef": "Shipments.Date",
+              "nativeQueryRef": "Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Year"
+                }
+              },
+              "queryRef": "Shipments.Year",
+              "nativeQueryRef": "Year"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Month"
+                }
+              },
+              "queryRef": "Shipments.Month",
+              "nativeQueryRef": "Month"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Shipments"
+                    }
+                  },
+                  "Property": "Chemist Name"
+                }
+              },
+              "queryRef": "Shipments.Chemist Name",
+              "nativeQueryRef": "Chemist Name"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Shipments"
+                  }
+                },
+                "Property": "Global Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Shipments"
+                  }
+                },
+                "Property": "Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Shipments"
+                  }
+                },
+                "Property": "2nd Item Number"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnFormatting": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Shipments.Order Number"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Shipments.Line Number"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Shipments.Date"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Shipments.Year"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Shipments.Month"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,36 @@
+// Probe 5 — Shipments: Sales rows for the 70 CM bulk items since 2020-01-01 (promised ship date), by the exclusion flags.
+EVALUATE
+VAR B = { "161017CX", "161190PX", "171143PX", "171228PX.E", "181020CX.E", "181136IX", "181192IX", "181193EU.E", "191011CX", "191026CX.E", "191245PX", "23409A", "ABEX2525", "APT10", "APT11", "DMAEMA", "EMA3065", "ET2012.E", "ET2022.E", "ET4075.E", "ET440.E", "FERSUL7W", "HP1432AT", "HP1632", "MD4020", "MD4020C", "MD4020S", "MD4021", "MD4021C", "MD4021S", "MD4022", "MD4022C", "MD4023", "MD4023C", "MDU20", "MDU2012.E", "MDU2012B.E", "MDU4075.E", "MDU4075B.E", "MDU440.E", "MDU440B.E", "MPEG2000", "MW40504", "MW40514", "NP4LF", "NP4LF.S", "OMS", "PUD1.E", "STODSO", "U1001", "U101", "U201", "U2022", "U2022EU.E", "U2023", "U204", "U204EU.E", "U470", "U501", "U501B", "U502", "U502.E", "U502X1.E", "U601", "U701", "U802", "U802.E", "WAV501", "WD40", "WD40T" }
+VAR R =
+    FILTER (
+        Sales,
+        ( TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) ) IN B || TRIM ( RELATED ( 'Item Branch'[Item Num Bulk] ) ) IN B )
+            && Sales[Promised Shipment Date] >= DATE ( 2020, 1, 1 )
+    )
+VAR G =
+    GROUPBY (
+        ADDCOLUMNS (
+            R,
+            "BulkIn", IF ( TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) ) IN B, "Y", "N" ),
+            "NumBulkIn", IF ( TRIM ( RELATED ( 'Item Branch'[Item Num Bulk] ) ) IN B, "Y", "N" ),
+            "LineF", IF ( CONTAINSSTRING ( Sales[Line Type], "F" ), "Y", "N" ),
+            "ML", IF ( TRIM ( RELATED ( 'Item Branch'[Item Bulk] ) ) IN { "ML156", "CARN3" }, "Y", "N" )
+        ),
+        Sales[Record Type], Sales[Exclude Freight Line Types], Sales[Cancelled_Flag], Sales[Exclude Budget Data], Sales[Order Exclude],
+        [BulkIn], [NumBulkIn], [LineF], [ML],
+        "n", COUNTX ( CURRENTGROUP (), 1 ),
+        "usd", SUMX ( CURRENTGROUP (), Sales[AmountOrderNetUSD] ),
+        "eur", SUMX ( CURRENTGROUP (), Sales[AmountOrderNetEUR] ),
+        "lb", SUMX ( CURRENTGROUP (), Sales[QuantityOrderedLB] ),
+        "kg", SUMX ( CURRENTGROUP (), Sales[QuantityOrderedKG] ),
+        "cm", SUMX ( CURRENTGROUP (), Sales[ContributionMargin] ),
+        "cost", SUMX ( CURRENTGROUP (), Sales[AmountExtendedCostUSD] )
+    )
+RETURN
+    SELECTCOLUMNS (
+        G,
+        "RecType", Sales[Record Type], "ExclFreight", Sales[Exclude Freight Line Types], "Cancelled", Sales[Cancelled_Flag],
+        "ExclBudget", Sales[Exclude Budget Data], "OrderExcl", Sales[Order Exclude],
+        "BulkIn", [BulkIn], "NumBulkIn", [NumBulkIn], "LineF", [LineF], "ML", [ML],
+        "n", [n], "usd", [usd], "eur", [eur], "lb", [lb], "kg", [kg], "cm", [cm], "cost", [cost]
+    )

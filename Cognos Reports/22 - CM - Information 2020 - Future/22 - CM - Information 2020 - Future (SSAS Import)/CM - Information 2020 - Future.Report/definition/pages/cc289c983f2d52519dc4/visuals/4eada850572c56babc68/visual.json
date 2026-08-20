@@ -1,0 +1,607 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "4eada850572c56babc68",
+  "position": {
+    "x": 8,
+    "y": 70,
+    "z": 0,
+    "height": 642,
+    "width": 1264
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Global Bulk Item"
+                }
+              },
+              "queryRef": "Receipts.Global Bulk Item",
+              "nativeQueryRef": "Global Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Bulk Item"
+                }
+              },
+              "queryRef": "Receipts.Bulk Item",
+              "nativeQueryRef": "Bulk Item"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "2nd Item Number"
+                }
+              },
+              "queryRef": "Receipts.2nd Item Number",
+              "nativeQueryRef": "2nd Item Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Vendor Name"
+                }
+              },
+              "queryRef": "Receipts.Vendor Name",
+              "nativeQueryRef": "Vendor Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Vendor ID"
+                }
+              },
+              "queryRef": "Receipts.Vendor ID",
+              "nativeQueryRef": "Vendor ID"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Received Quantity"
+                }
+              },
+              "queryRef": "Receipts.Received Quantity",
+              "nativeQueryRef": "Received Quantity"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Received Quantity LBs"
+                }
+              },
+              "queryRef": "Receipts.Received Quantity LBs",
+              "nativeQueryRef": "Received Quantity LBs"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Received Quantity KGs"
+                }
+              },
+              "queryRef": "Receipts.Received Quantity KGs",
+              "nativeQueryRef": "Received Quantity KGs"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Receipt Transaction Type"
+                }
+              },
+              "queryRef": "Receipts.Receipt Transaction Type",
+              "nativeQueryRef": "Receipt Transaction Type"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Receipt Transaction Date"
+                }
+              },
+              "queryRef": "Receipts.Receipt Transaction Date",
+              "nativeQueryRef": "Receipt Transaction Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Order Type"
+                }
+              },
+              "queryRef": "Receipts.Order Type",
+              "nativeQueryRef": "Order Type"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Document Number"
+                }
+              },
+              "queryRef": "Receipts.Document Number",
+              "nativeQueryRef": "Document Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Line Number"
+                }
+              },
+              "queryRef": "Receipts.Line Number",
+              "nativeQueryRef": "Line Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Document Type"
+                }
+              },
+              "queryRef": "Receipts.Document Type",
+              "nativeQueryRef": "Document Type"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Amount Received"
+                }
+              },
+              "queryRef": "Receipts.Amount Received",
+              "nativeQueryRef": "Amount Received"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Amount Received USD"
+                }
+              },
+              "queryRef": "Receipts.Amount Received USD",
+              "nativeQueryRef": "Amount Received USD"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Amount Received EUR"
+                }
+              },
+              "queryRef": "Receipts.Amount Received EUR",
+              "nativeQueryRef": "Amount Received EUR"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Date"
+                }
+              },
+              "queryRef": "Receipts.Date",
+              "nativeQueryRef": "Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Year"
+                }
+              },
+              "queryRef": "Receipts.Year",
+              "nativeQueryRef": "Year"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Receipts"
+                    }
+                  },
+                  "Property": "Month"
+                }
+              },
+              "queryRef": "Receipts.Month",
+              "nativeQueryRef": "Month"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Receipts"
+                  }
+                },
+                "Property": "Global Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Receipts"
+                  }
+                },
+                "Property": "Bulk Item"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Receipts"
+                  }
+                },
+                "Property": "2nd Item Number"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FF0000'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "outlineWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#000000'"
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            },
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnFormatting": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Receipts.Vendor ID"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Receipts.Receipt Transaction Date"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Receipts.Document Number"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Receipts.Line Number"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Receipts.Date"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Receipts.Year"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Receipts.Month"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

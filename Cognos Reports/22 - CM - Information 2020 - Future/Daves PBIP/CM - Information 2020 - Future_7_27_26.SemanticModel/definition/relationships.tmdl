@@ -1,0 +1,30 @@
+relationship f5868db6-15c5-583c-6a59-cc559732e651
+	crossFilteringBehavior: bothDirections
+	fromColumn: Receipts.'Purchase Order Receiver[ItemBranchSKey]'
+	toColumn: ItemBranch.'Item Branch[ItemBranchSKey]'
+
+relationship f59a92f6-2173-4a05-b1f3-dd7c68a4fffb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Receipts.'Purchase Order Receiver[Received Date]'
+	toColumn: LocalDateTable_fd059faf-54f8-47df-a45b-172b3462c2ff.Date
+
+relationship f7f25e65-ac2e-4972-ba5b-01d03d4992b5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Receipts.'Purchase Order Receiver[Transaction Date]'
+	toColumn: LocalDateTable_4b2a08fe-15f9-4d6e-b655-e5e2675c16b5.Date
+
+relationship a3e31adc-a001-45cf-8024-6ad325017933
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Shipments.'Sales[Promised Shipment Date]'
+	toColumn: LocalDateTable_403248fe-8355-4dba-bbde-d502d8540c55.Date
+
+relationship cc9e4aa9-fd94-443f-9885-6311a530a6dc
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WO.'Start Date'
+	toColumn: LocalDateTable_5d036401-35c7-4c4c-ae39-016613bd7ddb.Date
+
+relationship 9b188e8d-e733-499e-9e99-f2e106380832
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WO.'Completion Date'
+	toColumn: LocalDateTable_3de5689f-cc46-4cac-bca4-9704a0437ac0.Date
+

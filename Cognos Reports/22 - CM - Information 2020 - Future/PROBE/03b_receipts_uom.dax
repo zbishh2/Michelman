@@ -1,0 +1,22 @@
+// Probe 3b — UOM picture of the Match Type 1 rows for the 15 suppliers since 2020.
+EVALUATE
+VAR V = { 292788, 324808, 328211, 322114, 331380, 317501, 327516, 292774, 301843, 328143, 322976, 326444, 324962, 327267, 326095 }
+RETURN
+    SELECTCOLUMNS (
+        GROUPBY (
+            FILTER (
+                'Purchase Order Receiver',
+                RELATED ( Supplier[Supplier Num] ) IN V
+                    && 'Purchase Order Receiver'[Received Date] >= DATE ( 2020, 1, 1 )
+                    && 'Purchase Order Receiver'[Match Record Type] = "1"
+            ),
+            'Purchase Order Receiver'[UOM Transaction],
+            'Purchase Order Receiver'[UOM Primary],
+            'Purchase Order Receiver'[UOM Purchasing],
+            "cnt", COUNTX ( CURRENTGROUP (), 1 )
+        ),
+        "UOMTxn", 'Purchase Order Receiver'[UOM Transaction],
+        "UOMPrim", 'Purchase Order Receiver'[UOM Primary],
+        "UOMPurch", 'Purchase Order Receiver'[UOM Purchasing],
+        "n", [cnt]
+    )

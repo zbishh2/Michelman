@@ -1,0 +1,97 @@
+/// Current single-level manufacturing bills whose component is a CM bulk item, EDWPROD / EDW BIQL.DimBillOfMaterial. BIQLTabular's 'Bill Of Material Expanded' holds no rows in production.
+table BOM
+	lineageTag: 5e73589d-60d8-5a38-aad8-59f38ffe1e8c
+
+	measure Quantity = SUM ( BOM[Quantity (Line)] )
+		formatString: #,##0
+		lineageTag: 7b703380-30f1-5c70-a228-d2c90275b4e4
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: cd05a0c9-76f7-5e4b-a506-3828708014d3
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = User
+
+	column 'Parent Second Item Number'
+		dataType: string
+		lineageTag: 27caff6d-7e57-5cee-96b6-048ca039f9a5
+		summarizeBy: none
+		sourceColumn: Parent Second Item Number
+
+		annotation SummarizationSetBy = User
+
+	/// Component item.
+	column '2nd Item Number'
+		dataType: string
+		lineageTag: e82ca3dd-4ae5-5082-ac5f-0900a578894a
+		summarizeBy: none
+		sourceColumn: 2nd Item Number
+
+		annotation SummarizationSetBy = User
+
+	/// Component item.
+	column 'Bulk Item'
+		dataType: string
+		lineageTag: c721d76e-b0b3-5c76-b046-1f6d529cc699
+		summarizeBy: none
+		sourceColumn: Bulk Item
+
+		annotation SummarizationSetBy = User
+
+	/// Component item.
+	column 'Global Bulk Item'
+		dataType: string
+		lineageTag: 73d08867-e94b-574c-9f8a-502cad3307a7
+		summarizeBy: none
+		sourceColumn: Global Bulk Item
+
+		annotation SummarizationSetBy = User
+
+	/// Line-grain input to [Quantity]: standard quantity required, scaled from JDE's implied two decimals.
+	column 'Quantity (Line)'
+		dataType: double
+		formatString: #,##0
+		isHidden
+		lineageTag: 52c9e5a8-293b-5f97-8cad-7e60e5f12f67
+		summarizeBy: none
+		sourceColumn: Quantity (Line)
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	partition BOM = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				SET NOCOUNT ON;
+				SELECT
+				    LTRIM(RTRIM(b.Branch))                      AS [Branch Plant],
+				    LTRIM(RTRIM(pib.ItemNum2nd))                AS [Parent Second Item Number],
+				    LTRIM(RTRIM(ib.ItemNum2nd))                 AS [2nd Item Number],
+				    LTRIM(RTRIM(ib.ItemBulk))                   AS [Bulk Item],
+				    LTRIM(RTRIM(ib.ItemGlobalBulk))             AS [Global Bulk Item],
+				    b.QuantityStandardRequired / 100.0          AS [Quantity (Line)]
+				FROM BIQL.DimBillOfMaterial b
+				JOIN BIQL.DimItemBranch ib
+				    ON ib.ItemBranchSKey = b.ComponentItemBranchSKey
+				LEFT JOIN BIQL.DimItemBranch pib
+				    ON pib.ItemBranchSKey = b.ParentItemBranchSKey
+				WHERE b.TypeBillofMaterial = N'M'
+				  AND b.EffectiveThruDate >= CAST(GETDATE() AS date)
+				  AND LTRIM(RTRIM(ib.ItemBulk)) IN (N'161017CX', N'161190PX', N'171143PX', N'171228PX.E', N'181020CX.E', N'181136IX', N'181192IX', N'181193EU.E', N'191011CX', N'191026CX.E', N'191245PX', N'23409A', N'ABEX2525', N'APT10', N'APT11', N'DMAEMA', N'EMA3065', N'ET2012.E', N'ET2022.E', N'ET4075.E', N'ET440.E', N'FERSUL7W', N'HP1432AT', N'HP1632', N'MD4020', N'MD4020C', N'MD4020S', N'MD4021', N'MD4021C', N'MD4021S', N'MD4022', N'MD4022C', N'MD4023', N'MD4023C', N'MDU20', N'MDU2012.E', N'MDU2012B.E', N'MDU4075.E', N'MDU4075B.E', N'MDU440.E', N'MDU440B.E', N'MPEG2000', N'MW40504', N'MW40514', N'NP4LF', N'NP4LF.S', N'OMS', N'PUD1.E', N'STODSO', N'U1001', N'U101', N'U201', N'U2022', N'U2022EU.E', N'U2023', N'U204', N'U204EU.E', N'U470', N'U501', N'U501B', N'U502', N'U502.E', N'U502X1.E', N'U601', N'U701', N'U802', N'U802.E', N'WAV501', N'WD40', N'WD40T')
+				  AND LTRIM(RTRIM(b.Branch)) NOT IN (N'LABO', N'LABS', N'LABA')
+				",
+				        null,
+				        [EnableFolding = false]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table

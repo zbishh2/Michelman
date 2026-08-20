@@ -1,0 +1,30 @@
+// Bill Of Material Expanded rows: M bills, effective thru >= today, component bulk in the CM list; all levels and branches carried.
+EVALUATE
+VAR B = { "161017CX","161190PX","171143PX","171228PX.E","181020CX.E","181136IX","181192IX","181193EU.E","191011CX","191026CX.E","191245PX","23409A","ABEX2525","APT10","APT11","DMAEMA","EMA3065","ET2012.E","ET2022.E","ET4075.E","ET440.E","FERSUL7W","HP1432AT","HP1632","MD4020","MD4020C","MD4020S","MD4021","MD4021C","MD4021S","MD4022","MD4022C","MD4023","MD4023C","MDU20","MDU2012.E","MDU2012B.E","MDU4075.E","MDU4075B.E","MDU440.E","MDU440B.E","MPEG2000","MW40504","MW40514","NP4LF","NP4LF.S","OMS","PUD1.E","STODSO","U1001","U101","U201","U2022","U2022EU.E","U2023","U204","U204EU.E","U470","U501","U501B","U502","U502.E","U502X1.E","U601","U701","U802","U802.E","WAV501","WD40","WD40T" }
+RETURN
+SELECTCOLUMNS(
+    FILTER(
+        'Bill Of Material Expanded',
+        TRIM(RELATED('Item Branch'[Item Bulk])) IN B
+            && 'Bill Of Material Expanded'[Type Bill of Material] = "M"
+            && 'Bill Of Material Expanded'[BOM Effective Thru Date] >= TODAY()
+    ),
+    "ParentBranch", 'Bill Of Material Expanded'[Parent Branch],
+    "CompBranch", 'Bill Of Material Expanded'[Component Branch],
+    "ParentItem", 'Bill Of Material Expanded'[Parent Item],
+    "InterimItem", 'Bill Of Material Expanded'[Interim Item],
+    "IsInterim", 'Bill Of Material Expanded'[Is Interim Item],
+    "CompItem2nd", 'Bill Of Material Expanded'[Component Item Num 2nd],
+    "Item2nd", 'Bill Of Material Expanded'[Item Num 2nd],
+    "CompIBItem2nd", RELATED('Item Branch'[Item Num 2nd]),
+    "CompBulk", RELATED('Item Branch'[Item Bulk]),
+    "CompGlobalBulk", RELATED('Item Branch'[Item Global Bulk]),
+    "Level", 'Bill Of Material Expanded'[Component BOM Level],
+    "CompQty", 'Bill Of Material Expanded'[ComponentQuantity],
+    "OrigQty", 'Bill Of Material Expanded'[OriginalQuantity],
+    "ParentQty", 'Bill Of Material Expanded'[ParentQuantity],
+    "ChildUOM", 'Bill Of Material Expanded'[Child UOM],
+    "EffFrom", 'Bill Of Material Expanded'[BOM Effective From Date],
+    "EffThru", 'Bill Of Material Expanded'[BOM Effective Thru Date],
+    "CalDate", 'Bill Of Material Expanded'[CalendarDate]
+)

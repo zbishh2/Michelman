@@ -1,0 +1,68 @@
+/// One territory manager per customer from the EDW commission assignment (BIQL.TbTM_Max_Assignment): the FC-group TM, else the CS-group TM. Looked up by Forecast[TM Name]; not shown.
+table 'TM Assignment'
+	lineageTag: bb7e16d3-2536-55a5-9af2-049f0c78cb90
+	isHidden
+
+	/// Ship-to address number; the lookup key.
+	column 'Customer Code'
+		dataType: int64
+		formatString: 0
+		lineageTag: ef49a391-84a9-52d1-926b-dda6136ed48f
+		summarizeBy: none
+		sourceColumn: Customer Code
+
+		annotation SummarizationSetBy = User
+
+	column 'TM Name'
+		dataType: string
+		lineageTag: cb14f3f2-e18e-5a7c-ab15-0395318d4bff
+		summarizeBy: none
+		sourceColumn: TM Name
+
+		annotation SummarizationSetBy = User
+
+	/// FCGTM or CSGTM - which assignment the name comes from.
+	column 'TM Role'
+		dataType: string
+		lineageTag: 82904372-ef4d-507d-a3ac-a07f3c888fd1
+		summarizeBy: none
+		sourceColumn: TM Role
+
+		annotation SummarizationSetBy = User
+
+	partition 'TM Assignment' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("EDWPROD", "EDW"),
+				    Data = Value.NativeQuery(
+				        Source,
+				        "
+				SET NOCOUNT ON;
+				SELECT
+				    [Customer Code],
+				    [TM Name],
+				    [TM Role]
+				FROM (
+				    SELECT
+				        m.[Ship To CC]                          AS [Customer Code],
+				        LTRIM(RTRIM(t.[Mailing Name]))          AS [TM Name],
+				        LTRIM(RTRIM(m.Role))                    AS [TM Role],
+				        ROW_NUMBER() OVER (
+				            PARTITION BY m.[Ship To CC]
+				            ORDER BY CASE m.Role WHEN N'FCGTM' THEN 1 ELSE 2 END, m.CommissionLineNum
+				        )                                       AS rn
+				    FROM BIQL.TbTM_Max_Assignment m
+				    JOIN BIQL.TbTerritoryManager t
+				        ON t.TerritoryManagerSKey = m.TerritoryManagerSKey
+				    WHERE m.Role IN (N'FCGTM', N'CSGTM')
+				) x
+				WHERE rn = 1
+				",
+				        null,
+				        [EnableFolding = false]
+				    )
+				in
+				    Data
+
+	annotation PBI_ResultType = Table

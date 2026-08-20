@@ -1,0 +1,28 @@
+// Probe 4 — Match Type 1 rows whose transaction UOM differs from the primary UOM (15 suppliers by Address Num PO, since 2020).
+EVALUATE
+VAR V = { 292788, 324808, 328211, 322114, 331380, 317501, 327516, 292774, 301843, 328143, 322976, 326444, 324962, 327267, 326095 }
+RETURN
+    SELECTCOLUMNS (
+        FILTER (
+            'Purchase Order Receiver',
+            'Purchase Order Receiver'[Address Num PO] IN V
+                && 'Purchase Order Receiver'[Received Date] >= DATE ( 2020, 1, 1 )
+                && 'Purchase Order Receiver'[Match Record Type] = "1"
+                && 'Purchase Order Receiver'[UOM Transaction] <> 'Purchase Order Receiver'[UOM Primary]
+        ),
+        "DocNum", 'Purchase Order Receiver'[Document Num],
+        "LineNum", 'Purchase Order Receiver'[Line Num],
+        "RecvDate", 'Purchase Order Receiver'[Received Date],
+        "Item2nd", RELATED ( 'Item Branch'[Item Num 2nd] ),
+        "UOMTxn", 'Purchase Order Receiver'[UOM Transaction],
+        "UOMPrim", 'Purchase Order Receiver'[UOM Primary],
+        "UOMPurch", 'Purchase Order Receiver'[UOM Purchasing],
+        "IBUOMPrim", RELATED ( 'Item Branch'[UOM Primary] ),
+        "Qty", 'Purchase Order Receiver'[QuantityReceived],
+        "QtyLB", 'Purchase Order Receiver'[QuantityReceivedLB],
+        "QtyKG", 'Purchase Order Receiver'[QuantityReceivedKG],
+        "CFLB", 'Purchase Order Receiver'[ConversionFactorLB],
+        "CFKG", 'Purchase Order Receiver'[ConversionFactorKG],
+        "QtyOrd", 'Purchase Order Receiver'[QuantityOrdered],
+        "QtyStocked", 'Purchase Order Receiver'[QuantityStocked]
+    )

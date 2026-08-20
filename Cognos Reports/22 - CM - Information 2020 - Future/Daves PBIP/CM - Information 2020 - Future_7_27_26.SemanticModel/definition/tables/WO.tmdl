@@ -1,0 +1,162 @@
+table WO
+	lineageTag: 167be068-4032-4bd2-af7c-a110184edb27
+
+	column 'Work Order Num'
+		dataType: int64
+		formatString: 0
+		lineageTag: d9196a64-0ef8-420e-be72-2306083c847d
+		summarizeBy: sum
+		sourceColumn: Work Order Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start Date'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 83748fd4-a7a8-43d0-8de4-4bf1e54ea95d
+		summarizeBy: none
+		sourceColumn: Start Date
+
+		variation Variation
+			isDefault
+			relationship: cc9e4aa9-fd94-443f-9885-6311a530a6dc
+			defaultHierarchy: LocalDateTable_5d036401-35c7-4c4c-ae39-016613bd7ddb.'Date Hierarchy'
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Completion Date'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: a233d1b6-07a3-4b2e-92a0-bfe87df106c7
+		summarizeBy: none
+		sourceColumn: Completion Date
+
+		variation Variation
+			isDefault
+			relationship: 9b188e8d-e733-499e-9e99-f2e106380832
+			defaultHierarchy: LocalDateTable_3de5689f-cc46-4cac-bca4-9704a0437ac0.'Date Hierarchy'
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Component Item Num 2nd'
+		dataType: string
+		lineageTag: 1aad78b2-cb85-462a-80ad-dd16e87e9950
+		summarizeBy: none
+		sourceColumn: Component Item Num 2nd
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Num 2nd'
+		dataType: string
+		lineageTag: b1e10897-41d5-44bc-87b3-7960d1b9af82
+		summarizeBy: none
+		sourceColumn: Item Num 2nd
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Global Bulk'
+		dataType: string
+		lineageTag: 0547f0d1-3df3-4db4-aaac-73b27e7dd237
+		summarizeBy: none
+		sourceColumn: Item Global Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Bulk'
+		dataType: string
+		lineageTag: aca29ae3-1338-41b6-bb8e-87e97c303bce
+		summarizeBy: none
+		sourceColumn: Item Bulk
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch Plant'
+		dataType: string
+		lineageTag: 8bfc96b2-6783-4db2-9736-edfe2e7a9e50
+		summarizeBy: none
+		sourceColumn: Branch Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Work Order Status'
+		dataType: string
+		lineageTag: 69ac404c-b399-4444-bd80-cb8fa07d3152
+		summarizeBy: none
+		sourceColumn: Work Order Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column UOM
+		dataType: string
+		lineageTag: cce597e1-398d-4347-94e6-4eeb5a532a83
+		summarizeBy: none
+		sourceColumn: UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stocking Type'
+		dataType: string
+		lineageTag: be53e5ee-510e-40b9-8e91-a44fda736a28
+		summarizeBy: none
+		sourceColumn: Stocking Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column WO_Parts_Qty_Shipped
+		dataType: double
+		lineageTag: e85367e6-aaab-4ab7-b64a-8ea9f978d490
+		summarizeBy: sum
+		sourceColumn: WO_Parts_Qty_Shipped
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WO_Parts_Qty_Ordered
+		dataType: double
+		lineageTag: ce41e187-903f-47d7-9ed3-21df9d14ded1
+		summarizeBy: sum
+		sourceColumn: WO_Parts_Qty_Ordered
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition WO = m
+		mode: import
+		source =
+				let
+				    WO = AnalysisServices.Database("ssasprod", "BIQLTabular", [Query="// DAX Query - Copied PBI Desktop table query and edited from there#(lf)DEFINE#(lf)#(tab)VAR __DS0FilterTable = #(lf)#(tab)#(tab)FILTER(#(lf)#(tab)#(tab)#(tab)KEEPFILTERS(VALUES('Work Order'[Start Date])),#(lf)#(tab)#(tab)#(tab)'Work Order'[Start Date] >= DATE(2020, 1, 1)#(lf)#(tab)#(tab))#(lf)#(lf)#(tab)VAR __DS0FilterTable2 = #(lf)#(tab)#(tab)TREATAS({""161017CX"",""161190PX"",""171143PX"",""171228PX.E"",""181020CX.E"",""181136IX"",""181192IX"",""181193EU.E"",""191011CX"",""191026CX.E"",""191245PX"",""23409A"",""ABEX2525"",""APT10"",""APT11"",""DMAEMA"",""EMA3065"",""ET2012.E"",""ET2022.E"",""ET4075.E"",""ET440.E"",""FERSUL7W"",""HP1432AT"",""HP1632"",""MD4020"",""MD4020C"",""MD4020S"",""MD4021"",""MD4021C"",""MD4021S"",""MD4022"",""MD4022C"",""MD4023"",""MD4023C"",""MDU20"",""MDU2012.E"",""MDU2012B.E"",""MDU4075.E"",""MDU4075B.E"",""MDU440.E"",""MDU440B.E"",""MPEG2000"",""MW40504"",""MW40514"",""NP4LF"",""NP4LF.S"",""OMS"",""PUD1.E"",""STODSO"",""U1001"",""U101"",""U201"",""U2022"",""U2022EU.E"",""U2023"",""U204"",""U204EU.E"",""U470"",""U501"",""U501B"",""U502"",""U502.E"",""U502X1.E"",""U601"",""U701"",""U802"",""U802.E"",""WAV501"",""WD40"",""WD40T""}, 'Item Branch'[Item Bulk])#(lf)#(lf)#(tab)VAR __ValueFilterDM0 = #(lf)#(tab)#(tab)FILTER(#(lf)#(tab)#(tab)#(tab)KEEPFILTERS(#(lf)#(tab)#(tab)#(tab)#(tab)SUMMARIZECOLUMNS(#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)'Work Order'[Work Order Num],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)'Work Order'[Start Date],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)'Work Order Parts List'[Completion Date],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)'Work Order Parts List'[Component Item Num 2nd],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Item Num 2nd],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Item Global Bulk],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Item Bulk],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)'Branch'[Branch Plant],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)'Work Order'[Work Order Status],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)'Work Order Parts List'[UOM],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)'Item Branch'[Stocking Type],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)__DS0FilterTable,#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)__DS0FilterTable2,#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)""WO_Parts_Qty_Shipped"", 'Work Order Parts List'[WO Parts Qty Shipped],#(lf)#(tab)#(tab)#(tab)#(tab)#(tab)""WO_Parts_Qty_Ordered"", 'Work Order Parts List'[WO Parts Qty Ordered]#(lf)#(tab)#(tab)#(tab)#(tab))#(lf)#(tab)#(tab)#(tab)),#(lf)#(tab)#(tab)#(tab)AND([WO_Parts_Qty_Shipped] > CURRENCY(""0""), [WO_Parts_Qty_Ordered] > CURRENCY(""0""))#(lf)#(tab)#(tab))#(lf)#(lf)#(tab)VAR __DS0Core = #(lf)#(tab)#(tab)SUMMARIZECOLUMNS(#(lf)#(tab)#(tab)#(tab)'Work Order'[Work Order Num],#(lf)#(tab)#(tab)#(tab)'Work Order'[Start Date],#(lf)#(tab)#(tab)#(tab)'Work Order Parts List'[Completion Date],#(lf)#(tab)#(tab)#(tab)'Work Order Parts List'[Component Item Num 2nd],#(lf)#(tab)#(tab)#(tab)'Item Branch'[Item Num 2nd],#(lf)#(tab)#(tab)#(tab)'Item Branch'[Item Global Bulk],#(lf)#(tab)#(tab)#(tab)'Item Branch'[Item Bulk],#(lf)#(tab)#(tab)#(tab)'Branch'[Branch Plant],#(lf)#(tab)#(tab)#(tab)'Work Order'[Work Order Status],#(lf)#(tab)#(tab)#(tab)'Work Order Parts List'[UOM],#(lf)#(tab)#(tab)#(tab)'Item Branch'[Stocking Type],#(lf)#(tab)#(tab)#(tab)__DS0FilterTable,#(lf)#(tab)#(tab)#(tab)__DS0FilterTable2,#(lf)#(tab)#(tab)#(tab)__ValueFilterDM0,#(lf)#(tab)#(tab)#(tab)""WO_Parts_Qty_Shipped"", 'Work Order Parts List'[WO Parts Qty Shipped],#(lf)#(tab)#(tab)#(tab)""WO_Parts_Qty_Ordered"", 'Work Order Parts List'[WO Parts Qty Ordered]#(lf)#(tab)#(tab))#(lf)#(lf)#(tab)VAR __DS0PrimaryWindowed = #(lf)#(tab)#(tab)TOPN(#(lf)#(tab)#(tab)#(tab)501,#(lf)#(tab)#(tab)#(tab)__DS0Core,#(lf)#(tab)#(tab)#(tab)'Work Order'[Work Order Num],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Work Order'[Start Date],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Work Order Parts List'[Completion Date],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Work Order Parts List'[Component Item Num 2nd],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Item Num 2nd],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Item Global Bulk],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Item Bulk],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Branch'[Branch Plant],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Work Order'[Work Order Status],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Work Order Parts List'[UOM],#(lf)#(tab)#(tab)#(tab)1,#(lf)#(tab)#(tab)#(tab)'Item Branch'[Stocking Type],#(lf)#(tab)#(tab)#(tab)1#(lf)#(tab)#(tab))#(lf)#(lf)EVALUATE#(lf)SELECTCOLUMNS(#(lf)    __DS0PrimaryWindowed,#(lf)    ""Work Order Num"", 'Work Order'[Work Order Num],#(lf)    ""Start Date"", 'Work Order'[Start Date],#(lf)    ""Completion Date"", 'Work Order Parts List'[Completion Date],#(lf)    ""Component Item Num 2nd"", 'Work Order Parts List'[Component Item Num 2nd],#(lf)    ""Item Num 2nd"", 'Item Branch'[Item Num 2nd],#(lf)    ""Item Global Bulk"", 'Item Branch'[Item Global Bulk],#(lf)    ""Item Bulk"", 'Item Branch'[Item Bulk],#(lf)    ""Branch Plant"", 'Branch'[Branch Plant],#(lf)    ""Work Order Status"", 'Work Order'[Work Order Status],#(lf)    ""UOM"", 'Work Order Parts List'[UOM],#(lf)    ""Stocking Type"", 'Item Branch'[Stocking Type],#(lf)    ""WO_Parts_Qty_Shipped"", [WO_Parts_Qty_Shipped],#(lf)    ""WO_Parts_Qty_Ordered"", [WO_Parts_Qty_Ordered]#(lf))", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(
+				    WO,
+				    {
+				        {"[Work Order Num]", "Work Order Num"},
+				        {"[Start Date]", "Start Date"},
+				        {"[Completion Date]", "Completion Date"},
+				        {"[Component Item Num 2nd]", "Component Item Num 2nd"},
+				        {"[Item Num 2nd]", "Item Num 2nd"},
+				        {"[Item Global Bulk]", "Item Global Bulk"},
+				        {"[Item Bulk]", "Item Bulk"},
+				        {"[Branch Plant]", "Branch Plant"},
+				        {"[Work Order Status]", "Work Order Status"},
+				        {"[UOM]", "UOM"},
+				        {"[Stocking Type]", "Stocking Type"},
+				        {"[WO_Parts_Qty_Shipped]", "WO_Parts_Qty_Shipped"},
+				        {"[WO_Parts_Qty_Ordered]", "WO_Parts_Qty_Ordered"}
+				    }
+				)
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

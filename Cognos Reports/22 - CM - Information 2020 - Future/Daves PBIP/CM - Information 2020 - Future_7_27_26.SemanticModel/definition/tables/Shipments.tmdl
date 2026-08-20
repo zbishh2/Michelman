@@ -1,0 +1,226 @@
+table Shipments
+	lineageTag: 681365ef-e7b7-4122-bdb0-d16de1ed42ea
+
+	column 'Branch Company[Company]'
+		dataType: string
+		lineageTag: 6f7f853d-465f-4a4e-ab97-65934d8c0891
+		summarizeBy: none
+		sourceColumn: Branch Company[Company]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch[Branch Plant]'
+		dataType: string
+		lineageTag: b6bb07d9-7bde-400b-bbfe-e05a2567812f
+		summarizeBy: none
+		sourceColumn: Branch[Branch Plant]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales[Order Num]'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3f776796-831a-454d-af01-c6713181f73b
+		summarizeBy: sum
+		sourceColumn: Sales[Order Num]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales[Line Num]'
+		dataType: double
+		lineageTag: 71e195ef-da23-4d97-9e5e-11aadc373f76
+		summarizeBy: sum
+		sourceColumn: Sales[Line Num]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Sales[Open Order Flag]'
+		dataType: string
+		lineageTag: b1b7eabc-9ba7-4ee9-ba86-44ac05eae047
+		summarizeBy: none
+		sourceColumn: Sales[Open Order Flag]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Item Global Bulk]'
+		dataType: string
+		lineageTag: 56b9f15a-bdea-4cc8-82fb-c1ee147f6c5a
+		summarizeBy: none
+		sourceColumn: Item Branch[Item Global Bulk]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Item Num Bulk]'
+		dataType: string
+		lineageTag: 04dd21d0-dd58-4689-8300-5f2d84c09f46
+		summarizeBy: none
+		sourceColumn: Item Branch[Item Num Bulk]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Item Num 2nd]'
+		dataType: string
+		lineageTag: d86f43cb-588e-4eed-82ae-413d03da50d0
+		summarizeBy: none
+		sourceColumn: Item Branch[Item Num 2nd]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Item Num 2nd Desc]'
+		dataType: string
+		lineageTag: a40a2438-fc18-4802-9fbb-bebfc4e3f52a
+		summarizeBy: none
+		sourceColumn: Item Branch[Item Num 2nd Desc]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales[Freight Handling Code]'
+		dataType: string
+		lineageTag: 2c6ba9cb-3a7b-41e1-9f2a-f25ed4fa76ef
+		summarizeBy: none
+		sourceColumn: Sales[Freight Handling Code]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Revenue Business Unit[RBU]'
+		dataType: string
+		lineageTag: ecfd18fe-00e9-4634-91c9-e44a2b360614
+		summarizeBy: none
+		sourceColumn: Revenue Business Unit[RBU]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Territory Manager[Territory Manager]'
+		dataType: string
+		lineageTag: 26f9c12f-0514-4286-9a48-4095369e370f
+		summarizeBy: none
+		sourceColumn: Territory Manager[Territory Manager]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Ship To[Customer Ship To Name]'
+		dataType: string
+		lineageTag: f9af16a1-f9a7-4a4c-b7ce-fe9903ded520
+		summarizeBy: none
+		sourceColumn: Customer Ship To[Customer Ship To Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales[Promised Shipment Date]'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 867da932-8c72-41a7-ae8e-b4d82ca8ce77
+		summarizeBy: none
+		sourceColumn: Sales[Promised Shipment Date]
+
+		variation Variation
+			isDefault
+			relationship: a3e31adc-a001-45cf-8024-6ad325017933
+			defaultHierarchy: LocalDateTable_403248fe-8355-4dba-bbde-d502d8540c55.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Branch[Chemist Name]'
+		dataType: string
+		lineageTag: 93e30c3c-f896-49d5-95f0-c39375939b0b
+		summarizeBy: none
+		sourceColumn: Item Branch[Chemist Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column '[Order Net Amt SPD USD]'
+		dataType: double
+		lineageTag: 88c795f2-ef99-412c-bd80-c72d9a4915dc
+		summarizeBy: sum
+		sourceColumn: [Order Net Amt SPD USD]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column '[Order Net Amt SPD]'
+		dataType: double
+		lineageTag: 63159678-0079-4570-88f3-26c011188edb
+		summarizeBy: sum
+		sourceColumn: [Order Net Amt SPD]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column '[Qty Ordered SPD LB]'
+		dataType: double
+		lineageTag: 749d8a9d-019f-4668-92b6-3693064b20a6
+		summarizeBy: sum
+		sourceColumn: [Qty Ordered SPD LB]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column '[Qty Ordered SPD KG]'
+		dataType: double
+		lineageTag: af6b56ae-d5f0-415f-a67f-82fa4622b0bc
+		summarizeBy: sum
+		sourceColumn: [Qty Ordered SPD KG]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Sales[Status Code Next]'
+		dataType: string
+		lineageTag: 99d43f57-bd62-4ec8-8ab6-5b1593346a63
+		summarizeBy: none
+		sourceColumn: Sales[Status Code Next]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Address[Global Parent Desc]'
+		dataType: string
+		lineageTag: 38dd8465-cabc-47bb-883a-cc4bb75b744d
+		summarizeBy: none
+		sourceColumn: Address[Global Parent Desc]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: string
+		lineageTag: bfa7a5de-9d90-4583-ae88-3a3108164234
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		lineageTag: cddf5c44-ba06-41ca-a9b4-d524c99abbc0
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Ship To[Country Desc]'
+		dataType: string
+		lineageTag: 6ee7c0ae-ca47-4701-8ca9-353db16b43bb
+		summarizeBy: none
+		sourceColumn: Customer Ship To[Country Desc]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Shipments = m
+		mode: import
+		source =
+				let
+				    Shipments = AnalysisServices.Database("ssasprod", "BIQLTabular", [Query="/* START QUERY BUILDER */#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Branch Company'[Company],'Address'[Global Parent Desc],'Customer Ship To'[Country Desc],#(lf)    Branch[Branch Plant],#(lf)    Sales[Order Num],#(lf)    Sales[Line Num],#(lf)    Sales[Open Order Flag],#(lf)    'Item Branch'[Item Global Bulk],#(lf)    'Item Branch'[Item Num Bulk],#(lf)    'Item Branch'[Item Num 2nd],#(lf)    'Item Branch'[Item Num 2nd Desc],#(lf)    Sales[Freight Handling Code],#(lf)    Sales[Status Code Next],#(lf)    'Revenue Business Unit'[RBU],#(lf)    'Territory Manager'[Territory Manager],#(lf)    'Customer Ship To'[Customer Ship To Name],#(lf)    Sales[Promised Shipment Date],#(lf)    'Item Branch'[Chemist Name],#(lf)    KEEPFILTERS( TREATAS( {""161017CX"",""161190PX"",""171143PX"",""171228PX.E"",""181020CX.E"",""181136IX"",""181192IX"",""181193EU.E"",""191011CX"",""191026CX.E"",""191245PX"",""23409A"",""ABEX2525"",""APT10"",""APT11"",#(lf)""DMAEMA"",""EMA3065"",""ET2012.E"",""ET2022.E"",""ET4075.E"",""ET440.E"",""FERSUL7W"",""HP1432AT"",""HP1632"",""MD4020"",""MD4020C"",""MD4020S"",""MD4021"",""MD4021C"",""MD4021S"",""MD4022"",""MD4022C"",""MD4023"",""MD4023C"",""MDU20"",""MDU2012.E"",""MDU2012B.E"",""MDU4075.E"",""MDU4075B.E"",""MDU440.E"",""MDU440B.E"",""MPEG2000"",""MW40504"",""MW40514"",""NP4LF"",""NP4LF.S"",""OMS"",""PUD1.E"",""STODSO"",""U1001"",""U101"",""U201"",""U2022"",""U2022EU.E"",""U2023"",""U204"",""U204EU.E"",""U470"",""U501"",""U501B"",""U502"",""U502.E"",""U502X1.E"",""U601"",""U701"",""U802"",""U802.E"",""WAV501"",""WD40"",""WD40T""}#(lf)#(tab), 'Item Branch'[Item Num Bulk] )),#(lf)    KEEPFILTERS( FILTER( ALL( Sales[Promised Shipment Date] ), Sales[Promised Shipment Date] >= DATE(2020,1,1) )),#(lf)    ""Order Net Amt SPD USD"", [Order Net Amt SPD USD],#(lf)    ""Order Net Amt SPD"", [Order Net Amt SPD],#(lf)    ""Qty Ordered SPD LB"", [Qty Ordered SPD LB],#(lf)    ""Qty Ordered SPD KG"", [Qty Ordered SPD KG]#(lf))", Implementation="2.0"]),
+				    #"Added Custom" = Table.AddColumn(Shipments, "Year", each Date.Year([#"Sales[Promised Shipment Date]"])),
+				    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Month", each Date.Month([#"Sales[Promised Shipment Date]"]))
+				in
+				    #"Added Custom1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
